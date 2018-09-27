@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="TypefacedTextView">
+        <attr name="lineStrategy" format="enum">
+            <enum name="singleLineEllipsize" value="0"/>
+            <enum name="singleLineMarquee" value="1"/>
+            <enum name="singleLineAutoScale" value="2"/>
+            <enum name="multilineEllipsize" value="3"/>
+            <enum name="multilineMarquee" value="4"/>
+            <enum name="singleLineEllipsizeMiddle" value="5"/>
+            <enum name="multilineLineEllipsizeMiddle" value="6"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="TypefacedEditText">
+        <attr name="isMultiline" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="MaterialLoadingBar">
+        <attr name="strokeWidth" format="dimension"/>
+        <attr name="color" format="color"/>
+        <attr name="size" format="dimension"/>
+        <attr name="materialLoadingBarStyle" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="Switcher">
+        <attr name="defaultChild" format="reference"/>
+        <attr name="transition" format="reference"/>
+    </declare-styleable>
+
+</resources>

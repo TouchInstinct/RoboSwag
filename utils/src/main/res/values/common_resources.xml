@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- BLACK WITH ALPHA PALETTE -->
+    <color name="global_black_5">#0D000000</color>
+    <color name="global_black_10">#19000000</color>
+    <color name="global_black_15">#26000000</color>
+    <color name="global_black_20">#33000000</color>
+    <color name="global_black_25">#40000000</color>
+    <color name="global_black_30">#4D000000</color>
+    <color name="global_black_35">#59000000</color>
+    <color name="global_black_40">#66000000</color>
+    <color name="global_black_45">#73000000</color>
+    <color name="global_black_50">#80000000</color>
+    <color name="global_black_55">#8D000000</color>
+    <color name="global_black_60">#99000000</color>
+    <color name="global_black_65">#A6000000</color>
+    <color name="global_black_70">#B3000000</color>
+    <color name="global_black_75">#C0000000</color>
+    <color name="global_black_80">#CD000000</color>
+    <color name="global_black_85">#D9000000</color>
+    <color name="global_black_90">#E6000000</color>
+    <color name="global_black_95">#F3000000</color>
+
+    <!-- WHITE WITH ALPHA PALETTE -->
+    <color name="global_white_5">#0DFFFFFF</color>
+    <color name="global_white_10">#19FFFFFF</color>
+    <color name="global_white_15">#26FFFFFF</color>
+    <color name="global_white_20">#33FFFFFF</color>
+    <color name="global_white_25">#40FFFFFF</color>
+    <color name="global_white_30">#4DFFFFFF</color>
+    <color name="global_white_35">#59FFFFFF</color>
+    <color name="global_white_40">#66FFFFFF</color>
+    <color name="global_white_45">#73FFFFFF</color>
+    <color name="global_white_50">#80FFFFFF</color>
+    <color name="global_white_55">#8DFFFFFF</color>
+    <color name="global_white_60">#99FFFFFF</color>
+    <color name="global_white_65">#A6FFFFFF</color>
+    <color name="global_white_70">#B3FFFFFF</color>
+    <color name="global_white_75">#C0FFFFFF</color>
+    <color name="global_white_80">#CDFFFFFF</color>
+    <color name="global_white_85">#D9FFFFFF</color>
+    <color name="global_white_90">#E6FFFFFF</color>
+    <color name="global_white_95">#F3FFFFFF</color>
+
+</resources>

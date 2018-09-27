@@ -1,0 +1,31 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion versions.compileSdk
+
+    defaultConfig {
+        minSdkVersion 16
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    api project(":utils")
+    api project(":logging")
+    api project(":api-logansquare")
+    api project(":navigation")
+
+    api 'com.android.support:multidex:1.0.3'
+
+    api 'net.danlew:android.joda:2.9.9.4'
+
+    implementation "com.android.support:appcompat-v7:$versions.supportLibrary"
+
+    implementation("com.crashlytics.sdk.android:crashlytics:$versions.crashlytics@aar") {
+        transitive = true
+    }
+}
