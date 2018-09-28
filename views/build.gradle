@@ -17,5 +17,5 @@ dependencies {
     api project(":utils")
     api project(":logging")
 
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation "com.google.android.material:material:$versions.material"
 }

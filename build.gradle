@@ -28,11 +28,11 @@ ext {
             compileSdk    : 28,
             supportLibrary: '28.0.0',
             androidx      : '1.0.0',
-            navigation    : '1.0.0-alpha04',
+            material      : '1.0.0',
             lifecycle     : '2.0.0',
             dagger        : '2.16',
             retrofit      : '2.4.0',
-            rxJava        : '2.1.17',
+            rxJava        : '2.2.2',
             rxAndroid     : '2.1.0',
             crashlytics   : '2.9.5'
     ]
