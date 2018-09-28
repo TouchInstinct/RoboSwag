@@ -19,7 +19,7 @@
 
 package ru.touchin.templates.logansquare;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import ru.touchin.roboswag.core.log.Lc;
 import ru.touchin.templates.ApiModel;

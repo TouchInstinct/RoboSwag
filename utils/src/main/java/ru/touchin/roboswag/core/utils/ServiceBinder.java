@@ -21,8 +21,8 @@ package ru.touchin.roboswag.core.utils;
 
 import android.app.Service;
 import android.os.Binder;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Created by Gavriil Sitnikov on 03/10/2015.

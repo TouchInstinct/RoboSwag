@@ -19,7 +19,7 @@
 
 package ru.touchin.roboswag.core.log;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 /**

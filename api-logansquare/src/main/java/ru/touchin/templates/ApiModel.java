@@ -19,8 +19,8 @@
 
 package ru.touchin.templates;
 
-import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
 
 import java.io.IOException;
 import java.io.Serializable;

@@ -20,7 +20,7 @@
 package ru.touchin.templates.retrofit;
 
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

@@ -19,7 +19,7 @@
 
 package ru.touchin.templates.logansquare;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Created by Gavriil Sitnikov.
