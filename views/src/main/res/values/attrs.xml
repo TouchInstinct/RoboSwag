@@ -25,8 +25,9 @@
     </declare-styleable>
 
     <declare-styleable name="Switcher">
+        <attr name="android:inAnimation" format="reference"/>
+        <attr name="android:outAnimation" format="reference"/>
         <attr name="defaultChild" format="reference"/>
-        <attr name="transition" format="reference"/>
     </declare-styleable>
 
 </resources>
