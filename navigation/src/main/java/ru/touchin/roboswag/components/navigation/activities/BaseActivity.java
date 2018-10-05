@@ -108,6 +108,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         onBackPressedListeners.remove(onBackPressedListener);
     }
 
+    public void removeAllOnBackPressedListeners() {
+        onBackPressedListeners.clear();
+    }
+
     @Override
     public void onBackPressed() {
         for (final OnBackPressedListener onBackPressedListener : onBackPressedListeners) {
