@@ -10,7 +10,7 @@ include ':utils'
 include ':navigation'
 include ':storable'
 include ':api-logansquare'
-include ':lifecycle-common'
+include ':lifecycle'
 include ':lifecycle-rx'
 include ':views'
 include ':recyclerview-adapters'
@@ -22,7 +22,7 @@ project(':logging').projectDir = new File(rootDir, 'logging')
 project(':navigation').projectDir = new File(rootDir, 'navigation')
 project(':storable').projectDir = new File(rootDir, 'storable')
 project(':api-logansquare').projectDir = new File(rootDir, 'api-logansquare')
-project(':lifecycle-common').projectDir = new File(rootDir, 'lifecycle-common')
+project(':lifecycle').projectDir = new File(rootDir, 'lifecycle')
 project(':lifecycle-rx').projectDir = new File(rootDir, 'lifecycle-rx')
 project(':views').projectDir = new File(rootDir, 'views')
 project(':recyclerview-adapters').projectDir = new File(rootDir, 'recyclerview-adapters')

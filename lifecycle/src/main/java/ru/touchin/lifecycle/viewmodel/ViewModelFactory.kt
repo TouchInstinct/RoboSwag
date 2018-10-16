@@ -1,4 +1,4 @@
-package ru.touchin.templates.viewmodel
+package ru.touchin.lifecycle.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

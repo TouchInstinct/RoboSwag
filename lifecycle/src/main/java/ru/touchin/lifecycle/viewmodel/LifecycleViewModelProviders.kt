@@ -1,4 +1,4 @@
-package ru.touchin.templates.viewmodel
+package ru.touchin.lifecycle.viewmodel
 
 import android.app.Activity
 import androidx.lifecycle.LifecycleOwner

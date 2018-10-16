@@ -12,6 +12,7 @@ android {
 dependencies {
     api project(":utils")
     api project(":logging")
+    api project(":lifecycle")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 

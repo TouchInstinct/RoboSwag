@@ -1,11 +1,7 @@
-package ru.touchin.templates.viewmodel
+package ru.touchin.lifecycle.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.annotation.CallSuper
-import ru.touchin.livedata.dispatcher.BaseLiveDataDispatcher
-import ru.touchin.livedata.dispatcher.LiveDataDispatcher
-import ru.touchin.livedata.destroyable.BaseDestroyable
-import ru.touchin.livedata.destroyable.Destroyable
 
 /**
  * Base class of ViewModel with [io.reactivex.disposables.Disposable] handling.

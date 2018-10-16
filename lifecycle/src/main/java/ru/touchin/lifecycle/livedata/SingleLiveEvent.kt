@@ -1,4 +1,4 @@
-package ru.touchin.templates.livedata
+package ru.touchin.lifecycle.livedata
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData

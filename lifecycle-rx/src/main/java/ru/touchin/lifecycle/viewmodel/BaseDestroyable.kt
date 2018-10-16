@@ -1,4 +1,4 @@
-package ru.touchin.livedata.destroyable
+package ru.touchin.lifecycle.viewmodel
 
 import io.reactivex.Completable
 import io.reactivex.Flowable

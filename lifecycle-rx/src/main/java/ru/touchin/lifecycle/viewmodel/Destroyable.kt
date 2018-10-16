@@ -1,4 +1,4 @@
-package ru.touchin.livedata.destroyable
+package ru.touchin.lifecycle.viewmodel
 
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -8,7 +8,6 @@ import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import io.reactivex.internal.functions.Functions
 import ru.touchin.roboswag.core.log.Lc
-import ru.touchin.roboswag.core.utils.ShouldNotHappenException
 
 /**
  * Created by Oksana Pokrovskaya on 7/03/18.
@@ -17,12 +16,6 @@ import ru.touchin.roboswag.core.utils.ShouldNotHappenException
  * Use [.untilDestroy] method to subscribe to observable where you want and unsubscribe onDestroy.
  */
 interface Destroyable {
-
-    companion object {
-        private fun getActionThrowableForAssertion(codePoint: String, method: String = "untilDestroy"): (Throwable) -> Unit = { throwable ->
-            Lc.assertion(ShouldNotHappenException("Unexpected error on $method at $codePoint", throwable))
-        }
-    }
 
     /**
      * Removes all subscriptions
@@ -41,7 +34,7 @@ interface Destroyable {
      */
     fun <T> Flowable<T>.untilDestroy(
             onNext: (T) -> Unit = Functions.emptyConsumer<T>()::accept,
-            onError: (Throwable) -> Unit = getActionThrowableForAssertion(Lc.getCodePoint(this, 2)),
+            onError: (Throwable) -> Unit = Lc::assertion,
             onComplete: () -> Unit = Functions.EMPTY_ACTION::run
     ): Disposable
 
@@ -57,7 +50,7 @@ interface Destroyable {
      */
     fun <T> Observable<T>.untilDestroy(
             onNext: (T) -> Unit = Functions.emptyConsumer<T>()::accept,
-            onError: (Throwable) -> Unit = getActionThrowableForAssertion(Lc.getCodePoint(this, 2)),
+            onError: (Throwable) -> Unit = Lc::assertion,
             onComplete: () -> Unit = Functions.EMPTY_ACTION::run
     ): Disposable
 
@@ -72,7 +65,7 @@ interface Destroyable {
      */
     fun <T> Single<T>.untilDestroy(
             onSuccess: (T) -> Unit = Functions.emptyConsumer<T>()::accept,
-            onError: (Throwable) -> Unit = getActionThrowableForAssertion(Lc.getCodePoint(this, 2))
+            onError: (Throwable) -> Unit = Lc::assertion
     ): Disposable
 
     /**
@@ -86,7 +79,7 @@ interface Destroyable {
      */
     fun Completable.untilDestroy(
             onComplete: () -> Unit = Functions.EMPTY_ACTION::run,
-            onError: (Throwable) -> Unit = getActionThrowableForAssertion(Lc.getCodePoint(this, 2))
+            onError: (Throwable) -> Unit = Lc::assertion
     ): Disposable
 
     /**
@@ -101,7 +94,7 @@ interface Destroyable {
      */
     fun <T> Maybe<T>.untilDestroy(
             onSuccess: (T) -> Unit = Functions.emptyConsumer<T>()::accept,
-            onError: (Throwable) -> Unit = getActionThrowableForAssertion(Lc.getCodePoint(this, 2)),
+            onError: (Throwable) -> Unit = Lc::assertion,
             onComplete: () -> Unit = Functions.EMPTY_ACTION::run
     ): Disposable
 
