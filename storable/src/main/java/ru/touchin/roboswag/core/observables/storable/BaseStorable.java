@@ -26,6 +26,7 @@ import java.lang.reflect.Type;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import androidx.core.util.ObjectsCompat;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
@@ -245,7 +246,7 @@ public abstract class BaseStorable<TKey, TObject, TStoreObject, TReturnObject> {
                                 key, newValue, store, converter);
                         return Completable.error(exception);
                     }
-                    if (checkForEqualityBeforeSet && ObjectUtils.equals(newStoreValue, oldStoreValue.get())) {
+                    if (checkForEqualityBeforeSet && ObjectsCompat.equals(newStoreValue, oldStoreValue.get())) {
                         return Completable.complete();
                     }
                     return store.storeObject(storeObjectType, key, newStoreValue)

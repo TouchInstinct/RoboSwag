@@ -14,5 +14,6 @@ android {
 }
 
 dependencies {
+    implementation "androidx.core:core:$versions.androidx"
     implementation "androidx.annotation:annotation:$versions.androidx"
 }

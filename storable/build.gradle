@@ -17,6 +17,7 @@ dependencies {
     api project(":utils")
     api project(":logging")
 
+    implementation "androidx.core:core:$versions.androidx"
     implementation "androidx.annotation:annotation:$versions.androidx"
 
     implementation "io.reactivex.rxjava2:rxjava:$versions.rxJava"

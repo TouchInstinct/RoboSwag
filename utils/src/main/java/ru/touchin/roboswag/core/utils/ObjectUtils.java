@@ -41,6 +41,7 @@ public final class ObjectUtils {
      * @return True if objects are equals.
      */
     @SuppressWarnings("PMD.CompareObjectsWithEquals")
+    @Deprecated // Use Objects.equals() or ObjectsCompat.equals() and explicit Arrays.equals().
     //CompareObjectsWithEquals: we need to compare if it's same object
     public static boolean equals(@Nullable final Object object1, @Nullable final Object object2) {
         if (object1 == object2) {
@@ -70,6 +71,7 @@ public final class ObjectUtils {
      * @return True if collections are equals.
      */
     @SuppressWarnings("PMD.CompareObjectsWithEquals")
+    @Deprecated // Use Objects.equals() or ObjectsCompat.equals(), all collections have equals overriding.
     //CompareObjectsWithEquals: we need to compare if it's same object
     public static boolean isCollectionsEquals(@Nullable final Collection<?> collection1, @Nullable final Collection<?> collection2) {
         if (collection1 == collection2) {
@@ -98,6 +100,7 @@ public final class ObjectUtils {
      * @return True if maps are equals.
      */
     @SuppressWarnings("PMD.CompareObjectsWithEquals")
+    @Deprecated // Use Objects.equals() or ObjectsCompat.equals(), all maps have equals overriding.
     //CompareObjectsWithEquals: we need to compare if it's same object
     public static boolean isMapsEquals(@Nullable final Map<?, ?> map1, @Nullable final Map<?, ?> map2) {
         return map1 == map2 || !(map1 == null || map2 == null)
@@ -135,6 +138,7 @@ public final class ObjectUtils {
      * @param objects Objects to combine hashCode() of;
      * @return Calculated hashCode().
      */
+    @Deprecated // Use Objects.hash() or ObjectsCompat.hash()
     public static int hashCode(@Nullable final Object... objects) {
         return Arrays.hashCode(objects);
     }

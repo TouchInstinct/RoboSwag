@@ -20,6 +20,7 @@
 package ru.touchin.roboswag.core.utils;
 
 import androidx.annotation.Nullable;
+import androidx.core.util.ObjectsCompat;
 
 import java.io.Serializable;
 
@@ -60,12 +61,12 @@ public class Optional<T> implements Serializable {
         }
 
         final Optional<?> that = (Optional<?>) object;
-        return ObjectUtils.equals(value, that.value);
+        return ObjectsCompat.equals(value, that.value);
     }
 
     @Override
     public int hashCode() {
-        return value != null ? value.hashCode() : 0;
+        return ObjectsCompat.hash(value);
     }
 
 }
