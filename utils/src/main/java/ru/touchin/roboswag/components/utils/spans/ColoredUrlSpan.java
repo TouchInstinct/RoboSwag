@@ -19,8 +19,8 @@
 
 package ru.touchin.roboswag.components.utils.spans;
 
-import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
 import android.text.TextPaint;
 import android.text.style.URLSpan;
 

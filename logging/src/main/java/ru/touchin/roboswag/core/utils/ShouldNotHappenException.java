@@ -19,7 +19,7 @@
 
 package ru.touchin.roboswag.core.utils;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Created by Gavriil Sitnikov on 13/11/2015.

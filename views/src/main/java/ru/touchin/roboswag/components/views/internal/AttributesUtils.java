@@ -21,8 +21,8 @@ package ru.touchin.roboswag.components.views.internal;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.NonNull;
-import android.support.annotation.StyleableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StyleableRes;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.AttributeSet;

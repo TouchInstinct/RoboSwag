@@ -1,7 +1,7 @@
 package ru.touchin.roboswag.components.adapters
 
-import android.support.v7.util.ListUpdateCallback
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.ListUpdateCallback
+import androidx.recyclerview.widget.RecyclerView
 
 class OffsetAdapterUpdateCallback(private val adapter: RecyclerView.Adapter<*>, private val offsetProvider: () -> Int) : ListUpdateCallback  {
 

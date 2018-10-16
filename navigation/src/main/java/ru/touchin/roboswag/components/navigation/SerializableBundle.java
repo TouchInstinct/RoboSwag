@@ -2,8 +2,8 @@ package ru.touchin.roboswag.components.navigation;
 
 import android.os.Bundle;
 import android.os.Parcel;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

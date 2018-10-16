@@ -21,11 +21,11 @@ package ru.touchin.roboswag.components.navigation.viewcontrollers
 
 import android.content.Context
 import android.os.Parcelable
-import android.support.annotation.IdRes
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentTransaction
+import androidx.annotation.IdRes
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 
 import ru.touchin.roboswag.components.navigation.FragmentNavigation
 import ru.touchin.roboswag.components.navigation.fragments.ViewControllerFragment

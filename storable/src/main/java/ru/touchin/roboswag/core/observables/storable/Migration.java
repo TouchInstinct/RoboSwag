@@ -19,7 +19,7 @@
 
 package ru.touchin.roboswag.core.observables.storable;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.util.Arrays;
 import java.util.List;

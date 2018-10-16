@@ -19,8 +19,8 @@
 
 package ru.touchin.roboswag.core.log;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Created by Gavriil Sitnikov on 13/11/2015.
