@@ -1,11 +1,11 @@
-package ru.touchin.roboswag.components.adapters
+package ru.touchin.adapters
 
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
-import ru.touchin.roboswag.components.extensions.setOnRippleClickListener
+import ru.touchin.extensions.setOnRippleClickListener
 
 /**
  * Base adapter with delegation and diff computing on background thread.

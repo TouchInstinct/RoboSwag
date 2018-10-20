@@ -1,4 +1,4 @@
-package ru.touchin.roboswag.components.extensions
+package ru.touchin.extensions
 
 import android.content.Context
 import android.content.res.ColorStateList

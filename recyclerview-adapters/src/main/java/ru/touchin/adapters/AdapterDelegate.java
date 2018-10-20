@@ -17,7 +17,7 @@
  *
  */
 
-package ru.touchin.roboswag.components.adapters;
+package ru.touchin.adapters;
 
 import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;

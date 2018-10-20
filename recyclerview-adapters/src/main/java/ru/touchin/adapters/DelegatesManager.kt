@@ -1,4 +1,4 @@
-package ru.touchin.roboswag.components.adapters
+package ru.touchin.adapters
 
 import androidx.recyclerview.widget.RecyclerView
 import android.util.SparseArray

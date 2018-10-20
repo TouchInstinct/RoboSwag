@@ -1,4 +1,4 @@
-package ru.touchin.roboswag.components.extensions
+package ru.touchin.extensions
 
 import android.app.Activity
 import android.content.Intent

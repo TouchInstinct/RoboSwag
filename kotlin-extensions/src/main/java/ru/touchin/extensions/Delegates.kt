@@ -1,4 +1,4 @@
-package ru.touchin.roboswag.components.extensions
+package ru.touchin.extensions
 
 import kotlin.properties.Delegates
 import kotlin.properties.ObservableProperty

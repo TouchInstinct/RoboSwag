@@ -1,4 +1,4 @@
-package ru.touchin.roboswag.widget;
+package ru.touchin.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -35,9 +35,9 @@ public class Switcher extends FrameLayout {
     public Switcher(@NonNull final Context context, @Nullable final AttributeSet attrs) {
         super(context, attrs);
         final TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.Switcher, 0, R.style.Switcher);
-        inAnimation = AnimationUtils.loadAnimation(context, array.getResourceId(R.styleable.Switcher_android_inAnimation, View.NO_ID));
-        outAnimation = AnimationUtils.loadAnimation(context, array.getResourceId(R.styleable.Switcher_android_outAnimation, View.NO_ID));
         defaultChild = array.getResourceId(R.styleable.Switcher_defaultChild, View.NO_ID);
+        inAnimation = AnimationUtils.loadAnimation(context, array.getResourceId(R.styleable.Switcher_android_inAnimation, android.R.anim.fade_in));
+        outAnimation = AnimationUtils.loadAnimation(context, array.getResourceId(R.styleable.Switcher_android_outAnimation, android.R.anim.fade_out));
         array.recycle();
     }
 
