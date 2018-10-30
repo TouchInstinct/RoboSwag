@@ -431,6 +431,10 @@ public class ViewController<TActivity extends FragmentActivity, TState extends P
             this.container = container;
         }
 
+        @Nullable
+        public ViewGroup getContainer() {
+            return container;
+        }
     }
 
 }
