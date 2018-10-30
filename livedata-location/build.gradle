@@ -12,12 +12,8 @@ android {
 
 dependencies {
     api project(":lifecycle")
-    
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation "com.google.android.gms:play-services-location:$versions.googleMap"
-}
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-repositories {
-    mavenCentral()
+    implementation "com.google.android.gms:play-services-location:$versions.location"
 }

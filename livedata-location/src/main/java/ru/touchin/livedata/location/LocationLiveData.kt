@@ -1,29 +1,30 @@
 package ru.touchin.livedata.location
 
-import android.Manifest
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.pm.PackageManager
 import android.location.Location
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.MutableLiveData
+import androidx.annotation.RequiresPermission
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationAvailability
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import ru.touchin.roboswag.core.utils.ShouldNotHappenException
 
 class LocationLiveData(
-        private val context: Context,
+        context: Context,
         private val request: LocationRequest
-) : MutableLiveData<Location>() {
+) : LiveData<Location>() {
 
     private val fusedLocationClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
     private val locationCallback = object : LocationCallback() {
-        override fun onLocationResult(result: LocationResult?) {
-            postValue(result?.lastLocation)
+        override fun onLocationResult(result: LocationResult) {
+            postValue(result.lastLocation)
         }
 
         override fun onLocationAvailability(availability: LocationAvailability) {
@@ -31,18 +32,18 @@ class LocationLiveData(
         }
     }
 
+    @RequiresPermission(anyOf = [ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION])
+    override fun observe(owner: LifecycleOwner, observer: Observer<in Location>) {
+        super.observe(owner, observer)
+    }
+
     override fun onActive() {
-        super.onActive()
         startListening()
     }
 
     override fun onInactive() {
-        super.onInactive()
         stopListening()
     }
-
-    private fun isLocationPermissionAccessed() = ContextCompat
-            .checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
 
     private fun stopListening() {
         fusedLocationClient.removeLocationUpdates(locationCallback)
@@ -50,15 +51,11 @@ class LocationLiveData(
 
     @SuppressLint("MissingPermission")
     private fun startListening() {
-        if (isLocationPermissionAccessed()) {
-            fusedLocationClient.requestLocationUpdates(
-                    request,
-                    locationCallback,
-                    null
-            )
-        } else {
-            throw ShouldNotHappenException("Location permission is not granted")
-        }
+        fusedLocationClient.requestLocationUpdates(
+                request,
+                locationCallback,
+                null
+        )
     }
 
 }
