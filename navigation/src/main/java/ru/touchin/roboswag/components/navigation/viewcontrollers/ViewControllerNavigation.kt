@@ -50,6 +50,7 @@ open class ViewControllerNavigation<TActivity : FragmentActivity>(
      * @param viewControllerClass Class of [ViewController] to be pushed;
      * @param state               [Parcelable] of [ViewController]'s fragment;
      * @param addToStack          Flag to add this transaction to the back stack;
+     * @param backStackName       Name of [Fragment] in back stack;
      * @param transactionSetup    Function to setup transaction before commit. It is useful to specify transition animations or additional info;
      * @param TState              Type of state of fragment.
      */
@@ -57,6 +58,7 @@ open class ViewControllerNavigation<TActivity : FragmentActivity>(
             viewControllerClass: Class<out ViewController<out TActivity, TState>>,
             state: TState,
             addToStack: Boolean = true,
+            backStackName: String? = null,
             transactionSetup: ((FragmentTransaction) -> Unit)? = null
     ) {
         addToStack(
@@ -65,7 +67,7 @@ open class ViewControllerNavigation<TActivity : FragmentActivity>(
                 0,
                 addToStack,
                 ViewControllerFragment.args(viewControllerClass, state),
-                null,
+                backStackName,
                 transactionSetup
         )
     }
@@ -77,6 +79,7 @@ open class ViewControllerNavigation<TActivity : FragmentActivity>(
      * @param viewControllerClass Class of [ViewController] to be pushed;
      * @param targetFragment      [ViewControllerFragment] to be set as target;
      * @param state               [Parcelable] of [ViewController]'s fragment;
+     * @param backStackName       Name of [Fragment] in back stack;
      * @param transactionSetup    Function to setup transaction before commit. It is useful to specify transition animations or additional info;
      * @param TState              Type of state of fragment;
      * @param TTargetFragment     Type of target fragment.
@@ -86,6 +89,7 @@ open class ViewControllerNavigation<TActivity : FragmentActivity>(
             state: TState,
             targetFragment: TTargetFragment,
             targetRequestCode: Int,
+            backStackName: String? = null,
             transactionSetup: ((FragmentTransaction) -> Unit)? = null
     ) {
         addToStack(
@@ -94,7 +98,7 @@ open class ViewControllerNavigation<TActivity : FragmentActivity>(
                 targetRequestCode,
                 true,
                 ViewControllerFragment.args(viewControllerClass, state),
-                null,
+                backStackName,
                 transactionSetup
         )
     }
