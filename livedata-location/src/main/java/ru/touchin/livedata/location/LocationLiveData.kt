@@ -2,7 +2,6 @@ package ru.touchin.livedata.location
 
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
-import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import androidx.annotation.RequiresPermission
@@ -37,6 +36,7 @@ class LocationLiveData(
         super.observe(owner, observer)
     }
 
+    @RequiresPermission(anyOf = [ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION])
     override fun onActive() {
         startListening()
     }
@@ -49,7 +49,7 @@ class LocationLiveData(
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
-    @SuppressLint("MissingPermission")
+    @RequiresPermission(anyOf = [ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION])
     private fun startListening() {
         fusedLocationClient.requestLocationUpdates(
                 request,
