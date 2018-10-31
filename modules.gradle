@@ -16,6 +16,7 @@ include ':views'
 include ':recyclerview-adapters'
 include ':kotlin-extensions'
 include ':templates'
+include ':livedata-location'
 
 project(':utils').projectDir = new File(rootDir, 'utils')
 project(':logging').projectDir = new File(rootDir, 'logging')
@@ -28,3 +29,4 @@ project(':views').projectDir = new File(rootDir, 'views')
 project(':recyclerview-adapters').projectDir = new File(rootDir, 'recyclerview-adapters')
 project(':kotlin-extensions').projectDir = new File(rootDir, 'kotlin-extensions')
 project(':templates').projectDir = new File(rootDir, 'templates')
+project(':livedata-location').projectDir = new File(rootDir, 'livedata-location')
