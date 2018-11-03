@@ -1,0 +1,16 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion versions.compileSdk
+
+    defaultConfig {
+        minSdkVersion 16
+    }
+}
+
+dependencies {
+    api project(":logging")
+    api 'net.danlew:android.joda:2.9.9.4'
+
+    implementation "androidx.recyclerview:recyclerview:$versions.androidx"
+}
