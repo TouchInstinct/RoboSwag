@@ -21,17 +21,16 @@ package ru.touchin.roboswag.components.navigation
 
 import android.content.Context
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import android.view.MenuItem
-
 import ru.touchin.roboswag.core.log.Lc
 
 /**
  * Created by Gavriil Sitnikov on 07/03/2016.
- * Navigation which is controlling fragments on activity using [android.support.v4.app.FragmentManager].
+ * Navigation which is controlling fragments on activity using [FragmentManager].
  * Basically there are 4 main actions to add fragments to activity.
  * 1) [.setInitial] means to set fragment on top and remove all previously added fragments from stack;
  * 2) [.push] means to simply add fragment on top of the stack;
@@ -84,7 +83,7 @@ open class FragmentNavigation(
      * @param targetFragment   Target fragment to be set as [Fragment.getTargetFragment] of instantiated [Fragment];
      * @param addToStack       Flag to add this transaction to the back stack;
      * @param args             Bundle to be set as [Fragment.getArguments] of instantiated [Fragment];
-     * @param backStackTag     Tag of [Fragment] in back stack;
+     * @param backStackName    Name of [Fragment] in back stack;
      * @param transactionSetup Function to setup transaction before commit. It is useful to specify transition animations or additional info.
      */
     fun addToStack(
@@ -93,7 +92,7 @@ open class FragmentNavigation(
             targetRequestCode: Int,
             addToStack: Boolean,
             args: Bundle?,
-            backStackTag: String?,
+            backStackName: String?,
             transactionSetup: ((FragmentTransaction) -> Unit)?
     ) {
         if (fragmentManager.isDestroyed) {
@@ -102,23 +101,19 @@ open class FragmentNavigation(
         }
 
         val fragment = Fragment.instantiate(context, fragmentClass.name, args)
-        if (targetFragment != null) {
-            if (fragmentManager !== targetFragment.fragmentManager) {
-                Lc.assertion("FragmentManager of target is differ then of creating fragment. Target will be lost after restoring activity. "
-                        + targetFragment.fragmentManager + " != " + fragmentManager)
-            }
-            fragment.setTargetFragment(targetFragment, targetRequestCode)
-        }
+        fragment.setTargetFragment(targetFragment, targetRequestCode)
 
         val fragmentTransaction = fragmentManager.beginTransaction()
         transactionSetup?.invoke(fragmentTransaction)
         fragmentTransaction.replace(containerViewId, fragment, null)
         if (addToStack) {
-            fragmentTransaction.addToBackStack(backStackTag).setTransition(transition)
-        } else {
-            fragmentTransaction.setPrimaryNavigationFragment(fragment)
+            fragmentTransaction
+                    .addToBackStack(backStackName)
+                    .setTransition(transition)
         }
-        fragmentTransaction.commit()
+        fragmentTransaction
+                .setPrimaryNavigationFragment(fragment)
+                .commit()
     }
 
     /**
@@ -135,39 +130,14 @@ open class FragmentNavigation(
     }
 
     /**
-     * Backs to fragment which back stack's entry satisfy to specific condition.
-     *
-     * @param condition Condition of back stack entry to be satisfied;
-     * @return True if it have back to some entry in stack.
-     */
-    fun backTo(condition: (FragmentManager.BackStackEntry) -> Boolean): Boolean {
-        val stackSize = fragmentManager.backStackEntryCount
-        var id: Int? = null
-        for (i in stackSize - 2 downTo 0) {
-            val backStackEntry = fragmentManager.getBackStackEntryAt(i)
-            if (condition(backStackEntry)) {
-                id = backStackEntry.id
-                break
-            }
-        }
-        if (id != null) {
-            fragmentManager.popBackStack(id, 0)
-            return true
-        }
-        return false
-    }
-
-    /**
      * Backs to fragment with specific [.TOP_FRAGMENT_TAG_MARK] tag.
      * This tag is adding if fragment added to stack via [.setInitial] or [.setAsTop] methods.
      * It can be used to create simple up/back navigation.
      *
      * @return True if it have back to some entry in stack.
      */
-    fun up() {
-        if (!backTo { backStackEntry -> backStackEntry.name != null && backStackEntry.name?.endsWith(TOP_FRAGMENT_TAG_MARK) == true }) {
-            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-        }
+    fun up(name: String? = null, inclusive: Boolean = false) {
+        fragmentManager.popBackStack(name, if (inclusive) FragmentManager.POP_BACK_STACK_INCLUSIVE else 0)
     }
 
     /**
@@ -226,7 +196,7 @@ open class FragmentNavigation(
             addToStack: Boolean = true,
             transactionSetup: ((FragmentTransaction) -> Unit)? = null
     ) {
-        addToStack(fragmentClass, null, 0, addToStack, args, "${fragmentClass.name};$TOP_FRAGMENT_TAG_MARK", transactionSetup)
+        addToStack(fragmentClass, null, 0, addToStack, args, TOP_FRAGMENT_TAG_MARK, transactionSetup)
     }
 
     /**

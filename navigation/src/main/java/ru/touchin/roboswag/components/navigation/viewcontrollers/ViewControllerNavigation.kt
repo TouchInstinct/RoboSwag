@@ -124,7 +124,7 @@ open class ViewControllerNavigation<TActivity : FragmentActivity>(
                 0,
                 addToStack,
                 ViewControllerFragment.args(viewControllerClass, state),
-                "${viewControllerClass.name};$TOP_FRAGMENT_TAG_MARK",
+                TOP_FRAGMENT_TAG_MARK,
                 transactionSetup
         )
     }
