@@ -3,11 +3,13 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'de.aaschmid:gradle-cpd-plugin:1.0'
+        classpath 'de.aaschmid:gradle-cpd-plugin:1.1'
+        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.0.0-RC10"
     }
 }
 
@@ -25,15 +27,15 @@ task clean(type: Delete) {
 
 ext {
     versions = [
-            compileSdk    : 28,
-            androidx      : '1.0.1',
-            material      : '1.0.0',
-            lifecycle     : '2.0.0',
-            dagger        : '2.17',
-            retrofit      : '2.4.0',
-            rxJava        : '2.2.2',
-            rxAndroid     : '2.1.0',
-            crashlytics   : '2.9.5',
-            location      : '16.0.0'
+            compileSdk : 28,
+            androidx   : '1.0.0',
+            material   : '1.0.0',
+            lifecycle  : '2.0.0',
+            dagger     : '2.17',
+            retrofit   : '2.4.0',
+            rxJava     : '2.2.2',
+            rxAndroid  : '2.1.0',
+            crashlytics: '2.9.5',
+            location   : '16.0.0'
     ]
 }
