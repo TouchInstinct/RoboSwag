@@ -134,12 +134,13 @@ public final class CalendarUtils {
 
         tempTime = todayDate.plusDays(1);
 
-        int shift = calendarItems.get(calendarItems.size() - 1).getEndRange();
+        final int shift = calendarItems.get(calendarItems.size() - 1).getEndRange();
         calendarItems.addAll(fillRangesUntilDate(tempTime, cleanEndDate, shift, ComparingToToday.AFTER_TODAY));
 
         return calendarItems;
     }
 
+    @NonNull
     @SuppressWarnings("checkstyle:MethodLength")
     private static List<CalendarItem> fillRangesUntilDate(@NonNull final DateTime startDate, @NonNull final DateTime endDate,
                                                           final int startShift, @NonNull final ComparingToToday comparingToToday) {
