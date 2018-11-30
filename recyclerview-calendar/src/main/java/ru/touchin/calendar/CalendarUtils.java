@@ -256,7 +256,7 @@ public final class CalendarUtils {
 
         //add empty items and header if current day the last day in the month
         if (tempDate.getDayOfMonth() == tempDate.dayOfMonth().getMaximumValue()) {
-            addItemsIfCurrentDayTheLastDayInTheMonth(startDate, calendarItems);
+            addItemsIfCurrentDayTheLastDayInTheMonth(tempDate, calendarItems);
         }
 
         return calendarItems;
