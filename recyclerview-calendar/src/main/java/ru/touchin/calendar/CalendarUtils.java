@@ -123,19 +123,31 @@ public final class CalendarUtils {
      * @return List of CalendarItems that could be one of these: {@link CalendarHeaderItem}, {@link CalendarDayItem} or {@link CalendarEmptyItem}.
      */
     @NonNull
-    @SuppressWarnings("checkstyle:MethodLength")
     public static List<CalendarItem> fillRanges(@NonNull final DateTime startDate, @NonNull final DateTime endDate) {
         final DateTime cleanStartDate = startDate.withTimeAtStartOfDay();
         final DateTime cleanEndDate = endDate.plusDays(1).withTimeAtStartOfDay();
+        final DateTime todayDate = DateTime.now().withTimeAtStartOfDay();
 
         DateTime tempTime = cleanStartDate;
 
-        final List<CalendarItem> calendarItems = fillCalendarTillCurrentDate(cleanStartDate, tempTime);
+        final List<CalendarItem> calendarItems = fillCalendarTillCurrentDate(todayDate, tempTime);
 
-        tempTime = tempTime.plusDays(Days.ONE.getDays());
+        tempTime = todayDate.plusDays(1);
 
-        final int totalDaysCount = Days.daysBetween(tempTime, cleanEndDate).getDays();
-        int shift = calendarItems.get(calendarItems.size() - 1).getEndRange();
+        final int shift = calendarItems.get(calendarItems.size() - 1).getEndRange();
+        calendarItems.addAll(fillRangesUntilDate(tempTime, cleanEndDate, shift, ComparingToToday.AFTER_TODAY));
+
+        return calendarItems;
+    }
+
+    @NonNull
+    @SuppressWarnings("checkstyle:MethodLength")
+    private static List<CalendarItem> fillRangesUntilDate(@NonNull final DateTime startDate, @NonNull final DateTime endDate,
+                                                          final int startShift, @NonNull final ComparingToToday comparingToToday) {
+        DateTime tempTime = startDate;
+        final List<CalendarItem> calendarItems = new ArrayList<>();
+        final int totalDaysCount = Days.daysBetween(tempTime, endDate).getDays();
+        int shift = startShift;
         int firstDate = tempTime.getDayOfMonth() - 1;
         int daysEnded = 1;
 
@@ -147,7 +159,7 @@ public final class CalendarUtils {
                 tempTime = tempTime.plusMonths(1).withDayOfMonth(1);
 
                 calendarItems.add(new CalendarDayItem(firstRangeDate, firstDate + 1, shift + daysEnded,
-                        shift + daysEnded + (daysInCurrentMonth - firstDate) - 1, ComparingToToday.AFTER_TODAY));
+                        shift + daysEnded + (daysInCurrentMonth - firstDate) - 1, comparingToToday));
                 daysEnded += daysInCurrentMonth - firstDate;
                 if (daysEnded == totalDaysCount) {
                     break;
@@ -168,14 +180,12 @@ public final class CalendarUtils {
                     calendarItems.add(new CalendarEmptyItem(shift + daysEnded, shift + daysEnded + firstDayInWeek - 1));
                     shift += firstDayInWeek;
                 }
-
             } else {
                 calendarItems.add(new CalendarDayItem(firstRangeDate, firstDate + 1, shift + daysEnded, shift + totalDaysCount,
-                        ComparingToToday.AFTER_TODAY));
+                        comparingToToday));
                 break;
             }
         }
-
         return calendarItems;
     }
 
@@ -217,37 +227,36 @@ public final class CalendarUtils {
     }
 
     @NonNull
-    private static List<CalendarItem> fillCalendarTillCurrentDate(@NonNull final DateTime cleanStartDate, @NonNull final DateTime startDate) {
-        DateTime temp = startDate;
+    private static List<CalendarItem> fillCalendarTillCurrentDate(@NonNull final DateTime todayDate, @NonNull final DateTime startDate) {
+        DateTime tempDate = startDate;
         final List<CalendarItem> calendarItems = new ArrayList<>();
         int shift = 0;
-        final int firstDate = temp.getDayOfMonth() - 1; //?? - 1 ?
 
         // add first month header
-        calendarItems.add(new CalendarHeaderItem(temp.getYear(),
-                temp.get(DateTimeFieldType.monthOfYear()) - 1, shift, shift)); // is Month starts from 1 or 0 ?
-        temp = temp.withDayOfMonth(1);
+        calendarItems.add(new CalendarHeaderItem(tempDate.getYear(),
+                tempDate.get(DateTimeFieldType.monthOfYear()) - 1, shift, shift)); // is Month starts from 1 or 0 ?
+        tempDate = tempDate.withDayOfMonth(1);
         shift += 1;
 
-        final int firstDayInTheWeek = temp.getDayOfWeek() - 1;
+        final int dayOfWeek = tempDate.getDayOfWeek() - 1;
 
         // check if first day is Monday. If not - add empty items. Otherwise do nothing
-        if (firstDayInTheWeek != 0) {
-            calendarItems.add(new CalendarEmptyItem(shift, shift + firstDayInTheWeek - 1));
+        if (dayOfWeek != 0) {
+            calendarItems.add(new CalendarEmptyItem(shift, shift + dayOfWeek - 1));
         }
-        shift += firstDayInTheWeek;
+        shift += dayOfWeek - 1;
 
         // add range with days before today
-        calendarItems.add(new CalendarDayItem(temp.getMillis(), 1, shift, shift + firstDate - 1, ComparingToToday.BEFORE_TODAY));
-        shift += firstDate;
+        calendarItems.addAll(fillRangesUntilDate(tempDate, todayDate, shift, ComparingToToday.BEFORE_TODAY));
+        shift = calendarItems.get(calendarItems.size() - 1).getEndRange() + 1;
 
         // add today item
-        temp = cleanStartDate;
-        calendarItems.add(new CalendarDayItem(temp.getMillis(), firstDate + 1, shift, shift, ComparingToToday.TODAY));
+        tempDate = todayDate;
+        calendarItems.add(new CalendarDayItem(tempDate.getMillis(), tempDate.getDayOfMonth(), shift, shift, ComparingToToday.TODAY));
 
         //add empty items and header if current day the last day in the month
-        if (temp.getDayOfMonth() == temp.dayOfMonth().getMaximumValue()) {
-            addItemsIfCurrentDayTheLastDayInTheMonth(startDate, calendarItems);
+        if (tempDate.getDayOfMonth() == tempDate.dayOfMonth().getMaximumValue()) {
+            addItemsIfCurrentDayTheLastDayInTheMonth(tempDate, calendarItems);
         }
 
         return calendarItems;

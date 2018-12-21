@@ -299,7 +299,7 @@ public abstract class CalendarAdapter<TDayViewHolder extends RecyclerView.ViewHo
 
     @Override
     public int getItemCount() {
-        return calendarItems.isEmpty() ? 0 : calendarItems.get(calendarItems.size() - 1).getEndRange();
+        return calendarItems.isEmpty() ? 0 : calendarItems.get(calendarItems.size() - 1).getEndRange() + 1;
     }
 
     protected boolean isEndPositionExist() {
