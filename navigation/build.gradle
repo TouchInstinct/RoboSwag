@@ -14,6 +14,11 @@ android {
     }
 }
 
+androidExtensions {
+    experimental = true
+    defaultCacheImplementation = "HASH_MAP"
+}
+
 dependencies {
     api project(":utils")
     api project(":logging")
@@ -21,4 +26,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation "androidx.appcompat:appcompat:$versions.androidx"
+
 }
