@@ -106,11 +106,9 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
 
         setHasOptionsMenu(true)
 
-        state = when {
-            savedInstanceState != null -> savedInstanceState.getParcelable(VIEW_CONTROLLER_STATE_EXTRA)
-            arguments != null -> arguments?.getParcelable(VIEW_CONTROLLER_STATE_EXTRA)
-            else -> null
-        } ?: throw IllegalStateException("State is required and null")
+        state = savedInstanceState?.getParcelable<TState>(VIEW_CONTROLLER_STATE_EXTRA)
+                ?: arguments?.getParcelable(VIEW_CONTROLLER_STATE_EXTRA)
+                ?: throw IllegalStateException("State is required and null")
 
         if (BuildConfig.DEBUG) {
             state = reserialize(state)
