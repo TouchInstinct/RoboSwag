@@ -131,7 +131,7 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
                 savedInstanceState
         )
         viewController!!.onCreate()
-        return viewController!!.containerView
+        return viewController!!.view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

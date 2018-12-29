@@ -46,7 +46,6 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
-import kotlinx.android.extensions.LayoutContainer
 import ru.touchin.roboswag.components.navigation.fragments.ViewControllerFragment
 import ru.touchin.roboswag.components.utils.UiUtils
 import ru.touchin.roboswag.core.log.Lc
@@ -64,7 +63,7 @@ open class ViewController<TActivity : FragmentActivity, TState : Parcelable>(
         creationContext: CreationContext,
         savedInstanceState: Bundle?,
         @LayoutRes layoutRes: Int
-) : LifecycleOwner, LayoutContainer {
+) : LifecycleOwner {
 
     val activity: TActivity = creationContext.activity as TActivity
 
@@ -74,7 +73,7 @@ open class ViewController<TActivity : FragmentActivity, TState : Parcelable>(
 
     private val lifecycleRegistry = LifecycleRegistry(this)
 
-    override val containerView: View = creationContext.inflater.inflate(layoutRes, creationContext.container, false)
+    val view: View = creationContext.inflater.inflate(layoutRes, creationContext.container, false)
 
     override fun getLifecycle(): Lifecycle = lifecycleRegistry
 
@@ -84,7 +83,7 @@ open class ViewController<TActivity : FragmentActivity, TState : Parcelable>(
      * @param id The id to search for;
      * @return The view that has the given id in the hierarchy.
      */
-    fun <T : View> findViewById(@IdRes id: Int): T = containerView.findViewById(id)
+    fun <T : View> findViewById(@IdRes id: Int): T = view.findViewById(id)
 
     /**
      * Return a localized, styled CharSequence from the application's package's
@@ -223,7 +222,7 @@ open class ViewController<TActivity : FragmentActivity, TState : Parcelable>(
     open fun onStart() {
         LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(this))
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START)
-        UiUtils.OfViews.hideSoftInput(containerView)
+        UiUtils.OfViews.hideSoftInput(view)
     }
 
     /**
