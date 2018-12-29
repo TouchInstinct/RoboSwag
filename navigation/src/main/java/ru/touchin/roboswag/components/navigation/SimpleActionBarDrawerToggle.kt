@@ -45,19 +45,11 @@ class SimpleActionBarDrawerToggle(
     private var hamburgerShowed: Boolean = false
     private var sidebarDisabled: Boolean = false
 
-    private var slideOffset: Float = 0.toFloat()
-    private var slidePosition: Float = 0.toFloat()
+    private var slideOffset: Float = 0f
+    private var slidePosition: Float = 0f
 
     private var hamburgerAnimator: ValueAnimator? = null
     private var firstAnimation = true
-
-    /**
-     * Returns if sidebar is opened.
-     *
-     * @return True if sidebar is opened.
-     */
-    val isOpened: Boolean
-        get() = drawerLayout.isDrawerOpen(sidebar)
 
     init {
         drawerLayout.addDrawerListener(this)
@@ -65,23 +57,21 @@ class SimpleActionBarDrawerToggle(
         activity.addOnBackPressedListener(this)
     }
 
-    private fun shouldShowHamburger(): Boolean = !hamburgerShowed && !sidebarDisabled
+    /**
+     * Set turn on/off invocation of supportInvalidateOptionsMenu
+     *
+     * @param isInvalidateOptionsMenuSupported flag for turning on/off invocation.
+     */
+    fun setInvalidateOptionsMenuSupported(isInvalidateOptionsMenuSupported: Boolean) {
+        this.isInvalidateOptionsMenuSupported = isInvalidateOptionsMenuSupported
+    }
 
     /**
-     * Method to process clicking on hamburger. It is needed to be called from [android.app.Activity.onOptionsItemSelected].
-     * If this method won't be called then opening-closing won't work.
+     * Returns if sidebar is opened.
      *
-     * @param item Selected item.
-     * @return True if item clicking processed.
+     * @return True if sidebar is opened.
      */
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return shouldShowHamburger() && super.onOptionsItemSelected(item)
-    }
-
-    private fun update() {
-        setHamburgerState(shouldShowHamburger())
-        drawerLayout.setDrawerLockMode(if (sidebarDisabled) DrawerLayout.LOCK_MODE_LOCKED_CLOSED else DrawerLayout.LOCK_MODE_UNLOCKED)
-    }
+    fun isOpened(): Boolean = drawerLayout.isDrawerOpen(sidebar)
 
     /**
      * Disables sidebar. So it will be in closed state and couldn't be opened.
@@ -137,6 +127,15 @@ class SimpleActionBarDrawerToggle(
     }
 
     /**
+     * Method to process clicking on hamburger. It is needed to be called from [android.app.Activity.onOptionsItemSelected].
+     * If this method won't be called then opening-closing won't work.
+     *
+     * @param item Selected item.
+     * @return True if item clicking processed.
+     */
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = shouldShowHamburger() && super.onOptionsItemSelected(item)
+
+    /**
      * Call it when back stack of activity's fragments have changed.
      */
     override fun onBackStackChanged() {
@@ -146,12 +145,47 @@ class SimpleActionBarDrawerToggle(
     /**
      * Call it when system back button have pressed.
      */
-    override fun onBackPressed(): Boolean {
-        if (drawerLayout.isDrawerOpen(sidebar)) {
-            close()
-            return true
+    override fun onBackPressed(): Boolean = if (isOpened()) {
+        close()
+        true
+    } else {
+        false
+    }
+
+    override fun onDrawerClosed(view: View) {
+        if (isInvalidateOptionsMenuSupported) {
+            activity.invalidateOptionsMenu()
         }
-        return false
+    }
+
+    override fun onDrawerSlide(drawerView: View, offset: Float) {
+        if (offset in slideOffset..slidePosition
+                || offset in slidePosition..slideOffset) {
+            slideOffset = offset
+        }
+        super.onDrawerSlide(drawerView, slideOffset)
+    }
+
+    /**
+     * Call it at [android.app.Activity.onPostCreate].
+     */
+    override fun syncState() {
+        cancelAnimation()
+        super.syncState()
+    }
+
+    override fun onDrawerOpened(drawerView: View) {
+        UiUtils.OfViews.hideSoftInput(activity)
+        if (isInvalidateOptionsMenuSupported) {
+            activity.invalidateOptionsMenu()
+        }
+    }
+
+    private fun shouldShowHamburger(): Boolean = !hamburgerShowed && !sidebarDisabled
+
+    private fun update() {
+        setHamburgerState(shouldShowHamburger())
+        drawerLayout.setDrawerLockMode(if (sidebarDisabled) DrawerLayout.LOCK_MODE_LOCKED_CLOSED else DrawerLayout.LOCK_MODE_UNLOCKED)
     }
 
     private fun setHamburgerState(showHamburger: Boolean) {
@@ -176,43 +210,6 @@ class SimpleActionBarDrawerToggle(
         if (hamburgerAnimator != null) {
             hamburgerAnimator!!.cancel()
         }
-    }
-
-    override fun onDrawerClosed(view: View) {
-        if (isInvalidateOptionsMenuSupported) {
-            activity.invalidateOptionsMenu()
-        }
-    }
-
-    /**
-     * Call it at [android.app.Activity.onPostCreate].
-     */
-    override fun syncState() {
-        cancelAnimation()
-        super.syncState()
-    }
-
-    override fun onDrawerOpened(drawerView: View) {
-        UiUtils.OfViews.hideSoftInput(activity)
-        if (isInvalidateOptionsMenuSupported) {
-            activity.invalidateOptionsMenu()
-        }
-    }
-
-    /**
-     * Set turn on/off invocation of supportInvalidateOptionsMenu
-     *
-     * @param isInvalidateOptionsMenuSupported flag for turning on/off invocation.
-     */
-    fun setInvalidateOptionsMenuSupported(isInvalidateOptionsMenuSupported: Boolean) {
-        this.isInvalidateOptionsMenuSupported = isInvalidateOptionsMenuSupported
-    }
-
-    override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
-        if (slideOffset >= this.slideOffset && slideOffset <= this.slidePosition || slideOffset <= this.slideOffset && slideOffset >= this.slidePosition) {
-            this.slideOffset = slideOffset
-        }
-        super.onDrawerSlide(drawerView, this.slideOffset)
     }
 
 }

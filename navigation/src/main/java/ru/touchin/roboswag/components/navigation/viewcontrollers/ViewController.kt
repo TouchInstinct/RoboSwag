@@ -66,14 +66,11 @@ open class ViewController<TActivity : FragmentActivity, TState : Parcelable>(
 ) : LifecycleOwner {
 
     val activity: TActivity = creationContext.activity as TActivity
-
     val fragment: ViewControllerFragment<out TActivity, out TState> = creationContext.fragment as ViewControllerFragment<out TActivity, out TState>
-
     val state = fragment.state
+    val view: View = creationContext.inflater.inflate(layoutRes, creationContext.container, false)
 
     private val lifecycleRegistry = LifecycleRegistry(this)
-
-    val view: View = creationContext.inflater.inflate(layoutRes, creationContext.container, false)
 
     override fun getLifecycle(): Lifecycle = lifecycleRegistry
 

@@ -67,6 +67,17 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
             ViewControllerFragment.acceptableUiCalculationTime = acceptableUiCalculationTime
         }
 
+        /**
+         * Creates [Bundle] which will store state.
+         *
+         * @param state State to use into ViewController.
+         * @return Returns bundle with state inside.
+         */
+        fun args(viewControllerClass: Class<out ViewController<*, *>>, state: Parcelable?): Bundle = Bundle().apply {
+            putSerializable(VIEW_CONTROLLER_CLASS_EXTRA, viewControllerClass)
+            putParcelable(VIEW_CONTROLLER_STATE_EXTRA, state)
+        }
+
         private fun <T : Parcelable> reserialize(parcelable: T): T {
             var parcel = Parcel.obtain()
             parcel.writeParcelable(parcelable, 0)
@@ -79,27 +90,16 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
             parcel.recycle()
             return result
         }
-
-        /**
-         * Creates [Bundle] which will store state.
-         *
-         * @param state State to use into ViewController.
-         * @return Returns bundle with state inside.
-         */
-        fun args(viewControllerClass: Class<out ViewController<*, *>>, state: Parcelable?): Bundle = Bundle().apply {
-            putSerializable(VIEW_CONTROLLER_CLASS_EXTRA, viewControllerClass)
-            putParcelable(VIEW_CONTROLLER_STATE_EXTRA, state)
-        }
     }
+
+    lateinit var state: TState
+        private set
 
     private var viewController: ViewController<out TActivity, out TState>? = null
     private var pendingActivityResult: ActivityResult? = null
     private var appeared: Boolean = false
     private val viewControllerClass: Class<ViewController<TActivity, TState>> = arguments?.getSerializable(VIEW_CONTROLLER_CLASS_EXTRA)
             as? Class<ViewController<TActivity, TState>> ?: throw ShouldNotHappenException("View controller class must be not-null")
-
-    lateinit var state: TState
-        private set
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -286,7 +286,7 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
             return when (constructor.parameterTypes.size) {
                 2 -> constructor.newInstance(creationContext, savedInstanceState) as ViewController<out TActivity, out TState>
                 3 -> constructor.newInstance(this, creationContext, savedInstanceState) as ViewController<out TActivity, out TState>
-                else -> throw ShouldNotHappenException("Wrong constructor parameters count: " + constructor.parameterTypes.size)
+                else -> throw ShouldNotHappenException("Wrong constructor parameters count: ${constructor.parameterTypes.size}")
             }
         } catch (exception: Exception) {
             throw ShouldNotHappenException(exception)
@@ -305,7 +305,7 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
         }
     }
 
-    override fun toString(): String = super.toString() + " ViewController: " + viewControllerClass
+    override fun toString(): String = "${super.toString()} ViewController: $viewControllerClass"
 
     private data class ActivityResult(val requestCode: Int, val resultCode: Int, val data: Intent?)
 
