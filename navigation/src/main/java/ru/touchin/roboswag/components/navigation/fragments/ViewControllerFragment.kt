@@ -111,7 +111,7 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
                 savedInstanceState.getParcelable(VIEW_CONTROLLER_STATE_EXTRA) ?: throw ShouldNotHappenException("State is required and null")
             }
             arguments != null -> {
-                arguments!!.getParcelable(VIEW_CONTROLLER_STATE_EXTRA) ?: throw ShouldNotHappenException("State is required and null")
+                arguments?.getParcelable(VIEW_CONTROLLER_STATE_EXTRA) ?: throw ShouldNotHappenException("State is required and null")
             }
             else -> throw ShouldNotHappenException("State is required and null")
         }
@@ -126,12 +126,13 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View {
-        viewController = createViewController(
+        val newViewController = createViewController(
                 ViewController.CreationContext(requireActivity(), this, inflater, container),
                 savedInstanceState
         )
-        viewController!!.onCreate()
-        return viewController!!.view
+        viewController = newViewController
+        newViewController.onCreate()
+        return newViewController.view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -148,9 +149,7 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        if (viewController != null) {
-            viewController!!.onViewStateRestored(savedInstanceState)
-        }
+        viewController?.onViewStateRestored(savedInstanceState)
     }
 
     @SuppressLint("RestrictedApi")
@@ -159,9 +158,7 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
         if (!appeared && isMenuVisible) {
             onAppear()
         }
-        if (viewController != null) {
-            viewController!!.onStart()
-        }
+        viewController?.onStart()
     }
 
     /**
@@ -171,30 +168,22 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
     @CallSuper
     protected fun onAppear() {
         appeared = true
-        if (viewController != null) {
-            viewController!!.onAppear()
-        }
+        viewController?.onAppear()
     }
 
     override fun onResume() {
         super.onResume()
-        if (viewController != null) {
-            viewController!!.onResume()
-        }
+        viewController?.onResume()
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
-        if (viewController != null) {
-            viewController!!.onLowMemory()
-        }
+        viewController?.onLowMemory()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        if (viewController != null) {
-            viewController!!.onCreateOptionsMenu(menu, inflater)
-        }
+        viewController?.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = viewController != null
@@ -203,16 +192,12 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
 
     override fun onPause() {
         super.onPause()
-        if (viewController != null) {
-            viewController!!.onPause()
-        }
+        viewController?.onPause()
     }
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         super.onSaveInstanceState(savedInstanceState)
-        if (viewController != null) {
-            viewController!!.onSaveInstanceState(savedInstanceState)
-        }
+        viewController?.onSaveInstanceState(savedInstanceState)
         savedInstanceState.putParcelable(VIEW_CONTROLLER_STATE_EXTRA, state)
     }
 
@@ -223,18 +208,14 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
     @CallSuper
     protected fun onDisappear() {
         appeared = false
-        if (viewController != null) {
-            viewController!!.onDisappear()
-        }
+        viewController?.onDisappear()
     }
 
     override fun onStop() {
         if (appeared) {
             onDisappear()
         }
-        if (viewController != null) {
-            viewController!!.onStop()
-        }
+        viewController?.onStop()
         super.onStop()
     }
 
@@ -247,18 +228,15 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        if (viewController != null) {
-            viewController!!.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        }
+        viewController?.onRequestPermissionsResult(requestCode, permissions, grantResults)
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (viewController != null) {
-            viewController!!.onActivityResult(requestCode, resultCode, data)
-        } else {
+        viewController?.onActivityResult(requestCode, resultCode, data) ?: let {
             pendingActivityResult = ActivityResult(requestCode, resultCode, data)
         }
+
     }
 
     override fun setMenuVisibility(menuVisible: Boolean) {

@@ -20,12 +20,11 @@
 package ru.touchin.roboswag.components.navigation
 
 import android.animation.ValueAnimator
-import androidx.fragment.app.FragmentManager
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import android.view.View
-
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.FragmentManager
 import ru.touchin.roboswag.components.navigation.activities.BaseActivity
 import ru.touchin.roboswag.components.navigation.activities.OnBackPressedListener
 import ru.touchin.roboswag.components.utils.UiUtils
@@ -191,11 +190,7 @@ class SimpleActionBarDrawerToggle(
     private fun setHamburgerState(showHamburger: Boolean) {
         if (!firstAnimation) {
             cancelAnimation()
-            hamburgerAnimator = if (showHamburger) {
-                ValueAnimator.ofFloat(slideOffset, 0f)
-            } else {
-                ValueAnimator.ofFloat(slideOffset, 1f)
-            }
+            hamburgerAnimator = ValueAnimator.ofFloat(slideOffset, if (showHamburger) 0f else 1f)
             hamburgerAnimator!!.addUpdateListener { animation -> onDrawerSlide(drawerLayout, animation.animatedValue as Float) }
             hamburgerAnimator!!.start()
         } else {
@@ -207,9 +202,7 @@ class SimpleActionBarDrawerToggle(
     }
 
     private fun cancelAnimation() {
-        if (hamburgerAnimator != null) {
-            hamburgerAnimator!!.cancel()
-        }
+        hamburgerAnimator?.cancel()
     }
 
 }
