@@ -58,14 +58,13 @@ open class FragmentNavigation(
      *
      * @return True if last fragment on stack has TOP_FRAGMENT_TAG_MARK.
      */
-    fun isCurrentFragmentTop(): Boolean {
-        if (fragmentManager.backStackEntryCount == 0) {
-            return true
-        }
-        val topFragmentTag = fragmentManager
+    fun isCurrentFragmentTop(): Boolean = if (fragmentManager.backStackEntryCount == 0) {
+        true
+    } else {
+        fragmentManager
                 .getBackStackEntryAt(fragmentManager.backStackEntryCount - 1)
                 .name
-        return topFragmentTag != null && topFragmentTag.contains(TOP_FRAGMENT_TAG_MARK)
+                ?.contains(TOP_FRAGMENT_TAG_MARK) ?: false
     }
 
     /**
