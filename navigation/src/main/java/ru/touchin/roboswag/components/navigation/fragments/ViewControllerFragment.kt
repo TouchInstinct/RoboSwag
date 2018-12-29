@@ -40,7 +40,7 @@ import androidx.lifecycle.Lifecycle
 import ru.touchin.roboswag.components.navigation.BuildConfig
 import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewController
 import ru.touchin.roboswag.core.log.LcGroup
-import ru.touchin.roboswag.core.utils.ShouldNotHappenException
+import kotlin.IllegalArgumentException
 
 /**
  * Created by Gavriil Sitnikov on 21/10/2015.
@@ -86,7 +86,7 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
             parcel = Parcel.obtain()
             parcel.unmarshall(serializableBytes, 0, serializableBytes.size)
             parcel.setDataPosition(0)
-            val result = parcel.readParcelable<T>(Thread.currentThread().contextClassLoader) ?: throw ShouldNotHappenException("It must not be null")
+            val result = parcel.readParcelable<T>(Thread.currentThread().contextClassLoader) ?: throw IllegalStateException("It must not be null")
             parcel.recycle()
             return result
         }
@@ -99,7 +99,7 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
     private var pendingActivityResult: ActivityResult? = null
     private var appeared: Boolean = false
     private val viewControllerClass: Class<ViewController<TActivity, TState>> = arguments?.getSerializable(VIEW_CONTROLLER_CLASS_EXTRA)
-            as? Class<ViewController<TActivity, TState>> ?: throw ShouldNotHappenException("View controller class must be not-null")
+            as? Class<ViewController<TActivity, TState>> ?: throw IllegalArgumentException("View controller class must be not-null")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,12 +108,12 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
 
         state = when {
             savedInstanceState != null -> {
-                savedInstanceState.getParcelable(VIEW_CONTROLLER_STATE_EXTRA) ?: throw ShouldNotHappenException("State is required and null")
+                savedInstanceState.getParcelable(VIEW_CONTROLLER_STATE_EXTRA) ?: throw IllegalArgumentException("State is required and null")
             }
             arguments != null -> {
-                arguments?.getParcelable(VIEW_CONTROLLER_STATE_EXTRA) ?: throw ShouldNotHappenException("State is required and null")
+                arguments?.getParcelable(VIEW_CONTROLLER_STATE_EXTRA) ?: throw IllegalArgumentException("State is required and null")
             }
-            else -> throw ShouldNotHappenException("State is required and null")
+            else -> throw IllegalStateException("State is required and null")
         }
 
         if (BuildConfig.DEBUG) {
@@ -257,17 +257,17 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
             savedInstanceState: Bundle?
     ): ViewController<out TActivity, out TState> {
         if (viewControllerClass.constructors.size != 1) {
-            throw ShouldNotHappenException("There should be single constructor for $viewControllerClass")
+            throw IllegalStateException("There should be single constructor for $viewControllerClass")
         }
         val constructor = viewControllerClass.constructors[0]
         try {
             return when (constructor.parameterTypes.size) {
                 2 -> constructor.newInstance(creationContext, savedInstanceState) as ViewController<out TActivity, out TState>
                 3 -> constructor.newInstance(this, creationContext, savedInstanceState) as ViewController<out TActivity, out TState>
-                else -> throw ShouldNotHappenException("Wrong constructor parameters count: ${constructor.parameterTypes.size}")
+                else -> throw IllegalArgumentException("Wrong constructor parameters count: ${constructor.parameterTypes.size}")
             }
         } catch (exception: Exception) {
-            throw ShouldNotHappenException(exception)
+            throw IllegalStateException(exception)
         } finally {
             val creationTime = if (BuildConfig.DEBUG) SystemClock.elapsedRealtime() else 0
             checkCreationTime(creationTime)
