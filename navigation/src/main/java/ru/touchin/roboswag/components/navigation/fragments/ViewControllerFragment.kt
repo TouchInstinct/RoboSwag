@@ -258,15 +258,12 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
         val constructor = viewControllerClass.constructors[0]
         try {
             return when (constructor.parameterTypes.size) {
-                2 -> constructor.newInstance(creationContext, savedInstanceState) as ViewController<out TActivity, out TState>
-                3 -> constructor.newInstance(this, creationContext, savedInstanceState) as ViewController<out TActivity, out TState>
+                2 -> constructor.newInstance(creationContext, savedInstanceState)
+                3 -> constructor.newInstance(this, creationContext, savedInstanceState)
                 else -> throw IllegalArgumentException("Wrong constructor parameters count: ${constructor.parameterTypes.size}")
-            }
-        } catch (exception: Exception) {
-            throw IllegalStateException(exception)
+            } as ViewController<out TActivity, out TState>
         } finally {
-            val creationTime = if (BuildConfig.DEBUG) SystemClock.elapsedRealtime() else 0
-            checkCreationTime(creationTime)
+            checkCreationTime(if (BuildConfig.DEBUG) SystemClock.elapsedRealtime() else 0)
         }
     }
 
