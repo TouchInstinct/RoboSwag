@@ -26,6 +26,7 @@ task clean(type: Delete) {
 }
 
 ext {
+    ext.buildScriptsDir = "$rootDir/BuildScripts"
     versions = [
             compileSdk : 28,
             appcompat  : '1.0.2',
