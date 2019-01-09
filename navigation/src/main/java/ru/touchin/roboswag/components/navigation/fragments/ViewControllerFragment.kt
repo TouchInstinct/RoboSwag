@@ -80,10 +80,13 @@ open class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcela
 
     lateinit var state: TState private set
 
+    lateinit var viewControllerClass: Class<ViewController<TActivity, TState>> private set
+
     private var viewController: ViewController<out TActivity, out TState>? = null
+
     private var pendingActivityResult: ActivityResult? = null
+
     private var appeared: Boolean = false
-    private lateinit var viewControllerClass: Class<ViewController<TActivity, TState>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
