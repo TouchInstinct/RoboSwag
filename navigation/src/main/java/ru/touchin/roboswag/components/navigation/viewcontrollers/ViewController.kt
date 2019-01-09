@@ -165,7 +165,7 @@ open class ViewController<TActivity : FragmentActivity, TState : Parcelable>(
      * Happens at [ViewControllerFragment.onActivityCreated].
      */
     @CallSuper
-    fun onCreate() {
+    open fun onCreate() {
         LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(this))
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
     }
@@ -226,7 +226,7 @@ open class ViewController<TActivity : FragmentActivity, TState : Parcelable>(
      * Called when fragment is moved in started state and it's [.getFragment] sets to true.
      * Usually it is indicating that user can't see fragment on screen and useful to track analytics events.
      */
-    fun onAppear() {
+    open fun onAppear() {
         LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(this))
     }
 
@@ -245,14 +245,14 @@ open class ViewController<TActivity : FragmentActivity, TState : Parcelable>(
      * Happens at [ViewControllerFragment.onLowMemory].
      */
     @CallSuper
-    fun onLowMemory() = Unit
+    open fun onLowMemory() = Unit
 
     /**
      * Calls when [ViewController] have paused.
      * Happens at [ViewControllerFragment.onPause].
      */
     @CallSuper
-    fun onPause() {
+    open fun onPause() {
         LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(this))
         lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     }
