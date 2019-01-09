@@ -98,13 +98,15 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
     private var viewController: ViewController<out TActivity, out TState>? = null
     private var pendingActivityResult: ActivityResult? = null
     private var appeared: Boolean = false
-    private val viewControllerClass: Class<ViewController<TActivity, TState>> = arguments?.getSerializable(VIEW_CONTROLLER_CLASS_EXTRA)
-            as? Class<ViewController<TActivity, TState>> ?: throw IllegalArgumentException("View controller class must be not-null")
+    private lateinit var viewControllerClass: Class<ViewController<TActivity, TState>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setHasOptionsMenu(true)
+
+        viewControllerClass = arguments?.getSerializable(VIEW_CONTROLLER_CLASS_EXTRA) as? Class<ViewController<TActivity, TState>>
+                ?: throw IllegalArgumentException("View controller class must be not-null")
 
         state = savedInstanceState?.getParcelable<TState>(VIEW_CONTROLLER_STATE_EXTRA)
                 ?: arguments?.getParcelable(VIEW_CONTROLLER_STATE_EXTRA)
