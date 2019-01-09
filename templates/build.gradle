@@ -19,11 +19,11 @@ dependencies {
     api project(":api-logansquare")
     api project(":navigation")
 
-    api 'androidx.multidex:multidex:2.0.0'
+    api 'androidx.multidex:multidex:2.0.1'
 
     api 'net.danlew:android.joda:2.9.9.4'
 
-    implementation "androidx.appcompat:appcompat:$versions.androidx"
+    implementation "androidx.appcompat:appcompat:$versions.appcompat"
 
     implementation("com.crashlytics.sdk.android:crashlytics:$versions.crashlytics@aar") {
         transitive = true

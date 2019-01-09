@@ -58,16 +58,18 @@ import ru.touchin.roboswag.core.log.LcGroup
  * @param <TActivity> Type of activity where such [ViewController] could be;
  * @param <TState>    Type of state;
 </TState></TActivity> */
-@Suppress("PMD.UnusedFormalParameter", "UNCHECKED_CAST")
+@Suppress("detekt.TooManyFunctions", "UNCHECKED_CAST")
 open class ViewController<TActivity : FragmentActivity, TState : Parcelable>(
         creationContext: CreationContext,
-        savedInstanceState: Bundle?,
         @LayoutRes layoutRes: Int
 ) : LifecycleOwner {
 
     val activity: TActivity = creationContext.activity as TActivity
+
     val fragment: ViewControllerFragment<out TActivity, out TState> = creationContext.fragment as ViewControllerFragment<out TActivity, out TState>
+
     val state = fragment.state
+
     val view: View = creationContext.inflater.inflate(layoutRes, creationContext.container, false)
 
     private val lifecycleRegistry = LifecycleRegistry(this)
@@ -185,7 +187,7 @@ open class ViewController<TActivity : FragmentActivity, TState : Parcelable>(
      * [FragmentTransaction.setCustomAnimations], or
      * 0 if neither was called. The value will depend on the current operation.
      */
-    fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? = null
+    open fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? = null
 
     /**
      * Called when a fragment loads an animator. This will be called when
@@ -203,13 +205,13 @@ open class ViewController<TActivity : FragmentActivity, TState : Parcelable>(
      * [FragmentTransaction.setCustomAnimations], or
      * 0 if neither was called. The value will depend on the current operation.
      */
-    fun onCreateAnimator(transit: Int, enter: Boolean, nextAnim: Int): Animator? = null
+    open fun onCreateAnimator(transit: Int, enter: Boolean, nextAnim: Int): Animator? = null
 
     /**
      * Calls when [ViewController] saved state has been restored into the view hierarchy.
      * Happens at [ViewControllerFragment.onViewStateRestored].
      */
-    fun onViewStateRestored(savedInstanceState: Bundle?) = Unit
+    open fun onViewStateRestored(savedInstanceState: Bundle?) = Unit
 
     /**
      * Calls when [ViewController] have started.
@@ -263,7 +265,7 @@ open class ViewController<TActivity : FragmentActivity, TState : Parcelable>(
      * Try not to use such method for saving state but use [ViewControllerFragment.state] from [.getFragment].
      */
     @CallSuper
-    fun onSaveInstanceState(savedInstanceState: Bundle) {
+    open fun onSaveInstanceState(savedInstanceState: Bundle) {
         LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(this))
     }
 
@@ -271,7 +273,7 @@ open class ViewController<TActivity : FragmentActivity, TState : Parcelable>(
      * Called when fragment is moved in stopped state or it's [.getFragment] sets to false.
      * Usually it is indicating that user can't see fragment on screen and useful to track analytics events.
      */
-    fun onDisappear() {
+    open fun onDisappear() {
         LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(this))
     }
 
