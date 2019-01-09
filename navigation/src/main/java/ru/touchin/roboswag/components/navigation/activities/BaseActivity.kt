@@ -23,6 +23,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.collection.ArraySet
 import androidx.appcompat.app.AppCompatActivity
+import ru.touchin.roboswag.components.navigation.viewcontrollers.LifecycleLoggingObserver
 
 import ru.touchin.roboswag.core.log.Lc
 import ru.touchin.roboswag.core.log.LcGroup
@@ -35,9 +36,8 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private val onBackPressedListeners = ArraySet<OnBackPressedListener>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(this))
+    init {
+        lifecycle.addObserver(LifecycleLoggingObserver())
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -45,39 +45,9 @@ abstract class BaseActivity : AppCompatActivity() {
         LcGroup.UI_LIFECYCLE.i("${Lc.getCodePoint(this)} requestCode: $requestCode; resultCode: $resultCode")
     }
 
-    override fun onStart() {
-        super.onStart()
-        LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(this))
-    }
-
-    override fun onResume() {
-        super.onResume()
-        LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(this))
-    }
-
-    override fun onPause() {
-        LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(this))
-        super.onPause()
-    }
-
     override fun onSaveInstanceState(stateToSave: Bundle) {
         super.onSaveInstanceState(stateToSave)
         LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(this))
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
-        LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(this))
-    }
-
-    override fun onStop() {
-        LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(this))
-        super.onStop()
-    }
-
-    override fun onDestroy() {
-        LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(this))
-        super.onDestroy()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -85,15 +55,15 @@ abstract class BaseActivity : AppCompatActivity() {
         return true
     }
 
-    fun addOnBackPressedListener(onBackPressedListener: OnBackPressedListener) {
+    open fun addOnBackPressedListener(onBackPressedListener: OnBackPressedListener) {
         onBackPressedListeners.add(onBackPressedListener)
     }
 
-    fun removeOnBackPressedListener(onBackPressedListener: OnBackPressedListener) {
+    open fun removeOnBackPressedListener(onBackPressedListener: OnBackPressedListener) {
         onBackPressedListeners.remove(onBackPressedListener)
     }
 
-    fun removeAllOnBackPressedListeners() {
+    open fun removeAllOnBackPressedListeners() {
         onBackPressedListeners.clear()
     }
 
