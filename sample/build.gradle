@@ -14,9 +14,27 @@ android {
     }
 
     buildTypes {
-        release {
+        debug {
+            versionNameSuffix ".debug"
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            shrinkResources false
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
+        }
+    }
+
+    flavorDimensions "proguardSettings"
+
+    productFlavors {
+        noObfuscate {
+            dimension "proguardSettings"
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), "$buildScriptsDir/proguard/noObfuscate.pro"
+        }
+        obfuscate {
+            dimension "proguardSettings"
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), "$buildScriptsDir/proguard/obfuscate.pro"
         }
     }
 }
@@ -24,9 +42,7 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation "androidx.appcompat:appcompat:$versions.androidx"
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
+    implementation "androidx.appcompat:appcompat:$versions.appcompat"
 }
 
-ext.buildScriptsDir = "$rootDir/BuildScripts"
 apply from: "$buildScriptsDir/gradle/staticAnalysis.gradle"

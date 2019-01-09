@@ -25,7 +25,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
-import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -33,14 +32,11 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
-import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import ru.touchin.roboswag.components.navigation.BuildConfig
 import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewController
-import ru.touchin.roboswag.core.log.LcGroup
-import kotlin.IllegalArgumentException
 
 /**
  * Created by Gavriil Sitnikov on 21/10/2015.
@@ -49,23 +45,13 @@ import kotlin.IllegalArgumentException
  * @param <TState>    Type of object which is representing it's fragment state;
  * @param <TActivity> Type of [FragmentActivity] where fragment could be attached to.
 </TActivity></TState> */
-@Suppress("UNCHECKED_CAST")
-class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> : Fragment() {
+@Suppress("detekt.TooManyFunctions", "UNCHECKED_CAST")
+open class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> : Fragment() {
 
     companion object {
 
         private const val VIEW_CONTROLLER_CLASS_EXTRA = "VIEW_CONTROLLER_CLASS_EXTRA"
         private const val VIEW_CONTROLLER_STATE_EXTRA = "VIEW_CONTROLLER_STATE_EXTRA"
-
-        private var acceptableUiCalculationTime: Long = 100
-
-        /**
-         * Sets acceptable UI calculation time so there will be warnings in logs if ViewController's inflate/layout actions will take more than that time.
-         * It's 100ms by default.
-         */
-        fun setAcceptableUiCalculationTime(acceptableUiCalculationTime: Long) {
-            ViewControllerFragment.acceptableUiCalculationTime = acceptableUiCalculationTime
-        }
 
         /**
          * Creates [Bundle] which will store state.
@@ -92,8 +78,7 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
         }
     }
 
-    lateinit var state: TState
-        private set
+    lateinit var state: TState private set
 
     private var viewController: ViewController<out TActivity, out TState>? = null
     private var pendingActivityResult: ActivityResult? = null
@@ -133,15 +118,18 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        if (viewController != null && pendingActivityResult != null) {
-            viewController!!.onActivityResult(pendingActivityResult!!.requestCode, pendingActivityResult!!.resultCode, pendingActivityResult!!.data)
+        val activityResult = pendingActivityResult
+        if (viewController != null && activityResult != null) {
+            viewController?.onActivityResult(activityResult.requestCode, activityResult.resultCode, activityResult.data)
             pendingActivityResult = null
         }
     }
 
-    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? = viewController?.onCreateAnimation(transit, enter, nextAnim)
+    override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? =
+            viewController?.onCreateAnimation(transit, enter, nextAnim)
 
-    override fun onCreateAnimator(transit: Int, enter: Boolean, nextAnim: Int): Animator? = viewController?.onCreateAnimator(transit, enter, nextAnim)
+    override fun onCreateAnimator(transit: Int, enter: Boolean, nextAnim: Int): Animator? =
+            viewController?.onCreateAnimator(transit, enter, nextAnim)
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
@@ -161,8 +149,7 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
      * Called when fragment is moved in started state and it's [.isMenuVisible] sets to true.
      * Usually it is indicating that user can't see fragment on screen and useful to track analytics events.
      */
-    @CallSuper
-    protected fun onAppear() {
+    private fun onAppear() {
         appeared = true
         viewController?.onAppear()
     }
@@ -178,13 +165,11 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
         viewController?.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = viewController != null
-            && viewController!!.onOptionsItemSelected(item)
-            || super.onOptionsItemSelected(item)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+            viewController?.onOptionsItemSelected(item) == true || super.onOptionsItemSelected(item)
 
     override fun onPause() {
         super.onPause()
@@ -201,8 +186,7 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
      * Called when fragment is moved in stopped state or it's [.isMenuVisible] sets to false.
      * Usually it is indicating that user can't see fragment on screen and useful to track analytics events.
      */
-    @CallSuper
-    protected fun onDisappear() {
+    private fun onDisappear() {
         appeared = false
         viewController?.onDisappear()
     }
@@ -216,10 +200,8 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
     }
 
     override fun onDestroyView() {
-        if (viewController != null) {
-            viewController!!.onDestroy()
-            viewController = null
-        }
+        viewController?.onDestroy()
+        viewController = null
         super.onDestroyView()
     }
 
@@ -256,24 +238,11 @@ class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcelable> 
             throw IllegalStateException("There should be single constructor for $viewControllerClass")
         }
         val constructor = viewControllerClass.constructors[0]
-        try {
-            return when (constructor.parameterTypes.size) {
-                2 -> constructor.newInstance(creationContext, savedInstanceState)
-                3 -> constructor.newInstance(this, creationContext, savedInstanceState)
-                else -> throw IllegalArgumentException("Wrong constructor parameters count: ${constructor.parameterTypes.size}")
-            } as ViewController<out TActivity, out TState>
-        } finally {
-            checkCreationTime(if (BuildConfig.DEBUG) SystemClock.elapsedRealtime() else 0)
-        }
-    }
-
-    private fun checkCreationTime(creationTime: Long) {
-        if (BuildConfig.DEBUG) {
-            val creationPeriod = SystemClock.elapsedRealtime() - creationTime
-            if (creationPeriod > acceptableUiCalculationTime) {
-                LcGroup.UI_METRICS.w("Creation of %s took too much: %dms", viewControllerClass, creationPeriod)
-            }
-        }
+        return when (constructor.parameterTypes.size) {
+            1 -> constructor.newInstance(creationContext)
+            2 -> constructor.newInstance(creationContext, savedInstanceState)
+            else -> throw IllegalArgumentException("Wrong constructor parameters count: ${constructor.parameterTypes.size}")
+        } as ViewController<out TActivity, out TState>
     }
 
     override fun toString(): String = "${super.toString()} ViewController: $viewControllerClass"
