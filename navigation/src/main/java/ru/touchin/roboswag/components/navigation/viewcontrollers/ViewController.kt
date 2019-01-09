@@ -32,7 +32,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
-import androidx.annotation.CallSuper
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
@@ -45,11 +44,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
 import ru.touchin.roboswag.components.navigation.fragments.ViewControllerFragment
 import ru.touchin.roboswag.components.utils.UiUtils
-import ru.touchin.roboswag.core.log.Lc
-import ru.touchin.roboswag.core.log.LcGroup
 
 /**
  * Created by Gavriil Sitnikov on 21/10/2015.
@@ -72,9 +68,11 @@ open class ViewController<TActivity : FragmentActivity, TState : Parcelable>(
 
     val view: View = creationContext.inflater.inflate(layoutRes, creationContext.container, false)
 
-    private val lifecycleRegistry = LifecycleRegistry(this)
+    init {
+        lifecycle.addObserver(LifecycleLoggingObserver())
+    }
 
-    override fun getLifecycle(): Lifecycle = lifecycleRegistry
+    override fun getLifecycle(): Lifecycle = fragment.viewLifecycleOwner.lifecycle
 
     /**
      * Look for a child view with the given id.  If this view has the given id, return this view.
@@ -166,11 +164,7 @@ open class ViewController<TActivity : FragmentActivity, TState : Parcelable>(
      * Calls right after construction of [ViewController].
      * Happens at [ViewControllerFragment.onActivityCreated].
      */
-    @CallSuper
-    open fun onCreate() {
-        LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(this))
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    }
+    open fun onCreate() = Unit
 
     /**
      * Called when a fragment loads an animation. Note that if
@@ -217,10 +211,7 @@ open class ViewController<TActivity : FragmentActivity, TState : Parcelable>(
      * Calls when [ViewController] have started.
      * Happens at [ViewControllerFragment.onStart].
      */
-    @CallSuper
     open fun onStart() {
-        LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(this))
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START)
         UiUtils.OfViews.hideSoftInput(view)
     }
 
@@ -228,74 +219,50 @@ open class ViewController<TActivity : FragmentActivity, TState : Parcelable>(
      * Called when fragment is moved in started state and it's [.getFragment] sets to true.
      * Usually it is indicating that user can't see fragment on screen and useful to track analytics events.
      */
-    open fun onAppear() {
-        LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(this))
-    }
+    open fun onAppear() = Unit
 
     /**
      * Calls when [ViewController] have resumed.
      * Happens at [ViewControllerFragment.onResume].
      */
-    @CallSuper
-    open fun onResume() {
-        LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(this))
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    }
+    open fun onResume() = Unit
 
     /**
      * Calls when [ViewController] have goes near out of memory state.
      * Happens at [ViewControllerFragment.onLowMemory].
      */
-    @CallSuper
     open fun onLowMemory() = Unit
 
     /**
      * Calls when [ViewController] have paused.
      * Happens at [ViewControllerFragment.onPause].
      */
-    @CallSuper
-    open fun onPause() {
-        LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(this))
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-    }
+    open fun onPause() = Unit
 
     /**
      * Calls when [ViewController] should save it's state.
      * Happens at [ViewControllerFragment.onSaveInstanceState].
      * Try not to use such method for saving state but use [ViewControllerFragment.state] from [.getFragment].
      */
-    @CallSuper
-    open fun onSaveInstanceState(savedInstanceState: Bundle) {
-        LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(this))
-    }
+    open fun onSaveInstanceState(savedInstanceState: Bundle) = Unit
 
     /**
      * Called when fragment is moved in stopped state or it's [.getFragment] sets to false.
      * Usually it is indicating that user can't see fragment on screen and useful to track analytics events.
      */
-    open fun onDisappear() {
-        LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(this))
-    }
+    open fun onDisappear() = Unit
 
     /**
      * Calls when [ViewController] have stopped.
      * Happens at [ViewControllerFragment.onStop].
      */
-    @CallSuper
-    open fun onStop() {
-        LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(this))
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
-    }
+    open fun onStop() = Unit
 
     /**
      * Calls when [ViewController] have destroyed.
      * Happens usually at [ViewControllerFragment.onDestroyView]. In some cases at [ViewControllerFragment.onDestroy].
      */
-    @CallSuper
-    open fun onDestroy() {
-        LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(this))
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    }
+    open fun onDestroy() = Unit
 
     /**
      * Calls when [ViewController] have requested permissions results.
