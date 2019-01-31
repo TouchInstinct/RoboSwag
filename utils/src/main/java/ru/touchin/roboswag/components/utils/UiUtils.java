@@ -25,8 +25,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.URLSpan;
+import android.text.util.Linkify;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
@@ -37,6 +41,9 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 
 /**
  * Created by Gavriil Sitnikov on 13/11/2015.
@@ -67,6 +74,27 @@ public final class UiUtils {
     @NonNull
     public static View inflate(@LayoutRes final int layoutId, @NonNull final ViewGroup parent) {
         return LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false);
+    }
+
+    /**
+     * Convert text with 'href' tags and raw links to spanned text with clickable URLSpan.
+     */
+    @NonNull
+    public static Spanned getSpannedTextWithUrls(@NonNull final String text) {
+        final Spannable spannableText = new SpannableString(Html.fromHtml(text));
+        // Linkify removes all previous URLSpan's, we need to save all created spans for reapply after Linkify
+        final URLSpan[] spans = spannableText.getSpans(0, text.length(), URLSpan.class);
+        final int[] starts = new int[spans.length];
+        final int[] ends = new int[spans.length];
+        for (int index = 0; index < spans.length; index++) {
+            starts[index] = spannableText.getSpanStart(spans[index]);
+            ends[index] = spannableText.getSpanEnd(spans[index]);
+        }
+        Linkify.addLinks(spannableText, Linkify.WEB_URLS);
+        for (int index = 0; index < spans.length; index++) {
+            spannableText.setSpan(spans[index], starts[index], ends[index], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        return spannableText;
     }
 
     private UiUtils() {
