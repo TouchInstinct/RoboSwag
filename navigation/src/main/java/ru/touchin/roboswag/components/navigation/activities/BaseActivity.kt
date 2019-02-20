@@ -21,10 +21,9 @@ package ru.touchin.roboswag.components.navigation.activities
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.collection.ArraySet
 import androidx.appcompat.app.AppCompatActivity
+import androidx.collection.ArraySet
 import ru.touchin.roboswag.components.navigation.viewcontrollers.LifecycleLoggingObserver
-
 import ru.touchin.roboswag.core.log.Lc
 import ru.touchin.roboswag.core.log.LcGroup
 
@@ -68,7 +67,7 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        onBackPressedListeners.forEach { onBackPressedListener ->
+        onBackPressedListeners.reversed().forEach { onBackPressedListener ->
             if (onBackPressedListener.onBackPressed()) {
                 return
             }
