@@ -21,10 +21,8 @@ package ru.touchin.roboswag.components.navigation.activities
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.collection.ArraySet
 import androidx.appcompat.app.AppCompatActivity
 import ru.touchin.roboswag.components.navigation.viewcontrollers.LifecycleLoggingObserver
-
 import ru.touchin.roboswag.core.log.Lc
 import ru.touchin.roboswag.core.log.LcGroup
 
@@ -34,7 +32,7 @@ import ru.touchin.roboswag.core.log.LcGroup
  */
 abstract class BaseActivity : AppCompatActivity() {
 
-    private val onBackPressedListeners = ArraySet<OnBackPressedListener>()
+    private val onBackPressedListeners = mutableListOf<OnBackPressedListener>()
 
     init {
         lifecycle.addObserver(LifecycleLoggingObserver())
@@ -57,6 +55,10 @@ abstract class BaseActivity : AppCompatActivity() {
 
     open fun addOnBackPressedListener(onBackPressedListener: OnBackPressedListener) {
         onBackPressedListeners.add(onBackPressedListener)
+    }
+
+    open fun addOnBackPressedListenerAtBegin(onBackPressedListener: OnBackPressedListener) {
+        onBackPressedListeners.add(0, onBackPressedListener)
     }
 
     open fun removeOnBackPressedListener(onBackPressedListener: OnBackPressedListener) {
