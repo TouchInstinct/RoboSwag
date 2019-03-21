@@ -161,6 +161,19 @@ open class ViewController<TActivity : FragmentActivity, TState : Parcelable>(
     open fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) = Unit
 
     /**
+     * Prepare the standard options menu to be displayed.  This is
+     * called right before the menu is shown, every time it is shown.
+     * You can use this method to efficiently enable/disable items or otherwise
+     * dynamically modify the contents.
+     *
+     * @param menu The options menu as last shown or first initialized by onCreateOptionsMenu().
+     *
+     * @see [Fragment.hasOptionsMenu]
+     * @see [onCreateOptionsMenu]
+     */
+    open fun onPrepareOptionsMenu(menu: Menu?) = Unit
+
+    /**
      * Calls right after construction of [ViewController].
      * Happens at [ViewControllerFragment.onActivityCreated].
      */
