@@ -171,6 +171,10 @@ open class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcela
         viewController?.onCreateOptionsMenu(menu, inflater)
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu?) {
+        viewController?.onPrepareOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean =
             viewController?.onOptionsItemSelected(item) == true || super.onOptionsItemSelected(item)
 
