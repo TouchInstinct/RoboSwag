@@ -15,5 +15,9 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+    implementation "androidx.appcompat:appcompat:$versions.appcompat"
+
+    implementation "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle"
+
     implementation "com.google.android.gms:play-services-location:$versions.location"
 }
