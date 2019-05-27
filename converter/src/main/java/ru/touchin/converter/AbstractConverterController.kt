@@ -8,9 +8,6 @@ import androidx.annotation.ColorInt
 import ru.touchin.defaults.DefaultTextWatcher
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
-import java.util.Locale
 
 /**
  * Abstract controller class to convert value from one input to other using modifier
@@ -154,22 +151,6 @@ abstract class AbstractConverterController(
             isEnabled = state == State.READY
             if (viewColors != null) setTextColor(if (state == State.READY) viewColors.active else viewColors.inactive)
         }
-    }
-
-    private val format = DecimalFormat("#,##0.00######", DecimalFormatSymbols(Locale.US).also { it.groupingSeparator = ' ' })
-
-    private fun BigDecimal.formatToStringWithoutGroupingSeparator(): String {
-        val groupingSeparator = format.decimalFormatSymbols.groupingSeparator.toString()
-        return format.format(this)
-                .replace(groupingSeparator, "")
-    }
-
-    private fun String.toBigDecimalOrZeroWithoutGrouping(): BigDecimal = this.toBigDecimalOrNullWithoutGrouping() ?: BigDecimal.ZERO
-
-    private fun String.toBigDecimalOrNullWithoutGrouping(): BigDecimal? = try {
-        BigDecimal(this.replace("\\s".toRegex(), ""))
-    } catch (_: NumberFormatException) {
-        null
     }
 
     data class ConverterViews(val amountBase: EditText, val amountTarget: EditText) {

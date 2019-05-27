@@ -1,6 +1,5 @@
 package ru.touchin.converter
 
-import android.view.View
 import android.widget.EditText
 import java.math.BigDecimal
 
@@ -34,18 +33,6 @@ class ConverterController(
 
     init {
         setCrossUpdateListenersToEditTexts()
-    }
-
-    fun showRateOrNotFoundHint(rate: BigDecimal?) {
-        if (rate != null && rate != BigDecimal.ZERO) {
-            setRate(rate)
-        }
-        showRateNotFound(rate == null || rate == BigDecimal.ZERO)
-    }
-
-    private fun showRateNotFound(show: Boolean) {
-        views.amountBase.visibility = if (show == true) View.GONE else View.VISIBLE
-        views.amountTarget.visibility = if (show == true) View.GONE else View.VISIBLE
     }
 
 }
