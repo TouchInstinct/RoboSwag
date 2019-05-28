@@ -22,7 +22,7 @@ abstract class AbstractConverterController(
 ) {
 
     companion object {
-        private const val BASE_CURRENCY_DEFAULT_VALUE = ""
+        private const val PLACEHOLDER_VALUE = ""
     }
 
     protected abstract val baseAmountChangedListener: TextWatcher
@@ -31,7 +31,7 @@ abstract class AbstractConverterController(
     protected var baseValue: BigDecimal = BigDecimal.ZERO
     protected var targetValue: BigDecimal = BigDecimal.ZERO
     protected var state: State = State.LOADING
-    private var valueScale = 8
+    private var scaleValue = 8
     /**
      * Set text to the corresponding input after each invocation of conversion in [baseAmountChangedListener] and [targetAmountChangedListener]
      */
@@ -56,7 +56,7 @@ abstract class AbstractConverterController(
      * @param [valueScale] maximum scale for calculation operations
      */
     fun setValueScale(valueScale: Int) {
-        this.valueScale = valueScale
+        this.scaleValue = valueScale
     }
 
     /**
@@ -99,7 +99,7 @@ abstract class AbstractConverterController(
                         .toBigDecimalOrZeroWithoutGrouping()
                 val newTargetValue = newBaseValue
                         .multiply(convertRate)
-                        .setScale(valueScale, roundingMode)
+                        .setScale(scaleValue, roundingMode)
                         .stripTrailingZeros()
                 if (state == State.READY && !views.amountTarget.isFocused && newBaseValue != baseValue) {
                     targetValue = newTargetValue
@@ -117,7 +117,7 @@ abstract class AbstractConverterController(
                 val newTargetValue = editable.toString()
                         .toBigDecimalOrZeroWithoutGrouping()
                 val newBaseValue = newTargetValue
-                        .divide(convertRate, valueScale, roundingMode)
+                        .divide(convertRate, scaleValue, roundingMode)
                         .stripTrailingZeros()
                 if (state == State.READY && views.amountTarget.isFocused && newTargetValue != targetValue) {
                     targetValue = newTargetValue
@@ -142,12 +142,12 @@ abstract class AbstractConverterController(
     @Suppress("ComplexMethod")
     private fun setupAmounts() {
         views.amountBase.apply {
-            setText(if (text.isBlank()) BASE_CURRENCY_DEFAULT_VALUE else text) // It's needed to trigger text update listener on each state change
+            setText(if (text.isBlank()) PLACEHOLDER_VALUE else text) // It's needed to trigger text update listener on each state change
             isEnabled = state == State.READY
             if (viewColors != null) setTextColor(if (state == State.READY) viewColors.active else viewColors.inactive)
         }
         views.amountTarget.apply {
-            if (state != State.READY && text.isBlank()) setText(BASE_CURRENCY_DEFAULT_VALUE)
+            if (state != State.READY && text.isBlank()) setText(PLACEHOLDER_VALUE)
             isEnabled = state == State.READY
             if (viewColors != null) setTextColor(if (state == State.READY) viewColors.active else viewColors.inactive)
         }

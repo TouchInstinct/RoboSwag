@@ -15,7 +15,7 @@ fun BigDecimal.formatToStringWithoutGroupingSeparator(): String {
 
 fun String.toBigDecimalOrZeroWithoutGrouping(): BigDecimal = this.toBigDecimalOrNullWithoutGrouping() ?: BigDecimal.ZERO
 
-fun String.toBigDecimalOrNullWithoutGrouping(): BigDecimal? = try {
+private fun String.toBigDecimalOrNullWithoutGrouping(): BigDecimal? = try {
     BigDecimal(this.replace("\\s".toRegex(), ""))
 } catch (_: NumberFormatException) {
     null
