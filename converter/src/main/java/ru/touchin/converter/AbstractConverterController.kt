@@ -142,12 +142,12 @@ abstract class AbstractConverterController(
     @Suppress("ComplexMethod")
     private fun setupAmounts() {
         views.amountBase.apply {
-            setText(if (text.isBlank()) PLACEHOLDER_VALUE else text) // It's needed to trigger text update listener on each state change
+            setText(if (getText().isBlank()) PLACEHOLDER_VALUE else getText()) // It's needed to trigger text update listener on each state change
             setEnabled(state == State.READY)
             if (viewColors != null) setTextColor(if (state == State.READY) viewColors.active else viewColors.inactive)
         }
         views.amountTarget.apply {
-            if (state != State.READY && text.isBlank()) setText(PLACEHOLDER_VALUE)
+            if (state != State.READY && getText().isBlank()) setText(PLACEHOLDER_VALUE)
             setEnabled(state == State.READY)
             if (viewColors != null) setTextColor(if (state == State.READY) viewColors.active else viewColors.inactive)
         }

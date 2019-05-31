@@ -6,10 +6,6 @@ import androidx.annotation.ColorInt
 
 abstract class Convertable {
 
-    var Convertable.text: CharSequence
-        inline get() = getText()
-        set(value) = setText(value)
-
     abstract fun setText(charSequence: CharSequence)
 
     abstract fun getText(): CharSequence
