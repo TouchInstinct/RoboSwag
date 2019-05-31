@@ -1,6 +1,6 @@
 package ru.touchin.converter
 
-import android.widget.EditText
+import ru.touchin.converter.wrap.Convertable
 import java.math.BigDecimal
 
 /**
@@ -12,8 +12,8 @@ import java.math.BigDecimal
  * @param viewColors colors to set at state change
  */
 class ConverterController(
-        viewBase: EditText,
-        viewTarget: EditText,
+        viewBase: Convertable,
+        viewTarget: Convertable,
         convertRate: BigDecimal?,
         onTextInputConvert: (baseValue: BigDecimal, targetValue: BigDecimal) -> Unit,
         viewColors: ViewColors? = null

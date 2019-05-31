@@ -3,8 +3,8 @@ package ru.touchin.converter
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.method.DigitsKeyListener
-import android.widget.EditText
 import androidx.annotation.ColorInt
+import ru.touchin.converter.wrap.Convertable
 import ru.touchin.defaults.DefaultTextWatcher
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -40,9 +40,9 @@ abstract class AbstractConverterController(
 
     abstract val views: ConverterViews
 
-    fun getBaseAmount() = views.amountBase.text.toString().toBigDecimalOrZeroWithoutGrouping()
+    fun getBaseAmount() = views.amountBase.getText().toString().toBigDecimalOrZeroWithoutGrouping()
 
-    fun getTargetAmount() = views.amountTarget.text.toString().toBigDecimalOrZeroWithoutGrouping()
+    fun getTargetAmount() = views.amountTarget.getText().toString().toBigDecimalOrZeroWithoutGrouping()
 
     fun setStateLoading() {
         setInputState(State.LOADING)
@@ -101,7 +101,7 @@ abstract class AbstractConverterController(
                         .multiply(convertRate)
                         .setScale(scaleValue, roundingMode)
                         .stripTrailingZeros()
-                if (state == State.READY && !views.amountTarget.isFocused && newBaseValue != baseValue) {
+                if (state == State.READY && !views.amountTarget.isFocused() && newBaseValue != baseValue) {
                     targetValue = newTargetValue
                     baseValue = newBaseValue
                     if (autoTextSet == true) views.amountTarget.setText(targetValue.formatToStringWithoutGroupingSeparator())
@@ -119,7 +119,7 @@ abstract class AbstractConverterController(
                 val newBaseValue = newTargetValue
                         .divide(convertRate, scaleValue, roundingMode)
                         .stripTrailingZeros()
-                if (state == State.READY && views.amountTarget.isFocused && newTargetValue != targetValue) {
+                if (state == State.READY && views.amountTarget.isFocused() && newTargetValue != targetValue) {
                     targetValue = newTargetValue
                     baseValue = newBaseValue
                     if (autoTextSet == true) views.amountBase.setText(baseValue.formatToStringWithoutGroupingSeparator())
@@ -143,20 +143,20 @@ abstract class AbstractConverterController(
     private fun setupAmounts() {
         views.amountBase.apply {
             setText(if (text.isBlank()) PLACEHOLDER_VALUE else text) // It's needed to trigger text update listener on each state change
-            isEnabled = state == State.READY
+            setEnabled(state == State.READY)
             if (viewColors != null) setTextColor(if (state == State.READY) viewColors.active else viewColors.inactive)
         }
         views.amountTarget.apply {
             if (state != State.READY && text.isBlank()) setText(PLACEHOLDER_VALUE)
-            isEnabled = state == State.READY
+            setEnabled(state == State.READY)
             if (viewColors != null) setTextColor(if (state == State.READY) viewColors.active else viewColors.inactive)
         }
     }
 
-    data class ConverterViews(val amountBase: EditText, val amountTarget: EditText) {
+    data class ConverterViews(val amountBase: Convertable, val amountTarget: Convertable) {
         init {
-            amountBase.keyListener = DigitsKeyListener.getInstance("0123456789.,")
-            amountTarget.keyListener = DigitsKeyListener.getInstance("0123456789.,")
+            amountBase.setKeyListener(DigitsKeyListener.getInstance("0123456789.,"))
+            amountTarget.setKeyListener(DigitsKeyListener.getInstance("0123456789.,"))
         }
     }
 
