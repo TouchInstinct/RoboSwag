@@ -31,12 +31,15 @@ abstract class AbstractConverterController(
     protected var baseValue: BigDecimal = BigDecimal.ZERO
     protected var targetValue: BigDecimal = BigDecimal.ZERO
     protected var state: State = State.LOADING
-    private var scaleValue = 8
+    /**
+     * maximum scale for calculation operations
+     */
+    var scaleValue = 8
     /**
      * Set text to the corresponding input after each invocation of conversion in [baseAmountChangedListener] and [targetAmountChangedListener]
      */
-    private var autoTextSet = true
-    private var roundingMode = RoundingMode.HALF_UP
+    var autoTextSet = true
+    var roundingMode = RoundingMode.HALF_UP
 
     abstract val views: ConverterViews
 
@@ -52,22 +55,14 @@ abstract class AbstractConverterController(
         setInputState(State.ERROR, exception.message)
     }
 
-    /**
-     * @param [valueScale] maximum scale for calculation operations
-     */
-    fun setValueScale(valueScale: Int) {
-        this.scaleValue = valueScale
+    fun addToBaseValue(value: BigDecimal) {
+        baseValue = baseValue.plus(value)
+        views.amountBase.setText(format(baseValue))
     }
 
-    /**
-     * @param [autoTextSet] text setting mode
-     */
-    fun setAutoTextSetMode(autoTextSet: Boolean) {
-        this.autoTextSet = autoTextSet
-    }
-
-    fun setRoundingMode(roundingMode: RoundingMode) {
-        this.roundingMode = roundingMode
+    fun addToTargetValue(value: BigDecimal) {
+        targetValue = targetValue.add(value)
+        views.amountTarget.setText(format(targetValue))
     }
 
     protected open fun onStateChange(errorMessage: String? = null) {
