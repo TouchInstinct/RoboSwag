@@ -4,22 +4,22 @@ import android.text.TextWatcher
 import android.text.method.KeyListener
 import androidx.annotation.ColorInt
 
-abstract class Convertable {
+interface Convertable {
 
-    abstract fun setText(charSequence: CharSequence)
+    fun setText(charSequence: CharSequence)
 
-    abstract fun getText(): CharSequence
+    fun getText(): CharSequence
 
-    abstract fun addTextChangedListener(watcher: TextWatcher)
+    fun addTextChangedListener(watcher: TextWatcher)
 
-    abstract fun setKeyListener(keyListener: KeyListener)
+    fun setKeyListener(keyListener: KeyListener)
 
-    abstract fun isEnabled(): Boolean
+    fun isEnabled(): Boolean
 
-    abstract fun setEnabled(enabled: Boolean)
+    fun setEnabled(enabled: Boolean)
 
-    abstract fun setTextColor(@ColorInt colorInt: Int)
+    fun setTextColor(@ColorInt colorInt: Int)
 
-    abstract fun isFocused(): Boolean
+    fun isFocused(): Boolean
 
 }
