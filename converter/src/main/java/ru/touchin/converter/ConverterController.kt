@@ -18,6 +18,10 @@ class ConverterController(
         onTextInputConvert: (baseValue: BigDecimal, targetValue: BigDecimal) -> Unit,
         viewColors: ViewColors? = null
 ) : AbstractConverterController(
+        ConverterViews(
+                amountBase = viewBase,
+                amountTarget = viewTarget
+        ),
         convertRate,
         viewColors,
         onTextInputConvert
@@ -25,11 +29,6 @@ class ConverterController(
 
     override val baseAmountChangedListener = BaseAmountChangedListener()
     override val targetAmountChangedListener = TargetAmountChangedListener()
-
-    override val views: ConverterViews = ConverterViews(
-            amountBase = viewBase,
-            amountTarget = viewTarget
-    )
 
     init {
         setCrossUpdateListenersToEditTexts()

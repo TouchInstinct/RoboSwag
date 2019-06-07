@@ -16,6 +16,7 @@ import java.math.RoundingMode
  * @param viewColors colors to set at state change
  */
 abstract class AbstractConverterController(
+        val views: ConverterViews,
         protected var convertRate: BigDecimal?,
         private val viewColors: ViewColors?,
         private val onTextInputConvert: (baseValue: BigDecimal, targetValue: BigDecimal) -> Unit
@@ -41,7 +42,9 @@ abstract class AbstractConverterController(
     var autoTextSet = true
     var roundingMode = RoundingMode.HALF_UP
 
-    abstract val views: ConverterViews
+    init {
+        setStateReadyIfCompletelyInitialized()
+    }
 
     fun getBaseAmount() = format(views.amountBase.getText())
 
@@ -72,7 +75,7 @@ abstract class AbstractConverterController(
     /**
      * @param rate factor for [baseValue] and [targetValue] calculations
      */
-    protected fun setRate(rate: BigDecimal) {
+    fun setRate(rate: BigDecimal) {
         convertRate = rate
         setStateReadyIfCompletelyInitialized()
     }
@@ -127,7 +130,7 @@ abstract class AbstractConverterController(
     private fun format(charSequenceToFormat: CharSequence): BigDecimal = charSequenceToFormat.toString()
             .toBigDecimalOrZeroWithoutGrouping()
 
-    private fun setStateReadyIfCompletelyInitialized() {
+    protected fun setStateReadyIfCompletelyInitialized() {
         if (convertRate != null) {
             setInputState(State.READY)
         }
