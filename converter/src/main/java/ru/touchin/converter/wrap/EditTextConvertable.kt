@@ -4,7 +4,7 @@ import android.text.TextWatcher
 import android.text.method.KeyListener
 import android.widget.EditText
 
-open class EditTextConvertable(val editText: EditText) : Convertable() {
+open class EditTextConvertable(val editText: EditText) : Convertable {
 
     override fun setText(charSequence: CharSequence) {
         editText.setText(charSequence)
