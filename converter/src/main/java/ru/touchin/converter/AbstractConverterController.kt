@@ -125,11 +125,6 @@ abstract class AbstractConverterController(
         }
     }
 
-    private fun format(valueToFormat: BigDecimal): String = valueToFormat.formatToStringWithoutGroupingSeparator()
-
-    private fun format(charSequenceToFormat: CharSequence): BigDecimal = charSequenceToFormat.toString()
-            .toBigDecimalOrZeroWithoutGrouping()
-
     protected fun setStateReadyIfCompletelyInitialized() {
         if (convertRate != null) {
             setInputState(State.READY)

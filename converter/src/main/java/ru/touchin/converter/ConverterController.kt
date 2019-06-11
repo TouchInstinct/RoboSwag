@@ -14,8 +14,8 @@ import java.math.BigDecimal
 class ConverterController(
         viewBase: Convertable,
         viewTarget: Convertable,
-        convertRate: BigDecimal?,
         onTextInputConvert: (baseValue: BigDecimal, targetValue: BigDecimal) -> Unit,
+        convertRate: BigDecimal? = null,
         viewColors: ViewColors? = null
 ) : AbstractConverterController(
         ConverterViews(
