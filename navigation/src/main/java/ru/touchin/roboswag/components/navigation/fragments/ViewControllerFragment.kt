@@ -64,7 +64,7 @@ open class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcela
             putParcelable(VIEW_CONTROLLER_STATE_EXTRA, state)
         }
 
-        private fun <T : Parcelable> reserialize(parcelable: T): T {
+        private fun <T : Parcelable> reserialize(parcelable: T, classLoader: ClassLoader): T {
             var parcel = Parcel.obtain()
             parcel.writeParcelable(parcelable, 0)
             val serializableBytes = parcel.marshall()
@@ -72,7 +72,7 @@ open class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcela
             parcel = Parcel.obtain()
             parcel.unmarshall(serializableBytes, 0, serializableBytes.size)
             parcel.setDataPosition(0)
-            val result = parcel.readParcelable<T>(Thread.currentThread().contextClassLoader) ?: throw IllegalStateException("It must not be null")
+            val result = parcel.readParcelable<T>(classLoader) ?: throw IllegalStateException("It must not be null")
             parcel.recycle()
             return result
         }
@@ -101,7 +101,7 @@ open class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcela
                 ?: throw IllegalStateException("State is required and null")
 
         if (BuildConfig.DEBUG) {
-            state = reserialize(state)
+            state = reserialize(state, state.javaClass.classLoader ?: Thread.currentThread().contextClassLoader)
         }
     }
 
