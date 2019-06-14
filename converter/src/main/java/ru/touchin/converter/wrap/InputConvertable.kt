@@ -6,6 +6,8 @@ import java.math.BigDecimal
 
 class InputConvertable(val input: Convertable) {
 
+    var storedValue: BigDecimal = BigDecimal.ZERO
+
     private var suffix: String = ""
 
     fun setSuffix(suffix: String) {
