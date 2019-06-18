@@ -84,6 +84,6 @@ open class DelegationListAdapter<TItem>(config: AsyncDifferConfig<TItem>) : Recy
      */
     fun getList(): List<TItem> = differ.currentList
 
-    fun getCollectionPosition(adapterPosition: Int) = adapterPosition - getHeadersCount()
+    open fun getCollectionPosition(adapterPosition: Int) = adapterPosition - getHeadersCount()
 
 }
