@@ -1,63 +1,38 @@
-lifecycle-rx
+lifecycle
 =====
 
-Модуль для преобразования событий из `Flowable`, `Observable`, `Single`, `Completable`, `Maybe` в `LiveData`. Нужен для передачи
-событий из `ViewModel` в `ViewController` с автоматическим управлением подписками во `ViewController`.
+Модуль содержит классы, упрощающие процесс подписки на события.
 
-### Основный интерфейсы и классы
-`Destroyable` - интерфейс, содержит функции-расширение для `Flowable`, `Observable`, `Single`, `Completable`, `Maybe`: 
-*untilDestroy*.
-Данная функция гарантирует, что на `Observable` 
-(и другие его формы, перечисленные ранее) никто не подпишется, после *onDestroy*.
+Usage
+=====
 
-`LifeDataDispatcher` - интерфейс, описывающий функцию преобразований событий из `Observable` в `MutableLiveData` для передачи во `ViewController`. 
-
-`BaseDestroyable` и `BaseLifeDataDispatcher` - базовые реализации `Destroyable` и `LifeDataDispatcher` соответсвенно.
-
-`RxViewModel` - базовый класс, от которого должны наследоваться все `ViewModel`. Обеспечивает отписку всех подписчиков при возникновении
-*onCleared*. Реализует `BaseDestroyable` и `LiveDataDispetcher`. По умолчанию использует базовые реализации данных интерфейсов, 
-при желаниее можно передать свои Destroyable и LiveDataDispatcher через конструктор.
-
-### Пример
-
-Простой пример ViewModel через который можно получить список "вещей" и отправить какую-то вещь.
-функция *getThingsList* преобразует событие из мира Rx в `LiveData` с помощью *dispatchTo(thingsList)*. 
+`LifecycleViewModelProviders` - объект для получения ViewModelProvider. В методе `of` принимает LifecycleOwner. Будет хранить ссылку на viewModel, пока существует LifecycleOwner.
 
 ```kotlin
-class SomeViewModel (
-        private val someRepository: SomeRepository
-) : RxViewModel() {
-
-    val thingsList = MutableLiveData<ContentEvent<List<Thing>>>()
-
-    fun getThingsList() {
-        someRepository
-                .getThings()
-                .dispatchTo(thingsList)
-    }
-
-    fun postThing(thing: Thing) {
-        someRepository
-                .postThing(thing)
-                .untilDestroy()
-    }
-}
+private val viewModel = LifecycleViewModelProviders.of(this).get(SomeViewModel::class.java)
 ```
 
-Подписка на события во `ViewController`.
+`SingleLiveEvent` - событие - одиночка. Посылает только новые события, возникшие после подписки. Наследуется от `MutableLiveData` и переопределяет методы `observe` и `setValue`.
+
+Зачем может понадобится `SingleLiveEvent`. Допустим, у вас есть `ViewController`, в котором через `ViewModel` вы делаете запрос в сеть.
+В этом же `ViewController` вы подписываетесь на `SingleLiveEvent` из `ViewModel`. При получении ответа, нужно перейти на новой `ViewController`.
 
 ```kotlin
-someViewModel.thingsList.observe(this, Observer { event ->
+// во ViewModel
+val event = SingleLiveEvent<Event>()
+
+// во ViewController
+event.observe(this, Observer { event ->
     when (event) {
-        is ContentEvent.Loading -> // do something
-        is ContentEvent.Success -> // do something
-        is ContentEvent.Error -> // do something
+        is Event.Loading -> ::onEventLoading
+        is Event.Complete -> ::onEventComplete
+        is Event.Error -> ::onEventError
     }
 })
 ```
 
-### Подключение
-
-``` gradle
-implementation project(':lifecycle-rx')
-```
+`ContentEvent` - событие, обертка над данными, sealed - класс. Дочерние классы: Loading - возникает сразу после прикрепления через
+`dispatchTo`, Success - возникает как успешное событие, Error - при возникновении ошибки, Complete - при завершении события.
+Используется в BaseLiveDataDispatcher в модуле lifecycle-rx.
+`Event` - аналогичен `ContentEvent`, только не содержит никакой информации о данных. Нужен для оповещения о наступлении одного из следующих событий:
+`Loading`, `Complete` и `Error`.
