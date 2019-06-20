@@ -33,11 +33,15 @@ abstract class AbstractConverterController(
 
     var baseValue: BigDecimal
         get() = views.amountBase.storedValue
-        set(value) { views.amountBase.storedValue = value }
+        set(value) {
+            views.amountBase.storedValue = value
+        }
 
     var targetValue: BigDecimal
         get() = views.amountTarget.storedValue
-        set(value) { views.amountTarget.storedValue = value }
+        set(value) {
+            views.amountTarget.storedValue = value
+        }
 
     /**
      * maximum scale for calculation operations
@@ -73,6 +77,20 @@ abstract class AbstractConverterController(
     fun addToTargetValue(value: BigDecimal) {
         targetValue = targetValue.add(value)
         views.amountTarget.setNumber(targetValue)
+    }
+
+    fun setFormatPatter(formatPatter: String) {
+        views.amountBase.formatPattern = formatPatter
+        views.amountBase.rebuildFormat()
+        views.amountTarget.formatPattern = formatPatter
+        views.amountTarget.rebuildFormat()
+    }
+
+    fun setGroupingSeparator(groupingSeparator: Char) {
+        views.amountBase.groupingSeparator = groupingSeparator
+        views.amountBase.rebuildFormat()
+        views.amountTarget.groupingSeparator = groupingSeparator
+        views.amountTarget.rebuildFormat()
     }
 
     protected open fun onStateChange(errorMessage: String? = null) {

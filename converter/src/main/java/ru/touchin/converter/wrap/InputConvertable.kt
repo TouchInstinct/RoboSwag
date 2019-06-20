@@ -1,15 +1,20 @@
 package ru.touchin.converter.wrap
 
-import ru.touchin.converter.formatToStringWithoutGroupingSeparator
 import ru.touchin.converter.toBigDecimalOrZeroWithoutGrouping
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.Locale
 
 class InputConvertable(val input: Convertable) {
 
     var storedValue: BigDecimal = BigDecimal.ZERO
+    var formatPattern: String = "#,##0.00######"
+    var groupingSeparator = ' '
 
     private var suffix: String = ""
+    private var format = buildFormat()
 
     fun setSuffix(suffix: String) {
         this.suffix = suffix
@@ -49,5 +54,19 @@ class InputConvertable(val input: Convertable) {
     fun format(charSequenceToFormat: CharSequence): BigDecimal = charSequenceToFormat.toString()
             .toBigDecimalOrZeroWithoutGrouping()
 
+    fun BigDecimal.formatToStringWithoutGroupingSeparator(): String {
+        val groupingSeparator = format.decimalFormatSymbols.groupingSeparator.toString()
+        return format.format(this)
+                .replace(groupingSeparator, "")
+    }
+
+    fun rebuildFormat() {
+        format = buildFormat()
+    }
+
+    private fun buildFormat(): DecimalFormat = DecimalFormat(
+            formatPattern,
+            DecimalFormatSymbols(Locale.US
+            ).also { it.groupingSeparator = groupingSeparator })
 
 }
