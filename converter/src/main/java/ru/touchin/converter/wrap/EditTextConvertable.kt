@@ -32,4 +32,10 @@ open class EditTextConvertable(val editText: EditText) : Convertable {
 
     override fun isFocused(): Boolean = editText.isFocused
 
+    override fun addOnFocusChangedListener(onFocusChangedListener: (Boolean) -> Unit) {
+        editText.setOnFocusChangeListener { _, hasFocus ->
+            onFocusChangedListener(hasFocus)
+        }
+    }
+
 }

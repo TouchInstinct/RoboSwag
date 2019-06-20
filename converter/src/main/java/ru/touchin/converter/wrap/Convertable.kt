@@ -2,6 +2,7 @@ package ru.touchin.converter.wrap
 
 import android.text.TextWatcher
 import android.text.method.KeyListener
+import android.view.View
 import androidx.annotation.ColorInt
 
 interface Convertable {
@@ -19,6 +20,8 @@ interface Convertable {
     fun setEnabled(enabled: Boolean)
 
     fun setTextColor(@ColorInt colorInt: Int)
+
+    fun addOnFocusChangedListener(onFocusChangedListener: (Boolean) -> Unit)
 
     fun isFocused(): Boolean
 

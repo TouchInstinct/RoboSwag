@@ -148,6 +148,12 @@ abstract class AbstractConverterController(
     protected fun setStateReadyIfCompletelyInitialized() {
         if (convertRate != null) {
             setInputState(State.READY)
+            views.amountTarget.input.addOnFocusChangedListener {
+                if (it == true) views.amountTarget.removeSuffixFromText()
+            }
+            views.amountBase.input.addOnFocusChangedListener {
+                if (it == true) views.amountBase.removeSuffixFromText()
+            }
         }
     }
 
