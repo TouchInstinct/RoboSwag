@@ -1,12 +1,12 @@
 lifecycle
 =====
 
-Модуль содержит классы, упрощающие процесс подписки на события.
+Модуль содержит обертку над `ViewModelProviders` для работы с `ViewController` и обертки для передачи событий из `ViewModel` во
+`ViewController`.
 
-Usage
-=====
+### Основные интерфейсы и классы
 
-`LifecycleViewModelProviders` - объект для получения ViewModelProvider. В методе `of` принимает LifecycleOwner. Будет хранить ссылку на viewModel, пока существует LifecycleOwner.
+`LifecycleViewModelProviders` - оъект для получения `ViewModelProvider`. В функции *of* принимает `LifecycleOwner` и возвращает специфичный для него `ViewModelProvider`.
 
 ```kotlin
 private val viewModel = LifecycleViewModelProviders.of(this).get(SomeViewModel::class.java)
