@@ -36,3 +36,9 @@ event.observe(this, Observer { event ->
 Используется в BaseLiveDataDispatcher в модуле lifecycle-rx.
 `Event` - аналогичен `ContentEvent`, только не содержит никакой информации о данных. Нужен для оповещения о наступлении одного из следующих событий:
 `Loading`, `Complete` и `Error`.
+
+### Подключение
+
+```gradle
+implementation project(':lifecycle')
+```
