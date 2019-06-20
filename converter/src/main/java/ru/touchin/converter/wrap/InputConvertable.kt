@@ -24,6 +24,9 @@ class InputConvertable(val input: Convertable) {
         input.setText("${input.getText()}$suffix")
     }
 
+    /**
+     * Apply base function to base value
+     */
     fun baseOperation(
             newBaseValue: BigDecimal,
             convertRate: BigDecimal,
@@ -34,6 +37,9 @@ class InputConvertable(val input: Convertable) {
             .setScale(scaleValue, roundingMode)
             .stripTrailingZeros()
 
+    /**
+     * Apply target function to target value
+     */
     fun targetOperation(
             newTargetValue: BigDecimal,
             convertRate: BigDecimal,
@@ -60,6 +66,9 @@ class InputConvertable(val input: Convertable) {
                 .replace(groupingSeparator, "")
     }
 
+    /**
+     * Re-initialize [format]
+     */
     fun rebuildFormat() {
         format = buildFormat()
     }
