@@ -57,9 +57,9 @@ abstract class AbstractConverterController(
         setStateReadyIfCompletelyInitialized()
     }
 
-    fun getBaseAmount(): BigDecimal = views.amountBase.getNumber()
+    fun getBaseAmount(): BigDecimal = views.amountBase.storedValue
 
-    fun getTargetAmount(): BigDecimal = views.amountTarget.getNumber()
+    fun getTargetAmount(): BigDecimal = views.amountTarget.storedValue
 
     fun setStateLoading() {
         setInputState(State.LOADING)
@@ -117,9 +117,9 @@ abstract class AbstractConverterController(
 
     protected inner class BaseAmountChangedListener : DefaultTextWatcher() {
         override fun afterTextChanged(editable: Editable) {
-            if (convertRate != null) {
+            convertRate?.let { convertRate ->
                 val newBaseValue = views.amountBase.format(editable)
-                val newTargetValue = views.amountBase.baseOperation(newBaseValue, convertRate!!, scaleValue, roundingMode)
+                val newTargetValue = views.amountBase.baseOperation(newBaseValue, convertRate, scaleValue, roundingMode)
                 if (state == State.READY && !views.amountTarget.input.isFocused() && newBaseValue != baseValue) {
                     targetValue = newTargetValue
                     baseValue = newBaseValue
@@ -132,9 +132,9 @@ abstract class AbstractConverterController(
 
     protected inner class TargetAmountChangedListener : DefaultTextWatcher() {
         override fun afterTextChanged(editable: Editable) {
-            if (convertRate != null) {
+            convertRate?.let { convertRate ->
                 val newTargetValue = views.amountTarget.format(editable)
-                val newBaseValue = views.amountTarget.targetOperation(newTargetValue, convertRate!!, scaleValue, roundingMode)
+                val newBaseValue = views.amountTarget.targetOperation(newTargetValue, convertRate, scaleValue, roundingMode)
                 if (state == State.READY && views.amountTarget.input.isFocused() && newTargetValue != targetValue) {
                     targetValue = newTargetValue
                     baseValue = newBaseValue
@@ -149,10 +149,14 @@ abstract class AbstractConverterController(
         if (convertRate != null) {
             setInputState(State.READY)
             views.amountTarget.input.addOnFocusChangedListener {
-                if (it == true) views.amountTarget.removeSuffixFromText()
+                with(views.amountTarget) {
+                    if (withSuffix == true && it == true) removeSuffixFromText() else addSuffixToText()
+                }
             }
             views.amountBase.input.addOnFocusChangedListener {
-                if (it == true) views.amountBase.removeSuffixFromText()
+                with(views.amountBase) {
+                    if (withSuffix == true && it == true) removeSuffixFromText() else addSuffixToText()
+                }
             }
         }
     }

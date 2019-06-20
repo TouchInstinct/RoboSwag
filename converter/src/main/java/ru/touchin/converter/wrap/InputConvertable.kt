@@ -13,7 +13,7 @@ class InputConvertable(val input: Convertable) {
     var formatPattern: String = "#,##0.00######"
     var groupingSeparator = ' '
 
-    private var withSuffix: Boolean = true
+    var withSuffix: Boolean = true
     private var suffix: String = ""
     private var format = buildFormat()
 
@@ -22,11 +22,11 @@ class InputConvertable(val input: Convertable) {
     }
 
     fun addSuffixToText() {
-        input.setText("${input.getText()}$suffix")
+        input.setText("${format(storedValue)}$suffix")
     }
 
     fun removeSuffixFromText() {
-        input.setText("${input.getText()}")
+        input.setText(format(storedValue))
     }
 
     /**
@@ -58,8 +58,6 @@ class InputConvertable(val input: Convertable) {
         input.setText(format(number))
         if (withSuffix == true) addSuffixToText()
     }
-
-    fun getNumber(): BigDecimal = format(input.getText())
 
     fun format(valueToFormat: BigDecimal): String = valueToFormat.formatToStringWithoutGroupingSeparator()
 

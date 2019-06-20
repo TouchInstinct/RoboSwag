@@ -2,7 +2,6 @@ package ru.touchin.converter.wrap
 
 import android.text.TextWatcher
 import android.text.method.KeyListener
-import android.view.View
 import androidx.annotation.ColorInt
 
 interface Convertable {
