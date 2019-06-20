@@ -29,18 +29,25 @@ abstract class AbstractConverterController(
     protected abstract val baseAmountChangedListener: TextWatcher
     protected abstract val targetAmountChangedListener: TextWatcher
 
-    protected var baseValue: BigDecimal = BigDecimal.ZERO
-    protected var targetValue: BigDecimal = BigDecimal.ZERO
     protected var state: State = State.LOADING
+
+    var baseValue: BigDecimal
+        get() = views.amountBase.storedValue
+        set(value) { views.amountBase.storedValue = value }
+
+    var targetValue: BigDecimal
+        get() = views.amountTarget.storedValue
+        set(value) { views.amountTarget.storedValue = value }
+
     /**
      * maximum scale for calculation operations
      */
-    var scaleValue = 8
+    var scaleValue: Int = 8
     /**
      * Set text to the corresponding input after each invocation of conversion in [baseAmountChangedListener] and [targetAmountChangedListener]
      */
     var autoTextSet = true
-    var roundingMode = RoundingMode.HALF_UP
+    var roundingMode: RoundingMode = RoundingMode.HALF_UP
 
     init {
         setStateReadyIfCompletelyInitialized()
@@ -93,11 +100,8 @@ abstract class AbstractConverterController(
     protected inner class BaseAmountChangedListener : DefaultTextWatcher() {
         override fun afterTextChanged(editable: Editable) {
             if (convertRate != null) {
-                val newBaseValue = format(editable) // todo move to inputcovertable
-                val newTargetValue = newBaseValue
-                        .multiply(convertRate)
-                        .setScale(scaleValue, roundingMode)
-                        .stripTrailingZeros()
+                val newBaseValue = views.amountBase.format(editable)
+                val newTargetValue = views.amountBase.baseOperation(newBaseValue, convertRate!!, scaleValue, roundingMode)
                 if (state == State.READY && !views.amountTarget.input.isFocused() && newBaseValue != baseValue) {
                     targetValue = newTargetValue
                     baseValue = newBaseValue
@@ -111,10 +115,8 @@ abstract class AbstractConverterController(
     protected inner class TargetAmountChangedListener : DefaultTextWatcher() {
         override fun afterTextChanged(editable: Editable) {
             if (convertRate != null) {
-                val newTargetValue = format(editable) // todo move to inputcovertable
-                val newBaseValue = newTargetValue
-                        .divide(convertRate, scaleValue, roundingMode)
-                        .stripTrailingZeros()
+                val newTargetValue = views.amountTarget.format(editable)
+                val newBaseValue = views.amountTarget.targetOperation(newTargetValue, convertRate!!, scaleValue, roundingMode)
                 if (state == State.READY && views.amountTarget.input.isFocused() && newTargetValue != targetValue) {
                     targetValue = newTargetValue
                     baseValue = newBaseValue

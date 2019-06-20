@@ -1,6 +1,6 @@
 package ru.touchin.converter
 
-import ru.touchin.converter.wrap.Convertable
+import ru.touchin.converter.wrap.InputConvertable
 import java.math.BigDecimal
 
 /**
@@ -12,8 +12,8 @@ import java.math.BigDecimal
  * @param viewColors colors to set at state change
  */
 class ConverterController(
-        viewBase: Convertable,
-        viewTarget: Convertable,
+        viewBase: InputConvertable,
+        viewTarget: InputConvertable,
         onTextInputConvert: (baseValue: BigDecimal, targetValue: BigDecimal) -> Unit,
         convertRate: BigDecimal? = null,
         viewColors: ViewColors? = null

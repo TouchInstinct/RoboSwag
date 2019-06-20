@@ -3,6 +3,7 @@ package ru.touchin.converter.wrap
 import ru.touchin.converter.formatToStringWithoutGroupingSeparator
 import ru.touchin.converter.toBigDecimalOrZeroWithoutGrouping
 import java.math.BigDecimal
+import java.math.RoundingMode
 
 class InputConvertable(val input: Convertable) {
 
@@ -17,6 +18,25 @@ class InputConvertable(val input: Convertable) {
     fun addSuffixToText() {
         input.setText("${input.getText()}$suffix")
     }
+
+    fun baseOperation(
+            newBaseValue: BigDecimal,
+            convertRate: BigDecimal,
+            scaleValue: Int,
+            roundingMode: RoundingMode
+    ): BigDecimal = newBaseValue
+            .multiply(convertRate)
+            .setScale(scaleValue, roundingMode)
+            .stripTrailingZeros()
+
+    fun targetOperation(
+            newTargetValue: BigDecimal,
+            convertRate: BigDecimal,
+            scaleValue: Int,
+            roundingMode: RoundingMode
+    ): BigDecimal = newTargetValue
+            .divide(convertRate, scaleValue, roundingMode)
+            .stripTrailingZeros()
 
     fun setNumber(number: BigDecimal) {
         input.setText(format(number))
