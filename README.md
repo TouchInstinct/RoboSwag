@@ -21,7 +21,6 @@ Roboswag - это набор модулей, расширяющих возмож
 	url = git@github.com:TouchInstinct/RoboSwag.git
 ```
 
-Можно подкючать только те модули, которые вам необходимы.
 build.gradle
 
 ```gradle
@@ -41,6 +40,7 @@ dependencies {
     implementation project(':livedata-location')
 }
 ```
+Можно подключать только те модули, которые вам необходимы.
 
 ### R8/Proguard
 
