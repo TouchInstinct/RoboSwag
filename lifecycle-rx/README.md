@@ -18,7 +18,7 @@ lifecycle-rx
 *onCleared*. Реализует `BaseDestroyable` и `LiveDataDispetcher`. По умолчанию использует базовые реализации данных интерфейсов, 
 при желаниее можно передать свои Destroyable и LiveDataDispatcher через конструктор.
 
-### Пример
+### Примеры
 
 Простой пример ViewModel через который можно получить список "вещей" и отправить какую-то вещь.
 функция *getThingsList* преобразует событие из мира Rx в `LiveData` с помощью *dispatchTo(thingsList)*. 
