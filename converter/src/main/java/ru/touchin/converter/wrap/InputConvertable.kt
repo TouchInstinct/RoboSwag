@@ -7,11 +7,14 @@ import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.Locale
 
-class InputConvertable(val input: Convertable) {
+open class InputConvertable(val input: Convertable) {
 
     var storedValue: BigDecimal = BigDecimal.ZERO
     var formatPattern: String = "#,##0.00######"
     var groupingSeparator = ' '
+    var roundingMode: RoundingMode = RoundingMode.DOWN
+    var maxFractionNumber = 2
+    var maxIntegerNumber = 8
 
     var withSuffix: Boolean = true
     private var suffix: String = ""
@@ -66,8 +69,7 @@ class InputConvertable(val input: Convertable) {
 
     fun BigDecimal.formatToStringWithoutGroupingSeparator(): String {
         val groupingSeparator = format.decimalFormatSymbols.groupingSeparator.toString()
-        return format.format(this)
-                .replace(groupingSeparator, "")
+        return format.format(this).replace(groupingSeparator, "")
     }
 
     /**
@@ -77,9 +79,19 @@ class InputConvertable(val input: Convertable) {
         format = buildFormat()
     }
 
+    open fun validate(): Boolean {
+        return true // todo implement or delete
+    }
+
     private fun buildFormat(): DecimalFormat = DecimalFormat(
             formatPattern,
-            DecimalFormatSymbols(Locale.US
-            ).also { it.groupingSeparator = groupingSeparator })
+            DecimalFormatSymbols(Locale.US).also {
+                it.groupingSeparator = groupingSeparator
+            }
+    ).also {
+        it.roundingMode = roundingMode
+        it.maximumFractionDigits = maxFractionNumber
+        it.maximumIntegerDigits = maxIntegerNumber
+    }
 
 }
