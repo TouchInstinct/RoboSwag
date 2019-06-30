@@ -5,20 +5,15 @@ recyclerview-adapters
 
 ### Основные интерфейсы и классы 
 
-`DelegationListAdapter` - базовый класс, который реализует `RecyclerView.Adapter`. Управлением элементами списка занимаются делегаты. 
-Они добавляются с помощью метода *addDelegate*. Конструктор принимает `DiffUtil.ItemCallback`, который вычисляется в фоне.
-Методы `getHeadersCount` и `getFootersCount` нужны, когда в списке есть элементы, которые всегда должны быть наверху или внизу.
-Например, если мы добавляем кнопку в самый низ списка. 
+`DelegationListAdapter` - базовый класс, наследник от `RecyclerView.Adapter`. Управлением элементами списка занимаются делегаты. Они добавляются с помощью метода *addDelegate*. Конструктор принимает `DiffUtil.ItemCallback` - интерфейс, описывающий как различать элементы в адаптере, содержит два абстрактных метода: *areItemsTheSame* - метод, сравнивающий элементы, и *areContentsTheSame* - метод, сравнивающий визуальную состовляющую элементов. Возьмем, например, список товаров, у которых есть уникальный *id* и *title*, который может повторяться. В `RecyclerView` отображается только название товара, т.е. *title*. В такой ситуации в методе *areItemsTheSame* нужно будет написать `oldItem.id == newItem.id`, а в методе *areContentsTheSame* - `oldItem.title == newItem.title`. Оба эти метода вычисляются в бэкграунд потоке. Методы `getHeadersCount` и `getFootersCount` нужны, когда в списке есть элементы, которые всегда должны быть наверху или внизу. Например, если нужно добавить кнопку после всех элементов.
 
-`ItemAdapterDelegate` - делегает, который управляет созданием и прикреплением элементов, основываясь на типе элемента.
+`ItemAdapterDelegate` - делегат, который управляет созданием и прикреплением элементов в зависимости от типа элемента.
 
-`PositionAdapterDelegate` - делегает, который управляет созданием и прикреплением элементов, основываясь на позиции элемента, в 
-`DelegationListAdapter`
+`PositionAdapterDelegate` - делегат, который управляет созданием и прикреплением элементов, основываясь на позиции элемента, в `DelegationListAdapter`.
 
 При реализации делегатов, необходимо описать два метода: 
-* *isForViewType*, который говорит делегату, должен ли он управлять
-соответсвующим элементом; 
-* *onBindViewHolder* - действия при прикреплении элемента к `RecyclerView`. 
+* *isForViewType* - метод, который говорит делегату, должен ли он управлять соответсвующим элементом; 
+* *onBindViewHolder* - метод, который описывает действия при прикреплении элемента к `ViewHolder`. 
 
 ### Примеры 
 
@@ -29,8 +24,8 @@ class SomeAdapter : DelegationListAdapter<Item>(CALLBACK) {
 
     companion object {
         private val CALLBACK = object : DiffUtil.ItemCallback<Item>() {
-            override fun areItemsTheSame(oldItem: Item, newItem: Item) = // Checks
-            override fun areContentsTheSame(oldItem: Item, newItem: Item) = // Checks
+            override fun areItemsTheSame(oldItem: Item, newItem: Item) = newItem.id == oldItem.id
+            override fun areContentsTheSame(oldItem: Item, newItem: Item) = newItem == oldItem
         }
     }
 
@@ -57,8 +52,8 @@ class HeaderDelegate(
 
     override fun onBindViewHolder(
             holder: RecyclerView.ViewHolder,
-            adapterPosition: Int, payloads: 
-            MutableList<Any>
+            adapterPosition: Int, 
+            payloads: MutableList<Any>
     ) = holder.itemView.setOnClickListener { addAction.invoke() }
 }
 ```
