@@ -37,7 +37,7 @@ class SomeViewModel (
 }
 ```
 
-Подписка на события во `ViewController`. `ContentEvent` описан в модуле [lifecycle-rx](https://github.com/TouchInstinct/RoboSwag/tree/master/lifecycle-rx).
+Подписка на события во `ViewController`. `ContentEvent` описан в модуле [lifecycle](https://github.com/TouchInstinct/RoboSwag/tree/master/lifecycle).
 
 ```kotlin
 someViewModel.itemsList.observe(this, Observer { event ->
