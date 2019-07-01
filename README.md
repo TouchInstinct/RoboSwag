@@ -9,11 +9,11 @@ Roboswag - это набор модулей, расширяющих возмож
 * Kotlin: 1.3.11
 * Gradle: 3.2.1
 * Gradle CPD Plugin: 1.1
-* Detect Plugin: 1.0.0-RC12
+* Detekt Plugin: 1.0.0-RC12
 
 ### Подключение
 
-.gitmodules
+#### .gitmodules
 
 ```
 [submodule "RoboSwag"]
@@ -21,7 +21,7 @@ Roboswag - это набор модулей, расширяющих возмож
 	url = git@github.com:TouchInstinct/RoboSwag.git
 ```
 
-build.gradle
+#### build.gradle (Module: app)
 
 ```gradle
 dependencies {
