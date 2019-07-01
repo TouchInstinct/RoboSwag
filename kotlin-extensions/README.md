@@ -35,7 +35,7 @@ kotlin-extensions
 
 * *ViewHolder.getColor* - получить цвет в виде `Int` из ресурсов.
 
-* *ViewHolder.getColorStateList* - ?
+* *ViewHolder.getColorStateList* - получить `ColorStateList`, который ассоциируется с переданным цветом.
 
 * *ViewHolder.getDrawable* - получить `Drawable` из ресурсов.
 
