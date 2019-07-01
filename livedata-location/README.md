@@ -1,4 +1,4 @@
-liviedata-location
+livedata-location
 =====
 
 Модуль позволяющий получать местоположение пользователя в виде потока данных `LiveData`.
