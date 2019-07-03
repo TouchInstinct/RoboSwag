@@ -72,11 +72,15 @@ abstract class AbstractConverterController(
     fun addToBaseValue(value: BigDecimal) {
         baseValue = baseValue.plus(value)
         views.amountBase.setNumber(baseValue)
+        val newTargetValue = views.amountBase.baseOperation(baseValue, convertRate!!, scaleValue, roundingMode)
+        baseListenerOperation(baseValue, newTargetValue)
     }
 
     fun addToTargetValue(value: BigDecimal) {
-        targetValue = targetValue.add(value)
+        targetValue = targetValue.plus(value)
         views.amountTarget.setNumber(targetValue)
+        val newBaseValue = views.amountTarget.targetOperation(targetValue, convertRate!!, scaleValue, roundingMode)
+        targetListenerOperation(targetValue, newBaseValue)
     }
 
     fun setFormatPatter(formatPatter: String) {
@@ -118,31 +122,41 @@ abstract class AbstractConverterController(
     protected inner class BaseAmountChangedListener : DefaultTextWatcher() {
         override fun afterTextChanged(editable: Editable) {
             convertRate?.let { convertRate ->
-                val newBaseValue = views.amountBase.format(editable)
-                val newTargetValue = views.amountBase.baseOperation(newBaseValue, convertRate, scaleValue, roundingMode)
-                if (state == State.READY && !views.amountTarget.input.isFocused() && newBaseValue != baseValue) {
-                    targetValue = newTargetValue
-                    baseValue = newBaseValue
-                    if (autoTextSet == true) views.amountTarget.setNumber(targetValue)
-                    onTextInputConvert(baseValue, targetValue)
+                val inputWrapper = views.amountBase
+                val newBaseValue = inputWrapper.format(editable)
+                val newTargetValue = inputWrapper.baseOperation(newBaseValue, convertRate, scaleValue, roundingMode)
+                if (state == State.READY && inputWrapper.input.isFocused() && newBaseValue != baseValue) {
+                    baseListenerOperation(newBaseValue, newTargetValue)
                 }
             }
         }
     }
 
+    private fun baseListenerOperation(newBaseValue: BigDecimal, newTargetValue: BigDecimal) {
+        views.amountTarget.storedValue = newTargetValue
+        baseValue = newBaseValue
+        if (autoTextSet == true) views.amountTarget.setNumber(targetValue)
+        onTextInputConvert(baseValue, targetValue)
+    }
+
     protected inner class TargetAmountChangedListener : DefaultTextWatcher() {
         override fun afterTextChanged(editable: Editable) {
             convertRate?.let { convertRate ->
-                val newTargetValue = views.amountTarget.format(editable)
-                val newBaseValue = views.amountTarget.targetOperation(newTargetValue, convertRate, scaleValue, roundingMode)
-                if (state == State.READY && views.amountTarget.input.isFocused() && newTargetValue != targetValue) {
-                    targetValue = newTargetValue
-                    baseValue = newBaseValue
-                    if (autoTextSet == true) views.amountBase.setNumber(baseValue)
-                    onTextInputConvert(baseValue, targetValue)
+                val inputWrapper = views.amountTarget
+                val newTargetValue = inputWrapper.format(editable)
+                val newBaseValue = inputWrapper.targetOperation(newTargetValue, convertRate, scaleValue, roundingMode)
+                if (state == State.READY && inputWrapper.input.isFocused() && newTargetValue != targetValue) {
+                    targetListenerOperation(newTargetValue, newBaseValue)
                 }
             }
         }
+    }
+
+    private fun targetListenerOperation(newTargetValue: BigDecimal, newBaseValue: BigDecimal) {
+        targetValue = newTargetValue
+        views.amountBase.storedValue = newBaseValue
+        if (autoTextSet == true) views.amountBase.setNumber(baseValue)
+        onTextInputConvert(baseValue, targetValue)
     }
 
     protected fun setStateReadyIfCompletelyInitialized() {

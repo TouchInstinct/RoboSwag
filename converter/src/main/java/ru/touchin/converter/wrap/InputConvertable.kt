@@ -58,13 +58,12 @@ open class InputConvertable(val input: Convertable) {
             .stripTrailingZeros()
 
     fun setNumber(number: BigDecimal) {
-        input.setText(format(number))
-        if (withSuffix == true) addSuffixToText()
+        if (withSuffix == true) addSuffixToText() else input.setText(format(number))
     }
 
     fun format(valueToFormat: BigDecimal): String = valueToFormat.formatToStringWithoutGroupingSeparator()
 
-    fun format(charSequenceToFormat: CharSequence): BigDecimal = charSequenceToFormat.toString()
+    fun format(charSequenceToFormat: CharSequence): BigDecimal = charSequenceToFormat.toString().removeSuffix("$suffix")
             .toBigDecimalOrZeroWithoutGrouping()
 
     fun BigDecimal.formatToStringWithoutGroupingSeparator(): String {
