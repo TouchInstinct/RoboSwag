@@ -15,3 +15,9 @@ abstract class SimpleDataObserver : RecyclerView.AdapterDataObserver() {
     override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) = onChange()
 
 }
+
+fun RecyclerView.Adapter<out RecyclerView.ViewHolder>.onDataUpdatedAndDrawn(onChanged: () -> Unit) = registerAdapterDataObserver(
+        object : SimpleDataObserver() {
+            override fun onChange() = onChanged()
+        }
+)
