@@ -44,6 +44,10 @@ abstract class AbstractConverterController(
         }
 
     /**
+     * maximum number length
+     */
+    var maxLength: Int = 12
+    /**
      * maximum scale for calculation operations
      */
     var scaleValue: Int = 8
@@ -122,7 +126,11 @@ abstract class AbstractConverterController(
                 val newBaseValue = inputWrapper.format(editable)
                 val newTargetValue = inputWrapper.baseOperation(newBaseValue, convertRate, scaleValue, roundingMode)
                 if (state == State.READY && inputWrapper.input.isFocused() && newBaseValue != baseValue) {
-                    baseListenerOperation(newBaseValue, newTargetValue)
+                    if (inputWrapper.format(newTargetValue).length <= maxLength) {
+                        baseListenerOperation(newBaseValue, newTargetValue)
+                    } else {
+                        inputWrapper.setNumber(baseValue)
+                    }
                 }
             }
         }
@@ -142,7 +150,11 @@ abstract class AbstractConverterController(
                 val newTargetValue = inputWrapper.format(editable)
                 val newBaseValue = inputWrapper.targetOperation(newTargetValue, convertRate, scaleValue, roundingMode)
                 if (state == State.READY && inputWrapper.input.isFocused() && newTargetValue != targetValue) {
-                    targetListenerOperation(newTargetValue, newBaseValue)
+                    if (inputWrapper.format(newTargetValue).length <= maxLength) {
+                        targetListenerOperation(newTargetValue, newBaseValue)
+                    } else {
+                        inputWrapper.setNumber(targetValue)
+                    }
                 }
             }
         }
