@@ -126,7 +126,7 @@ abstract class AbstractConverterController(
                 val newBaseValue = inputWrapper.format(editable)
                 val newTargetValue = inputWrapper.baseOperation(newBaseValue, convertRate, scaleValue, roundingMode)
                 if (state == State.READY && inputWrapper.input.isFocused() && newBaseValue != baseValue) {
-                    if (inputWrapper.format(newTargetValue).length <= maxLength) {
+                    if (inputWrapper.format(newBaseValue).length <= maxLength) {
                         baseListenerOperation(newBaseValue, newTargetValue)
                     } else {
                         inputWrapper.setNumber(baseValue)
