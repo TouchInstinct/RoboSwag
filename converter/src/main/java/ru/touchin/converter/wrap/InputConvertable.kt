@@ -17,12 +17,8 @@ open class InputConvertable(val input: Convertable) {
     var maxIntegerNumber = 8
 
     var withSuffix: Boolean = true
-    private var suffix: String = ""
+    var suffix: String = ""
     private var format = buildFormat()
-
-    fun setSuffix(suffix: String) {
-        this.suffix = suffix
-    }
 
     fun addSuffixToText() {
         input.setText("${format(storedValue)}$suffix")
@@ -89,6 +85,7 @@ open class InputConvertable(val input: Convertable) {
         it.roundingMode = roundingMode
         it.maximumFractionDigits = maxFractionNumber
         it.maximumIntegerDigits = maxIntegerNumber
+        it.isParseBigDecimal
     }
 
 }

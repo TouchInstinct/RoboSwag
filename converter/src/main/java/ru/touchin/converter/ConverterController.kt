@@ -15,15 +15,13 @@ class ConverterController(
         viewBase: InputConvertable,
         viewTarget: InputConvertable,
         onTextInputConvert: (baseValue: BigDecimal, targetValue: BigDecimal) -> Unit,
-        convertRate: BigDecimal? = null,
-        viewColors: ViewColors? = null
+        convertRate: BigDecimal? = null
 ) : AbstractConverterController(
         ConverterViews(
                 amountBase = viewBase,
                 amountTarget = viewTarget
         ),
         convertRate,
-        viewColors,
         onTextInputConvert
 ) {
 

@@ -3,7 +3,6 @@ package ru.touchin.converter
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.method.DigitsKeyListener
-import androidx.annotation.ColorInt
 import ru.touchin.converter.wrap.InputConvertable
 import ru.touchin.defaults.DefaultTextWatcher
 import java.math.BigDecimal
@@ -18,18 +17,15 @@ import java.math.RoundingMode
 abstract class AbstractConverterController(
         val views: ConverterViews,
         protected var convertRate: BigDecimal?,
-        private val viewColors: ViewColors?,
         private val onTextInputConvert: (baseValue: BigDecimal, targetValue: BigDecimal) -> Unit
 ) {
 
     companion object {
-        private const val PLACEHOLDER_VALUE = ""
+        private const val OPERATION_SCALE = 8
     }
 
     protected abstract val baseAmountChangedListener: TextWatcher
     protected abstract val targetAmountChangedListener: TextWatcher
-
-    protected var state: State = State.LOADING
 
     var baseValue: BigDecimal
         get() = views.amountBase.storedValue
@@ -48,10 +44,6 @@ abstract class AbstractConverterController(
      */
     var maxLength: Int = 12
     /**
-     * maximum scale for calculation operations
-     */
-    var scaleValue: Int = 8
-    /**
      * Set text to the corresponding input after each invocation of conversion in [baseAmountChangedListener] and [targetAmountChangedListener]
      */
     var autoTextSet = true
@@ -65,21 +57,17 @@ abstract class AbstractConverterController(
 
     fun getTargetAmount(): BigDecimal = views.amountTarget.storedValue
 
-    fun setStateLoading() {
-        setInputState(State.LOADING)
-    }
-
     fun addToBaseValue(value: BigDecimal) {
         baseValue = baseValue.plus(value)
         views.amountBase.setNumber(baseValue)
-        val newTargetValue = views.amountBase.baseOperation(baseValue, convertRate!!, scaleValue, roundingMode)
+        val newTargetValue = views.amountBase.baseOperation(baseValue, convertRate!!, OPERATION_SCALE, roundingMode)
         baseListenerOperation(baseValue, newTargetValue)
     }
 
     fun addToTargetValue(value: BigDecimal) {
         targetValue = targetValue.plus(value)
         views.amountTarget.setNumber(targetValue)
-        val newBaseValue = views.amountTarget.targetOperation(targetValue, convertRate!!, scaleValue, roundingMode)
+        val newBaseValue = views.amountTarget.targetOperation(targetValue, convertRate!!, OPERATION_SCALE, roundingMode)
         targetListenerOperation(targetValue, newBaseValue)
     }
 
@@ -97,21 +85,12 @@ abstract class AbstractConverterController(
         views.amountTarget.rebuildFormat()
     }
 
-    protected open fun onStateChange(errorMessage: String? = null) {
-        setupAmounts()
-    }
-
     /**
      * @param rate factor for [baseValue] and [targetValue] calculations
      */
     fun setRate(rate: BigDecimal) {
         convertRate = rate
         setStateReadyIfCompletelyInitialized()
-    }
-
-    private fun setInputState(inputState: State, errorMessage: String? = null) {
-        state = inputState
-        onStateChange(errorMessage)
     }
 
     protected fun setCrossUpdateListenersToEditTexts() {
@@ -124,9 +103,9 @@ abstract class AbstractConverterController(
             convertRate?.let { convertRate ->
                 val inputWrapper = views.amountBase
                 val newBaseValue = inputWrapper.format(editable)
-                val newTargetValue = inputWrapper.baseOperation(newBaseValue, convertRate, scaleValue, roundingMode)
-                if (state == State.READY && inputWrapper.input.isFocused() && newBaseValue != baseValue) {
-                    if (inputWrapper.format(newBaseValue).length <= maxLength) {
+                val newTargetValue = inputWrapper.baseOperation(newBaseValue, convertRate, OPERATION_SCALE, roundingMode)
+                if (inputWrapper.input.isFocused() && newBaseValue != baseValue) {
+                    if (editable.length <= maxLength) {
                         baseListenerOperation(newBaseValue, newTargetValue)
                     } else {
                         inputWrapper.setNumber(baseValue)
@@ -148,9 +127,9 @@ abstract class AbstractConverterController(
             convertRate?.let { convertRate ->
                 val inputWrapper = views.amountTarget
                 val newTargetValue = inputWrapper.format(editable)
-                val newBaseValue = inputWrapper.targetOperation(newTargetValue, convertRate, scaleValue, roundingMode)
-                if (state == State.READY && inputWrapper.input.isFocused() && newTargetValue != targetValue) {
-                    if (inputWrapper.format(newTargetValue).length <= maxLength) {
+                val newBaseValue = inputWrapper.targetOperation(newTargetValue, convertRate, OPERATION_SCALE, roundingMode)
+                if (inputWrapper.input.isFocused() && newTargetValue != targetValue) {
+                    if (editable.length <= maxLength) {
                         targetListenerOperation(newTargetValue, newBaseValue)
                     } else {
                         inputWrapper.setNumber(targetValue)
@@ -169,7 +148,6 @@ abstract class AbstractConverterController(
 
     protected fun setStateReadyIfCompletelyInitialized() {
         if (convertRate != null) {
-            setInputState(State.READY)
             views.amountTarget.input.addOnFocusChangedListener {
                 with(views.amountTarget) {
                     if (withSuffix == true && it == true) removeSuffixFromText() else addSuffixToText()
@@ -183,41 +161,11 @@ abstract class AbstractConverterController(
         }
     }
 
-    /**
-     * Update input according to [state]
-     * Invokes at each state change @see [onStateChange]
-     */
-    @Suppress("ComplexMethod")
-    private fun setupAmounts() {
-        views.amountBase.input.apply {
-            setText(if (getText().isBlank()) PLACEHOLDER_VALUE else getText()) // It's needed to trigger text update listener on each state change
-            setEnabled(state == State.READY)
-            viewColors?.let { colors ->
-                setTextColor(if (state == State.READY) colors.active else colors.inactive)
-            }
-        }
-        views.amountTarget.input.apply {
-            if (state != State.READY && getText().isBlank()) setText(PLACEHOLDER_VALUE)
-            setEnabled(state == State.READY)
-            viewColors?.let { colors ->
-                setTextColor(if (state == State.READY) colors.active else colors.inactive)
-            }
-        }
-    }
-
     data class ConverterViews(val amountBase: InputConvertable, val amountTarget: InputConvertable) {
         init {
             amountBase.input.setKeyListener(DigitsKeyListener.getInstance("0123456789.,"))
             amountTarget.input.setKeyListener(DigitsKeyListener.getInstance("0123456789.,"))
         }
     }
-
-    data class ViewColors(@ColorInt val active: Int, @ColorInt val inactive: Int)
-
-    /**
-     * [LOADING] is for the state where [convertRate] is not set
-     * [READY] is for ready state
-     */
-    protected enum class State { LOADING, READY }
 
 }
