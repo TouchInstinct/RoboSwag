@@ -82,11 +82,9 @@ open class InputConvertable(val input: Convertable) {
         return true // todo implement or delete
     }
 
-    private fun buildFormat(): DecimalFormat = DecimalFormat(
+    private fun buildFormat(separator: Char = groupingSeparator): DecimalFormat = DecimalFormat(
             formatPattern,
-            DecimalFormatSymbols(Locale.US).also {
-                it.groupingSeparator = groupingSeparator
-            }
+            DecimalFormatSymbols(Locale.US).also { it.groupingSeparator = separator }
     ).also {
         it.roundingMode = roundingMode
         it.maximumFractionDigits = maxFractionNumber

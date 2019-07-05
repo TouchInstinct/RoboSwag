@@ -65,10 +65,6 @@ abstract class AbstractConverterController(
         setInputState(State.LOADING)
     }
 
-    fun handleError(exception: Throwable) {
-        setInputState(State.ERROR, exception.message)
-    }
-
     fun addToBaseValue(value: BigDecimal) {
         baseValue = baseValue.plus(value)
         views.amountBase.setNumber(baseValue)
@@ -184,12 +180,16 @@ abstract class AbstractConverterController(
         views.amountBase.input.apply {
             setText(if (getText().isBlank()) PLACEHOLDER_VALUE else getText()) // It's needed to trigger text update listener on each state change
             setEnabled(state == State.READY)
-            if (viewColors != null) setTextColor(if (state == State.READY) viewColors.active else viewColors.inactive)
+            viewColors?.let { colors ->
+                setTextColor(if (state == State.READY) colors.active else colors.inactive)
+            }
         }
         views.amountTarget.input.apply {
             if (state != State.READY && getText().isBlank()) setText(PLACEHOLDER_VALUE)
             setEnabled(state == State.READY)
-            if (viewColors != null) setTextColor(if (state == State.READY) viewColors.active else viewColors.inactive)
+            viewColors?.let { colors ->
+                setTextColor(if (state == State.READY) colors.active else colors.inactive)
+            }
         }
     }
 
@@ -202,6 +202,10 @@ abstract class AbstractConverterController(
 
     data class ViewColors(@ColorInt val active: Int, @ColorInt val inactive: Int)
 
-    protected enum class State { LOADING, READY, ERROR }
+    /**
+     * [LOADING] is for the state where [convertRate] is not set
+     * [READY] is for ready state
+     */
+    protected enum class State { LOADING, READY }
 
 }
