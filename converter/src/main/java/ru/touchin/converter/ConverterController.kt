@@ -14,14 +14,18 @@ import java.math.BigDecimal
 class ConverterController(
         viewBase: InputConvertable,
         viewTarget: InputConvertable,
-        onTextInputConvert: (baseValue: BigDecimal, targetValue: BigDecimal) -> Unit,
-        convertRate: BigDecimal? = null
+        convertRate: BigDecimal? = null,
+        baseVerifierController: VerifierController,
+        targetVerifierController: VerifierController,
+        onTextInputConvert: (baseValue: BigDecimal, targetValue: BigDecimal) -> Unit
 ) : AbstractConverterController(
         ConverterViews(
                 amountBase = viewBase,
                 amountTarget = viewTarget
         ),
         convertRate,
+        baseVerifierController,
+        targetVerifierController,
         onTextInputConvert
 ) {
 

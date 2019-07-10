@@ -17,6 +17,8 @@ import java.math.RoundingMode
 abstract class AbstractConverterController(
         val views: ConverterViews,
         protected var convertRate: BigDecimal?,
+        private val baseVerifier: VerifierController,
+        private val targetVerifier: VerifierController,
         private val onTextInputConvert: (baseValue: BigDecimal, targetValue: BigDecimal) -> Unit
 ) {
 
@@ -105,7 +107,8 @@ abstract class AbstractConverterController(
                 val newBaseValue = inputWrapper.format(editable)
                 val newTargetValue = inputWrapper.baseOperation(newBaseValue, convertRate, OPERATION_SCALE, roundingMode)
                 if (inputWrapper.input.isFocused() && newBaseValue != baseValue) {
-                    if (editable.length <= maxLength) {
+                    val isValid = baseVerifier.verifyAll(editable.toString())
+                    if (isValid == true) {
                         baseListenerOperation(newBaseValue, newTargetValue)
                     } else {
                         inputWrapper.setNumber(baseValue)
@@ -129,7 +132,8 @@ abstract class AbstractConverterController(
                 val newTargetValue = inputWrapper.format(editable)
                 val newBaseValue = inputWrapper.targetOperation(newTargetValue, convertRate, OPERATION_SCALE, roundingMode)
                 if (inputWrapper.input.isFocused() && newTargetValue != targetValue) {
-                    if (editable.length <= maxLength) {
+                    val isValid = targetVerifier.verifyAll(editable.toString())
+                    if (isValid == true) {
                         targetListenerOperation(newTargetValue, newBaseValue)
                     } else {
                         inputWrapper.setNumber(targetValue)
