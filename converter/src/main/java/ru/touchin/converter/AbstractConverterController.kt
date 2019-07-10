@@ -110,8 +110,6 @@ abstract class AbstractConverterController(
                     val isValid = baseVerifier.verifyAll(editable.toString())
                     if (isValid == true) {
                         baseListenerOperation(newBaseValue, newTargetValue)
-                    } else {
-                        inputWrapper.setNumber(baseValue)
                     }
                 }
             }
@@ -135,8 +133,6 @@ abstract class AbstractConverterController(
                     val isValid = targetVerifier.verifyAll(editable.toString())
                     if (isValid == true) {
                         targetListenerOperation(newTargetValue, newBaseValue)
-                    } else {
-                        inputWrapper.setNumber(targetValue)
                     }
                 }
             }

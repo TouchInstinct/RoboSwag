@@ -61,6 +61,7 @@ open class InputConvertable(val input: Convertable) {
 
     fun format(charSequenceToFormat: CharSequence): BigDecimal = charSequenceToFormat.toString().removeSuffix("$suffix")
             .toBigDecimalOrZeroWithoutGrouping()
+            .stripTrailingZeros()
 
     fun BigDecimal.formatToStringWithoutGroupingSeparator(): String {
         val groupingSeparator = format.decimalFormatSymbols.groupingSeparator.toString()
