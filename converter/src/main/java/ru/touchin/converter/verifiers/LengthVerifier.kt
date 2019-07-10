@@ -1,7 +1,13 @@
 package ru.touchin.converter.verifiers
 
-class LengthVerifier(val maxLength: Int) : Verifier {
+import ru.touchin.converter.commands.Command
 
-    override fun verify(text: String): Boolean = text.length <= maxLength
+class LengthVerifier(val maxLength: Int) : Verifier<Int> {
+
+    override fun verify(text: String): Command<Int> = if (text.length <= maxLength) {
+        Command.Success()
+    } else {
+        Command.Remove(1)
+    }
 
 }
