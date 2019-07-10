@@ -119,7 +119,7 @@ abstract class AbstractConverterController(
     }
 
     private fun baseListenerOperation(newBaseValue: BigDecimal, newTargetValue: BigDecimal) {
-        views.amountTarget.storedValue = newTargetValue
+        targetValue = newTargetValue
         baseValue = newBaseValue
         if (autoTextSet == true) views.amountTarget.setNumber(targetValue)
         onTextInputConvert(baseValue, targetValue)
@@ -145,21 +145,25 @@ abstract class AbstractConverterController(
 
     private fun targetListenerOperation(newTargetValue: BigDecimal, newBaseValue: BigDecimal) {
         targetValue = newTargetValue
-        views.amountBase.storedValue = newBaseValue
+        baseValue = newBaseValue
         if (autoTextSet == true) views.amountBase.setNumber(baseValue)
         onTextInputConvert(baseValue, targetValue)
     }
 
     protected fun setStateReadyIfCompletelyInitialized() {
         if (convertRate != null) {
-            views.amountTarget.input.addOnFocusChangedListener {
+            views.amountTarget.input.addOnFocusChangedListener { isFocused ->
                 with(views.amountTarget) {
-                    if (withSuffix == true && it == true) removeSuffixFromText() else addSuffixToText()
+                    if (withSuffix == true) {
+                        if (isFocused == true) removeSuffixFromText() else addSuffixToText()
+                    }
                 }
             }
-            views.amountBase.input.addOnFocusChangedListener {
+            views.amountBase.input.addOnFocusChangedListener { isFocused ->
                 with(views.amountBase) {
-                    if (withSuffix == true && it == true) removeSuffixFromText() else addSuffixToText()
+                    if (withSuffix == true) {
+                        if (isFocused == true) removeSuffixFromText() else addSuffixToText()
+                    }
                 }
             }
         }
