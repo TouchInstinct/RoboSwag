@@ -1,15 +1,16 @@
 package ru.touchin.converter.verifiers
 
 import ru.touchin.converter.commands.Command
+import java.math.BigDecimal
 
-class DecimalVerifier(maxDecimalNumber: Int) : Verifier<Int> {
+class DecimalVerifier(maxDecimalNumber: Int) : Verifier<BigDecimal> {
 
-    private val pattern = "(\\d{$maxDecimalNumber})\\.".toRegex()
+    private val pattern = "(\\d{1,$maxDecimalNumber})(\\.?)".toRegex()
 
-    override fun verify(text: String): Command<Int> = if (pattern.matches(text) == true) {
+    override fun verify(text: String): Command<BigDecimal> = if (pattern.matches(text) == true) {
         Command.Success()
     } else {
-        Command.Remove(1)
+        Command.Fallback()
     }
 
 }
