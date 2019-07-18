@@ -7,15 +7,16 @@ kotlin-extensions
 
 ##### Расширения для `Activity`:
 
-* *safeStartActivityForResult* - функция для безопасного запуска нового активити с `requestCode`, который будет передан в *onActivityResult* при завершении работы данного активити.
+* *safeStartActivityForResult* - функция для запуска нового активити с `requestCode`, который будет передан в *onActivityResult* при завершении работы данного активити. Находит наиболее подходящий активити для выполнения действия. Если
+не будет найден ни один активити для выполнения действия, то функция ничего не сделает и вернет `false`.
 
 ##### Расширения для `Context`:
 
-* *safeStartActivity* - функция для безопасного запуска активити, аналогична *safeStartActivityForResult*, но не позволяет передать `requestCode`.
+* *safeStartActivity* - функция запуска активити, аналогична *safeStartActivityForResult*, но не позволяет передать `requestCode`.
 
-* *openBrowser* - функция для открытия ссылки в браузере.
+* *openBrowser* - функция для открытия ссылки в браузере через *safeStartActivity*.
 
-* *callToPhoneNumber* - функция для открытия программы "Телефон" с переданным номером телефона.
+* *callToPhoneNumber* - функция для открытия программы "Телефон" с переданным номером телефона через *safeStartActivity*.
 
 ##### Расширения для `TextView`:
 
@@ -25,7 +26,7 @@ kotlin-extensions
 
 * *setOnRippleClickListener* - функция для добавления Ripple-эффекта и действия, которое будет выполняться при нажатии на `View`.
 
-##### Расширения для `RecyclerView`:
+##### Расширения для `ViewHolder`:
 
 * *ViewHolder.findViewById* - функция для поиска `View`, расположеного внутри *itemView*.
 
