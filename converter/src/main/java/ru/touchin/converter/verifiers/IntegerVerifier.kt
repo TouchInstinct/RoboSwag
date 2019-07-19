@@ -5,9 +5,9 @@ import java.math.BigDecimal
 
 class IntegerVerifier(maxIntegerNumbers: Int) : Verifier<BigDecimal> {
 
-    private val pattern = "(\\.?)(\\d{0,$maxIntegerNumbers})".toRegex()
+    private val pattern = "(\\d{1,4})((\\.)\\d*)?".toRegex()
 
-    override fun verify(text: String): Command<BigDecimal> = if (pattern.matches(text) == true) {
+    override fun verify(text: String): Command<BigDecimal> = if (pattern.matches(text) == true || text.isEmpty()) {
         Command.Success()
     } else {
         Command.Fallback()
