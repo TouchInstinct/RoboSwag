@@ -57,9 +57,9 @@ open class InputConvertable(val input: Convertable) {
             number: BigDecimal,
             placeCursorToTheEnd: Boolean = false,
             incrementCursorPosition: Boolean = false,
-            addSuffix: Boolean = false
+            addSuffix: Boolean = withSuffix
     ) {
-        val text = if (withSuffix == true || addSuffix == true) "${format(number)}$suffix" else format(number)
+        val text = if (addSuffix == true) "${format(number)}$suffix" else format(number)
         input.setText(text, placeCursorToTheEnd, incrementCursorPosition)
     }
 
