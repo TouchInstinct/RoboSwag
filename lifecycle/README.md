@@ -1,14 +1,13 @@
 lifecycle
 =====
 
-Модуль содержит обертку над `ViewModelProviders` для работы с `ViewController` и обертки для передачи событий из `ViewModel` во
-`ViewController`.
+Модуль содержит обертку над `ViewModelProviders` для работы с `ViewController` и обертки для передачи событий из `ViewModel` во `ViewController`.
 
 ### Основные интерфейсы и классы
 
 `LifecycleViewModelProviders` - объект для получения `ViewModelProvider`. Содержит функцию *of*, которая принимает `LifecycleOwner` и возвращает специфичный для него `ViewModelProvider`. 
 
-`SingleLiveEvent` - событие - одиночка. Посылает только новые события, возникшие после подписки. Наследуется от `MutableLiveData` и переопределяет методы `observe` и `setValue`.
+`SingleLiveEvent` - событие - одиночка. Посылает собятия только один раз. Наследуется от `MutableLiveData` и переопределяет методы `observe` и `setValue`.
 
 `ContentEvent` - событие, обертка над данными. 
 Дочерние классы: 
@@ -16,8 +15,6 @@ lifecycle
 * `Success` - символизирует успешное событие, 
 * `Error` - символизирует ошибку, 
 * `Complete` - символизирует завершение события. 
-
-Используется в `BaseLiveDataDispatcher` в модуле lifecycle-rx.
 
 `Event` - аналогичен `ContentEvent`, только не содержит никакой информации о данных. Нужен для оповещения о наступлении одного из следующих событий: `Loading`, `Complete` или `Error`.
 
