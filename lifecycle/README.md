@@ -7,7 +7,7 @@ lifecycle
 
 `LifecycleViewModelProviders` - объект для получения `ViewModelProvider`. Содержит функцию *of*, которая принимает `LifecycleOwner` и возвращает специфичный для него `ViewModelProvider`. 
 
-`SingleLiveEvent` - событие - одиночка. Посылает собятия только один раз. Наследуется от `MutableLiveData` и переопределяет методы `observe` и `setValue`.
+`SingleLiveEvent` - событие - одиночка. Посылает события только один раз. Наследуется от `MutableLiveData` и переопределяет методы `observe` и `setValue`.
 
 `ContentEvent` - событие, обертка над данными. 
 Дочерние классы: 
