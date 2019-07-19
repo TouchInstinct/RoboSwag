@@ -3,7 +3,6 @@ package ru.touchin.converter
 import ru.touchin.converter.commands.Command
 import ru.touchin.converter.verifiers.Verifier
 import ru.touchin.converter.wrap.InputConvertable
-import java.lang.IllegalStateException
 import java.math.BigDecimal
 
 class VerifierController(
@@ -24,16 +23,16 @@ class VerifierController(
         when (command) {
             is Command.Fallback -> {
                 with(inputConvertable) {
-                    setNumber(storedValue)
+                    setNumber(storedValue, addSuffix = false)
                 }
             }
             is Command.Set -> {
-                inputConvertable.setNumber(command.data)
+                inputConvertable.setNumber(command.data, addSuffix = false)
             }
             is Command.Remove -> {
                 with(inputConvertable) {
                     val changedString = format(storedValue).dropLast(command.data.toInt())
-                    inputConvertable.setNumber(format(changedString))
+                    inputConvertable.setNumber(format(changedString), placeCursorToTheEnd = true, addSuffix = false)
                 }
             }
             is Command.Success -> { // do nothing
