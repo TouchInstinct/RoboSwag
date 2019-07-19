@@ -11,6 +11,8 @@ class VerifierController(
         private val isCorrectionMode: Boolean
 ) {
 
+    fun verifyInput(): Boolean = verifyAll(inputConvertable.input.getText().toString())
+
     fun verifyAll(inputString: String): Boolean {
         return verifiers.all { verifier ->
             val result = verifier.verify(inputString)
