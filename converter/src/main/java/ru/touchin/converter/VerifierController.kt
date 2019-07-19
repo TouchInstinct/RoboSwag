@@ -3,6 +3,7 @@ package ru.touchin.converter
 import ru.touchin.converter.commands.Command
 import ru.touchin.converter.verifiers.Verifier
 import ru.touchin.converter.wrap.InputConvertable
+import java.lang.IllegalStateException
 import java.math.BigDecimal
 
 class VerifierController(
@@ -13,11 +14,9 @@ class VerifierController(
     fun verifyAll(inputString: String): Boolean {
         return verifiers.all { verifier ->
             val result = verifier.verify(inputString)
-            val isVerifier = result is Command.Success
+            execute(result)
 
-            if (isVerifier == false) execute(result)
-
-            isVerifier
+            result is Command.Success
         }
     }
 
@@ -36,6 +35,11 @@ class VerifierController(
                     val changedString = format(storedValue).dropLast(command.data.toInt())
                     inputConvertable.setNumber(format(changedString))
                 }
+            }
+            is Command.Success -> { // do nothing
+            }
+            is Command.Error -> {
+                throw IllegalStateException("Can't resolve error")
             }
         }
     }
