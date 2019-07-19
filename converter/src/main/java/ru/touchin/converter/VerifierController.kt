@@ -7,13 +7,14 @@ import java.math.BigDecimal
 
 class VerifierController(
         private val inputConvertable: InputConvertable,
-        private val verifiers: List<Verifier<BigDecimal>>
+        private val verifiers: List<Verifier<BigDecimal>>,
+        private val isCorrectionMode: Boolean
 ) {
 
     fun verifyAll(inputString: String): Boolean {
         return verifiers.all { verifier ->
             val result = verifier.verify(inputString)
-            execute(result)
+            if (isCorrectionMode == true) execute(result)
 
             result is Command.Success
         }
