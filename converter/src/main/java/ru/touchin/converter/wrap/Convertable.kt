@@ -6,7 +6,7 @@ import androidx.annotation.ColorInt
 
 interface Convertable {
 
-    fun setText(charSequence: CharSequence)
+    fun setText(charSequence: CharSequence, placeCursorToTheEnd: Boolean = false, incrementCursorPosition: Boolean = false)
 
     fun getText(): CharSequence
 

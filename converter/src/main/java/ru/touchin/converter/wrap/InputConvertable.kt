@@ -53,8 +53,14 @@ open class InputConvertable(val input: Convertable) {
             .divide(convertRate, scaleValue, roundingMode)
             .stripTrailingZeros()
 
-    fun setNumber(number: BigDecimal) {
-        if (withSuffix == true) addSuffixToText() else input.setText(format(number))
+    fun setNumber(
+            number: BigDecimal,
+            placeCursorToTheEnd: Boolean = false,
+            incrementCursorPosition: Boolean = false,
+            addSuffix: Boolean = false
+    ) {
+        val text = if (withSuffix == true || addSuffix == true) "${format(number)}$suffix" else format(number)
+        input.setText(text, placeCursorToTheEnd, incrementCursorPosition)
     }
 
     fun format(valueToFormat: BigDecimal): String = valueToFormat.formatToStringWithoutGroupingSeparator()

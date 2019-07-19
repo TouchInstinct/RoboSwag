@@ -6,8 +6,18 @@ import android.widget.EditText
 
 open class EditTextConvertable(val editText: EditText) : Convertable {
 
-    override fun setText(charSequence: CharSequence) {
+    override fun setText(charSequence: CharSequence, placeCursorToTheEnd: Boolean, incrementCursorPosition: Boolean) {
+        val cursorPositionFromEnd = getText().length - editText.selectionEnd
         editText.setText(charSequence)
+        if (editText.isFocused) {
+            if (placeCursorToTheEnd || cursorPositionFromEnd > getText().length) {
+                editText.setSelection(getText().length)
+            } else if (incrementCursorPosition && cursorPositionFromEnd > 0) {
+                editText.setSelection(getText().length - cursorPositionFromEnd + 1)
+            } else {
+                editText.setSelection(getText().length - cursorPositionFromEnd)
+            }
+        }
     }
 
     override fun getText(): CharSequence = editText.text
