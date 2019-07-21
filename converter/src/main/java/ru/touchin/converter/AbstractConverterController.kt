@@ -106,8 +106,9 @@ abstract class AbstractConverterController(
                 val inputWrapper = views.amountBase
                 val newBaseValue = inputWrapper.format(editable)
                 val newTargetValue = inputWrapper.baseOperation(newBaseValue, convertRate, OPERATION_SCALE, roundingMode)
-                if (inputWrapper.input.isFocused() && newBaseValue != baseValue) {
-                    val isValid = baseVerifier.verifyAll(editable.toString())
+
+                val isValid = baseVerifier.verifyAll(editable.toString())
+                if (isValid == true && inputWrapper.input.isFocused() && newBaseValue != baseValue) {
                     if (isValid == true) {
                         baseListenerOperation(newBaseValue, newTargetValue)
                     }
@@ -129,8 +130,9 @@ abstract class AbstractConverterController(
                 val inputWrapper = views.amountTarget
                 val newTargetValue = inputWrapper.format(editable)
                 val newBaseValue = inputWrapper.targetOperation(newTargetValue, convertRate, OPERATION_SCALE, roundingMode)
-                if (inputWrapper.input.isFocused() && newTargetValue != targetValue) {
-                    val isValid = targetVerifier.verifyAll(editable.toString())
+
+                val isValid = targetVerifier.verifyAll(editable.toString())
+                if (isValid == true && inputWrapper.input.isFocused() && newTargetValue != targetValue) {
                     if (isValid == true) {
                         targetListenerOperation(newTargetValue, newBaseValue)
                     }
