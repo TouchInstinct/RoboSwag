@@ -15,10 +15,14 @@ class VerifierController(
 
     fun verifyAll(inputString: String): Boolean {
         return verifiers.all { verifier ->
-            val result = verifier.verify(inputString)
-            if (isCorrectionMode == true) execute(result)
+            if (inputString.isBlank() == true) {
+                true
+            } else {
+                val result = verifier.verify(inputString)
+                if (isCorrectionMode == true) execute(result)
 
-            result is Command.Success
+                result is Command.Success
+            }
         }
     }
 
