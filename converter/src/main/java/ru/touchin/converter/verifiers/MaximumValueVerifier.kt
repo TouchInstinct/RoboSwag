@@ -5,7 +5,7 @@ import java.math.BigDecimal
 
 class MaximumValueVerifier(val maxValue: BigDecimal) : Verifier<BigDecimal> {
 
-    override fun verify(text: String): Command<BigDecimal> = if (text.isEmpty() == true || text.toBigDecimal() <= maxValue) {
+    override fun verify(text: String): Command<BigDecimal> = if (text.toBigDecimal() <= maxValue) {
         Command.Success()
     } else {
         Command.Set(maxValue)
