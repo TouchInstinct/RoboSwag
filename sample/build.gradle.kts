@@ -50,4 +50,4 @@ dependencies {
     implementation("androidx.appcompat:appcompat:${versions["appcompat"]}")
 }
 
-apply(from = "$buildScriptsDir/gradle/staticAnalysis.gradle")
+apply(from = "$buildScriptsDir/gradle/staticAnalysis.gradle.kts")
