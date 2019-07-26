@@ -29,7 +29,9 @@ import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.style.URLSpan;
+import android.text.style.UnderlineSpan;
 import android.text.util.Linkify;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -80,19 +82,31 @@ public final class UiUtils {
      * Convert text with 'href' tags and raw links to spanned text with clickable URLSpan.
      */
     @NonNull
-    public static Spanned getSpannedTextWithUrls(@NonNull final String text) {
+    public static Spanned getSpannedTextWithUrls(@NonNull final String text, final boolean isWithoutUnderline) {
         final Spannable spannableText = new SpannableString(Html.fromHtml(text));
-        // Linkify removes all previous URLSpan's, we need to save all created spans for reapply after Linkify
-        final URLSpan[] spans = spannableText.getSpans(0, text.length(), URLSpan.class);
-        final int[] starts = new int[spans.length];
-        final int[] ends = new int[spans.length];
-        for (int index = 0; index < spans.length; index++) {
-            starts[index] = spannableText.getSpanStart(spans[index]);
-            ends[index] = spannableText.getSpanEnd(spans[index]);
-        }
-        Linkify.addLinks(spannableText, Linkify.WEB_URLS);
-        for (int index = 0; index < spans.length; index++) {
-            spannableText.setSpan(spans[index], starts[index], ends[index], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        if (isWithoutUnderline) {
+            final UnderlineSpan spanWithoutUnderline = new UnderlineSpan() {
+                @Override
+                public void updateDrawState(@NonNull final TextPaint ds) {
+                    ds.setUnderlineText(false);
+                }
+            };
+            for (final URLSpan urlSpan : spannableText.getSpans(0, spannableText.length(), URLSpan.class)) {
+                spannableText.setSpan(spanWithoutUnderline, spannableText.getSpanStart(urlSpan), spannableText.getSpanEnd(urlSpan), 0);
+            }
+        } else {
+            // Linkify removes all previous URLSpan's, we need to save all created spans for reapply after Linkify
+            final URLSpan[] spans = spannableText.getSpans(0, text.length(), URLSpan.class);
+            final int[] starts = new int[spans.length];
+            final int[] ends = new int[spans.length];
+            for (int index = 0; index < spans.length; index++) {
+                starts[index] = spannableText.getSpanStart(spans[index]);
+                ends[index] = spannableText.getSpanEnd(spans[index]);
+            }
+            Linkify.addLinks(spannableText, Linkify.WEB_URLS);
+            for (int index = 0; index < spans.length; index++) {
+                spannableText.setSpan(spans[index], starts[index], ends[index], Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
         }
         return spannableText;
     }
