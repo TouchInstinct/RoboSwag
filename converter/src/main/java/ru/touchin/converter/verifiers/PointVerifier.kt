@@ -4,9 +4,9 @@ import android.util.Log
 import ru.touchin.converter.commands.Command
 import java.math.BigDecimal
 
-class PointVerifier : Verifier<BigDecimal> { // todo fix regular expression to catch repeating zeros
+class PointVerifier(pointChar: Char = '.') : Verifier<BigDecimal> { // todo fix regular expression to catch repeating zeros
 
-    private val pattern = "[^.,]*[.,]?[^.,]*".toRegex()
+    private val pattern = "[^$pointChar]*[$pointChar]?[^$pointChar]*".toRegex()
 
     override fun verify(text: String): Command<BigDecimal> {
         Log.d("verify", "text:${text}")
