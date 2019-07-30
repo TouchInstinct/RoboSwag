@@ -52,5 +52,6 @@ object ClickableMovementMethod : BaseMovementMethod() {
 
     }
 
-    override fun initialize(widget: TextView?, text: Spannable?) = Selection.removeSelection(text)
+    override fun initialize(widget: TextView, text: Spannable) = Selection.removeSelection(text)
+
 }
