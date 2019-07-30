@@ -49,7 +49,7 @@ abstract class AbstractConverterController(
      * Set text to the corresponding input after each invocation of conversion in [baseAmountChangedListener] and [targetAmountChangedListener]
      */
     var autoTextSet = true
-    var roundingMode: RoundingMode = RoundingMode.HALF_UP
+    var roundingMode: RoundingMode = RoundingMode.HALF_DOWN
 
     init {
         setStateReadyIfCompletelyInitialized()
@@ -62,14 +62,14 @@ abstract class AbstractConverterController(
     fun addToBaseValue(value: BigDecimal) {
         baseValue = baseValue.plus(value)
         views.amountBase.setNumber(baseValue)
-        val newTargetValue = views.amountBase.baseOperation(baseValue, convertRate!!, OPERATION_SCALE, roundingMode)
+        val newTargetValue = views.amountBase.baseOperation(baseValue, convertRate!!, views.amountBase.maxFractionNumber, roundingMode)
         baseListenerOperation(baseValue, newTargetValue)
     }
 
     fun addToTargetValue(value: BigDecimal) {
         targetValue = targetValue.plus(value)
         views.amountTarget.setNumber(targetValue)
-        val newBaseValue = views.amountTarget.targetOperation(targetValue, convertRate!!, OPERATION_SCALE, roundingMode)
+        val newBaseValue = views.amountTarget.targetOperation(targetValue, convertRate!!, views.amountTarget.maxFractionNumber, roundingMode)
         targetListenerOperation(targetValue, newBaseValue)
     }
 
@@ -105,7 +105,7 @@ abstract class AbstractConverterController(
             convertRate?.let { convertRate ->
                 val inputWrapper = views.amountBase
                 val newBaseValue = inputWrapper.format(editable)
-                val newTargetValue = inputWrapper.baseOperation(newBaseValue, convertRate, OPERATION_SCALE, roundingMode)
+                val newTargetValue = inputWrapper.baseOperation(newBaseValue, convertRate, views.amountTarget.maxFractionNumber, roundingMode)
 
                 val isValid = baseVerifier.verifyAll(editable.toString())
                 if (isValid == true && inputWrapper.input.isFocused() && newBaseValue != baseValue) {
@@ -129,7 +129,7 @@ abstract class AbstractConverterController(
             convertRate?.let { convertRate ->
                 val inputWrapper = views.amountTarget
                 val newTargetValue = inputWrapper.format(editable)
-                val newBaseValue = inputWrapper.targetOperation(newTargetValue, convertRate, OPERATION_SCALE, roundingMode)
+                val newBaseValue = inputWrapper.targetOperation(newTargetValue, convertRate, views.amountBase.maxFractionNumber, roundingMode)
 
                 val isValid = targetVerifier.verifyAll(editable.toString())
                 if (isValid == true && inputWrapper.input.isFocused() && newTargetValue != targetValue) {
