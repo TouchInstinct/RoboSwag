@@ -10,7 +10,7 @@ import java.util.Locale
 open class InputConvertable(val input: Convertable) {
 
     var storedValue: BigDecimal = BigDecimal.ZERO
-    var formatPattern: String = "#,##0.00######"
+    var formatPattern: String = "#,##0.########"
     var groupingSeparator = ' '
     var roundingMode: RoundingMode = RoundingMode.DOWN
     var maxFractionNumber = 2
@@ -92,7 +92,6 @@ open class InputConvertable(val input: Convertable) {
         it.roundingMode = roundingMode
         it.maximumFractionDigits = maxFractionNumber
         it.maximumIntegerDigits = maxIntegerNumber
-        it.isParseBigDecimal
     }
 
 }
