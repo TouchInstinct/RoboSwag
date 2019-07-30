@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -16,4 +17,5 @@ android {
 dependencies {
     implementation "androidx.core:core:$versions.androidx"
     implementation "androidx.annotation:annotation:$versions.androidx"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
