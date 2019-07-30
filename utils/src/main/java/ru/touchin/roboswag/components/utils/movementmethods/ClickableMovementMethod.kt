@@ -54,8 +54,7 @@ object ClickableMovementMethod : BaseMovementMethod() {
                 if (action == MotionEvent.ACTION_UP) {
                     link[0].onClick(widget)
                 } else {
-                    Selection.setSelection(text, text.getSpanStart(link[0]),
-                            text.getSpanEnd(link[0]))
+                    Selection.setSelection(text, text.getSpanStart(link[0]), text.getSpanEnd(link[0]))
                 }
                 return true
             } else {
