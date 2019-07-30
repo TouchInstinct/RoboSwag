@@ -11,7 +11,7 @@ import android.widget.TextView
  * Created by Daniil Borisovskii on 29/07/2019.
  * Helper object for make clickable a part of SpannableString with ClickableSpan using custom handler,
  * and NOT intercepting the parent view handler.
- * It solves this problem – <a href="https://stackoverflow.com/questions/16792963/android-clickablespan-intercepts-the-click-event">https://stackoverflow.com/questions/16792963/android-clickablespan-intercepts-the-click-event</a>
+ * It solves this problem – https://stackoverflow.com/questions/16792963/android-clickablespan-intercepts-the-click-event
  *
  * Don`t forget after applying this method to make your TextView
  * isClickable = false
