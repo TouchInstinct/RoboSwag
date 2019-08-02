@@ -7,25 +7,25 @@ navigation
 
 #### Пакет `activities`
 
-Класс `BaseActivity` - абстрактный класс, в котором выполняется логгирование с помощью модуля [logging](https://github.com/TouchInstinct/RoboSwag/tree/master/logging) при выполнении некоторых методов. Класс позволяет добавлять новые `OnBackPressedListener` и удалять их с помощью методов *addOnBackPressedListener* и *removeOnBackPressedListener* (*removeAllOnBackPressedListeners*) соответственно.
+`BaseActivity` - абстрактный класс, в котором выполняется логгирование с помощью модуля [logging](https://github.com/TouchInstinct/RoboSwag/tree/master/logging) при выполнении некоторых методов. Класс позволяет добавлять новые `OnBackPressedListener` и удалять их с помощью методов *addOnBackPressedListener* и *removeOnBackPressedListener* (*removeAllOnBackPressedListeners*) соответственно.
 
 Интерфейс `OnBackPressedListener` - интерфейс с одним методом *onBackPressed*. Используется в `BaseActivity`.
 
 #### Пакет `fragments`
 
-Класс `ViewControllerFragment` является оберткой над `Fragment`. Через статический метод *args* получается `Bundle` с классом `ViewController`(а) и состоянием, которое наследуется от `Parcelable`. В методе *onCreate* инициализируются поля *state* и *viewControllerClass* используя данные из `Bundle`. В методе *onCreateView* создается `ViewController`.
+Класс `ViewControllerFragment` наследуется от `Fragment`. Через статический метод *args* получается `Bundle` с классом `ViewController`(а) и состоянием, которое наследуется от `Parcelable`. В методе *onCreate* инициализируются поля *state* и *viewControllerClass* используя данные из `Bundle`. В методе *onCreateView* создается `ViewController`.
 
 #### Пакет `viewcontrollers`
 
-Класс `EmptyState` - пустое состояние. Использутся, когда при переходе к новому `ViewController` не нужно передавать никаких инициализирующих данных.
-
-Класс `LifecycleLoggingObserver` - подписывается на вызовы методов жизненного цикла и логгирует номер строки из, которой был вызваны эти методы.
-
-Класс `ViewController` - Класс который следует использовать в качестве родительского при создании собственных `ViewController`(ов). К моменту инициализации вашего класса уже будут доступны следующие поля из `ViewController`: *state*, *activity*, *fragment*, *view*. Это означает, что можно выполнять всю настройку экрана в `init { }`.
+`ViewController` - обертка над Fragment. Один ViewController - один экран. К моменту инициализации вашего класса уже будут доступны следующие поля из `ViewController`: *state*, *activity*, *fragment*, *view*. Это означает, что можно выполнять всю настройку экрана в `init { }`.
 
 У класса есть два параметра `TActivity: FragmentActivity` и `TState: Parcelable`, которые нужно указывать при инициализации класса `ViewController`. В конструкторе данный класс принимает `CreationContext` и идентификатор layout-ресурса.
 
-Класс `ViewControllerNavigation` - навигация по `ViewController`(ам). В конструкторе принимает `Context`, `FragmentManager` и идентификатор ресурса, который является контейнером для других фрагментов. Имеет параметр `TActivity : FragmentActivity`.
+`ViewControllerNavigation` отвечает за навигацию по `ViewController`(ам). В конструкторе принимает `Context`, `FragmentManager` и идентификатор ресурса, который является контейнером для других фрагментов. Имеет параметр `TActivity : FragmentActivity`.
+
+`EmptyState` - пустое состояние. Использутся, когда при переходе к новому `ViewController` не нужно передавать никаких инициализирующих данных.
+
+`LifecycleLoggingObserver` - подписывается на вызовы методов жизненного цикла и логгирует номер строки из, которой был вызваны эти методы.
 
 Методы для навигации:
 
