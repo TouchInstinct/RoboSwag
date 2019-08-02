@@ -1,6 +1,9 @@
 final String rootDir
+//todo remove first if when migrate to Kotlin DSL
 if (gradle.ext.has('componentsRoot')) {
     rootDir = gradle.ext['componentsRoot']
+} else if (ext.has('componentsRoot')) {
+    rootDir = ext['componentsRoot']
 } else {
     rootDir = settingsDir
 }
