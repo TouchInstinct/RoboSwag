@@ -1,7 +1,7 @@
 lifecycle-rx
 =====
 
-Модуль для преобразования событий из `Flowable`, `Observable`, `Single`, `Completable`, `Maybe` в `LiveData`. Нужен для передачи событий из `ViewModel` во `ViewController` с автоматическим управлением подписками во `ViewController`.
+Модуль для преобразования событий из `Observable` в `LiveData`. Нужен для передачи событий из `ViewModel` во `ViewController` с автоматическим управлением подписками во `ViewController`.
 
 ### Основный интерфейсы и классы
 `Destroyable` - интерфейс, который содержит extansion-функцию *untilDestroy* для `Flowable`, `Observable`, `Single`, `Completable`, `Maybe`. Данная функция гарантирует, что подписка на события "умрет" после *onDestroy*.
