@@ -11,6 +11,10 @@ class KeyboardBehaviorDetector(
         fragmentContainerId: Int
 ) {
 
+    companion object {
+        private const val SCREEN_TO_KEYBOARD_HEIGHT_RATIO = 4.75
+    }
+
     private val contentContainer = activity.findViewById(android.R.id.content) as ViewGroup
     private val fragmentContainer = activity.findViewById(fragmentContainerId) as ViewGroup
     private lateinit var rootView: View
@@ -37,7 +41,6 @@ class KeyboardBehaviorDetector(
 
     // Call this in "onResume()" of a fragment
     fun startDetection() {
-
         rootView = fragmentContainer.getChildAt(0)
 
         contentContainer.viewTreeObserver.addOnGlobalLayoutListener(listener)
@@ -55,7 +58,7 @@ class KeyboardBehaviorDetector(
         val height = rootView.context.resources.displayMetrics.heightPixels
         val diff = height - rect.bottom
 
-        if (diff > rootView.rootView.height / 4) {
+        if (diff > rootView.rootView.height / SCREEN_TO_KEYBOARD_HEIGHT_RATIO) {
             keyboardShowListener?.invoke(diff)
         } else {
             keyboardHideListener?.invoke()
