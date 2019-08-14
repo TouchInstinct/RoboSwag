@@ -1,4 +1,4 @@
-package ru.touchin.tabbarnavigation
+package ru.touchin.roboswag.components.tabbarnavigation
 
 import android.os.Bundle
 import android.os.Parcelable

@@ -1,4 +1,4 @@
-package ru.touchin.tabbarnavigation
+package ru.touchin.roboswag.components.tabbarnavigation
 
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
