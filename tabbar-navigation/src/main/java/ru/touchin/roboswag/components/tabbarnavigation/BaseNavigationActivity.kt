@@ -10,12 +10,12 @@ abstract class BaseNavigationActivity : TouchinActivity() {
         ViewControllerNavigation<BaseNavigationActivity>(
                 this,
                 supportFragmentManager,
-                getContainerViewId(),
+                getFragmentContainerViewId(),
                 getTransition()
         )
     }
 
-    abstract fun getContainerViewId(): Int
+    abstract fun getFragmentContainerViewId(): Int
 
     open fun getTransition() = FragmentTransaction.TRANSIT_NONE
 
