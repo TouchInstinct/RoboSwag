@@ -6,20 +6,22 @@ import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewControllerN
 import ru.touchin.templates.TouchinActivity
 
 abstract class BaseNavigationActivity : TouchinActivity() {
-    val screenNavigation by lazy {
+    val navigation by lazy {
         ViewControllerNavigation<BaseNavigationActivity>(
                 this,
                 supportFragmentManager,
-                getFragmentContainerViewId(),
-                getTransition()
+                fragmentContainerViewId,
+                transition
         )
     }
 
-    protected abstract fun getFragmentContainerViewId(): Int
+    val innerNavigation by lazy {
+        getNavigationContainer(supportFragmentManager)?.navigation ?: navigation
+    }
 
-    protected open fun getTransition() = FragmentTransaction.TRANSIT_NONE
+    protected abstract val fragmentContainerViewId: Int
 
-    fun getInnerNavigation() = getNavigationContainer(supportFragmentManager)?.navigation ?: screenNavigation
+    protected open val transition = FragmentTransaction.TRANSIT_NONE
 
     private fun getNavigationContainer(fragmentManager: FragmentManager?): NavigationContainerFragment? =
             fragmentManager

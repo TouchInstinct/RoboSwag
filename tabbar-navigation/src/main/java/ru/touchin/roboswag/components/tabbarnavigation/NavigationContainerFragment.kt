@@ -5,10 +5,13 @@ import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.IdRes
+import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewController
 import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewControllerNavigation
+import ru.touchin.roboswag.core.utils.ShouldNotHappenException
 
 class NavigationContainerFragment : Fragment() {
 
@@ -22,8 +25,8 @@ class NavigationContainerFragment : Fragment() {
         fun args(
                 cls: Class<out ViewController<*, *>>,
                 state: Parcelable,
-                containerViewId: Int,
-                containerLayoutId: Int,
+                @IdRes containerViewId: Int,
+                @LayoutRes containerLayoutId: Int,
                 transition: Int = FragmentTransaction.TRANSIT_NONE
         ) = Bundle().apply {
             putSerializable(VIEW_CONTROLLER_CLASS_ARG, cls)
@@ -56,7 +59,7 @@ class NavigationContainerFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
-            val args = arguments ?: return
+            val args = arguments ?: throw ShouldNotHappenException("Fragment is not instantiable without arguments")
             with(args) {
                 containerViewId = getInt(CONTAINER_VIEW_ID_ARG)
                 containerLayoutId = getInt(CONTAINER_LAYOUT_ID_ARG)

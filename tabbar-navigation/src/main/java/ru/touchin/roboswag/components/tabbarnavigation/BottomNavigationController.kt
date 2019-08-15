@@ -7,6 +7,7 @@ import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IdRes
+import androidx.annotation.LayoutRes
 import androidx.core.util.forEach
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
@@ -19,14 +20,14 @@ class BottomNavigationController(
         private val context: Context,
         private val fragmentManager: FragmentManager,
         private val viewControllers: SparseArray<Pair<Class<out ViewController<*, *>>, Parcelable>>,
-        private val contentContainerViewId: Int,
-        private val contentContainerLayoutId: Int,
+        @IdRes private val contentContainerViewId: Int,
+        @LayoutRes private val contentContainerLayoutId: Int,
         private val wrapWithNavigationContainer: Boolean = false,
         @IdRes private val topLevelViewControllerId: Int = 0, // If it zero back press with empty fragment back stack would close the app
         private val onReselectListener: (() -> Unit)? = null
 ) {
 
-    private lateinit var callback: FragmentManager.FragmentLifecycleCallbacks
+    private var callback: FragmentManager.FragmentLifecycleCallbacks? = null
 
     private var currentViewControllerId = -1
 
@@ -43,7 +44,7 @@ class BottomNavigationController(
                 }
             }
         }
-        fragmentManager.registerFragmentLifecycleCallbacks(callback, false)
+        fragmentManager.registerFragmentLifecycleCallbacks(callback!!, false)
 
         navigationTabsContainer.children.forEach { itemView ->
             viewControllers[itemView.id]?.let { (viewControllerClass, _) ->
@@ -58,11 +59,7 @@ class BottomNavigationController(
         }
     }
 
-    fun detach() {
-        if (::callback.isInitialized) {
-            fragmentManager.unregisterFragmentLifecycleCallbacks(callback)
-        }
-    }
+    fun detach() = callback?.let { fragmentManager.unregisterFragmentLifecycleCallbacks(it) }
 
     fun navigateTo(@IdRes itemId: Int, state: Parcelable? = null) {
         // Find view controller class that needs to open

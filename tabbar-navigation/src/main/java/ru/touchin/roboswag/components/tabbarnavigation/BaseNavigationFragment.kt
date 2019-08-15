@@ -16,43 +16,43 @@ abstract class BaseNavigationFragment : Fragment() {
 
     private val backPressedListener = OnBackPressedListener { bottomNavigationController.onBackPressed() }
 
-    protected abstract fun getRootLayoutId(): Int
+    protected abstract val rootLayoutId: Int
 
-    protected abstract fun getNavigationContainerViewId(): Int
+    protected abstract val navigationContainerViewId: Int
 
-    protected abstract fun getContentContainerViewId(): Int
+    protected abstract val contentContainerViewId: Int
 
-    protected abstract fun getContentContainerLayoutId(): Int
+    protected abstract val contentContainerLayoutId: Int
 
-    protected abstract fun getTopLevelViewControllerId(): Int
+    protected abstract val topLevelViewControllerId: Int
 
-    protected abstract fun wrapWithNavigationContainer(): Boolean
+    protected abstract val wrapWithNavigationContainer: Boolean
 
-    protected abstract fun getNavigationViewControllers(): SparseArray<Pair<Class<out ViewController<*, *>>, Parcelable>>
+    protected abstract val navigationViewControllers: SparseArray<Pair<Class<out ViewController<*, *>>, Parcelable>>
 
-    protected open fun getReselectListener(): (() -> Unit) = { getNavigationActivity().getInnerNavigation().up() }
+    protected open val reselectListener: (() -> Unit) = { getNavigationActivity().innerNavigation.up() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         bottomNavigationController = BottomNavigationController(
                 context = requireContext(),
                 fragmentManager = childFragmentManager,
-                viewControllers = getNavigationViewControllers(),
-                contentContainerViewId = getContentContainerViewId(),
-                contentContainerLayoutId = getContentContainerLayoutId(),
-                topLevelViewControllerId = getTopLevelViewControllerId(),
-                wrapWithNavigationContainer = wrapWithNavigationContainer(),
-                onReselectListener = getReselectListener()
+                viewControllers = navigationViewControllers,
+                contentContainerViewId = contentContainerViewId,
+                contentContainerLayoutId = contentContainerLayoutId,
+                topLevelViewControllerId = topLevelViewControllerId,
+                wrapWithNavigationContainer = wrapWithNavigationContainer,
+                onReselectListener = reselectListener
         )
         if (savedInstanceState == null) {
-            bottomNavigationController.navigateTo(getTopLevelViewControllerId())
+            bottomNavigationController.navigateTo(topLevelViewControllerId)
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val fragmentView = inflater.inflate(getRootLayoutId(), container, false)
+        val fragmentView = inflater.inflate(rootLayoutId, container, false)
 
-        bottomNavigationController.attach(fragmentView.findViewById(getNavigationContainerViewId()))
+        bottomNavigationController.attach(fragmentView.findViewById(navigationContainerViewId))
 
         (activity as BaseNavigationActivity).addOnBackPressedListener(backPressedListener)
 
