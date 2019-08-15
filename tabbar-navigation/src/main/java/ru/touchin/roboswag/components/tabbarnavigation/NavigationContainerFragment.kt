@@ -46,9 +46,9 @@ class NavigationContainerFragment : Fragment() {
         )
     }
 
-    private var containerViewId = 0
+    @IdRes private var containerViewId = 0
 
-    private var containerLayoutId = 0
+    @LayoutRes private var containerLayoutId = 0
 
     private var transition = 0
 

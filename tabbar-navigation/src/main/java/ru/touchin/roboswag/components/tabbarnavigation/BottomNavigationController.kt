@@ -103,7 +103,7 @@ class BottomNavigationController(
         currentViewControllerId = itemId
     }
 
-    // If current fragment top and it's not the top level view controller open to top level view controller
+    // When you are in any tab instead of main you firstly navigate to main tab before exit application
     fun onBackPressed() =
             if (fragmentManager.primaryNavigationFragment?.childFragmentManager?.backStackEntryCount == 0
                     && topLevelViewControllerId != 0

@@ -7,14 +7,14 @@ import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewControllerN
  * Created by Daniil Borisovskii on 15/08/2019.
  * Base activity with nested navigation.
  */
-abstract class BaseNavigationActivity : BaseActivity() {
+abstract class NavigationActivity : BaseActivity() {
 
     protected abstract val fragmentContainerViewId: Int
 
     protected open val transition = FragmentTransaction.TRANSIT_NONE
 
     val navigation by lazy {
-        ViewControllerNavigation<BaseNavigationActivity>(
+        ViewControllerNavigation<NavigationActivity>(
                 this,
                 supportFragmentManager,
                 fragmentContainerViewId,
