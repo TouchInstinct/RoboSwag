@@ -16,21 +16,21 @@ abstract class BaseNavigationFragment : Fragment() {
 
     private val backPressedListener = OnBackPressedListener { bottomNavigationController.onBackPressed() }
 
-    abstract fun getRootLayoutId(): Int
+    protected abstract fun getRootLayoutId(): Int
 
-    abstract fun getNavigationContainerViewId(): Int
+    protected abstract fun getNavigationContainerViewId(): Int
 
-    abstract fun getContentContainerViewId(): Int
+    protected abstract fun getContentContainerViewId(): Int
 
-    abstract fun getContentContainerLayoutId(): Int
+    protected abstract fun getContentContainerLayoutId(): Int
 
-    abstract fun getTopLevelViewControllerId(): Int
+    protected abstract fun getTopLevelViewControllerId(): Int
 
-    abstract fun wrapWithNavigationContainer(): Boolean
+    protected abstract fun wrapWithNavigationContainer(): Boolean
 
     protected abstract fun getNavigationViewControllers(): SparseArray<Pair<Class<out ViewController<*, *>>, Parcelable>>
 
-    open fun getReselectListener(): (() -> Unit) = { getNavigationActivity().getInnerNavigation().up() }
+    protected open fun getReselectListener(): (() -> Unit) = { getNavigationActivity().getInnerNavigation().up() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

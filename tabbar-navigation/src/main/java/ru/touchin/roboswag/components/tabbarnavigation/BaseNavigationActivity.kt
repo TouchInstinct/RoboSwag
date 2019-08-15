@@ -15,9 +15,9 @@ abstract class BaseNavigationActivity : TouchinActivity() {
         )
     }
 
-    abstract fun getFragmentContainerViewId(): Int
+    protected abstract fun getFragmentContainerViewId(): Int
 
-    open fun getTransition() = FragmentTransaction.TRANSIT_NONE
+    protected open fun getTransition() = FragmentTransaction.TRANSIT_NONE
 
     fun getInnerNavigation() = getNavigationContainer(supportFragmentManager)?.navigation ?: screenNavigation
 
