@@ -20,6 +20,7 @@ class BottomNavigationController(
         private val fragmentManager: FragmentManager,
         private val viewControllers: SparseArray<Pair<Class<out ViewController<*, *>>, Parcelable>>,
         private val contentContainerViewId: Int,
+        private val contentContainerLayoutId: Int,
         private val wrapWithNavigationContainer: Boolean = false,
         @IdRes private val topLevelViewControllerId: Int = 0, // If it zero back press with empty fragment back stack would close the app
         private val onReselectListener: (() -> Unit)? = null
@@ -86,7 +87,7 @@ class BottomNavigationController(
                 Fragment.instantiate(
                         context,
                         NavigationContainerFragment::class.java.name,
-                        NavigationContainerFragment.args(viewControllerClass, viewControllerState, contentContainerViewId)
+                        NavigationContainerFragment.args(viewControllerClass, viewControllerState, contentContainerViewId, contentContainerLayoutId)
                 )
             } else {
                 Fragment.instantiate(

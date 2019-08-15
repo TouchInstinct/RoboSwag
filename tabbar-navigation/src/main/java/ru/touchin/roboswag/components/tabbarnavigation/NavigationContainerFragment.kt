@@ -16,17 +16,20 @@ class NavigationContainerFragment : Fragment() {
         private const val VIEW_CONTROLLER_CLASS_ARG = "VIEW_CONTROLLER_CLASS_ARG"
         private const val VIEW_CONTROLLER_STATE_ARG = "VIEW_CONTROLLER_STATE_ARG"
         private const val CONTAINER_VIEW_ID_ARG = "CONTAINER_VIEW_ID_ARG"
+        private const val CONTAINER_LAYOUT_ID_ARG = "CONTAINER_LAYOUT_ID_ARG"
         private const val TRANSITION_ARG = "TRANSITION_ARG"
 
         fun args(
                 cls: Class<out ViewController<*, *>>,
                 state: Parcelable,
                 containerViewId: Int,
+                containerLayoutId: Int,
                 transition: Int = FragmentTransaction.TRANSIT_NONE
         ) = Bundle().apply {
             putSerializable(VIEW_CONTROLLER_CLASS_ARG, cls)
             putParcelable(VIEW_CONTROLLER_STATE_ARG, state)
             putInt(CONTAINER_VIEW_ID_ARG, containerViewId)
+            putInt(CONTAINER_LAYOUT_ID_ARG, containerLayoutId)
             putInt(TRANSITION_ARG, transition)
         }
     }
@@ -42,6 +45,8 @@ class NavigationContainerFragment : Fragment() {
 
     private var containerViewId = 0
 
+    private var containerLayoutId = 0
+
     private var transition = 0
 
     @Suppress("UNCHECKED_CAST")
@@ -54,6 +59,7 @@ class NavigationContainerFragment : Fragment() {
             val args = arguments ?: return
             with(args) {
                 containerViewId = getInt(CONTAINER_VIEW_ID_ARG)
+                containerLayoutId = getInt(CONTAINER_LAYOUT_ID_ARG)
                 transition = getInt(TRANSITION_ARG)
             }
             navigation.setInitialViewController(getViewControllerClass(), args.getParcelable(VIEW_CONTROLLER_STATE_ARG))
@@ -61,6 +67,6 @@ class NavigationContainerFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater.inflate(containerViewId, container, false)
+            inflater.inflate(containerLayoutId, container, false)
 
 }

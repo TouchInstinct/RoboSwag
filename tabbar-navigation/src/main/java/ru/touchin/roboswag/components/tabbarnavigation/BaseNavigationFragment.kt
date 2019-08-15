@@ -22,6 +22,8 @@ abstract class BaseNavigationFragment : Fragment() {
 
     abstract fun getContentContainerId(): Int
 
+    abstract fun getContentContainerLayoutId(): Int
+
     abstract fun getTopLevelViewControllerId(): Int
 
     abstract fun wrapWithNavigationContainer(): Boolean
@@ -37,6 +39,7 @@ abstract class BaseNavigationFragment : Fragment() {
                 fragmentManager = childFragmentManager,
                 viewControllers = getNavigationViewControllers(),
                 contentContainerViewId = getContentContainerId(),
+                contentContainerLayoutId = getContentContainerLayoutId(),
                 topLevelViewControllerId = getTopLevelViewControllerId(),
                 wrapWithNavigationContainer = wrapWithNavigationContainer(),
                 onReselectListener = getReselectListener()
