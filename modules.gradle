@@ -18,7 +18,6 @@ include ':lifecycle-rx'
 include ':views'
 include ':recyclerview-adapters'
 include ':kotlin-extensions'
-include ':templates'
 include ':tabbar-navigation'
 
 project(':utils').projectDir = new File(rootDir, 'utils')
@@ -31,5 +30,4 @@ project(':lifecycle-rx').projectDir = new File(rootDir, 'lifecycle-rx')
 project(':views').projectDir = new File(rootDir, 'views')
 project(':recyclerview-adapters').projectDir = new File(rootDir, 'recyclerview-adapters')
 project(':kotlin-extensions').projectDir = new File(rootDir, 'kotlin-extensions')
-project(':templates').projectDir = new File(rootDir, 'templates')
 project(':tabbar-navigation').projectDir = new File(rootDir, 'tabbar-navigation')

@@ -16,7 +16,6 @@ android {
 
 dependencies {
     api project(":navigation")
-    api project(":templates")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 

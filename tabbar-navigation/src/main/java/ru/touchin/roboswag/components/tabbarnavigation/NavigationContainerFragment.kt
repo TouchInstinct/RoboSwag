@@ -38,7 +38,7 @@ class NavigationContainerFragment : Fragment() {
     }
 
     val navigation by lazy {
-        ViewControllerNavigation<BaseNavigationActivity>(
+        ViewControllerNavigation<BottomNavigationActivity>(
                 requireContext(),
                 childFragmentManager,
                 containerViewId,
@@ -53,8 +53,8 @@ class NavigationContainerFragment : Fragment() {
     private var transition = 0
 
     @Suppress("UNCHECKED_CAST")
-    fun getViewControllerClass(): Class<out ViewController<out BaseNavigationActivity, Parcelable>> =
-            arguments?.getSerializable(VIEW_CONTROLLER_CLASS_ARG) as Class<out ViewController<out BaseNavigationActivity, Parcelable>>
+    fun getViewControllerClass(): Class<out ViewController<out BottomNavigationActivity, Parcelable>> =
+            arguments?.getSerializable(VIEW_CONTROLLER_CLASS_ARG) as Class<out ViewController<out BottomNavigationActivity, Parcelable>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
