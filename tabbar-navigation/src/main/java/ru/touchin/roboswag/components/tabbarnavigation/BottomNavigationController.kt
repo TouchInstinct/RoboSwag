@@ -59,7 +59,7 @@ class BottomNavigationController(
         }
     }
 
-    fun detach() = callback?.let { fragmentManager.unregisterFragmentLifecycleCallbacks(it) }
+    fun detach() = callback?.let(fragmentManager::unregisterFragmentLifecycleCallbacks)
 
     fun navigateTo(@IdRes itemId: Int, state: Parcelable? = null) {
         // Find view controller class that needs to open
@@ -76,7 +76,6 @@ class BottomNavigationController(
         val viewControllerName = viewControllerClass.canonicalName
         var fragment = fragmentManager.findFragmentByTag(viewControllerName)
 
-        //TODO: figure out do we need to remove exists fragment before instantiate him one more time
         if (fragment != null) {
             transaction.attach(fragment)
         } else {
