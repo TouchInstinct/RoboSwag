@@ -16,7 +16,7 @@ abstract class BaseNavigationFragment : Fragment() {
 
     private val backPressedListener = OnBackPressedListener { bottomNavigationController.onBackPressed() }
 
-    abstract fun getRootViewId(): Int
+    abstract fun getRootViewLayoutId(): Int
 
     abstract fun getNavigationContainerId(): Int
 
@@ -47,7 +47,7 @@ abstract class BaseNavigationFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val fragmentView = inflater.inflate(getRootViewId(), container, false)
+        val fragmentView = inflater.inflate(getRootViewLayoutId(), container, false)
 
         bottomNavigationController.attach(fragmentView.findViewById(getNavigationContainerId()))
 
