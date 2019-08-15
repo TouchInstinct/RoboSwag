@@ -5,9 +5,9 @@ import androidx.fragment.app.FragmentTransaction
 import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewControllerNavigation
 import ru.touchin.templates.TouchinActivity
 
-abstract class NavigationActivity : TouchinActivity() {
+abstract class BaseNavigationActivity : TouchinActivity() {
     val screenNavigation by lazy {
-        ViewControllerNavigation<NavigationActivity>(
+        ViewControllerNavigation<BaseNavigationActivity>(
                 this,
                 supportFragmentManager,
                 getContainerViewId(),

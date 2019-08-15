@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import ru.touchin.roboswag.components.navigation.activities.OnBackPressedListener
 import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewController
 
-abstract class MainNavigationFragment : Fragment() {
+abstract class BaseNavigationFragment : Fragment() {
 
     private lateinit var bottomNavigationController: BottomNavigationController
 
@@ -51,17 +51,17 @@ abstract class MainNavigationFragment : Fragment() {
 
         bottomNavigationController.attach(fragmentView.findViewById(getNavigationContainerId()))
 
-        (activity as NavigationActivity).addOnBackPressedListener(backPressedListener)
+        (activity as BaseNavigationActivity).addOnBackPressedListener(backPressedListener)
 
         return fragmentView
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        (activity as NavigationActivity).removeOnBackPressedListener(backPressedListener)
+        (activity as BaseNavigationActivity).removeOnBackPressedListener(backPressedListener)
         bottomNavigationController.detach()
     }
 
-    private fun getNavigationActivity() = requireActivity() as NavigationActivity
+    private fun getNavigationActivity() = requireActivity() as BaseNavigationActivity
 
 }

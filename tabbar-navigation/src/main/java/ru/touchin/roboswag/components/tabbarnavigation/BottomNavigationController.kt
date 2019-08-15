@@ -86,7 +86,7 @@ class BottomNavigationController(
                 Fragment.instantiate(
                         context,
                         NavigationContainerFragment::class.java.name,
-                        NavigationContainerFragment.args(viewControllerClass, viewControllerState)
+                        NavigationContainerFragment.args(viewControllerClass, viewControllerState, contentContainerViewId)
                 )
             } else {
                 Fragment.instantiate(

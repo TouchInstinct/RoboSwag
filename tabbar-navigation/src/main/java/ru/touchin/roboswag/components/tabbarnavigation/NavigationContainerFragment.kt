@@ -10,44 +10,57 @@ import androidx.fragment.app.FragmentTransaction
 import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewController
 import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewControllerNavigation
 
-abstract class NavigationContainerFragment : Fragment() {
+class NavigationContainerFragment : Fragment() {
 
     companion object {
         private const val VIEW_CONTROLLER_CLASS_ARG = "VIEW_CONTROLLER_CLASS_ARG"
         private const val VIEW_CONTROLLER_STATE_ARG = "VIEW_CONTROLLER_STATE_ARG"
+        private const val CONTAINER_VIEW_ID_ARG = "CONTAINER_VIEW_ID_ARG"
+        private const val TRANSITION_ARG = "TRANSITION_ARG"
 
-        fun args(cls: Class<out ViewController<*, *>>, state: Parcelable) = Bundle().apply {
+        fun args(
+                cls: Class<out ViewController<*, *>>,
+                state: Parcelable,
+                containerViewId: Int,
+                transition: Int = FragmentTransaction.TRANSIT_NONE
+        ) = Bundle().apply {
             putSerializable(VIEW_CONTROLLER_CLASS_ARG, cls)
             putParcelable(VIEW_CONTROLLER_STATE_ARG, state)
+            putInt(CONTAINER_VIEW_ID_ARG, containerViewId)
+            putInt(TRANSITION_ARG, transition)
         }
     }
 
     val navigation by lazy {
-        ViewControllerNavigation<NavigationActivity>(
+        ViewControllerNavigation<BaseNavigationActivity>(
                 requireContext(),
                 childFragmentManager,
-                getContainerViewId(),
-                getTransition()
+                containerViewId,
+                transition
         )
     }
 
-    abstract fun getContainerViewId(): Int
+    private var containerViewId = 0
 
-    open fun getTransition() = FragmentTransaction.TRANSIT_NONE
+    private var transition = 0
 
     @Suppress("UNCHECKED_CAST")
-    fun getViewControllerClass(): Class<out ViewController<out NavigationActivity, Parcelable>> =
-            arguments?.getSerializable(VIEW_CONTROLLER_CLASS_ARG) as Class<out ViewController<out NavigationActivity, Parcelable>>
+    fun getViewControllerClass(): Class<out ViewController<out BaseNavigationActivity, Parcelable>> =
+            arguments?.getSerializable(VIEW_CONTROLLER_CLASS_ARG) as Class<out ViewController<out BaseNavigationActivity, Parcelable>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
             val args = arguments ?: return
+            with(args) {
+                containerViewId = getInt(CONTAINER_VIEW_ID_ARG)
+                transition = getInt(TRANSITION_ARG)
+            }
             navigation.setInitialViewController(getViewControllerClass(), args.getParcelable(VIEW_CONTROLLER_STATE_ARG))
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater.inflate(getContainerViewId(), container, false)
+            inflater.inflate(containerViewId, container, false)
 
 }
