@@ -1,0 +1,118 @@
+package ru.touchin.yandexmap
+
+import com.yandex.mapkit.Animation
+import com.yandex.mapkit.MapKitFactory
+import com.yandex.mapkit.geometry.BoundingBoxHelper
+import com.yandex.mapkit.geometry.LinearRing
+import com.yandex.mapkit.geometry.Point
+import com.yandex.mapkit.map.CameraListener
+import com.yandex.mapkit.map.CameraPosition
+import com.yandex.mapkit.map.CameraUpdateSource
+import com.yandex.mapkit.map.InputListener
+import com.yandex.mapkit.map.Map
+import com.yandex.mapkit.map.MapLoadStatistics
+import com.yandex.mapkit.map.MapLoadedListener
+import com.yandex.mapkit.mapview.MapView
+import ru.touchin.basemap.AbstractMapManager
+
+class YandexMapManager(
+        mapView: MapView,
+        apiKey: String,
+        private val isDebug: Boolean = false
+) : AbstractMapManager<MapView, Map, Point>(mapView), MapLoadedListener, CameraListener, InputListener {
+
+    private val userLocationLayer by lazy {
+        MapKitFactory.getInstance().createUserLocationLayer(mapView.mapWindow).also { it.isVisible = false }
+    }
+
+    init {
+        MapKitFactory.setApiKey(apiKey)
+        MapKitFactory.initialize(mapView.context)
+    }
+
+    override fun initialize(mapListener: AbstractMapListener<MapView, Map, Point>?) {
+        super.initialize(mapListener)
+        initMap(mapView.map)
+    }
+
+    override fun initMap(map: Map) {
+        super.initMap(map)
+        map.isDebugInfoEnabled = isDebug
+        map.setMapLoadedListener(this)
+        map.addCameraListener(this)
+        map.addInputListener(this)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        MapKitFactory.getInstance().onStart()
+        mapView.onStart()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        MapKitFactory.getInstance().onStop()
+        mapView.onStop()
+    }
+
+    override fun onMapLoaded(statistics: MapLoadStatistics) {
+        mapListener?.onMapLoaded()
+    }
+
+    override fun onCameraPositionChanged(map: Map, cameraPosition: CameraPosition, cameraUpdateSource: CameraUpdateSource, finished: Boolean) {
+        mapListener?.onCameraMoved(finished)
+    }
+
+    override fun onMapLongTap(map: Map, point: Point) {
+        mapListener?.onMapLongTap(point)
+    }
+
+    override fun onMapTap(map: Map, point: Point) {
+        mapListener?.onMapTap(point)
+    }
+
+    override fun getCameraTarget(): Point = map.cameraPosition.target
+
+    override fun getCameraZoom(): Float = map.cameraPosition.zoom
+
+    override fun moveCamera(target: Point, zoom: Float) {
+        map.move(CameraPosition(target, zoom, 0.0f, 0.0f), Animation(Animation.Type.LINEAR, 1F), null)
+    }
+
+    override fun smoothMoveCamera(target: Point, zoom: Float) {
+        map.move(CameraPosition(target, zoom, 0.0f, 0.0f), Animation(Animation.Type.SMOOTH, 1F), null)
+    }
+
+    override fun smoothMoveCamera(targets: List<Point>, padding: Int) {
+        val boundingBox = BoundingBoxHelper.getBounds(LinearRing(targets))
+        val cameraPosition = map.cameraPosition(boundingBox)
+        smoothMoveCamera(cameraPosition.target, cameraPosition.zoom - 3f)
+    }
+
+    override fun smoothMoveCamera(targets: List<Point>, width: Int, height: Int, padding: Int) {
+        smoothMoveCamera(targets)
+    }
+
+    override fun setMapAllGesturesEnabled(enabled: Boolean) {
+        map.isScrollGesturesEnabled = enabled
+        map.isZoomGesturesEnabled = enabled
+    }
+
+    override fun setMyLocationEnabled(enabled: Boolean) {
+        userLocationLayer.isVisible = enabled
+    }
+
+    override fun isLocationInVisibleRegion(location: Point): Boolean = with(map.visibleRegion) {
+        topLeft.latitude > location.latitude && topLeft.longitude < location.longitude
+                && topRight.latitude > location.latitude && topRight.longitude > location.longitude
+                && bottomLeft.latitude < location.latitude && bottomLeft.longitude < location.longitude
+                && bottomRight.latitude < location.latitude && bottomRight.longitude > location.longitude
+    }
+
+    fun getVisibleRegion() = map.visibleRegion
+
+    fun getMapObjects() = map.mapObjects
+
+    interface MapListener : AbstractMapListener<MapView, Map, Point>
+
+}
