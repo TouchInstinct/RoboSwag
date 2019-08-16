@@ -17,14 +17,11 @@
  *
  */
 
-package ru.touchin.templates;
+package ru.touchin.roboswag.components.navigation;
 
 import android.app.Application;
 import android.content.Context;
 import android.os.StrictMode;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.multidex.MultiDex;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
@@ -34,6 +31,9 @@ import net.danlew.android.joda.JodaTimeAndroid;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.multidex.MultiDex;
 import io.fabric.sdk.android.Fabric;
 import ru.touchin.roboswag.core.log.ConsoleLogProcessor;
 import ru.touchin.roboswag.core.log.Lc;
@@ -41,6 +41,7 @@ import ru.touchin.roboswag.core.log.LcGroup;
 import ru.touchin.roboswag.core.log.LcLevel;
 import ru.touchin.roboswag.core.log.LogProcessor;
 import ru.touchin.roboswag.core.utils.ShouldNotHappenException;
+import ru.touchin.templates.ApiModel;
 
 /**
  * Created by Gavriil Sitnikov on 10/03/16.

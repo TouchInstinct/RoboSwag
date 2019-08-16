@@ -18,7 +18,7 @@ include ':lifecycle-rx'
 include ':views'
 include ':recyclerview-adapters'
 include ':kotlin-extensions'
-include ':templates'
+include ':tabbar-navigation'
 include ':base-map'
 include ':yandex-map'
 include ':google-map'
@@ -33,7 +33,7 @@ project(':lifecycle-rx').projectDir = new File(rootDir, 'lifecycle-rx')
 project(':views').projectDir = new File(rootDir, 'views')
 project(':recyclerview-adapters').projectDir = new File(rootDir, 'recyclerview-adapters')
 project(':kotlin-extensions').projectDir = new File(rootDir, 'kotlin-extensions')
-project(':templates').projectDir = new File(rootDir, 'templates')
+project(':tabbar-navigation').projectDir = new File(rootDir, 'tabbar-navigation')
 project(':base-map').projectDir = new File(rootDir, 'base-map')
 project(':yandex-map').projectDir = new File(rootDir, 'yandex-map')
 project(':google-map').projectDir = new File(rootDir, 'google-map')
