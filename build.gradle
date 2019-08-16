@@ -28,17 +28,19 @@ task clean(type: Delete) {
 ext {
     ext.buildScriptsDir = "$rootDir/BuildScripts"
     versions = [
-            compileSdk : 28,
-            appcompat  : '1.0.2',
-            androidx   : '1.0.0',
-            material   : '1.0.0',
-            lifecycle  : '2.0.0',
-            dagger     : '2.17',
-            retrofit   : '2.4.0',
-            rxJava     : '2.2.2',
-            rxAndroid  : '2.1.0',
-            crashlytics: '2.9.5',
-            location   : '16.0.0',
-            coreKtx    : '1.0.1'
+            compileSdk   : 28,
+            appcompat    : '1.0.2',
+            androidx     : '1.0.0',
+            material     : '1.0.0',
+            lifecycle    : '2.0.0',
+            dagger       : '2.17',
+            retrofit     : '2.4.0',
+            rxJava       : '2.2.2',
+            rxAndroid    : '2.1.0',
+            crashlytics  : '2.9.5',
+            location     : '16.0.0',
+            coreKtx      : '1.0.1',
+            yandex_mapkit: '3.4.0',
+            google_maps  : '16.1.0'
     ]
 }
