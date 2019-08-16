@@ -72,12 +72,16 @@ class GoogleMapManager(mapView: MapView) : AbstractMapManager<MapView, GoogleMap
 
     override fun getCameraZoom(): Float = map.cameraPosition.zoom
 
-    override fun moveCamera(target: LatLng, zoom: Float) {
-        map.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.Builder().target(target).zoom(zoom).build()))
+    override fun getCameraAzimuth(): Float = map.cameraPosition.bearing
+
+    override fun getCameraTilt(): Float = map.cameraPosition.tilt
+
+    override fun moveCamera(target: LatLng, zoom: Float, azimuth: Float, tilt: Float) {
+        map.moveCamera(CameraUpdateFactory.newCameraPosition(buildCameraPosition(target, zoom, azimuth, tilt)))
     }
 
-    override fun smoothMoveCamera(target: LatLng, zoom: Float) {
-        map.animateCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.Builder().target(target).zoom(zoom).build()))
+    override fun smoothMoveCamera(target: LatLng, zoom: Float, azimuth: Float, tilt: Float) {
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(buildCameraPosition(target, zoom, azimuth, tilt)))
     }
 
     override fun smoothMoveCamera(targets: List<LatLng>, padding: Int) {
@@ -103,6 +107,13 @@ class GoogleMapManager(mapView: MapView) : AbstractMapManager<MapView, GoogleMap
             .also { builder ->
                 targets.forEach { target -> builder.include(target) }
             }
+            .build()
+
+    private fun buildCameraPosition(target: LatLng, zoom: Float, azimuth: Float, tilt: Float) = CameraPosition.Builder()
+            .target(target)
+            .zoom(zoom)
+            .bearing(azimuth)
+            .tilt(tilt)
             .build()
 
     interface MapListener : AbstractMapListener<MapView, GoogleMap, LatLng>

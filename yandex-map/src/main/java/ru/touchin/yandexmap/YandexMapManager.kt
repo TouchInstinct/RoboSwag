@@ -21,6 +21,11 @@ class YandexMapManager(
         private val isDebug: Boolean = false
 ) : AbstractMapManager<MapView, Map, Point>(mapView), MapLoadedListener, CameraListener, InputListener {
 
+    companion object {
+        private const val CAMERA_ANIMATION_DURATION = 1f
+        private const val CAMERA_OFFSET_ZOOM = 3f
+    }
+
     private val userLocationLayer by lazy {
         MapKitFactory.getInstance().createUserLocationLayer(mapView.mapWindow).also { it.isVisible = false }
     }
@@ -75,18 +80,22 @@ class YandexMapManager(
 
     override fun getCameraZoom(): Float = map.cameraPosition.zoom
 
-    override fun moveCamera(target: Point, zoom: Float) {
-        map.move(CameraPosition(target, zoom, 0.0f, 0.0f), Animation(Animation.Type.LINEAR, 1F), null)
+    override fun getCameraAzimuth(): Float = map.cameraPosition.azimuth
+
+    override fun getCameraTilt(): Float = map.cameraPosition.tilt
+
+    override fun moveCamera(target: Point, zoom: Float, azimuth: Float, tilt: Float) {
+        map.move(CameraPosition(target, zoom, azimuth, tilt), Animation(Animation.Type.LINEAR, CAMERA_ANIMATION_DURATION), null)
     }
 
-    override fun smoothMoveCamera(target: Point, zoom: Float) {
-        map.move(CameraPosition(target, zoom, 0.0f, 0.0f), Animation(Animation.Type.SMOOTH, 1F), null)
+    override fun smoothMoveCamera(target: Point, zoom: Float, azimuth: Float, tilt: Float) {
+        map.move(CameraPosition(target, zoom, azimuth, tilt), Animation(Animation.Type.SMOOTH, CAMERA_ANIMATION_DURATION), null)
     }
 
     override fun smoothMoveCamera(targets: List<Point>, padding: Int) {
         val boundingBox = BoundingBoxHelper.getBounds(LinearRing(targets))
         val cameraPosition = map.cameraPosition(boundingBox)
-        smoothMoveCamera(cameraPosition.target, cameraPosition.zoom - 3f)
+        smoothMoveCamera(cameraPosition.target, cameraPosition.zoom - CAMERA_OFFSET_ZOOM)
     }
 
     override fun smoothMoveCamera(targets: List<Point>, width: Int, height: Int, padding: Int) {
@@ -94,7 +103,9 @@ class YandexMapManager(
     }
 
     override fun setMapAllGesturesEnabled(enabled: Boolean) {
+        map.isRotateGesturesEnabled = enabled
         map.isScrollGesturesEnabled = enabled
+        map.isTiltGesturesEnabled = enabled
         map.isZoomGesturesEnabled = enabled
     }
 
