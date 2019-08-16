@@ -62,6 +62,13 @@ dependencies {
 ```
 Можно подключать только те модули, которые вам необходимы.
 
+#### settings.gradle (Module: project)
+
+```gradle
+gradle.ext.componentsRoot = "RoboSwag"
+apply from: "$gradle.ext.componentsRoot/modules.gradle"
+```
+
 ### R8/Proguard
 
 ```
