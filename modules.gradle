@@ -18,6 +18,8 @@ include ':lifecycle-rx'
 include ':views'
 include ':recyclerview-adapters'
 include ':kotlin-extensions'
+include ':recyclerview-calendar'
+include ':livedata-location'
 include ':tabbar-navigation'
 
 project(':utils').projectDir = new File(rootDir, 'utils')
@@ -30,4 +32,6 @@ project(':lifecycle-rx').projectDir = new File(rootDir, 'lifecycle-rx')
 project(':views').projectDir = new File(rootDir, 'views')
 project(':recyclerview-adapters').projectDir = new File(rootDir, 'recyclerview-adapters')
 project(':kotlin-extensions').projectDir = new File(rootDir, 'kotlin-extensions')
+project(':recyclerview-calendar').projectDir = new File(gradle.ext.componentsRoot, 'recyclerview-calendar')
+project(':livedata-location').projectDir = new File(gradle.ext.componentsRoot, 'livedata-location')
 project(':tabbar-navigation').projectDir = new File(rootDir, 'tabbar-navigation')
