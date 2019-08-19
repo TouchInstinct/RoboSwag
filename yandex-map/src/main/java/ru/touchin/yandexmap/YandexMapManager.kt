@@ -13,11 +13,13 @@ import com.yandex.mapkit.map.Map
 import com.yandex.mapkit.map.MapLoadStatistics
 import com.yandex.mapkit.map.MapLoadedListener
 import com.yandex.mapkit.mapview.MapView
+import com.yandex.mapkit.user_location.UserLocationObjectListener
 import ru.touchin.basemap.AbstractMapManager
 
 class YandexMapManager(
         mapView: MapView,
-        private val isDebug: Boolean = false
+        private val isDebug: Boolean = false,
+        userLocationObjectListener: UserLocationObjectListener? = null
 ) : AbstractMapManager<MapView, Map, Point>(mapView), MapLoadedListener, CameraListener, InputListener {
 
     companion object {
@@ -30,7 +32,10 @@ class YandexMapManager(
     }
 
     private val userLocationLayer by lazy {
-        MapKitFactory.getInstance().createUserLocationLayer(mapView.mapWindow).also { it.isVisible = false }
+        MapKitFactory.getInstance().createUserLocationLayer(mapView.mapWindow).also {
+            it.isVisible = false
+            it.setObjectListener(userLocationObjectListener)
+        }
     }
 
     init {
