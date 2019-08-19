@@ -18,8 +18,7 @@ import ru.touchin.basemap.AbstractMapManager
 
 class YandexMapManager(
         mapView: MapView,
-        private val isDebug: Boolean = false,
-        userLocationObjectListener: UserLocationObjectListener? = null
+        private val isDebug: Boolean = false
 ) : AbstractMapManager<MapView, Map, Point>(mapView), MapLoadedListener, CameraListener, InputListener {
 
     companion object {
@@ -32,10 +31,7 @@ class YandexMapManager(
     }
 
     private val userLocationLayer by lazy {
-        MapKitFactory.getInstance().createUserLocationLayer(mapView.mapWindow).also {
-            it.isVisible = false
-            it.setObjectListener(userLocationObjectListener)
-        }
+        MapKitFactory.getInstance().createUserLocationLayer(mapView.mapWindow).also { it.isVisible = false }
     }
 
     init {
@@ -130,6 +126,10 @@ class YandexMapManager(
     fun getVisibleRegion() = map.visibleRegion
 
     fun getMapObjects() = map.mapObjects
+
+    fun setUserLocationObjectListener(userLocationObjectListener: UserLocationObjectListener) {
+        userLocationLayer.setObjectListener(userLocationObjectListener)
+    }
 
     interface MapListener : AbstractMapListener<MapView, Map, Point>
 
