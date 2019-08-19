@@ -17,13 +17,16 @@ import ru.touchin.basemap.AbstractMapManager
 
 class YandexMapManager(
         mapView: MapView,
-        apiKey: String,
         private val isDebug: Boolean = false
 ) : AbstractMapManager<MapView, Map, Point>(mapView), MapLoadedListener, CameraListener, InputListener {
 
     companion object {
         private const val CAMERA_ANIMATION_DURATION = 1f
         private const val CAMERA_OFFSET_ZOOM = 3f
+
+        // Call in Application.onCreate()
+        fun setApiKey(apiKey: String) = MapKitFactory.setApiKey(apiKey)
+
     }
 
     private val userLocationLayer by lazy {
@@ -31,7 +34,6 @@ class YandexMapManager(
     }
 
     init {
-        MapKitFactory.setApiKey(apiKey)
         MapKitFactory.initialize(mapView.context)
     }
 
