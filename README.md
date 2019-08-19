@@ -53,11 +53,14 @@ dependencies {
     implementation project(':lifecycle')
     implementation project(':lifecycle-rx')
     implementation project(':navigation')
-    implementation project(':templates')
     implementation project(':recyclerview-adapters')
     implementation project(':recyclerview-calendar')
     implementation project(':kotlin-extensions')
     implementation project(':livedata-location')
+    implementation project(':tabbar-navigation')
+    implementation project(':base-map')
+    implementation project(':yandex-map')
+    implementation project(':google-map')
 }
 ```
 Можно подключать только те модули, которые вам необходимы.
