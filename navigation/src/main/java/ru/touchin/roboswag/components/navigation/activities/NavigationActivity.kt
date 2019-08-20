@@ -13,7 +13,7 @@ abstract class NavigationActivity : BaseActivity() {
 
     protected open val transition = FragmentTransaction.TRANSIT_NONE
 
-    val navigation by lazy {
+    open val navigation by lazy {
         ViewControllerNavigation<NavigationActivity>(
                 this,
                 supportFragmentManager,
