@@ -36,13 +36,13 @@ class YandexMapManager(
     }
 
     private val userLocationLayer by lazy {
-        MapKitFactory.getInstance().createUserLocationLayer(mapView.mapWindow).also {
-            it.isVisible = false
-            it.setObjectListener(this)
+        MapKitFactory.getInstance().createUserLocationLayer(mapView.mapWindow).apply {
+            isVisible = false
+            setObjectListener(this@YandexMapManager)
         }
     }
 
-    private var userLocationIconProvider : ImageProvider? = null
+    private var userLocationIconProvider: ImageProvider? = null
     private var userLocationAccuracyCirceColor: Int? = null
 
     init {
@@ -135,12 +135,11 @@ class YandexMapManager(
     }
 
     override fun onObjectAdded(view: UserLocationView) {
-        userLocationIconProvider?.let {  imageProvider ->
+        userLocationIconProvider?.let { imageProvider ->
             view.arrow.setIcon(imageProvider)
             view.pin.setIcon(imageProvider)
         }
-        userLocationAccuracyCirceColor?.let {
-            view.accuracyCircle.fillColor = it }
+        userLocationAccuracyCirceColor?.let(view.accuracyCircle::setFillColor)
     }
 
     override fun onObjectUpdated(view: UserLocationView, event: ObjectEvent) = Unit
