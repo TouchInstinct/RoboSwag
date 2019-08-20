@@ -36,9 +36,9 @@ class YandexMapManager(
     }
 
     private val userLocationLayer by lazy {
-        MapKitFactory.getInstance().createUserLocationLayer(mapView.mapWindow).apply {
-            isVisible = false
-            setObjectListener(this@YandexMapManager)
+        MapKitFactory.getInstance().createUserLocationLayer(mapView.mapWindow).also {
+            it.isVisible = false
+            it.setObjectListener(this)
         }
     }
 
