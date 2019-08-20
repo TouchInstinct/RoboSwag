@@ -1,10 +1,13 @@
 package ru.touchin.yandexmap
 
+import androidx.annotation.ColorInt
+import androidx.annotation.DrawableRes
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.BoundingBoxHelper
 import com.yandex.mapkit.geometry.LinearRing
 import com.yandex.mapkit.geometry.Point
+import com.yandex.mapkit.layers.ObjectEvent
 import com.yandex.mapkit.map.CameraListener
 import com.yandex.mapkit.map.CameraPosition
 import com.yandex.mapkit.map.CameraUpdateSource
@@ -14,12 +17,14 @@ import com.yandex.mapkit.map.MapLoadStatistics
 import com.yandex.mapkit.map.MapLoadedListener
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.mapkit.user_location.UserLocationObjectListener
+import com.yandex.mapkit.user_location.UserLocationView
+import com.yandex.runtime.image.ImageProvider
 import ru.touchin.basemap.AbstractMapManager
 
 class YandexMapManager(
         mapView: MapView,
         private val isDebug: Boolean = false
-) : AbstractMapManager<MapView, Map, Point>(mapView), MapLoadedListener, CameraListener, InputListener {
+) : AbstractMapManager<MapView, Map, Point>(mapView), MapLoadedListener, CameraListener, InputListener, UserLocationObjectListener {
 
     companion object {
         private const val CAMERA_ANIMATION_DURATION = 1f
@@ -31,8 +36,14 @@ class YandexMapManager(
     }
 
     private val userLocationLayer by lazy {
-        MapKitFactory.getInstance().createUserLocationLayer(mapView.mapWindow).also { it.isVisible = false }
+        MapKitFactory.getInstance().createUserLocationLayer(mapView.mapWindow).also {
+            it.isVisible = false
+            it.setObjectListener(this)
+        }
     }
+
+    private var userLocationIconProvider : ImageProvider? = null
+    private var userLocationAccuracyCirceColor: Int? = null
 
     init {
         MapKitFactory.initialize(mapView.context)
@@ -123,13 +134,27 @@ class YandexMapManager(
                 && bottomRight.latitude < location.latitude && bottomRight.longitude > location.longitude
     }
 
+    override fun onObjectAdded(view: UserLocationView) {
+        userLocationIconProvider?.let {  imageProvider ->
+            view.arrow.setIcon(imageProvider)
+            view.pin.setIcon(imageProvider)
+        }
+        userLocationAccuracyCirceColor?.let {
+            view.accuracyCircle.fillColor = it }
+    }
+
+    override fun onObjectUpdated(view: UserLocationView, event: ObjectEvent) = Unit
+
+    override fun onObjectRemoved(view: UserLocationView) = Unit
+
+    fun setUserLocationIcon(@DrawableRes icon: Int, @ColorInt accuracyCircleColor: Int? = null) {
+        userLocationIconProvider = ImageProvider.fromResource(mapView.context, icon)
+        userLocationAccuracyCirceColor = accuracyCircleColor
+    }
+
     fun getVisibleRegion() = map.visibleRegion
 
     fun getMapObjects() = map.mapObjects
-
-    fun setUserLocationObjectListener(userLocationObjectListener: UserLocationObjectListener) {
-        userLocationLayer.setObjectListener(userLocationObjectListener)
-    }
 
     interface MapListener : AbstractMapListener<MapView, Map, Point>
 
