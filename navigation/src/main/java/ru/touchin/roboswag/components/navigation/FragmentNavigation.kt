@@ -21,12 +21,15 @@ package ru.touchin.roboswag.components.navigation
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.MenuItem
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import ru.touchin.roboswag.core.log.Lc
+import ru.touchin.roboswag.components.navigation.fragments.BaseFragment
+import ru.touchin.roboswag.components.navigation.viewcontrollers.EmptyState
 
 /**
  * Created by Gavriil Sitnikov on 07/03/2016.
@@ -150,9 +153,20 @@ open class FragmentNavigation(
             fragmentClass: Class<out Fragment>,
             args: Bundle? = null,
             addToStack: Boolean = true,
+            backStackName: String? = null,
             transactionSetup: ((FragmentTransaction) -> Unit)? = null
     ) {
-        addToStack(fragmentClass, null, 0, addToStack, args, null, transactionSetup)
+        addToStack(fragmentClass, null, 0, addToStack, args, backStackName, transactionSetup)
+    }
+
+    fun <T: Parcelable> push(
+            fragmentClass: Class<out BaseFragment<*, out T>>,
+            state: T,
+            addToStack: Boolean = true,
+            backStackName: String? = null,
+            transactionSetup: ((FragmentTransaction) -> Unit)? = null
+    ) {
+        push(fragmentClass, BaseFragment.args(state), addToStack, backStackName, transactionSetup)
     }
 
     /**
@@ -179,6 +193,16 @@ open class FragmentNavigation(
                 null,
                 transactionSetup
         )
+    }
+
+    fun <T: Parcelable> pushForResult(
+            fragmentClass: Class<out Fragment>,
+            targetFragment: Fragment,
+            targetRequestCode: Int,
+            args: T,
+            transactionSetup: ((FragmentTransaction) -> Unit)? = null
+    ) {
+        pushForResult(fragmentClass, targetFragment, targetRequestCode, BaseFragment.args(args), transactionSetup)
     }
 
     /**
