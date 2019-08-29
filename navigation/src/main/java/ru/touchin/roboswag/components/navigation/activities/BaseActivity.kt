@@ -21,7 +21,9 @@ package ru.touchin.roboswag.components.navigation.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
+import ru.touchin.roboswag.components.navigation.keyboard_resizeable.KeyboardBehaviorDetector
 import ru.touchin.roboswag.components.navigation.viewcontrollers.LifecycleLoggingObserver
 import ru.touchin.roboswag.core.log.Lc
 import ru.touchin.roboswag.core.log.LcGroup
@@ -34,8 +36,21 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private val onBackPressedListeners = ArrayList<OnBackPressedListener>()
 
+    open val keyboardBehaviorDetector: KeyboardBehaviorDetector? = null
+
     init {
         lifecycle.addObserver(LifecycleLoggingObserver())
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onCreate(savedInstanceState, persistentState)
+        // Possible work around for market launches. See http://code.google.com/p/android/issues/detail?id=2373
+        // for more details. Essentially, the market launches the main activity on top of other activities.
+        // we never want this to happen. Instead, we check if we are the root and if not, we finish.
+        if (!isTaskRoot && intent.hasCategory(Intent.CATEGORY_LAUNCHER) && Intent.ACTION_MAIN == intent.action) {
+            Lc.e("Finishing activity as it is launcher but not root")
+            finish()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

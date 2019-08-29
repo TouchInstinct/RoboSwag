@@ -1,0 +1,18 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion versions.compileSdk
+
+    defaultConfig {
+        minSdkVersion 17
+    }
+}
+
+dependencies {
+    api project(":base-map")
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation "com.yandex.android:mapkit:$versions.yandex_mapkit"
+}

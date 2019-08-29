@@ -18,6 +18,11 @@ android {
 dependencies {
     api project(":utils")
     api project(":logging")
+    api project(":api-logansquare")
+
+    api 'androidx.multidex:multidex:2.0.1'
+
+    api 'net.danlew:android.joda:2.9.9.4'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
@@ -26,4 +31,7 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.1.0'
     kapt 'com.jakewharton:butterknife-compiler:10.1.0'
 
+    implementation("com.crashlytics.sdk.android:crashlytics:$versions.crashlytics@aar") {
+        transitive = true
+    }
 }
