@@ -11,25 +11,25 @@ tabbar-navigation
 
 `BottomNavigationFragment` – абстраткный класс, наследуемый от `Fragment` и содержащий в себе логику по настройке навигации используя вложенный объект `BottomNavigationController`.
 
-#### Последовательность необходимых действий с основными классами для организации навигации:
+#### Последовательность необходимых действий для организации навигации:
 
 1. Отнаследовать главную `Activity` приложения от `BottomNavigationActivity` и переопределить следующие поля:
 
-    *  `fragmentContainerViewId: Int` – идентификатор `View` корневого контейнера фрагментов главной `Activity`
+    *  `fragmentContainerViewId` – идентификатор `View` корневого контейнера фрагментов главной `Activity`
 
 2. Отнаследовать контейнерный `Fragment` приложения от BottomNavigationFragment и переопределить следующие поля:
-    * `rootLayoutId: Int` – идентификатор `Layout` корневого фрагмента.
-    * `navigationContainerViewId: Int` – идентификатор `View` контейнера таббара внутри `Layout` корневого фрагмента.
-    * `contentContainerViewId: Int` – идентификатор `View` контейнера содержимого каждой табы внутри `Layout` корневого фрагмента.
-    * `contentContainerLayoutId: Int` – идентификатор `Layout` контейнера содержимого каждой табы.
-    * `topLevelViewControllerId: Int` – идентификатор `View` кнопки главной табы внутри `View` контейнера таббара.
-    * `wrapWithNavigationContainer: Boolean` – параметр, отвечающий за необходимость добавления обособленной навигации в каждой табе. Если он `false`, то в приложении будет навигация только на уровне главной `Activity`.
+    * `rootLayoutId` – идентификатор `Layout` корневого фрагмента.
+    * `navigationContainerViewId` – идентификатор `View` контейнера таббара внутри `Layout` корневого фрагмента.
+    * `contentContainerViewId` – идентификатор `View` контейнера содержимого каждой табы внутри `Layout` корневого фрагмента.
+    * `contentContainerLayoutId` – идентификатор `Layout` контейнера содержимого каждой табы.
+    * `topLevelViewControllerId` – идентификатор `View` кнопки главной табы внутри `View` контейнера таббара.
+    * `wrapWithNavigationContainer` – параметр, отвечающий за необходимость добавления обособленной навигации в каждой табе. Если он `false`, то в приложении будет навигация только на уровне главной `Activity`.
     * `navigationViewControllers: SparseArray<Pair<Class<out ViewController<*, *>>, Parcelable>>` – `SparseArray` с идентификаторами `View` кнопок каждой табы в качестве ключей и пары `ViewControllerClass to ViewControllerState` в качестве значений.
 
         ***Количество кнопок в таббаре может быть произвольным***
 
 #### Дополнительно
-1. В классе ```BottomNavigationFragment``` можно также переопределить поле ```val reselectListener: (() -> Unit)```, отвечающее за повторное нажатие на уже открытую табу. По умолчанию происходит переход к низу стека фрагментов открытой табы – ```getNavigationActivity().innerNavigation.up()```
+1. В классе ```BottomNavigationFragment``` можно также переопределить поле ```reselectListener```, отвечающее за повторное нажатие на уже открытую табу. По умолчанию происходит переход к низу стека фрагментов открытой табы – ```getNavigationActivity().innerNavigation.up()```
 
 2. Объекты ```innerNavigation``` в классе ```BottomNavigationActivity``` и ```navigation``` в классе ```NavigationActivity``` помечены как ```open```, давая тем самым возможность добавить кастомную логику переопределив их.
 
@@ -42,7 +42,7 @@ tabbar-navigation
 ```Kotlin
 class MainActivity : BottomNavigationActivity() {
 
-    override val fragmentContainerViewId: Int = R.id.fragment_container
+    override val fragmentContainerViewId = R.id.fragment_container
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
