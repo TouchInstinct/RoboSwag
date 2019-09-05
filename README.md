@@ -45,31 +45,36 @@ RecyclerView - один из самых часто используемых ин
 
 ```gradle
 dependencies {
-    implementation project(':utils')
-    implementation project(':views')
-    implementation project(':storable')
-    implementation project(':logging')
-    implementation project(':api-logansquare')
-    implementation project(':lifecycle')
-    implementation project(':lifecycle-rx')
-    implementation project(':navigation')
-    implementation project(':recyclerview-adapters')
-    implementation project(':recyclerview-calendar')
-    implementation project(':kotlin-extensions')
-    implementation project(':livedata-location')
-    implementation project(':tabbar-navigation')
-    implementation project(':base-map')
-    implementation project(':yandex-map')
-    implementation project(':google-map')
+    gradle.ext.roboswag.forEach { module ->
+        implementation project(":$module")
+    }
 }
 ```
-Можно подключать только те модули, которые вам необходимы.
-
+Управление зависимостями нужно производить с помощью `ext.roboswag` добавляя или удаляя из него названия модулей.
 #### settings.gradle (Module: project)
 
 ```gradle
-gradle.ext.componentsRoot = "RoboSwag"
-apply from: "$gradle.ext.componentsRoot/modules.gradle"
+gradle.ext.roboswag = [
+        'utils',
+        'logging',
+        'navigation',
+        'storable',
+        'api-logansquare',
+        'lifecycle',
+        'views',
+        'recyclerview-adapters',
+        'kotlin-extensions',
+        'recyclerview-calendar',
+        'tabbar-navigation',
+        'base-map',
+        'yandex-map',
+        'google-map'
+]
+
+gradle.ext.roboswag.forEach { module ->
+    include ":$module"
+    project(":$module").projectDir = file("RoboSwag/$module")
+}
 ```
 
 ### R8/Proguard
