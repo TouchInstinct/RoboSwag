@@ -7,7 +7,7 @@ import ru.touchin.roboswag.components.navigation.activities.BaseActivity
 /**
  *     This detector NOT detect landscape fullscreen keyboard
  *
- *     You activity must have android:windowSoftInputMode="adjustResize" at least, otherwise listeners won't be called
+ *     Your activity must have android:windowSoftInputMode="adjustResize" at least, otherwise listeners won't be called
  */
 class KeyboardBehaviorDetector(
         activity: BaseActivity
