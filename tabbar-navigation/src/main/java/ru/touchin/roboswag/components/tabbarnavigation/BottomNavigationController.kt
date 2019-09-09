@@ -76,9 +76,12 @@ class BottomNavigationController(
         val viewControllerName = viewControllerClass.canonicalName
         var fragment = fragmentManager.findFragmentByTag(viewControllerName)
 
-        if (fragment != null) {
+        if (state == null && fragment != null) {
             transaction.attach(fragment)
         } else {
+            // If fragment already exist remove it first
+            if (fragment != null) transaction.remove(fragment)
+
             fragment = if (wrapWithNavigationContainer) {
                 Fragment.instantiate(
                         context,
