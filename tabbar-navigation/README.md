@@ -124,9 +124,3 @@ class MainViewController(
 ```gradle
 implementation project(':navigation')
 ```
-
-### Подключение
-
-```gradle
-implementation project(':tabbar-navigation')
-```

@@ -10,9 +10,8 @@ import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewControllerN
  */
 abstract class BottomNavigationActivity : NavigationActivity() {
 
-    open val innerNavigation by lazy {
-        getNavigationContainer(supportFragmentManager)?.navigation ?: navigation as ViewControllerNavigation<BottomNavigationActivity>
-    }
+    val innerNavigation: ViewControllerNavigation<BottomNavigationActivity>
+        get() = getNavigationContainer(supportFragmentManager)?.navigation ?: navigation as ViewControllerNavigation<BottomNavigationActivity>
 
     private fun getNavigationContainer(fragmentManager: FragmentManager?): NavigationContainerFragment? =
             fragmentManager

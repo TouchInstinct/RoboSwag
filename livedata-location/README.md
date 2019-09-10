@@ -25,9 +25,3 @@ val locationWithInterval = LocationLiveData(
 ```kotlin
 viewModel.locationWithInterval.observe(this, Observer(::onLocationChanged))
 ```
-
-### Подключение
-
-``` gradle
-implementation project(':livedata-location')
-```

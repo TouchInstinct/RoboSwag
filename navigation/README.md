@@ -121,9 +121,3 @@ class MainViewController(
 ```gradle
 implementation project(':logging')
 ```
-
-### Подключение
-
-```gradle
-implementation project(':navigation')
-```

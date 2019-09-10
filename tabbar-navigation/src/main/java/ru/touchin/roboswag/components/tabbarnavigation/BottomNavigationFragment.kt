@@ -30,7 +30,7 @@ abstract class BottomNavigationFragment : Fragment() {
 
     protected abstract val navigationViewControllers: SparseArray<Pair<Class<out ViewController<*, *>>, Parcelable>>
 
-    protected open val reselectListener: (() -> Unit) = { getNavigationActivity().innerNavigation.up() }
+    protected open val reselectListener: (() -> Unit) = { getNavigationActivity().innerNavigation.up(inclusive = true) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
