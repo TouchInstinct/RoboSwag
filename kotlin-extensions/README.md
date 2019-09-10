@@ -59,9 +59,3 @@ class LinkViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 }
 ```
-
-### Подключение
-
-```gradle
-implementation project(':kotlin-extensions')
-```

@@ -64,8 +64,3 @@ class HeaderDelegate(
     ) = holder.itemView.setOnClickListener { addAction.invoke() }
 }
 ```
-
-### Подключение 
-```gralde
-implementation project(':recyclerview-adapters')
-```
