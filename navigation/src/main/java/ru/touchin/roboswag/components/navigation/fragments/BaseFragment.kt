@@ -86,7 +86,7 @@ open class BaseFragment<TActivity : FragmentActivity, TState : Parcelable> const
                         ?: throw IllegalStateException("Fragment state can't be null")
 
         if (BuildConfig.DEBUG) {
-//            state = reserialize(state)
+            state = reserialize(state)
         }
     }
 
