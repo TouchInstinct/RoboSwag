@@ -48,9 +48,3 @@ someViewModel.itemsList.observe(this, Observer { event ->
     }
 })
 ```
-
-### Подключение
-
-``` gradle
-implementation project(':lifecycle-rx')
-```

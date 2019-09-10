@@ -41,9 +41,3 @@ event.observe(this, Observer { event ->
     }
 })
 ```
-
-### Подключение
-
-```gradle
-implementation project(':lifecycle')
-```
