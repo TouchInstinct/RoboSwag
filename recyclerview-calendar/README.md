@@ -193,9 +193,3 @@ class PeriodsViewController(
 ```gradle
 implementation project(':logging')
 ```
-
-### Подключение
-
-```gradle
-implementation project(':recyclerview-calendar')
-```
