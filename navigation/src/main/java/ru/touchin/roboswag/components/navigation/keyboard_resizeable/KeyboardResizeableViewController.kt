@@ -62,9 +62,7 @@ abstract class KeyboardResizeableViewController<TActivity : BaseActivity, TState
                 keyboardIsVisible = false
             }
             keyboardShowListener = { diff ->
-                if (!keyboardIsVisible) {
-                    onKeyboardShow(diff)
-                }
+                onKeyboardShow(diff)
                 keyboardIsVisible = true
             }
             startDetection()
