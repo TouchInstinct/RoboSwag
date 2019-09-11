@@ -55,13 +55,13 @@ abstract class KeyboardResizeableViewController<TActivity : BaseActivity, TState
     override fun onStart() {
         super.onStart()
         activity.keyboardBehaviorDetector?.apply {
-            setKeyboardHideListener {
+            keyboardHideListener = {
                 if (keyboardIsVisible) {
                     onKeyboardHide()
                 }
                 keyboardIsVisible = false
             }
-            setKeyboardShowListener { diff ->
+            keyboardShowListener = { diff ->
                 if (!keyboardIsVisible) {
                     onKeyboardShow(diff)
                 }
@@ -74,8 +74,8 @@ abstract class KeyboardResizeableViewController<TActivity : BaseActivity, TState
     override fun onStop() {
         super.onStop()
         activity.keyboardBehaviorDetector?.apply {
-            removeKeyboardHideListener()
-            removeKeyboardShowListener()
+            keyboardHideListener = null
+            keyboardShowListener = null
             stopDetection()
         }
     }
