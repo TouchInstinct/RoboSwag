@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import butterknife.ButterKnife
+import butterknife.Unbinder
 import ru.touchin.roboswag.components.navigation.BuildConfig
 import ru.touchin.roboswag.components.navigation.viewcontrollers.LifecycleLoggingObserver
 
@@ -54,6 +55,8 @@ open class BaseFragment<TActivity : FragmentActivity, TState : Parcelable>(@Layo
     protected lateinit var state: TState
         private set
 
+    private lateinit var butterKnifeUnbinder: Unbinder
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -71,8 +74,13 @@ open class BaseFragment<TActivity : FragmentActivity, TState : Parcelable>(@Layo
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ButterKnife.bind(this, view)
         lifecycle.addObserver(LifecycleLoggingObserver())
+        butterKnifeUnbinder = ButterKnife.bind(this, view)
+    }
+
+    override fun onDestroyView() {
+        butterKnifeUnbinder.unbind()
+        super.onDestroyView()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
