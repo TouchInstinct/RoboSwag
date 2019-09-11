@@ -4,8 +4,17 @@ import android.text.TextWatcher
 import android.text.method.KeyListener
 import android.widget.EditText
 
+/**
+ * [Convertable] implementation for EditText class
+ */
 open class EditTextConvertable(val editText: EditText) : Convertable {
 
+    /**
+     * Set text to EditText with cursor handling
+     * @param charSequence text
+     * @param placeCursorToTheEnd is cursor must be moved to the end of text
+     * @param incrementCursorPosition increment cursor position if it's in the middle of text
+     */
     override fun setText(charSequence: CharSequence, placeCursorToTheEnd: Boolean, incrementCursorPosition: Boolean) {
         val cursorPositionFromEnd = getText().length - editText.selectionEnd
         editText.setText(charSequence)

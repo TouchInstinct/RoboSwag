@@ -3,6 +3,10 @@ package ru.touchin.converter.verifiers
 import ru.touchin.converter.commands.Command
 import java.math.BigDecimal
 
+/**
+ * Verifies decimal numbers in text input.
+ * @param maxIntegerNumbers maximum allowed numbers before separator.
+ */
 class IntegerVerifier(maxIntegerNumbers: Int) : Verifier<BigDecimal> {
 
     private val pattern = "(\\d{1,$maxIntegerNumbers})((\\.)\\d*)?".toRegex()

@@ -20,16 +20,24 @@ open class InputConvertable(val input: Convertable) {
     var suffix: String = ""
     private var format = buildFormat()
 
+    /**
+     * Set [storedValue] to input with [suffix]
+     */
     fun addSuffixToText() {
         input.setText("${format(storedValue)}$suffix")
     }
 
+    /**
+     * Set [storedValue] to input without [suffix]
+     */
     fun removeSuffixFromText() {
         input.setText(format(storedValue))
     }
 
     /**
-     * Apply base function to base value
+     * Multiply given [newBaseValue] with [convertRate]
+     * @param scaleValue output value scale
+     * @param roundingMode rounding mode for output value
      */
     fun baseOperation(
             newBaseValue: BigDecimal,
@@ -42,7 +50,9 @@ open class InputConvertable(val input: Convertable) {
             .stripTrailingZeros()
 
     /**
-     * Apply target function to target value
+     * Divide given [newTargetValue] with [convertRate]
+     * @param scaleValue output value scale
+     * @param roundingMode rounding mode for output value
      */
     fun targetOperation(
             newTargetValue: BigDecimal,
@@ -85,6 +95,10 @@ open class InputConvertable(val input: Convertable) {
         return true // todo implement or delete
     }
 
+    /**
+     * Build decimalFormat by using all class parameters
+     * @param separator separatior character
+     */
     private fun buildFormat(separator: Char = groupingSeparator): DecimalFormat = DecimalFormat(
             formatPattern,
             DecimalFormatSymbols(Locale.US).also { it.groupingSeparator = separator }

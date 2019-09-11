@@ -117,6 +117,12 @@ abstract class AbstractConverterController(
         }
     }
 
+    /**
+     * Operation for base input at every text change.
+     * Save [newBaseValue] and [newTargetValue]
+     * Set new converted number to base input if [autoTextSet] is true
+     * Invoke controller callback [onTextInputConvert]
+     */
     private fun baseListenerOperation(newBaseValue: BigDecimal, newTargetValue: BigDecimal) {
         targetValue = newTargetValue
         baseValue = newBaseValue
@@ -141,6 +147,12 @@ abstract class AbstractConverterController(
         }
     }
 
+    /**
+     * Operation for target input at every text change
+     * Save [newBaseValue] and [newTargetValue]
+     * Set new converted number to target input if [autoTextSet] is true
+     * Invoke controller callback [onTextInputConvert]
+    */
     private fun targetListenerOperation(newTargetValue: BigDecimal, newBaseValue: BigDecimal) {
         targetValue = newTargetValue
         baseValue = newBaseValue
@@ -148,6 +160,11 @@ abstract class AbstractConverterController(
         onTextInputConvert(baseValue, targetValue)
     }
 
+    /**
+     * Check if [convertRate] was set
+     * Add to inputs onFocusChangeListener for text suffix
+     *
+     */
     protected fun setStateReadyIfCompletelyInitialized() {
         if (convertRate != null) {
             views.amountTarget.input.addOnFocusChangedListener { isFocused ->
@@ -167,6 +184,10 @@ abstract class AbstractConverterController(
         }
     }
 
+    /**
+     * Wrapper for views.
+     * At the moment is redundant because it holds only convertable views
+     */
     data class ConverterViews(val amountBase: InputConvertable, val amountTarget: InputConvertable) {
         init {
             amountBase.input.setKeyListener(DigitsKeyListener.getInstance("0123456789.,"))

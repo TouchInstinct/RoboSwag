@@ -3,10 +3,14 @@ package ru.touchin.converter.verifiers
 import ru.touchin.converter.commands.Command
 import java.math.BigDecimal
 
-class ZeroVerifier(val pointChar: Char) : Verifier<BigDecimal> { // todo fix regular expression to catch repeating zeros
+/**
+ * Verifiers text input correctness for amount of zeros.
+ * @param separatorChar separator character
+ */
+class ZeroVerifier(val separatorChar: Char) : Verifier<BigDecimal> { // todo fix regular expression to catch repeating zeros
 
     override fun verify(text: String): Command<BigDecimal> =
-            if (text.length > 1 && text.startsWith('0') && !text.startsWith("0$pointChar")) {
+            if (text.length > 1 && text.startsWith('0') && !text.startsWith("0$separatorChar")) {
                 Command.Set(Character.getNumericValue(text[1]).toBigDecimal())
             } else {
                 Command.Success()
