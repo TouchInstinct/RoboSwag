@@ -77,7 +77,6 @@ abstract class KeyboardResizeableViewController<TActivity : BaseActivity, TState
             keyboardShowListener = null
             stopDetection()
         }
-        closeKeyboard()
     }
 
     private fun closeKeyboard() {
