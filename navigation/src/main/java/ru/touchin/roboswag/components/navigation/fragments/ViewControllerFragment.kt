@@ -171,7 +171,7 @@ open class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcela
         viewController?.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onPrepareOptionsMenu(menu: Menu?) {
+    override fun onPrepareOptionsMenu(menu: Menu) {
         viewController?.onPrepareOptionsMenu(menu)
     }
 
