@@ -4,6 +4,9 @@ import android.text.TextWatcher
 import android.text.method.KeyListener
 import androidx.annotation.ColorInt
 
+/**
+ * Interface for Custom Views usage
+ */
 interface Convertable {
 
     fun setText(charSequence: CharSequence, placeCursorToTheEnd: Boolean = false, incrementCursorPosition: Boolean = false)

@@ -132,6 +132,12 @@ open class ConverterController(
         }
     }
 
+    /**
+     * Operation for base input at every text change.
+     * Save [newBaseValue] and [newTargetValue]
+     * Set new converted number to base input if [autoTextSet] is true
+     * Invoke controller callback [onTextInputConvert]
+     */
     private fun baseListenerOperation(newBaseValue: BigDecimal, newTargetValue: BigDecimal) {
         storedTargetValue = newTargetValue
         storedBaseValue = newBaseValue
@@ -152,6 +158,12 @@ open class ConverterController(
         }
     }
 
+    /**
+     * Operation for target input at every text change
+     * Save [newBaseValue] and [newTargetValue]
+     * Set new converted number to target input if [autoTextSet] is true
+     * Invoke controller callback [onTextInputConvert]
+     */
     private fun targetListenerOperation(newTargetValue: BigDecimal, newBaseValue: BigDecimal) {
         storedTargetValue = newTargetValue
         storedBaseValue = newBaseValue
@@ -159,6 +171,10 @@ open class ConverterController(
         onTextInputConvert(storedBaseValue, storedTargetValue)
     }
 
+    /**
+     * Wrapper for views.
+     * At the moment is redundant because it holds only convertable views
+     */
     data class ConverterViews(val amountBase: InputConvertable, val amountTarget: InputConvertable) {
         init {
             amountBase.input.setKeyListener(DigitsKeyListener.getInstance("0123456789.,"))
