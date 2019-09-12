@@ -3,6 +3,7 @@ package ru.touchin.extensions
 import android.app.Activity
 import android.app.ActivityManager
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import androidx.annotation.ColorRes
@@ -27,5 +28,13 @@ fun Activity.setupTaskDescriptor(label: String, @DrawableRes iconRes: Int, @Colo
                 ContextCompat.getColor(this, primaryColorRes)
         )
         setTaskDescription(taskDescription)
+    }
+}
+
+fun Activity.openGooglePlay(packageName: String) {
+    try { //try to open play market
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+    } catch (e: android.content.ActivityNotFoundException) {
+        openBrowser("https://play.google.com/store/apps/details?id=$packageName")
     }
 }
