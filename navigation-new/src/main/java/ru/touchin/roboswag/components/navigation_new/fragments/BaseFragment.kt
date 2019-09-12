@@ -18,7 +18,7 @@ import androidx.fragment.app.FragmentActivity
 import butterknife.ButterKnife
 import butterknife.Unbinder
 import ru.touchin.roboswag.components.navigation_new.BuildConfig
-import ru.touchin.roboswag.components.navigation_new.viewcontrollers.LifecycleLoggingObserver
+import ru.touchin.roboswag.components.navigation.viewcontrollers.LifecycleLoggingObserver
 
 open class BaseFragment<TActivity : FragmentActivity, TState : Parcelable>(@LayoutRes layoutRes: Int) : Fragment(layoutRes) {
 

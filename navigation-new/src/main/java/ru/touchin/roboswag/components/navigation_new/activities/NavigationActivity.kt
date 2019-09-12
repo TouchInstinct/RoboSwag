@@ -1,7 +1,9 @@
 package ru.touchin.roboswag.components.navigation_new.activities
 
 import androidx.fragment.app.FragmentTransaction
-import ru.touchin.roboswag.components.navigation_new.viewcontrollers.ViewControllerNavigation
+import ru.touchin.roboswag.components.navigation.activities.BaseActivity
+import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewControllerNavigation
+import ru.touchin.roboswag.components.navigation_new.FragmentNavigation
 
 /**
  * Created by Daniil Borisovskii on 15/08/2019.
@@ -14,7 +16,7 @@ abstract class NavigationActivity : BaseActivity() {
     protected open val transition = FragmentTransaction.TRANSIT_NONE
 
     open val navigation by lazy {
-        ViewControllerNavigation<NavigationActivity>(
+        FragmentNavigation(
                 this,
                 supportFragmentManager,
                 fragmentContainerViewId,

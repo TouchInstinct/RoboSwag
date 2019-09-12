@@ -29,7 +29,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import ru.touchin.roboswag.core.log.Lc
 import ru.touchin.roboswag.components.navigation_new.fragments.BaseFragment
-import ru.touchin.roboswag.components.navigation_new.viewcontrollers.EmptyState
+import ru.touchin.roboswag.components.navigation.viewcontrollers.EmptyState
 import kotlin.reflect.KClass
 
 /**
