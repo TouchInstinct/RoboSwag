@@ -1,4 +1,4 @@
-package ru.touchin.extensions
+package ru.touchin.lifecycle.extensions
 
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
