@@ -8,18 +8,18 @@ import java.math.BigDecimal
 class VerifierController(
         private val inputConvertible: InputConvertible,
         private val verifiers: List<Verifier<BigDecimal>>,
-        private val isCorrectionMode: Boolean
+        private val isCorrectionMode: Boolean = false
 ) {
 
-    fun verifyInput(): Boolean = verifyAll(inputConvertible.input.getText().toString())
+    fun isInputValid(): Boolean = verifyAll(inputConvertible.input.getText().toString())
 
-    fun verifyAll(inputString: String): Boolean {
+    fun verifyAll(inputString: String, isCorrectionPossible: Boolean = false): Boolean {
         return verifiers.all { verifier ->
             if (inputString.isBlank()) {
                 true
             } else {
                 val result = verifier.verify(inputString)
-                if (isCorrectionMode) execute(result)
+                if (isCorrectionMode || isCorrectionPossible) execute(result)
 
                 result is Command.Success
             }
@@ -30,16 +30,16 @@ class VerifierController(
         when (command) {
             is Command.Fallback -> {
                 with(inputConvertible) {
-                    setNumber(storedValue, addSuffix = false)
+                    setNumber(storedValue)
                 }
             }
             is Command.Set -> {
-                inputConvertible.setNumber(command.data, addSuffix = false)
+                inputConvertible.setNumber(command.data)
             }
             is Command.Remove -> {
                 with(inputConvertible) {
                     val changedString = format(storedValue).dropLast(command.data.toInt())
-                    inputConvertible.setNumber(format(changedString), placeCursorToTheEnd = true, addSuffix = false)
+                    inputConvertible.setNumber(format(changedString), placeCursorToTheEnd = true)
                 }
             }
             is Command.Success -> { // do nothing

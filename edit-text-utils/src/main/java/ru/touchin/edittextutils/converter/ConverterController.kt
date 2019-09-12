@@ -19,25 +19,23 @@ import java.math.RoundingMode
  * @param baseVerifier input verifier of base input
  * @param targetVerifier input verifier of target input
  */
-open class ConverterController(
+class ConverterController(
         viewBase: InputConvertible,
         viewTarget: InputConvertible,
         private var convertRate: BigDecimal,
         private val onTextInputConvert: (baseValue: BigDecimal, targetValue: BigDecimal) -> Unit,
         private val baseVerifier: VerifierController = VerifierController(
-                viewBase,
-                listOf(IntegerVerifier()),
-                true
+            viewBase,
+            listOf(IntegerVerifier())
         ),
         private val targetVerifier: VerifierController = VerifierController(
-                viewTarget,
-                listOf(IntegerVerifier()),
-                true
+            viewTarget,
+            listOf(IntegerVerifier())
         )
 ) {
 
-    protected open val baseAmountChangedListener: TextWatcher = BaseAmountChangedListener()
-    protected open val targetAmountChangedListener: TextWatcher = TargetAmountChangedListener()
+    private val baseAmountChangedListener: TextWatcher = BaseAmountChangedListener()
+    private val targetAmountChangedListener: TextWatcher = TargetAmountChangedListener()
 
     val views: ConverterViews = ConverterViews(viewBase, viewTarget)
 
@@ -60,27 +58,9 @@ open class ConverterController(
     var roundingMode: RoundingMode = RoundingMode.HALF_DOWN
 
     init {
-        with(views.amountBase) {
+        views.amountBase.input.addTextChangedListener(baseAmountChangedListener)
 
-            input.addTextChangedListener(baseAmountChangedListener)
-
-            input.addOnFocusChangedListener { isFocused ->
-                if (withSuffix) {
-                    if (isFocused) removeSuffixFromText() else addSuffixToText()
-                }
-            }
-        }
-
-        with(views.amountTarget) {
-
-            input.addTextChangedListener(targetAmountChangedListener)
-
-            input.addOnFocusChangedListener { isFocused ->
-                if (withSuffix) {
-                    if (isFocused) removeSuffixFromText() else addSuffixToText()
-                }
-            }
-        }
+        views.amountTarget.input.addTextChangedListener(targetAmountChangedListener)
     }
 
     //TODO: clarify is it necessary
@@ -120,15 +100,19 @@ open class ConverterController(
         convertRate = rate
     }
 
-    protected inner class BaseAmountChangedListener : DefaultTextWatcher() {
+    private inner class BaseAmountChangedListener : DefaultTextWatcher() {
         override fun afterTextChanged(editable: Editable) {
             val inputWrapper = views.amountBase
             val newBaseValue = inputWrapper.format(editable)
             val newTargetValue = inputWrapper.baseOperation(newBaseValue, convertRate, views.amountTarget.maxFractionNumber, roundingMode)
 
-            //val isInputValid = baseVerifier.verifyAll(editable.toString())
-            if (inputWrapper.input.isFocused() && newBaseValue != storedBaseValue) {
-                baseListenerOperation(newBaseValue, newTargetValue)
+            if (newBaseValue != storedBaseValue) {
+                if (baseVerifier.verifyAll(newBaseValue.toString())
+                    && targetVerifier.verifyAll(newTargetValue.toString())) {
+                    baseListenerOperation(newBaseValue, newTargetValue)
+                } else {
+                    inputWrapper.setNumber(storedBaseValue)
+                }
             }
         }
     }
@@ -146,15 +130,19 @@ open class ConverterController(
         onTextInputConvert(storedBaseValue, storedTargetValue)
     }
 
-    protected inner class TargetAmountChangedListener : DefaultTextWatcher() {
+    private inner class TargetAmountChangedListener : DefaultTextWatcher() {
         override fun afterTextChanged(editable: Editable) {
             val inputWrapper = views.amountTarget
             val newTargetValue = inputWrapper.format(editable)
             val newBaseValue = inputWrapper.targetOperation(newTargetValue, convertRate, views.amountBase.maxFractionNumber, roundingMode)
 
-            //val isInputValid = targetVerifier.verifyAll(editable.toString())
-            if (inputWrapper.input.isFocused() && newTargetValue != storedTargetValue) {
-                targetListenerOperation(newTargetValue, newBaseValue)
+            if (newTargetValue != storedTargetValue) {
+                if (targetVerifier.verifyAll(newTargetValue.toString())
+                    && baseVerifier.verifyAll(newBaseValue.toString())) {
+                    targetListenerOperation(newTargetValue, newBaseValue)
+                } else {
+                    inputWrapper.setNumber(storedTargetValue)
+                }
             }
         }
     }
