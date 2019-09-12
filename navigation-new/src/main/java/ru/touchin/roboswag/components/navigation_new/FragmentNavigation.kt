@@ -17,7 +17,7 @@
  *
  */
 
-package ru.touchin.roboswag.components.navigation
+package ru.touchin.roboswag.components.navigation_new
 
 import android.content.Context
 import android.os.Bundle
@@ -28,8 +28,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import ru.touchin.roboswag.core.log.Lc
-import ru.touchin.roboswag.components.navigation.fragments.BaseFragment
-import ru.touchin.roboswag.components.navigation.viewcontrollers.EmptyState
+import ru.touchin.roboswag.components.navigation_new.fragments.BaseFragment
+import ru.touchin.roboswag.components.navigation_new.viewcontrollers.EmptyState
 import kotlin.reflect.KClass
 
 /**

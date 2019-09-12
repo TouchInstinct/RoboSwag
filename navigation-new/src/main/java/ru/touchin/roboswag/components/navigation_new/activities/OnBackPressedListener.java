@@ -1,4 +1,4 @@
-package ru.touchin.roboswag.components.navigation.activities;
+package ru.touchin.roboswag.components.navigation_new.activities;
 
 public interface OnBackPressedListener {
 

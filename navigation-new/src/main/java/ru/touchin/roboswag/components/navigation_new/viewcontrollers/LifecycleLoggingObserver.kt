@@ -1,4 +1,4 @@
-package ru.touchin.roboswag.components.navigation.viewcontrollers
+package ru.touchin.roboswag.components.navigation_new.viewcontrollers
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver

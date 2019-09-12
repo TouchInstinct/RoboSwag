@@ -17,14 +17,14 @@
  *
  */
 
-package ru.touchin.roboswag.components.navigation.activities
+package ru.touchin.roboswag.components.navigation_new.activities
 
 import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
-import ru.touchin.roboswag.components.navigation.keyboard_resizeable.KeyboardBehaviorDetector
-import ru.touchin.roboswag.components.navigation.viewcontrollers.LifecycleLoggingObserver
+import ru.touchin.roboswag.components.navigation_new.keyboard_resizeable.KeyboardBehaviorDetector
+import ru.touchin.roboswag.components.navigation_new.viewcontrollers.LifecycleLoggingObserver
 import ru.touchin.roboswag.core.log.Lc
 import ru.touchin.roboswag.core.log.LcGroup
 

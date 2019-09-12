@@ -1,11 +1,11 @@
-package ru.touchin.roboswag.components.navigation.keyboard_resizeable
+package ru.touchin.roboswag.components.navigation_new.keyboard_resizeable
 
 import android.os.Build
 import android.os.Parcelable
 import androidx.annotation.LayoutRes
-import ru.touchin.roboswag.components.navigation.activities.BaseActivity
-import ru.touchin.roboswag.components.navigation.activities.OnBackPressedListener
-import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewController
+import ru.touchin.roboswag.components.navigation_new.activities.BaseActivity
+import ru.touchin.roboswag.components.navigation_new.activities.OnBackPressedListener
+import ru.touchin.roboswag.components.navigation_new.viewcontrollers.ViewController
 import ru.touchin.roboswag.components.utils.UiUtils
 
 abstract class KeyboardResizeableViewController<TActivity : BaseActivity, TState : Parcelable>(

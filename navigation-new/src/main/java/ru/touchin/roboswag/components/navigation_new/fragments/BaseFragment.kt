@@ -1,4 +1,4 @@
-package ru.touchin.roboswag.components.navigation.fragments
+package ru.touchin.roboswag.components.navigation_new.fragments
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -17,8 +17,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import butterknife.ButterKnife
 import butterknife.Unbinder
-import ru.touchin.roboswag.components.navigation.BuildConfig
-import ru.touchin.roboswag.components.navigation.viewcontrollers.LifecycleLoggingObserver
+import ru.touchin.roboswag.components.navigation_new.BuildConfig
+import ru.touchin.roboswag.components.navigation_new.viewcontrollers.LifecycleLoggingObserver
 
 open class BaseFragment<TActivity : FragmentActivity, TState : Parcelable>(@LayoutRes layoutRes: Int) : Fragment(layoutRes) {
 

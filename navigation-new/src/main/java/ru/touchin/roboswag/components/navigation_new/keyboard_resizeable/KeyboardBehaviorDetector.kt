@@ -1,9 +1,9 @@
-package ru.touchin.roboswag.components.navigation.keyboard_resizeable
+package ru.touchin.roboswag.components.navigation_new.keyboard_resizeable
 
 import android.graphics.Rect
 import android.view.View
 import android.view.ViewGroup
-import ru.touchin.roboswag.components.navigation.activities.BaseActivity
+import ru.touchin.roboswag.components.navigation_new.activities.BaseActivity
 
 // The workaround forces an activity to resize when keyboard appears in the full-screen mode
 class KeyboardBehaviorDetector(

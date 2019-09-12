@@ -28,7 +28,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import ru.touchin.roboswag.core.log.Lc
-import ru.touchin.roboswag.components.navigation.fragments.BaseFragment
 import ru.touchin.roboswag.components.navigation.viewcontrollers.EmptyState
 import kotlin.reflect.KClass
 
@@ -163,23 +162,6 @@ open class FragmentNavigation(
     /**
      * Pushes [Fragment] on top of stack with specific target fragment, arguments and transaction setup.
      *
-     * @param fragmentClass    KClass of [Fragment] to instantiate;
-     * @param state            State of instantiated [Fragment];
-     * @param transactionSetup Function to setup transaction before commit. It is useful to specify transition animations or additional info.
-     */
-    fun <T: Parcelable> push(
-            fragmentClass: KClass<out BaseFragment<*, out T>>,
-            state: T? = null,
-            addToStack: Boolean = true,
-            backStackName: String? = null,
-            transactionSetup: ((FragmentTransaction) -> Unit)? = null
-    ) {
-        push(fragmentClass.java, BaseFragment.args(state ?: EmptyState), addToStack, backStackName, transactionSetup)
-    }
-
-    /**
-     * Pushes [Fragment] on top of stack with specific target fragment, arguments and transaction setup.
-     *
      * @param fragmentClass    Class of [Fragment] to instantiate;
      * @param targetFragment   Target fragment to be set as [Fragment.getTargetFragment] of instantiated [Fragment];
      * @param args             Bundle to be set as [Fragment.getArguments] of instantiated [Fragment];
@@ -201,24 +183,6 @@ open class FragmentNavigation(
                 null,
                 transactionSetup
         )
-    }
-
-    /**
-     * Pushes [Fragment] on top of stack with specific target fragment, arguments and transaction setup.
-     *
-     * @param fragmentClass    KClass of [Fragment] to instantiate;
-     * @param targetFragment   Target fragment to be set as [Fragment.getTargetFragment] of instantiated [Fragment];
-     * @param state            State of instantiated [Fragment];
-     * @param transactionSetup Function to setup transaction before commit. It is useful to specify transition animations or additional info.
-     */
-    fun <T: Parcelable> pushForResult(
-            fragmentClass: KClass<out BaseFragment<*, out T>>,
-            targetFragment: Fragment,
-            targetRequestCode: Int,
-            state: T? = null,
-            transactionSetup: ((FragmentTransaction) -> Unit)? = null
-    ) {
-        pushForResult(fragmentClass.java, targetFragment, targetRequestCode, BaseFragment.args(state ?: EmptyState), transactionSetup)
     }
 
     /**
@@ -253,22 +217,6 @@ open class FragmentNavigation(
     ) {
         beforeSetInitialActions()
         setAsTop(fragmentClass, args, false, transactionSetup)
-    }
-
-    /**
-     * Pops all [Fragment]s and places new initial [Fragment] on top of stack with specific transaction setup and arguments.
-     *
-     * @param fragmentClass    Class of [Fragment] to instantiate;
-     * @param state            State of instantiated [Fragment];
-     * @param transactionSetup Function to setup transaction before commit. It is useful to specify transition animations or additional info.
-     */
-    fun <T: Parcelable> setInitial(
-            fragmentClass: KClass<out BaseFragment<*, out T>>,
-            state: T? = null,
-            transactionSetup: ((FragmentTransaction) -> Unit)? = null
-    ) {
-        beforeSetInitialActions()
-        setAsTop(fragmentClass.java, BaseFragment.args(state ?: EmptyState), false, transactionSetup)
     }
 
     /**

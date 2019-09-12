@@ -17,7 +17,7 @@
  *
  */
 
-package ru.touchin.roboswag.components.navigation;
+package ru.touchin.roboswag.components.navigation_new;
 
 import android.app.Application;
 import android.content.Context;

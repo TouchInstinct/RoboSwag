@@ -17,7 +17,7 @@
  *
  */
 
-package ru.touchin.roboswag.components.navigation.fragments
+package ru.touchin.roboswag.components.navigation_new.fragments
 
 import android.animation.Animator
 import android.annotation.SuppressLint
@@ -35,8 +35,8 @@ import android.view.animation.Animation
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
-import ru.touchin.roboswag.components.navigation.BuildConfig
-import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewController
+import ru.touchin.roboswag.components.navigation_new.BuildConfig
+import ru.touchin.roboswag.components.navigation_new.viewcontrollers.ViewController
 
 /**
  * Created by Gavriil Sitnikov on 21/10/2015.
@@ -101,7 +101,8 @@ open class ViewControllerFragment<TActivity : FragmentActivity, TState : Parcela
                 ?: throw IllegalStateException("State is required and null")
 
         if (BuildConfig.DEBUG) {
-            state = reserialize(state, state.javaClass.classLoader ?: Thread.currentThread().contextClassLoader)
+            state = reserialize(state, state.javaClass.classLoader
+                    ?: Thread.currentThread().contextClassLoader)
         }
     }
 
