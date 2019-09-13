@@ -9,30 +9,14 @@ import java.util.Locale
 
 open class InputConvertible(val input: Convertible) {
 
-    var storedValue: BigDecimal = BigDecimal.ZERO
+    var storedValue: BigDecimal = format(input.getText())
     var formatPattern: String = "#,##0.########"
     var groupingSeparator = ' '
     var roundingMode: RoundingMode = RoundingMode.DOWN
     var maxFractionNumber = 2
     var maxIntegerNumber = 8
 
-    var withSuffix: Boolean = true
-    var suffix: String = ""
     private var format = buildFormat()
-
-    /**
-     * Set [storedValue] to input with [suffix]
-     */
-    fun addSuffixToText() {
-        input.setText("${format(storedValue)}$suffix")
-    }
-
-    /**
-     * Set [storedValue] to input without [suffix]
-     */
-    fun removeSuffixFromText() {
-        input.setText(format(storedValue))
-    }
 
     /**
      * Multiply given [newBaseValue] with [convertRate]
@@ -65,17 +49,16 @@ open class InputConvertible(val input: Convertible) {
 
     fun setNumber(
             number: BigDecimal,
-            placeCursorToTheEnd: Boolean = false,
-            incrementCursorPosition: Boolean = false,
-            addSuffix: Boolean = withSuffix
+            placeCursorToTheEnd: Boolean = true,
+            incrementCursorPosition: Boolean = false
     ) {
-        val text = if (addSuffix == true) "${format(number)}$suffix" else format(number)
+        val text = format(number)
         input.setText(text, placeCursorToTheEnd, incrementCursorPosition)
     }
 
     fun format(valueToFormat: BigDecimal): String = valueToFormat.formatToStringWithoutGroupingSeparator()
 
-    fun format(charSequenceToFormat: CharSequence): BigDecimal = charSequenceToFormat.toString().removeSuffix("$suffix")
+    fun format(charSequenceToFormat: CharSequence): BigDecimal = charSequenceToFormat.toString()
             .toBigDecimalOrZeroWithoutGrouping()
             .stripTrailingZeros()
 
