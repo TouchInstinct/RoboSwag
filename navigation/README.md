@@ -63,7 +63,7 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
 
         screenNavigation.setInitialViewController(
-                MainViewController::class.java,
+                MainFragment::class,
                 MainScreenState(true)
         )
     }
@@ -85,7 +85,7 @@ class MainViewController(
     init {
         button.setOnClickListener {
             activity.getNavigation().pushViewController(
-                TutorialViewController::class.java,
+                TutorialFragment::class,
                 EmptyState
             )
         }

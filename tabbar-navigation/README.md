@@ -74,9 +74,9 @@ class MainFragment : BottomNavigationFragment() {
     override val wrapWithNavigationContainer = true
 
     override val navigationViewControllers = SparseArray<Pair<Class<out ViewController<*, *>>, Parcelable>>().apply {
-        put(R.id.navigation_main, MainViewController::class.java to MainState())
-        put(R.id.navigation_second, SecondViewController::class.java to SecondState())
-        put(R.id.navigation_third, ThirdViewController::class.java to ThirdState())
+        put(R.id.navigation_main, MainFragment::class to MainState())
+        put(R.id.navigation_second, SecondFragment::class to SecondState())
+        put(R.id.navigation_third, ThirdFragment::class to ThirdState())
     }
 
 }
@@ -99,16 +99,16 @@ class MainViewController(
     init {
         //navigate using innerNavigation and saving tabbar visible
         navigateInsideTabbarButton.setOnClickListener {
-            activity.innerNavigation.pushViewController(
-                    TutorialViewController::class.java,
+            activity.innernavigation.push(
+                    TutorialFragment::class,
                     EmptyState
             )
         }
 
         //navigate using navigation and making tabbar invisible
         navigateOutsideTabbarButton.setOnClickListener {
-            activity.navigation.pushViewController(
-                    TutorialViewController::class.java,
+            activity.navigation.push(
+                    TutorialFragment::class,
                     EmptyState
             )
         }
