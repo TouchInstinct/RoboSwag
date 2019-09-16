@@ -140,7 +140,7 @@ open class ViewControllerNavigation<TActivity : FragmentActivity>(
      */
     fun <TState : Parcelable> setInitialViewController(
             viewControllerClass: Class<out ViewController<out TActivity, TState>>,
-            state: TState,
+            state: TState?,
             transactionSetup: ((FragmentTransaction) -> Unit)? = null
     ) {
         beforeSetInitialActions()
