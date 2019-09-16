@@ -42,6 +42,7 @@ class KeyboardBehaviorDetector(
 
             windowInsets
         }
+        ViewCompat.requestApplyInsets(view)
     }
 
     // Call this in "onPause()" of a fragment
