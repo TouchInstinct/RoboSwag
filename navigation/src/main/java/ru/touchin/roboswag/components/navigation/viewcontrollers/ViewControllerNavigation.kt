@@ -114,7 +114,7 @@ open class ViewControllerNavigation<TActivity : FragmentActivity>(
      */
     fun <TState : Parcelable> setViewControllerAsTop(
             viewControllerClass: Class<out ViewController<out TActivity, TState>>,
-            state: TState,
+            state: TState?,
             addToStack: Boolean = true,
             transactionSetup: ((FragmentTransaction) -> Unit)? = null
     ) {
