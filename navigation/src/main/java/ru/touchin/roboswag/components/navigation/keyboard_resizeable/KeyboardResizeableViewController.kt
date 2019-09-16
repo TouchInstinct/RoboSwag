@@ -3,6 +3,7 @@ package ru.touchin.roboswag.components.navigation.keyboard_resizeable
 import android.os.Build
 import android.os.Parcelable
 import androidx.annotation.LayoutRes
+import androidx.lifecycle.LifecycleObserver
 import ru.touchin.roboswag.components.navigation.activities.BaseActivity
 import ru.touchin.roboswag.components.navigation.activities.OnBackPressedListener
 import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewController
@@ -19,6 +20,7 @@ abstract class KeyboardResizeableViewController<TActivity : BaseActivity, TState
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
             creationContext.container?.requestApplyInsets()
         }
+        lifecycle.addObserver(activity.keyboardBehaviorDetector as LifecycleObserver)
     }
 
     private var keyboardIsVisible: Boolean = false
@@ -66,7 +68,6 @@ abstract class KeyboardResizeableViewController<TActivity : BaseActivity, TState
                 onKeyboardShow(diff)
                 keyboardIsVisible = true
             }
-            startDetection()
         }
     }
 
@@ -75,7 +76,6 @@ abstract class KeyboardResizeableViewController<TActivity : BaseActivity, TState
         activity.keyboardBehaviorDetector?.apply {
             keyboardHideListener = null
             keyboardShowListener = null
-            stopDetection()
         }
     }
 
