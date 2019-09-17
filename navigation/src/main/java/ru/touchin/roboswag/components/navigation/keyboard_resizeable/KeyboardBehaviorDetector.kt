@@ -1,67 +1,59 @@
 package ru.touchin.roboswag.components.navigation.keyboard_resizeable
 
-import android.graphics.Rect
-import android.view.View
-import android.view.ViewGroup
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 import ru.touchin.roboswag.components.navigation.activities.BaseActivity
 
-// The workaround forces an activity to resize when keyboard appears in the full-screen mode
+/**
+ *     This detector NOT detect landscape fullscreen keyboard
+ *
+ *     Your activity must have android:windowSoftInputMode="adjustResize" at least, otherwise listeners won't be called
+ */
 class KeyboardBehaviorDetector(
-        activity: BaseActivity,
-        fragmentContainerId: Int
-) {
+        activity: BaseActivity
+) : LifecycleObserver {
 
-    companion object {
-        private const val SCREEN_TO_KEYBOARD_HEIGHT_RATIO = 4.75
-    }
+    private val view = activity.window.decorView
 
-    private val contentContainer = activity.findViewById(android.R.id.content) as ViewGroup
-    private val fragmentContainer = activity.findViewById(fragmentContainerId) as ViewGroup
-    private lateinit var rootView: View
-    private val listener = { possiblyResizeChildOfContent() }
+    var keyboardHideListener: (() -> Unit)? = null
+    var keyboardShowListener: ((Int) -> Unit)? = null
 
-    private var keyboardHideListener: (() -> Unit)? = null
-    private var keyboardShowListener: ((Int) -> Unit)? = null
+    // -1 when we never measure insets yet
+    var startNavigationBarHeight = -1
+        private set
 
-    fun setKeyboardHideListener(listener: () -> Unit) {
-        keyboardHideListener = listener
-    }
-
-    fun removeKeyboardHideListener() {
-        keyboardHideListener = null
-    }
-
-    fun setKeyboardShowListener(listener: (Int) -> Unit) {
-        keyboardShowListener = listener
-    }
-
-    fun removeKeyboardShowListener() {
-        keyboardShowListener = null
-    }
-
-    // Call this in "onResume()" of a fragment
-    fun startDetection() {
-        rootView = fragmentContainer.getChildAt(0)
-
-        contentContainer.viewTreeObserver.addOnGlobalLayoutListener(listener)
-    }
-
-    // Call this in "onPause()" of a fragment
-    fun stopDetection() {
-        contentContainer.viewTreeObserver.removeOnGlobalLayoutListener(listener)
-    }
-
-    //https://stackoverflow.com/questions/2150078/how-to-check-visibility-of-software-keyboard-in-android?rq=1
-    private fun possiblyResizeChildOfContent() {
-        val rect = Rect()
-        rootView.getWindowVisibleDisplayFrame(rect)
-        val height = rootView.context.resources.displayMetrics.heightPixels
-        val diff = height - rect.bottom
-
-        if (diff > rootView.rootView.height / SCREEN_TO_KEYBOARD_HEIGHT_RATIO) {
-            keyboardShowListener?.invoke(diff)
+    private val listener = { isKeyboardOpen: Boolean, windowInsets: WindowInsetsCompat ->
+        if (isKeyboardOpen) {
+            keyboardShowListener?.invoke(
+                    windowInsets.systemWindowInsetBottom - startNavigationBarHeight
+            )
         } else {
             keyboardHideListener?.invoke()
         }
     }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    fun startDetection() {
+        ViewCompat.setOnApplyWindowInsetsListener(view) { _, windowInsets ->
+            val bottomInset = windowInsets.systemWindowInsetBottom
+            listener(isKeyboardOpen(bottomInset), windowInsets)
+
+            if (startNavigationBarHeight == -1) startNavigationBarHeight = bottomInset
+
+            windowInsets
+        }
+        ViewCompat.requestApplyInsets(view)
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    fun stopDetection() {
+        ViewCompat.setOnApplyWindowInsetsListener(view, null)
+    }
+
+    private fun isKeyboardOpen(navigationHeight: Int) =
+            navigationHeight != startNavigationBarHeight && startNavigationBarHeight != -1
+
 }
