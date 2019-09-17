@@ -51,7 +51,7 @@ abstract class KeyboardResizeableViewController<TActivity : BaseActivity, TState
 
     override fun onPause() {
         super.onPause()
-        toggleKeyboardVisibility()
+        notifyKeyboardVisibility()
         if (isHideKeyboardOnBackEnabled) activity.removeOnBackPressedListener(keyboardHideListener)
     }
 
@@ -79,7 +79,7 @@ abstract class KeyboardResizeableViewController<TActivity : BaseActivity, TState
         }
     }
 
-    private fun toggleKeyboardVisibility() {
+    private fun notifyKeyboardVisibility() {
         if (isKeyboardVisible) onKeyboardHide()
         isKeyboardVisible = false
     }
