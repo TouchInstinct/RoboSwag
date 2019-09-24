@@ -66,10 +66,10 @@ abstract class BottomNavigationFragment : Fragment() {
         bottomNavigationController.detach()
     }
 
-    private fun getNavigationActivity() = requireActivity() as BottomNavigationActivity
-
     fun navigateTo(@IdRes navigationTabId: Int, state: Parcelable? = null) {
         bottomNavigationController.navigateTo(navigationTabId, state)
     }
+
+    private fun getNavigationActivity() = requireActivity() as BottomNavigationActivity
 
 }
