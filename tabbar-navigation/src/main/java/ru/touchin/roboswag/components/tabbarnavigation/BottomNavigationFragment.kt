@@ -6,6 +6,7 @@ import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import ru.touchin.roboswag.components.navigation.activities.OnBackPressedListener
 import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewController
@@ -63,6 +64,10 @@ abstract class BottomNavigationFragment : Fragment() {
         super.onDestroyView()
         (activity as BottomNavigationActivity).removeOnBackPressedListener(backPressedListener)
         bottomNavigationController.detach()
+    }
+
+    fun navigateTo(@IdRes navigationTabId: Int, state: Parcelable? = null) {
+        bottomNavigationController.navigateTo(navigationTabId, state)
     }
 
     private fun getNavigationActivity() = requireActivity() as BottomNavigationActivity

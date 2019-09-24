@@ -1,5 +1,7 @@
 package ru.touchin.roboswag.components.tabbarnavigation
 
+import android.os.Parcelable
+import androidx.annotation.IdRes
 import androidx.fragment.app.FragmentManager
 import ru.touchin.roboswag.components.navigation.activities.NavigationActivity
 import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewControllerNavigation
@@ -12,6 +14,9 @@ abstract class BottomNavigationActivity : NavigationActivity() {
 
     val innerNavigation: ViewControllerNavigation<BottomNavigationActivity>
         get() = getNavigationContainer(supportFragmentManager)?.navigation ?: navigation as ViewControllerNavigation<BottomNavigationActivity>
+
+    fun navigateTo(@IdRes navigationTabId: Int, state: Parcelable? = null) =
+            (supportFragmentManager.primaryNavigationFragment as? BottomNavigationFragment)?.navigateTo(navigationTabId, state)
 
     private fun getNavigationContainer(fragmentManager: FragmentManager?): NavigationContainerFragment? =
             fragmentManager
