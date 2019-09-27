@@ -38,7 +38,7 @@ abstract class BottomNavigationFragment : Fragment() {
         bottomNavigationController = BottomNavigationController(
                 context = requireContext(),
                 fragmentManager = childFragmentManager,
-                viewControllers = navigationViewControllers,
+                fragments = navigationViewControllers,
                 contentContainerViewId = contentContainerViewId,
                 contentContainerLayoutId = contentContainerLayoutId,
                 topLevelViewControllerId = topLevelViewControllerId,

@@ -55,7 +55,7 @@ class NavigationContainerFragment : Fragment() {
     private var transition = 0
 
     @Suppress("UNCHECKED_CAST")
-    fun getViewControllerClass(): Class<out BaseFragment<out BottomNavigationActivity, Parcelable>> =
+    fun getFragmentClass(): Class<out BaseFragment<out BottomNavigationActivity, Parcelable>> =
             arguments?.getSerializable(VIEW_CONTROLLER_CLASS_ARG) as Class<out BaseFragment<out BottomNavigationActivity, Parcelable>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,7 +67,7 @@ class NavigationContainerFragment : Fragment() {
                 containerLayoutId = getInt(CONTAINER_LAYOUT_ID_ARG)
                 transition = getInt(TRANSITION_ARG)
             }
-            navigation.setInitial(getViewControllerClass(), args.getParcelable(VIEW_CONTROLLER_STATE_ARG))
+            navigation.setInitial(getFragmentClass(), args.getParcelable(VIEW_CONTROLLER_STATE_ARG))
         }
     }
 

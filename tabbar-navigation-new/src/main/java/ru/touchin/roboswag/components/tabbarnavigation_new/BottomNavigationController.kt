@@ -18,11 +18,11 @@ import ru.touchin.roboswag.core.utils.ShouldNotHappenException
 class BottomNavigationController(
         private val context: Context,
         private val fragmentManager: FragmentManager,
-        private val viewControllers: SparseArray<Pair<Class<out BaseFragment<*, *>>, Parcelable>>,
+        private val fragments: SparseArray<Pair<Class<out BaseFragment<*, *>>, Parcelable>>,
         @IdRes private val contentContainerViewId: Int,
         @LayoutRes private val contentContainerLayoutId: Int,
         private val wrapWithNavigationContainer: Boolean = false,
-        @IdRes private val topLevelViewControllerId: Int = 0, // If it zero back press with empty fragment back stack would close the app
+        @IdRes private val topLevelFragmentId: Int = 0, // If it zero back press with empty fragment back stack would close the app
         private val onReselectListener: (() -> Unit)? = null
 ) {
 
@@ -36,8 +36,8 @@ class BottomNavigationController(
         //This is provides to set pressed tab status to isActivated providing an opportunity to specify custom style
         callback = object : FragmentManager.FragmentLifecycleCallbacks() {
             override fun onFragmentViewCreated(fragmentManager: FragmentManager, fragment: Fragment, view: View, savedInstanceState: Bundle?) {
-                viewControllers.forEach { itemId, (viewControllerClass, _) ->
-                    if (isViewControllerFragment(fragment, viewControllerClass)) {
+                fragments.forEach { itemId, (fragmentClass, _) ->
+                    if (isViewControllerFragment(fragment, fragmentClass)) {
                         navigationTabsContainer.children.forEach { itemView -> itemView.isActivated = itemView.id == itemId }
                     }
                 }
@@ -46,7 +46,7 @@ class BottomNavigationController(
         fragmentManager.registerFragmentLifecycleCallbacks(callback!!, false)
 
         navigationTabsContainer.children.forEach { itemView ->
-            viewControllers[itemView.id]?.let { (viewControllerClass, _) ->
+            fragments[itemView.id]?.let { (viewControllerClass, _) ->
                 itemView.setOnClickListener {
                     if (!isViewControllerFragment(fragmentManager.primaryNavigationFragment, viewControllerClass)) {
                         navigateTo(itemView.id)
@@ -62,18 +62,18 @@ class BottomNavigationController(
 
     fun navigateTo(@IdRes itemId: Int, state: Parcelable? = null) {
         // Find view controller class that needs to open
-        val (viewControllerClass, defaultViewControllerState) = viewControllers[itemId] ?: return
-        if (state != null && state::class != defaultViewControllerState::class) {
+        val (fragmentClass, defaultFragmentState) = fragments[itemId] ?: return
+        if (state != null && state::class != defaultFragmentState::class) {
             throw ShouldNotHappenException(
-                    "Incorrect state type for navigation tab root ViewController. Should be ${defaultViewControllerState::class}"
+                    "Incorrect state type for navigation tab root ViewController. Should be ${defaultFragmentState::class}"
             )
         }
-        val viewControllerState = state ?: defaultViewControllerState
+        val fragmentState = state ?: defaultFragmentState
         val transaction = fragmentManager.beginTransaction()
         // Detach current primary fragment
         fragmentManager.primaryNavigationFragment?.let(transaction::detach)
-        val viewControllerName = viewControllerClass.canonicalName
-        var fragment = fragmentManager.findFragmentByTag(viewControllerName)
+        val fragmentName = fragmentClass.canonicalName
+        var fragment = fragmentManager.findFragmentByTag(fragmentName)
 
         if (state == null && fragment != null) {
             transaction.attach(fragment)
@@ -84,17 +84,17 @@ class BottomNavigationController(
             fragment = if (wrapWithNavigationContainer) {
                 Fragment.instantiate(
                         context,
-                        viewControllerClass.name,
-                        NavigationContainerFragment.args(viewControllerClass, viewControllerState, contentContainerViewId, contentContainerLayoutId)
+                        fragmentClass.name,
+                        NavigationContainerFragment.args(fragmentClass, fragmentState, contentContainerViewId, contentContainerLayoutId)
                 )
             } else {
                 Fragment.instantiate(
                         context,
-                        viewControllerClass.name,
-                        BaseFragment.args(viewControllerState)
+                        fragmentClass.name,
+                        BaseFragment.args(fragmentState)
                 )
             }
-            transaction.add(contentContainerViewId, fragment, viewControllerName)
+            transaction.add(contentContainerViewId, fragment, fragmentName)
         }
 
         transaction
@@ -108,18 +108,18 @@ class BottomNavigationController(
     // When you are in any tab instead of main you firstly navigate to main tab before exit application
     fun onBackPressed() =
             if (fragmentManager.primaryNavigationFragment?.childFragmentManager?.backStackEntryCount == 0
-                    && topLevelViewControllerId != 0
-                    && currentViewControllerId != topLevelViewControllerId) {
-                navigateTo(topLevelViewControllerId)
+                    && topLevelFragmentId != 0
+                    && currentViewControllerId != topLevelFragmentId) {
+                navigateTo(topLevelFragmentId)
                 true
             } else {
                 false
             }
 
-    private fun isViewControllerFragment(fragment: Fragment?, viewControllerClass: Class<out BaseFragment<*, *>>) =
+    private fun isViewControllerFragment(fragment: Fragment?, fragmentClass: Class<out BaseFragment<*, *>>) =
             if (wrapWithNavigationContainer) {
-                (fragment as NavigationContainerFragment).getViewControllerClass()
+                (fragment as NavigationContainerFragment).getFragmentClass()
             } else {
                 (fragment as BaseFragment<*, *>).javaClass
-            } === viewControllerClass
+            } === fragmentClass
 }
