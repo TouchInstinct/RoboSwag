@@ -1,4 +1,4 @@
-package ru.touchin.roboswag.components.tabbarnavigation
+package ru.touchin.roboswag.components.tabbarnavigation_new
 
 import android.os.Bundle
 import android.os.Parcelable
@@ -9,8 +9,6 @@ import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewController
-import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewControllerNavigation
 import ru.touchin.roboswag.components.navigation_new.FragmentNavigation
 import ru.touchin.roboswag.components.navigation_new.fragments.BaseFragment
 import ru.touchin.roboswag.core.utils.ShouldNotHappenException

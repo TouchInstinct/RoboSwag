@@ -1,4 +1,4 @@
-package ru.touchin.roboswag.components.tabbarnavigation
+package ru.touchin.roboswag.components.tabbarnavigation_new
 
 import android.os.Parcelable
 import androidx.annotation.IdRes
