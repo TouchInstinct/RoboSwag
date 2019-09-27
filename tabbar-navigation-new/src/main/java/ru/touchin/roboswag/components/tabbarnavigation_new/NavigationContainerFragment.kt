@@ -16,8 +16,8 @@ import ru.touchin.roboswag.core.utils.ShouldNotHappenException
 class NavigationContainerFragment : Fragment() {
 
     companion object {
-        private const val VIEW_CONTROLLER_CLASS_ARG = "VIEW_CONTROLLER_CLASS_ARG"
-        private const val VIEW_CONTROLLER_STATE_ARG = "VIEW_CONTROLLER_STATE_ARG"
+        private const val FRAGMENT_CLASS_ARG = "FRAGMENT_CLASS_ARG"
+        private const val FRAGMENT_STATE_ARG = "FRAGMENT_STATE_ARG"
         private const val CONTAINER_VIEW_ID_ARG = "CONTAINER_VIEW_ID_ARG"
         private const val CONTAINER_LAYOUT_ID_ARG = "CONTAINER_LAYOUT_ID_ARG"
         private const val TRANSITION_ARG = "TRANSITION_ARG"
@@ -29,8 +29,8 @@ class NavigationContainerFragment : Fragment() {
                 @LayoutRes containerLayoutId: Int,
                 transition: Int = FragmentTransaction.TRANSIT_NONE
         ) = Bundle().apply {
-            putSerializable(VIEW_CONTROLLER_CLASS_ARG, cls)
-            putParcelable(VIEW_CONTROLLER_STATE_ARG, state)
+            putSerializable(FRAGMENT_CLASS_ARG, cls)
+            putParcelable(FRAGMENT_STATE_ARG, state)
             putInt(CONTAINER_VIEW_ID_ARG, containerViewId)
             putInt(CONTAINER_LAYOUT_ID_ARG, containerLayoutId)
             putInt(TRANSITION_ARG, transition)
@@ -56,7 +56,7 @@ class NavigationContainerFragment : Fragment() {
 
     @Suppress("UNCHECKED_CAST")
     fun getFragmentClass(): Class<out BaseFragment<out BottomNavigationActivity, Parcelable>> =
-            arguments?.getSerializable(VIEW_CONTROLLER_CLASS_ARG) as Class<out BaseFragment<out BottomNavigationActivity, Parcelable>>
+            arguments?.getSerializable(FRAGMENT_CLASS_ARG) as Class<out BaseFragment<out BottomNavigationActivity, Parcelable>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +67,7 @@ class NavigationContainerFragment : Fragment() {
                 containerLayoutId = getInt(CONTAINER_LAYOUT_ID_ARG)
                 transition = getInt(TRANSITION_ARG)
             }
-            navigation.setInitial(getFragmentClass(), args.getParcelable(VIEW_CONTROLLER_STATE_ARG))
+            navigation.setInitial(getFragmentClass(), args.getParcelable(FRAGMENT_STATE_ARG))
         }
     }
 

@@ -25,11 +25,11 @@ abstract class BottomNavigationFragment : Fragment() {
 
     protected abstract val contentContainerLayoutId: Int
 
-    protected abstract val topLevelViewControllerId: Int
+    protected abstract val topLevelFragmentId: Int
 
     protected abstract val wrapWithNavigationContainer: Boolean
 
-    protected abstract val navigationViewControllers: SparseArray<Pair<Class<out BaseFragment<*, *>>, Parcelable>>
+    protected abstract val navigationFragments: SparseArray<Pair<Class<out BaseFragment<*, *>>, Parcelable>>
 
     protected open val reselectListener: (() -> Unit) = { getNavigationActivity().innerNavigation.up(inclusive = true) }
 
@@ -38,15 +38,15 @@ abstract class BottomNavigationFragment : Fragment() {
         bottomNavigationController = BottomNavigationController(
                 context = requireContext(),
                 fragmentManager = childFragmentManager,
-                fragments = navigationViewControllers,
+                fragments = navigationFragments,
                 contentContainerViewId = contentContainerViewId,
                 contentContainerLayoutId = contentContainerLayoutId,
-                topLevelViewControllerId = topLevelViewControllerId,
+                topLevelFragmentId = topLevelFragmentId,
                 wrapWithNavigationContainer = wrapWithNavigationContainer,
                 onReselectListener = reselectListener
         )
         if (savedInstanceState == null) {
-            bottomNavigationController.navigateTo(topLevelViewControllerId)
+            bottomNavigationController.navigateTo(topLevelFragmentId)
         }
     }
 

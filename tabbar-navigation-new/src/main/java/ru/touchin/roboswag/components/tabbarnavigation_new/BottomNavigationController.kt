@@ -28,7 +28,7 @@ class BottomNavigationController(
 
     private var callback: FragmentManager.FragmentLifecycleCallbacks? = null
 
-    private var currentViewControllerId = -1
+    private var currentFragmentId = -1
 
     fun attach(navigationTabsContainer: ViewGroup) {
         detach()
@@ -46,9 +46,9 @@ class BottomNavigationController(
         fragmentManager.registerFragmentLifecycleCallbacks(callback!!, false)
 
         navigationTabsContainer.children.forEach { itemView ->
-            fragments[itemView.id]?.let { (viewControllerClass, _) ->
+            fragments[itemView.id]?.let { (fragmentClass, _) ->
                 itemView.setOnClickListener {
-                    if (!isFragment(fragmentManager.primaryNavigationFragment, viewControllerClass)) {
+                    if (!isFragment(fragmentManager.primaryNavigationFragment, fragmentClass)) {
                         navigateTo(itemView.id)
                     } else {
                         onReselectListener?.invoke()
@@ -61,11 +61,11 @@ class BottomNavigationController(
     fun detach() = callback?.let(fragmentManager::unregisterFragmentLifecycleCallbacks)
 
     fun navigateTo(@IdRes itemId: Int, state: Parcelable? = null) {
-        // Find view controller class that needs to open
+        // Find fragment class that needs to open
         val (fragmentClass, defaultFragmentState) = fragments[itemId] ?: return
         if (state != null && state::class != defaultFragmentState::class) {
             throw ShouldNotHappenException(
-                    "Incorrect state type for navigation tab root ViewController. Should be ${defaultFragmentState::class}"
+                    "Incorrect state type for navigation tab root Fragment. Should be ${defaultFragmentState::class}"
             )
         }
         val fragmentState = state ?: defaultFragmentState
@@ -102,14 +102,14 @@ class BottomNavigationController(
                 .setReorderingAllowed(true)
                 .commit()
 
-        currentViewControllerId = itemId
+        currentFragmentId = itemId
     }
 
     // When you are in any tab instead of main you firstly navigate to main tab before exit application
     fun onBackPressed() =
             if (fragmentManager.primaryNavigationFragment?.childFragmentManager?.backStackEntryCount == 0
                     && topLevelFragmentId != 0
-                    && currentViewControllerId != topLevelFragmentId) {
+                    && currentFragmentId != topLevelFragmentId) {
                 navigateTo(topLevelFragmentId)
                 true
             } else {
