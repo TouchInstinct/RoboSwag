@@ -37,7 +37,7 @@ class BottomNavigationController(
         callback = object : FragmentManager.FragmentLifecycleCallbacks() {
             override fun onFragmentViewCreated(fragmentManager: FragmentManager, fragment: Fragment, view: View, savedInstanceState: Bundle?) {
                 fragments.forEach { itemId, (fragmentClass, _) ->
-                    if (isViewControllerFragment(fragment, fragmentClass)) {
+                    if (isFragment(fragment, fragmentClass)) {
                         navigationTabsContainer.children.forEach { itemView -> itemView.isActivated = itemView.id == itemId }
                     }
                 }
@@ -48,7 +48,7 @@ class BottomNavigationController(
         navigationTabsContainer.children.forEach { itemView ->
             fragments[itemView.id]?.let { (viewControllerClass, _) ->
                 itemView.setOnClickListener {
-                    if (!isViewControllerFragment(fragmentManager.primaryNavigationFragment, viewControllerClass)) {
+                    if (!isFragment(fragmentManager.primaryNavigationFragment, viewControllerClass)) {
                         navigateTo(itemView.id)
                     } else {
                         onReselectListener?.invoke()
@@ -116,7 +116,7 @@ class BottomNavigationController(
                 false
             }
 
-    private fun isViewControllerFragment(fragment: Fragment?, fragmentClass: Class<out BaseFragment<*, *>>) =
+    private fun isFragment(fragment: Fragment?, fragmentClass: Class<out BaseFragment<*, *>>) =
             if (wrapWithNavigationContainer) {
                 (fragment as NavigationContainerFragment).getFragmentClass()
             } else {
