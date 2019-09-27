@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
 import androidx.annotation.LayoutRes
+import androidx.lifecycle.LifecycleObserver
 import ru.touchin.roboswag.components.navigation.activities.BaseActivity
 import ru.touchin.roboswag.components.navigation.activities.OnBackPressedListener
 import ru.touchin.roboswag.components.navigation_new.fragments.BaseFragment
@@ -16,10 +17,10 @@ abstract class KeyboardResizeableFragment<TActivity : BaseActivity, TState : Par
         layoutRes
 ) {
 
-    private var keyboardIsVisible: Boolean = false
+    private var isKeyboardVisible: Boolean = false
 
     private val keyboardHideListener = OnBackPressedListener {
-        if (keyboardIsVisible) {
+        if (isKeyboardVisible) {
             UiUtils.OfViews.hideSoftInput(activity)
             true
         } else {
@@ -43,6 +44,7 @@ abstract class KeyboardResizeableFragment<TActivity : BaseActivity, TState : Par
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
             view.requestApplyInsets()
         }
+        lifecycle.addObserver(activity.keyboardBehaviorDetector as LifecycleObserver)
     }
 
     override fun onResume() {
@@ -52,34 +54,37 @@ abstract class KeyboardResizeableFragment<TActivity : BaseActivity, TState : Par
 
     override fun onPause() {
         super.onPause()
+        notifyKeyboardHidden()
         if (isHideKeyboardOnBackEnabled) activity.removeOnBackPressedListener(keyboardHideListener)
     }
 
     override fun onStart() {
         super.onStart()
         activity.keyboardBehaviorDetector?.apply {
-            setKeyboardHideListener {
-                if (keyboardIsVisible) {
+            keyboardHideListener = {
+                if (isKeyboardVisible) {
                     onKeyboardHide()
                 }
-                keyboardIsVisible = false
+                isKeyboardVisible = false
             }
-            setKeyboardShowListener { diff ->
-                if (!keyboardIsVisible) {
-                    onKeyboardShow(diff)
-                }
-                keyboardIsVisible = true
+            keyboardShowListener = { diff ->
+                onKeyboardShow(diff)
+                isKeyboardVisible = true
             }
-            startDetection()
         }
     }
 
     override fun onStop() {
         super.onStop()
         activity.keyboardBehaviorDetector?.apply {
-            removeKeyboardHideListener()
-            removeKeyboardShowListener()
-            stopDetection()
+            keyboardHideListener = null
+            keyboardShowListener = null
         }
     }
+
+    private fun notifyKeyboardHidden() {
+        if (isKeyboardVisible) onKeyboardHide()
+        isKeyboardVisible = false
+    }
+
 }
