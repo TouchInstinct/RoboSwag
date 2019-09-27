@@ -12,8 +12,6 @@ import androidx.core.util.forEach
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import ru.touchin.roboswag.components.navigation.fragments.ViewControllerFragment
-import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewController
 import ru.touchin.roboswag.components.navigation_new.fragments.BaseFragment
 import ru.touchin.roboswag.core.utils.ShouldNotHappenException
 
@@ -122,6 +120,6 @@ class BottomNavigationController(
             if (wrapWithNavigationContainer) {
                 (fragment as NavigationContainerFragment).getViewControllerClass()
             } else {
-                (fragment as ViewControllerFragment<*, *>).viewControllerClass
+                (fragment as BaseFragment<*, *>).javaClass
             } === viewControllerClass
 }
