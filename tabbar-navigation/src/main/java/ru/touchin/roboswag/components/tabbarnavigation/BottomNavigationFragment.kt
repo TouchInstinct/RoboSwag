@@ -75,7 +75,7 @@ abstract class BottomNavigationFragment : Fragment() {
     data class TabData(
             val viewControllerClass: Class<out ViewController<*, *>>,
             val viewControllerState: Parcelable,
-            val needToSaveState: Boolean = false
+            val saveStateOnSwitching: Boolean = false
     )
 
 }

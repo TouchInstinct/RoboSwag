@@ -63,7 +63,7 @@ class BottomNavigationController(
 
     fun navigateTo(@IdRes itemId: Int, state: Parcelable? = null) {
         // Find view controller class that needs to open
-        val (viewControllerClass, defaultViewControllerState, needToSaveState) = viewControllers[itemId] ?: return
+        val (viewControllerClass, defaultViewControllerState, saveStateOnSwitching) = viewControllers[itemId] ?: return
         if (state != null && state::class != defaultViewControllerState::class) {
             throw ShouldNotHappenException(
                     "Incorrect state type for navigation tab root ViewController. Should be ${defaultViewControllerState::class}"
@@ -76,7 +76,7 @@ class BottomNavigationController(
         val viewControllerName = viewControllerClass.canonicalName
         var fragment = fragmentManager.findFragmentByTag(viewControllerName)
 
-        if (needToSaveState && state == null && fragment != null) {
+        if (saveStateOnSwitching && state == null && fragment != null) {
             transaction.attach(fragment)
         } else {
             // If fragment already exist remove it first
