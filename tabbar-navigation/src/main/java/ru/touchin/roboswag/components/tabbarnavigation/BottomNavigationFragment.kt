@@ -75,7 +75,9 @@ abstract class BottomNavigationFragment : Fragment() {
     data class TabData(
             val viewControllerClass: Class<out ViewController<*, *>>,
             val viewControllerState: Parcelable,
-            val saveStateOnSwitching: Boolean = false
+            //It can be useful in some cases when it is necessary to create ViewController
+            //with initial state every time when tab opens.
+            val saveStateOnSwitching: Boolean = true
     )
 
 }
