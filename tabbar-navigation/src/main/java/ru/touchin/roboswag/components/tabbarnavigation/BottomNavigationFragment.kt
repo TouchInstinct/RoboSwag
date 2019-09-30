@@ -29,7 +29,7 @@ abstract class BottomNavigationFragment : Fragment() {
 
     protected abstract val wrapWithNavigationContainer: Boolean
 
-    protected abstract val navigationViewControllers: SparseArray<Pair<Class<out ViewController<*, *>>, Parcelable>>
+    protected abstract val navigationViewControllers: SparseArray<TabData>
 
     protected open val reselectListener: (() -> Unit) = { getNavigationActivity().innerNavigation.up(inclusive = true) }
 
@@ -71,5 +71,11 @@ abstract class BottomNavigationFragment : Fragment() {
     }
 
     private fun getNavigationActivity() = requireActivity() as BottomNavigationActivity
+
+    data class TabData(
+            val viewControllerClass: Class<out ViewController<*, *>>,
+            val viewControllerState: Parcelable,
+            val needToSaveState: Boolean = false
+    )
 
 }
