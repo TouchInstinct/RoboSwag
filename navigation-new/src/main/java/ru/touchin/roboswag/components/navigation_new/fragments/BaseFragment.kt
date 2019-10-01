@@ -74,7 +74,7 @@ open class BaseFragment<TActivity : FragmentActivity, TState : Parcelable>(@Layo
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lifecycle.addObserver(LifecycleLoggingObserver())
+        lifecycle.addObserver(LifecycleLoggingObserver(this))
         butterKnifeUnbinder = ButterKnife.bind(this, view)
     }
 
