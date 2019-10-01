@@ -264,7 +264,6 @@ public final class Lc {
      * @param methodName String represents lifecycle method in which it was called
      * @return String represents code point.
      */
-    @Non
     @NonNull
     public static String getCodePoint(@Nullable final Object caller, final String methodName) {
         return methodName
