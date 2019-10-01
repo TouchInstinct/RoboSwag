@@ -258,6 +258,20 @@ public final class Lc {
     }
 
     /**
+     * Returns line of code from where this method called.
+     *
+     * @param caller Object who is calling for code point;
+     * @param methodName String represents lifecycle method in which it was called
+     * @return String represents code point.
+     */
+    @Non
+    @NonNull
+    public static String getCodePoint(@Nullable final Object caller, final String methodName) {
+        return methodName
+                + (caller != null ? " of object " + caller.getClass().getSimpleName() + '(' + Integer.toHexString(caller.hashCode()) + ')' : "");
+    }
+
+    /**
      * Prints stacktrace in log with specified tag.
      *
      * @param tag Tag to be shown in logs.
