@@ -39,7 +39,7 @@ abstract class BaseActivity : AppCompatActivity() {
     open val keyboardBehaviorDetector: KeyboardBehaviorDetector? = null
 
     init {
-        lifecycle.addObserver(LifecycleLoggingObserver())
+        lifecycle.addObserver(LifecycleLoggingObserver(this))
     }
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
