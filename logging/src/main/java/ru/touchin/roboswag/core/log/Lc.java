@@ -268,7 +268,7 @@ public final class Lc {
     @NonNull
     public static String getCodePoint(@Nullable final Object caller, final String methodName) {
         return methodName
-                + (caller != null ? " of object " + caller.getClass().getSimpleName() + '(' + Integer.toHexString(caller.hashCode()) + ')' : "");
+                + (caller != null ? " of object " + caller.getClass().getSimpleName());
     }
 
     /**
