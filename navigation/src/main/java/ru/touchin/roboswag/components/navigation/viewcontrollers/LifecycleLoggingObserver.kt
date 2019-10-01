@@ -6,11 +6,38 @@ import androidx.lifecycle.OnLifecycleEvent
 import ru.touchin.roboswag.core.log.Lc
 import ru.touchin.roboswag.core.log.LcGroup
 
-class LifecycleLoggingObserver : LifecycleObserver {
+class LifecycleLoggingObserver (
+        private val call: Any
+) : LifecycleObserver {
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_ANY)
-    fun onAnyLifecycleEvent() {
-        LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(this))
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    fun onCreateLifecycleEvent() {
+        LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(call, "onCreate"))
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    fun onStartLifecycleEvent() {
+        LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(call, "onStop"))
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    fun onResumeLifecycleEvent() {
+        LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(call, "onResume"))
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    fun onPauseLifecycleEvent() {
+        LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(call, "onPause"))
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    fun onStopLifecycleEvent() {
+        LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(call, "onStop"))
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun onDestroyLifecycleEvent() {
+        LcGroup.UI_LIFECYCLE.i(Lc.getCodePoint(call, "onDestroy"))
     }
 
 }
