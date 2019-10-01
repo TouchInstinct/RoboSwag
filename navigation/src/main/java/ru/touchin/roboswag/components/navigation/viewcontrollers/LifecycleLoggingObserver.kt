@@ -7,7 +7,7 @@ import ru.touchin.roboswag.core.log.Lc
 import ru.touchin.roboswag.core.log.LcGroup
 
 class LifecycleLoggingObserver (
-        private val call: lifecycleOwner
+        private val lifecycleOwner: Any
 ) : LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
