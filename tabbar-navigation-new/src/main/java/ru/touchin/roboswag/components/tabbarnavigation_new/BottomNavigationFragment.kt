@@ -1,4 +1,4 @@
-package ru.touchin.roboswag.components.tabbarnavigation
+package ru.touchin.roboswag.components.tabbarnavigation_new
 
 import android.os.Bundle
 import android.os.Parcelable
@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import ru.touchin.roboswag.components.navigation.activities.OnBackPressedListener
-import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewController
+import ru.touchin.roboswag.components.navigation_new.fragments.BaseFragment
 
 abstract class BottomNavigationFragment : Fragment() {
 
@@ -25,11 +25,11 @@ abstract class BottomNavigationFragment : Fragment() {
 
     protected abstract val contentContainerLayoutId: Int
 
-    protected abstract val topLevelViewControllerId: Int
+    protected abstract val topLevelFragmentId: Int
 
     protected abstract val wrapWithNavigationContainer: Boolean
 
-    protected abstract val navigationViewControllers: SparseArray<Pair<Class<out ViewController<*, *>>, Parcelable>>
+    protected abstract val navigationFragments: SparseArray<Pair<Class<out BaseFragment<*, *>>, Parcelable>>
 
     protected open val reselectListener: (() -> Unit) = { getNavigationActivity().innerNavigation.up(inclusive = true) }
 
@@ -38,15 +38,15 @@ abstract class BottomNavigationFragment : Fragment() {
         bottomNavigationController = BottomNavigationController(
                 context = requireContext(),
                 fragmentManager = childFragmentManager,
-                viewControllers = navigationViewControllers,
+                fragments = navigationFragments,
                 contentContainerViewId = contentContainerViewId,
                 contentContainerLayoutId = contentContainerLayoutId,
-                topLevelViewControllerId = topLevelViewControllerId,
+                topLevelFragmentId = topLevelFragmentId,
                 wrapWithNavigationContainer = wrapWithNavigationContainer,
                 onReselectListener = reselectListener
         )
         if (savedInstanceState == null) {
-            bottomNavigationController.navigateTo(topLevelViewControllerId)
+            bottomNavigationController.navigateTo(topLevelFragmentId)
         }
     }
 

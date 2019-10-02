@@ -69,7 +69,7 @@ open class ViewController<TActivity : FragmentActivity, TState : Parcelable>(
     val view: View = creationContext.inflater.inflate(layoutRes, creationContext.container, false)
 
     init {
-        lifecycle.addObserver(LifecycleLoggingObserver())
+        lifecycle.addObserver(LifecycleLoggingObserver(this))
     }
 
     override fun getLifecycle(): Lifecycle = fragment.viewLifecycleOwner.lifecycle
