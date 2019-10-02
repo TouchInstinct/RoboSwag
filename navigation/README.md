@@ -84,7 +84,7 @@ class MainViewController(
 
     init {
         button.setOnClickListener {
-            activity.getNavigation().pushViewController(
+            activity.getNavigation().push(
                 TutorialFragment::class,
                 EmptyState
             )
