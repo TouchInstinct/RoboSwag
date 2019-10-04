@@ -19,7 +19,7 @@ import ru.touchin.roboswag.core.utils.ShouldNotHappenException
 class BottomNavigationController(
         private val context: Context,
         private val fragmentManager: FragmentManager,
-        private val viewControllers: SparseArray<Pair<Class<out ViewController<*, *>>, Parcelable>>,
+        private val viewControllers: SparseArray<BottomNavigationFragment.TabData>,
         @IdRes private val contentContainerViewId: Int,
         @LayoutRes private val contentContainerLayoutId: Int,
         private val wrapWithNavigationContainer: Boolean = false,
@@ -63,7 +63,7 @@ class BottomNavigationController(
 
     fun navigateTo(@IdRes itemId: Int, state: Parcelable? = null) {
         // Find view controller class that needs to open
-        val (viewControllerClass, defaultViewControllerState) = viewControllers[itemId] ?: return
+        val (viewControllerClass, defaultViewControllerState, saveStateOnSwitching) = viewControllers[itemId] ?: return
         if (state != null && state::class != defaultViewControllerState::class) {
             throw ShouldNotHappenException(
                     "Incorrect state type for navigation tab root ViewController. Should be ${defaultViewControllerState::class}"
@@ -76,7 +76,7 @@ class BottomNavigationController(
         val viewControllerName = viewControllerClass.canonicalName
         var fragment = fragmentManager.findFragmentByTag(viewControllerName)
 
-        if (state == null && fragment != null) {
+        if (saveStateOnSwitching && state == null && fragment != null) {
             transaction.attach(fragment)
         } else {
             // If fragment already exist remove it first
