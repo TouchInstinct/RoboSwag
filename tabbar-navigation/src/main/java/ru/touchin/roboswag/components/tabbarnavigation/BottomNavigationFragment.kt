@@ -72,14 +72,32 @@ abstract class BottomNavigationFragment : Fragment() {
 
     private fun getNavigationActivity() = requireActivity() as BottomNavigationActivity
 
-    data class TabData(
+    class TabData(
             val viewControllerClass: Class<out ViewController<*, *>>,
-            val viewControllerState: Parcelable,
+            viewControllerState: Parcelable,
             /**
              * It can be useful in some cases when it is necessary to create ViewController
              * with initial state every time when tab opens.
              */
             val saveStateOnSwitching: Boolean = true
-    )
+    ) {
+
+        /**
+         * It is value as class body field with lazy delegate instead of value as constructor parameter
+         * to specify custom getter of this field which returns new instance of Parcelable every time it be invoked.
+         * This is necessary to avoid modifying this value if it would be a value as constructor parameter and
+         * every getting of this value would return the same instance.
+        */
+        val viewControllerState: Parcelable by lazy {
+            viewControllerState
+        }
+
+        operator fun component1() = viewControllerClass
+
+        operator fun component2() = viewControllerState
+
+        operator fun component3() = saveStateOnSwitching
+
+    }
 
 }
