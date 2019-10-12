@@ -1,6 +1,7 @@
 package ru.touchin.roboswag.components.tabbarnavigation
 
 import android.os.Bundle
+import android.os.Parcel
 import android.os.Parcelable
 import android.util.SparseArray
 import android.view.LayoutInflater
@@ -83,20 +84,29 @@ abstract class BottomNavigationFragment : Fragment() {
     ) {
 
         /**
-         * It is value as class body field with lazy delegate instead of value as constructor parameter
-         * to specify custom getter of this field which returns new instance of Parcelable every time it be invoked.
-         * This is necessary to avoid modifying this value if it would be a value as constructor parameter and
-         * every getting of this value would return the same instance.
-        */
-        val viewControllerState: Parcelable by lazy {
-            viewControllerState
-        }
+         * It is value as class body property instead of value as constructor parameter to specify
+         * custom getter of this field which returns copy of Parcelable every time it be called.
+         * This is necessary to avoid modifying this value if it would be a value as constructor parameter
+         * and every getting of this value would return the same instance.
+         */
+        val viewControllerState = viewControllerState
+            get() = field.copy()
 
         operator fun component1() = viewControllerClass
 
         operator fun component2() = viewControllerState
 
         operator fun component3() = saveStateOnSwitching
+
+        private fun Parcelable.copy(): Parcelable {
+            val parcel = Parcel.obtain()
+            this.writeToParcel(parcel, 0)
+            parcel.setDataPosition(0)
+            val result = parcel.readParcelable<Parcelable>(Thread.currentThread().contextClassLoader)
+                    ?: throw IllegalStateException("It must not be null")
+            parcel.recycle()
+            return result
+        }
 
     }
 
