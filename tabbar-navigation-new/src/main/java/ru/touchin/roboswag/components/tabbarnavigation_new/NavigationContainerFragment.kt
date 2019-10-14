@@ -60,15 +60,16 @@ class NavigationContainerFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (savedInstanceState == null) {
-            val args = arguments ?: throw ShouldNotHappenException("Fragment is not instantiable without arguments")
-            with(args) {
-                containerViewId = getInt(CONTAINER_VIEW_ID_ARG)
-                containerLayoutId = getInt(CONTAINER_LAYOUT_ID_ARG)
-                transition = getInt(TRANSITION_ARG)
+
+        arguments?.apply {
+            transition = getInt(TRANSITION_ARG)
+            containerViewId = getInt(CONTAINER_VIEW_ID_ARG)
+            containerLayoutId = getInt(CONTAINER_LAYOUT_ID_ARG)
+
+            if (savedInstanceState == null) {
+                navigation.setInitial(getFragmentClass(), BaseFragment.args(getParcelable(FRAGMENT_STATE_ARG)))
             }
-            navigation.setInitial(getFragmentClass(), args.getParcelable(FRAGMENT_STATE_ARG))
-        }
+        } ?: throw ShouldNotHappenException("Fragment is not instantiable without arguments")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =

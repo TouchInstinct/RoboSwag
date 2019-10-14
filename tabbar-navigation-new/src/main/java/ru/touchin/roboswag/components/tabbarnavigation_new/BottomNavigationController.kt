@@ -18,7 +18,7 @@ import ru.touchin.roboswag.core.utils.ShouldNotHappenException
 class BottomNavigationController(
         private val context: Context,
         private val fragmentManager: FragmentManager,
-        private val fragments: SparseArray<Pair<Class<out BaseFragment<*, *>>, Parcelable>>,
+        private val fragments: SparseArray<BottomNavigationFragment.TabData>,
         @IdRes private val contentContainerViewId: Int,
         @LayoutRes private val contentContainerLayoutId: Int,
         private val wrapWithNavigationContainer: Boolean = false,
@@ -62,7 +62,7 @@ class BottomNavigationController(
 
     fun navigateTo(@IdRes itemId: Int, state: Parcelable? = null) {
         // Find fragment class that needs to open
-        val (fragmentClass, defaultFragmentState) = fragments[itemId] ?: return
+        val (fragmentClass, defaultFragmentState, saveStateOnSwitching) = fragments[itemId] ?: return
         if (state != null && state::class != defaultFragmentState::class) {
             throw ShouldNotHappenException(
                     "Incorrect state type for navigation tab root Fragment. Should be ${defaultFragmentState::class}"
@@ -75,7 +75,7 @@ class BottomNavigationController(
         val fragmentName = fragmentClass.canonicalName
         var fragment = fragmentManager.findFragmentByTag(fragmentName)
 
-        if (state == null && fragment != null) {
+        if (saveStateOnSwitching && state == null && fragment != null) {
             transaction.attach(fragment)
         } else {
             // If fragment already exist remove it first
@@ -84,7 +84,7 @@ class BottomNavigationController(
             fragment = if (wrapWithNavigationContainer) {
                 Fragment.instantiate(
                         context,
-                        fragmentClass.name,
+                        NavigationContainerFragment::class.java.name,
                         NavigationContainerFragment.args(fragmentClass, fragmentState, contentContainerViewId, contentContainerLayoutId)
                 )
             } else {

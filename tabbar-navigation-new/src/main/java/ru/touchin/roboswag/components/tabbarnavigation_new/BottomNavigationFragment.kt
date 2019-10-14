@@ -1,6 +1,7 @@
 package ru.touchin.roboswag.components.tabbarnavigation_new
 
 import android.os.Bundle
+import android.os.Parcel
 import android.os.Parcelable
 import android.util.SparseArray
 import android.view.LayoutInflater
@@ -9,6 +10,8 @@ import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import ru.touchin.roboswag.components.navigation.activities.OnBackPressedListener
+import ru.touchin.roboswag.components.navigation.viewcontrollers.EmptyState
+import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewController
 import ru.touchin.roboswag.components.navigation_new.fragments.BaseFragment
 
 abstract class BottomNavigationFragment : Fragment() {
@@ -29,7 +32,7 @@ abstract class BottomNavigationFragment : Fragment() {
 
     protected abstract val wrapWithNavigationContainer: Boolean
 
-    protected abstract val navigationFragments: SparseArray<Pair<Class<out BaseFragment<*, *>>, Parcelable>>
+    protected abstract val navigationFragments: SparseArray<TabData>
 
     protected open val reselectListener: (() -> Unit) = { getNavigationActivity().innerNavigation.up(inclusive = true) }
 
@@ -71,5 +74,43 @@ abstract class BottomNavigationFragment : Fragment() {
     }
 
     private fun getNavigationActivity() = requireActivity() as BottomNavigationActivity
+
+    class TabData(
+            val fragmentClass: Class<out BaseFragment<*, *>>,
+            fragmentState: Parcelable,
+            /**
+             * It can be useful in some cases when it is necessary to create ViewController
+             * with initial state every time when tab opens.
+             */
+            val saveStateOnSwitching: Boolean = true
+    ) {
+
+        /**
+         * It is value as class body property instead of value as constructor parameter to specify
+         * custom getter of this field which returns copy of Parcelable every time it be called.
+         * This is necessary to avoid modifying this value if it would be a value as constructor parameter
+         * and every getting of this value would return the same instance.
+         */
+        val state = fragmentState
+
+        operator fun component1() = fragmentClass
+
+        operator fun component2() = state
+
+        operator fun component3() = saveStateOnSwitching
+
+        private fun Parcelable.copy(): Parcelable {
+            if (this is EmptyState) return EmptyState
+
+            val parcel = Parcel.obtain()
+            this.writeToParcel(parcel, 0)
+            parcel.setDataPosition(0)
+            val result = parcel.readParcelable<Parcelable>(Thread.currentThread().contextClassLoader)
+                    ?: throw IllegalStateException("It must not be null")
+            parcel.recycle()
+            return result
+        }
+
+    }
 
 }
