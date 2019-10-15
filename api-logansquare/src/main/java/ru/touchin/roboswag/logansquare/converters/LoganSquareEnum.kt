@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2016 Touch Instinct
+ *  Copyright (c) 2019 Touch Instinct
  *
  *  This file is part of RoboSwag library.
  *
@@ -17,17 +17,13 @@
  *
  */
 
-package ru.touchin.templates.logansquare;
-
-import androidx.annotation.NonNull;
+package ru.touchin.roboswag.logansquare.converters
 
 /**
- * Created by Gavriil Sitnikov.
  * LoganSquare enum base class.
  */
-public interface LoganSquareEnum {
+interface LoganSquareEnum {
 
-    @NonNull
-    String getValueName();
+    val valueName: String
 
 }
