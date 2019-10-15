@@ -41,7 +41,7 @@ import ru.touchin.roboswag.core.log.LcGroup;
 import ru.touchin.roboswag.core.log.LcLevel;
 import ru.touchin.roboswag.core.log.LogProcessor;
 import ru.touchin.roboswag.core.utils.ShouldNotHappenException;
-import ru.touchin.templates.ApiModel;
+import ru.touchin.roboswag.logansquare.ApiModel;
 
 /**
  * Created by Gavriil Sitnikov on 10/03/16.
@@ -112,7 +112,7 @@ public abstract class TouchinApp extends Application {
             if (group == LcGroup.UI_LIFECYCLE) {
                 crashlytics.core.log(level.getPriority(), tag, message);
             } else if (!level.lessThan(LcLevel.ASSERT)
-                    || (group == ApiModel.API_VALIDATION_LC_GROUP && level == LcLevel.ERROR)) {
+                    || (group == ApiModel.Companion.getAPI_VALIDATION_LC_GROUP() && level == LcLevel.ERROR)) {
                 Log.e(tag, message);
                 if (throwable != null) {
                     crashlytics.core.log(level.getPriority(), tag, message);
