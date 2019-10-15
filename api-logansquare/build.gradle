@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -15,9 +17,14 @@ android {
 
 dependencies {
     api project(":storable")
-    api 'net.danlew:android.joda:2.9.9.4'
+    api "net.danlew:android.joda:$versions.danlew_joda"
 
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation "androidx.core:core-ktx:$versions.coreKtx"
     implementation "androidx.annotation:annotation:$versions.androidx"
+
     implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
+
     implementation 'ru.touchin:logansquare:1.4.3'
 }
