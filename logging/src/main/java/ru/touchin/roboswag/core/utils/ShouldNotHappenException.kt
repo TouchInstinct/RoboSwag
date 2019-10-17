@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2015 RoboSwag (Gavriil Sitnikov, Vsevolod Ivanov)
+ *  Copyright (c) 2019 RoboSwag (Gavriil Sitnikov, Vsevolod Ivanov)
  *
  *  This file is part of RoboSwag library.
  *
@@ -17,33 +17,24 @@
  *
  */
 
-package ru.touchin.roboswag.core.utils;
-
-import androidx.annotation.NonNull;
+package ru.touchin.roboswag.core.utils
 
 /**
- * Created by Gavriil Sitnikov on 13/11/2015.
  * Exception that should be threw when some unexpected code reached.
  * E.g. if some value null but it is not legal or in default case in switch if all specific cases should be processed.
  */
-public class ShouldNotHappenException extends RuntimeException {
+class ShouldNotHappenException : RuntimeException {
 
-    private static final long serialVersionUID = 0;
-
-    public ShouldNotHappenException() {
-        super();
+    companion object {
+        private const val serialVersionUID: Long = 0
     }
 
-    public ShouldNotHappenException(@NonNull final String detailMessage) {
-        super(detailMessage);
-    }
+    constructor() : super()
 
-    public ShouldNotHappenException(@NonNull final String detailMessage, @NonNull final Throwable throwable) {
-        super(detailMessage, throwable);
-    }
+    constructor(detailMessage: String) : super(detailMessage)
 
-    public ShouldNotHappenException(@NonNull final Throwable throwable) {
-        super(throwable);
-    }
+    constructor(detailMessage: String, throwable: Throwable) : super(detailMessage, throwable)
+
+    constructor(throwable: Throwable) : super(throwable)
 
 }

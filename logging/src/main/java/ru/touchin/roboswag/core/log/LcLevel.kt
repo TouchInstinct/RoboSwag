@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2015 RoboSwag (Gavriil Sitnikov, Vsevolod Ivanov)
+ *  Copyright (c) 2019 RoboSwag (Gavriil Sitnikov, Vsevolod Ivanov)
  *
  *  This file is part of RoboSwag library.
  *
@@ -17,16 +17,21 @@
  *
  */
 
-package ru.touchin.roboswag.core.log;
+package ru.touchin.roboswag.core.log
 
-import androidx.annotation.NonNull;
-import android.util.Log;
+import android.util.Log
 
 /**
- * Created by Gavriil Sitnikov on 14/05/2016.
  * Level of log message.
  */
-public enum LcLevel {
+enum class LcLevel(
+        /**
+         * Standard [Log] integer value of level represents priority of message.
+         *
+         * @return Integer level.
+         */
+        private val priority: Int
+) {
 
     VERBOSE(Log.VERBOSE),
     DEBUG(Log.DEBUG),
@@ -35,29 +40,12 @@ public enum LcLevel {
     ERROR(Log.ERROR),
     ASSERT(Log.ASSERT);
 
-    private final int priority;
-
-    LcLevel(final int priority) {
-        this.priority = priority;
-    }
-
-    /**
-     * Standard {@link Log} integer value of level represents priority of message.
-     *
-     * @return Integer level.
-     */
-    public int getPriority() {
-        return priority;
-    }
-
     /**
      * Compares priorities of LcLevels and returns if current is less than another.
      *
-     * @param logLevel {@link LcLevel} to compare priority with;
+     * @param logLevel [LcLevel] to compare priority with;
      * @return True if current level priority less than level passed as parameter.
      */
-    public boolean lessThan(@NonNull final LcLevel logLevel) {
-        return this.priority < logLevel.priority;
-    }
+    fun lessThan(logLevel: LcLevel): Boolean = this.priority < logLevel.priority
 
 }
