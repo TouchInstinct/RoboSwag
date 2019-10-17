@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2017 RoboSwag (Gavriil Sitnikov, Vsevolod Ivanov)
+ *  Copyright (c) 2019 RoboSwag (Gavriil Sitnikov, Vsevolod Ivanov)
  *
  *  This file is part of RoboSwag library.
  *
@@ -17,33 +17,26 @@
  *
  */
 
-package ru.touchin.adapters;
+package ru.touchin.roboswag.recyclerview_adapters
 
-import androidx.annotation.NonNull;
-import androidx.core.view.ViewCompat;
-import androidx.recyclerview.widget.RecyclerView;
-import android.view.ViewGroup;
-
-import java.util.List;
+import androidx.core.view.ViewCompat
+import androidx.recyclerview.widget.RecyclerView
+import android.view.ViewGroup
 
 /**
  * Objects of such class controls creation and binding of specific type of RecyclerView's ViewHolders.
- * Default {@link #getItemViewType} is generating on construction of object.
+ * Default [.getItemViewType] is generating on construction of object.
  *
- * @param <TViewHolder> Type of {@link RecyclerView.ViewHolder} of delegate.
- */
-public abstract class AdapterDelegate<TViewHolder extends RecyclerView.ViewHolder> {
-
-    private final int defaultItemViewType = ViewCompat.generateViewId();
+ * @param <TViewHolder> Type of [RecyclerView.ViewHolder] of delegate.
+</TViewHolder> */
+abstract class AdapterDelegate<TViewHolder : RecyclerView.ViewHolder> {
 
     /**
      * Unique ID of AdapterDelegate.
      *
      * @return Unique ID.
      */
-    public int getItemViewType() {
-        return defaultItemViewType;
-    }
+    val itemViewType = ViewCompat.generateViewId()
 
     /**
      * Returns if object is processable by this delegate.
@@ -53,7 +46,7 @@ public abstract class AdapterDelegate<TViewHolder extends RecyclerView.ViewHolde
      * @param collectionPosition     Position of item in collection;
      * @return True if item is processable by this delegate.
      */
-    public abstract boolean isForViewType(@NonNull final List<Object> items, final int adapterPosition, final int collectionPosition);
+    abstract fun isForViewType(items: List<*>, adapterPosition: Int, collectionPosition: Int): Boolean
 
     /**
      * Returns unique ID of item to support stable ID's logic of RecyclerView's adapter.
@@ -63,9 +56,7 @@ public abstract class AdapterDelegate<TViewHolder extends RecyclerView.ViewHolde
      * @param collectionPosition   Position of item in collection;
      * @return Unique item ID.
      */
-    public long getItemId(@NonNull final List<Object> items, final int adapterPosition, final int collectionPosition) {
-        return 0;
-    }
+    open fun getItemId(items: List<*>, adapterPosition: Int, collectionPosition: Int): Long = 0
 
     /**
      * Creates ViewHolder to bind item to it later.
@@ -73,8 +64,7 @@ public abstract class AdapterDelegate<TViewHolder extends RecyclerView.ViewHolde
      * @param parent Container of ViewHolder's view.
      * @return New ViewHolder.
      */
-    @NonNull
-    public abstract TViewHolder onCreateViewHolder(@NonNull final ViewGroup parent);
+    abstract fun onCreateViewHolder(parent: ViewGroup): TViewHolder
 
     /**
      * Binds item to created by this object ViewHolder.
@@ -85,12 +75,12 @@ public abstract class AdapterDelegate<TViewHolder extends RecyclerView.ViewHolde
      * @param collectionPosition   Position of item in collection that contains item;
      * @param payloads             Payloads;
      */
-    public abstract void onBindViewHolder(
-            @NonNull final RecyclerView.ViewHolder holder,
-            @NonNull final List<Object> items,
-            final int adapterPosition,
-            final int collectionPosition,
-            @NonNull final List<Object> payloads
-    );
+    abstract fun onBindViewHolder(
+            holder: RecyclerView.ViewHolder,
+            items: List<*>,
+            adapterPosition: Int,
+            collectionPosition: Int,
+            payloads: List<*>
+    )
 
 }
