@@ -19,10 +19,10 @@
 
 package ru.touchin.roboswag.core.log
 
-import java.text.SimpleDateFormat
-import java.util.Locale
 import ru.touchin.roboswag.core.utils.ShouldNotHappenException
 import ru.touchin.roboswag.core.utils.ThreadLocalValue
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 /**
  * Group of log messages with specific tag prefix (name of group).
@@ -44,12 +44,11 @@ class LcGroup(private val name: String) {
          */
         val UI_LIFECYCLE = LcGroup("UI_LIFECYCLE")
 
-        private val DATE_TIME_FORMATTER = ThreadLocalValue(
-                fabric = object : ThreadLocalValue.Fabric<SimpleDateFormat> {
+        private val DATE_TIME_FORMATTER = ThreadLocalValue(object : ThreadLocalValue.Fabric<SimpleDateFormat> {
 
-                    override fun create(): SimpleDateFormat = SimpleDateFormat("HH:mm:ss.SSS", Locale.getDefault())
-                }
-        )
+            override fun create(): SimpleDateFormat = SimpleDateFormat("HH:mm:ss.SSS", Locale.getDefault())
+
+        })
     }
 
     private var disabled: Boolean = false
@@ -86,7 +85,10 @@ class LcGroup(private val name: String) {
                 null
             }
 
-    private fun createLogMessage(formattedMessage: String?): String = DATE_TIME_FORMATTER.get()!!.format(System.currentTimeMillis())
+    private fun createLogMessage(formattedMessage: String?): String = DATE_TIME_FORMATTER.get()
+            .let { formatter ->
+                formatter?.format(System.currentTimeMillis()) ?: throw ShouldNotHappenException("Formatter is null")
+            }
             .plus(" ${Thread.currentThread().name}")
             .plus(" $name")
             .plus(formattedMessage?.let { " $formattedMessage" }.orEmpty())
