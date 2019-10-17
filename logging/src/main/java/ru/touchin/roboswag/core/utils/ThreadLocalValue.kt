@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2015 RoboSwag (Gavriil Sitnikov, Vsevolod Ivanov)
+ *  Copyright (c) 2019 RoboSwag (Gavriil Sitnikov, Vsevolod Ivanov)
  *
  *  This file is part of RoboSwag library.
  *
@@ -17,44 +17,28 @@
  *
  */
 
-package ru.touchin.roboswag.core.utils;
-
-import androidx.annotation.NonNull;
+package ru.touchin.roboswag.core.utils
 
 /**
- * Created by Gavriil Sitnikov on 13/11/2015.
  * Thread local value with specified creator of value per thread.
  */
-public class ThreadLocalValue<T> extends ThreadLocal<T> {
+class ThreadLocalValue<T>(private val fabric: Fabric<T>) : ThreadLocal<T>() {
 
-    @NonNull
-    private final Fabric<T> fabric;
-
-    public ThreadLocalValue(@NonNull final Fabric<T> fabric) {
-        super();
-        this.fabric = fabric;
-    }
-
-    @NonNull
-    @Override
-    protected T initialValue() {
-        return fabric.create();
-    }
+    override fun initialValue(): T = fabric.create()
 
     /**
      * Fabric of thread-local objects.
      *
      * @param <T> Type of objects.
      */
-    public interface Fabric<T> {
+    interface Fabric<T> {
 
         /**
          * Creates object.
          *
          * @return new instance of object.
          */
-        @NonNull
-        T create();
+        fun create(): T
 
     }
 
