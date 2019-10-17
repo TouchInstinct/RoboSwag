@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import ru.touchin.roboswag.components.navigation.activities.OnBackPressedListener
+import ru.touchin.roboswag.components.navigation.viewcontrollers.EmptyState
 import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewController
 
 abstract class BottomNavigationFragment : Fragment() {
@@ -90,7 +91,6 @@ abstract class BottomNavigationFragment : Fragment() {
          * and every getting of this value would return the same instance.
          */
         val viewControllerState = viewControllerState
-            get() = field.copy()
 
         operator fun component1() = viewControllerClass
 
