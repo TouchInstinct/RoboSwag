@@ -18,17 +18,16 @@ android {
 dependencies {
     api project(":utils")
     api project(":logging")
-    api project(":api-logansquare")
 
-    api 'androidx.multidex:multidex:2.0.1'
+    api "androidx.multidex:multidex:$versions.multidex"
 
-    api 'net.danlew:android.joda:2.10.2'
+    api "net.danlew:android.joda:$versions.danlew_joda"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
     
-    implementation("com.crashlytics.sdk.android:crashlytics:$versions.crashlytics@aar") {
+    implementation("com.crashlytics.sdk.android:crashlytics:$versions.crashlytics") {
         transitive = true
     }
 }
