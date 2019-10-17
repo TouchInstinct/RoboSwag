@@ -1,4 +1,4 @@
-package ru.touchin.adapters
+package ru.touchin.roboswag.recyclerview_adapters
 
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -33,7 +33,7 @@ open class DelegationListAdapter<TItem>(config: AsyncDifferConfig<TItem>) : Recy
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: List<Any>) {
         val collectionPosition = getCollectionPosition(position)
-        if (collectionPosition in 0 until getList().size) {
+        if (collectionPosition in getList().indices) {
             if (itemClickListener != null) {
                 holder.itemView.setOnRippleClickListener {
                     itemClickListener?.invoke(getList()[getCollectionPosition(holder.adapterPosition)], holder)
