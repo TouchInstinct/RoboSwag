@@ -30,7 +30,7 @@ class ThreadLocalValue<T>(private val fabric: Fabric<T>) : ThreadLocal<T>() {
      * Fabric of thread-local objects.
      *
      * @param <T> Type of objects.
-    </T> */
+     */
     interface Fabric<T> {
 
         /**

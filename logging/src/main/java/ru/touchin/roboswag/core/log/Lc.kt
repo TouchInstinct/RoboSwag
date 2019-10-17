@@ -245,7 +245,6 @@ object Lc {
      *
      * @param tag Tag to be shown in logs.
      */
-
     @SuppressLint("LogConditional")
     fun printStackTrace(tag: String) {
         val stackTrace = Thread.currentThread().stackTrace

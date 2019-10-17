@@ -30,7 +30,7 @@ enum class LcLevel(
          *
          * @return Integer level.
          */
-        private val priority: Int
+        val priority: Int
 ) {
 
     VERBOSE(Log.VERBOSE),
