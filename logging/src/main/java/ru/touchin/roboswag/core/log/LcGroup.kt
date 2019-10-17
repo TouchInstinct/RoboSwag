@@ -28,7 +28,6 @@ import java.util.Locale
  * Group of log messages with specific tag prefix (name of group).
  * It could be used in specific [LogProcessor] to filter messages by group.
  */
-@SuppressWarnings("checkstyle:methodname", "PMD.ShortMethodName")
 //MethodNameCheck,ShortMethodName: log methods better be 1-symbol
 class LcGroup(private val name: String) {
 
