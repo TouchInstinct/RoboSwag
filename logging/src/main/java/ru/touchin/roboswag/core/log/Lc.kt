@@ -32,7 +32,6 @@ import java.util.Arrays
  * Also you can specify assertions behavior to manually make application more stable in production but intercept illegal states in some
  * third-party tool to fix them later but not crash in production.
  */
-@SuppressWarnings("checkstyle:methodname", "PMD.ShortMethodName", "PMD.ShortClassName")
 //MethodNameCheck,ShortMethodName: log methods better be 1-symbol
 object Lc {
 
