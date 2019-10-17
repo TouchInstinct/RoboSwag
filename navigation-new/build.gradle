@@ -19,7 +19,6 @@ dependencies {
     api project(":utils")
     api project(":logging")
     api project(":navigation")
-    api project(":api-logansquare")
 
     api 'androidx.multidex:multidex:2.0.1'
 
