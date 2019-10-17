@@ -59,7 +59,6 @@ gradle.ext.roboswag = [
         'logging',
         'navigation',
         'storable',
-        'api-logansquare',
         'lifecycle',
         'views',
         'recyclerview-adapters',
