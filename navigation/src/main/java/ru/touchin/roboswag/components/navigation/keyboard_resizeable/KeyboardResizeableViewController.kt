@@ -25,12 +25,14 @@ abstract class KeyboardResizeableViewController<TActivity : BaseActivity, TState
 
     private var isKeyboardVisible: Boolean = false
 
-    private val keyboardHideListener = OnBackPressedListener {
-        if (isKeyboardVisible) {
-            UiUtils.OfViews.hideSoftInput(activity)
-            true
-        } else {
-            false
+    private val keyboardHideListener = object : OnBackPressedListener {
+        override fun onBackPressed(): Boolean {
+            return if (isKeyboardVisible) {
+                UiUtils.OfViews.hideSoftInput(activity)
+                true
+            } else {
+                false
+            }
         }
     }
 
