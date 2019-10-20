@@ -98,3 +98,42 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
+
+What is a RecyclerView?
+A RecyclerView is essentially a ViewGroup of containers called ViewHolders which populate a particular item. RecyclerView is an extensive and exhaustive Android class to provide a flexible UI. A huge benefit of using RecyclerView is that you’re able to is efficiently reuse views instead of managing items that aren’t even visible to a user. You can think of those containers as a way to recycle the population of those view instances.
+
+Every RecyclerView requires:
+a set of data objects to work with
+an adapter to bind that data to the views shown in the ViewHolders
+an xml file of the individual view item
+a ViewHolder to populate the UI from the xml item file
+Now we’ve gotten familiar with what RecyclerView is and its basic mechanics, let’s get into the implementation.
+Getting Started
+We’re going to implement a list RecyclerView displaying a collection of Nicolas Cage movies and the year the movie was released.. Let’s knock the easiest stuff out of the way first — setting up a RecyclerView in and the individual list item we expect to populate in our ViewHolder. You’ll notice we attached Android ids for the RecyclerView as well as the TextView elements.
+
+Nothing out of the ordinary here.
+Initializing RecyclerView in our Fragment with a Data set
+We also create our data class object in Kotlin — nothing special here either, just a LOT less boilerplate.
+data class Movie(val title: String, val year: Int)
+In a previous post, we talked about the SingleFragmentActivity pattern. As a result, I plan on sitting the RecyclerView on the Fragment created for this pattern. We also include a data set to populate our RecyclerView with.
+
+To really appreciate the differences, let us compare a similar Java implementation of RecyclerView to ours in Kotlin:
+
+This implementation of RecyclerView has a different look in Kotlin:
+In the Java file, we inflate our layout and initialize our RecyclerView in the same method. In Java, we risk our custom ListAdapter clashing with an existing adapter that may have been spurned from an earlier interaction. A safer implementation in Kotlin is to inflate and return the layout for onCreateView(…) and then returning an immutable implementation of the ListAdapter.
+Using apply { } makes our code more readable as we access properties and apply methods to return an object with our LinearLayoutManager and custom ListAdapter
+With the Kotlin Extension Android library, we can refer to a node in Android programming with its identifier list_recycler_view, as opposed to initializing the View itself and binding the element you created to that View instance type like you would have to do in Java. Hooray for less code!
+Custom ViewHolders
+Next, we create our custom ViewHolders, MovieViewHolder, and create a custom Adapter that will bind our data to populated MovieViewHolders in the RecyclerView.
+
+Now that we have our RecyclerView initialized along with the xml file list_item.xml to describe layout of the items we intend to populate in our ViewHolders, we should create our custom ViewHolder object.
+In our MovieViewHolder, we inherit behaviors and properties from the ViewHolder object in the RecyclerView class. We choose to save the View elements as a global variable in the class in the future event we choose to do more with our ViewHolder, such as click events. You can choose between a lateinit or making an object nullable in Kotlin, but I try to stay away from lateinit, as there is an implicit agreement that you, the developer, promises that the object will be initialized by the time it is being used. This is one annoyance I have with Kotlin in Android development, so I stick with nullability for the time being. For that reason, mTitleView and mYearView have the accessible property text, but to prevent NPEs for these Views, a null-safety check ?. is added to the object itself.
+
+In our ListAdapter, we inherit expected methods from the Adapter object in the RecyclerView class onCreateViewHolder(…), onBindViewHolder(…), and getItemCount().
+When the Adapter is initialized, it will populate MovieViewHolders in the RecyclerView with the onCreateViewHolder(…) method. The method onBindViewHolder(…) will take a data collection and apply a rotating rendering of visible data applied to those ViewHolders.
+
+Surprisingly, that’s it. And that’s all you need to know to create RecyclerViews! You can change out the kind of layout you want to work with for LayoutManager with other managers such as GridLayoutManager. You can substitute your view nodes with images, or any other setup you wish. This implementation is relatively flexible and allows you to keep objects agnostic so that your ingredients can function independently of one another. Until next time!
+
+443
+
+
