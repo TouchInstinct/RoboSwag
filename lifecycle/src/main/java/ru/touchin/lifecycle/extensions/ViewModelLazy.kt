@@ -18,6 +18,12 @@ inline fun <reified VM : ViewModel> Fragment.viewModels(
 ) = viewModels<VM>(ownerProducer, factoryProducer)
 
 @MainThread
+inline fun <reified VM : ViewModel> Fragment.parentViewModels(
+        noinline ownerProducer: () -> ViewModelStoreOwner = { parentFragment!! },
+        noinline factoryProducer: () -> ViewModelProvider.Factory = { LifecycleViewModelProviders.getViewModelFactory(parentFragment!!) }
+) = viewModels<VM>(ownerProducer, factoryProducer)
+
+@MainThread
 inline fun <reified VM : ViewModel> Fragment.targetViewModels(
         noinline ownerProducer: () -> ViewModelStoreOwner = { targetFragment!! },
         noinline factoryProducer: () -> ViewModelProvider.Factory = { LifecycleViewModelProviders.getViewModelFactory(targetFragment!!) }
