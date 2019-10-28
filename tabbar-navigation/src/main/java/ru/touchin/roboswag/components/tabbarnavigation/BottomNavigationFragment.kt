@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import ru.touchin.roboswag.components.navigation.activities.OnBackPressedListener
+import ru.touchin.roboswag.components.navigation.viewcontrollers.EmptyState
 import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewController
 
 abstract class BottomNavigationFragment : Fragment() {
@@ -98,16 +99,19 @@ abstract class BottomNavigationFragment : Fragment() {
 
         operator fun component3() = saveStateOnSwitching
 
-        private fun <T : Parcelable> Parcelable.copy(): T {
-            val parcel = Parcel.obtain()
-            parcel.writeParcelable(this, 0)
-            parcel.setDataPosition(0)
-            val result = parcel.readParcelable<T>(
-                    javaClass.classLoader ?: Thread.currentThread().contextClassLoader
-            ) ?: throw IllegalStateException("It must not be null")
-            parcel.recycle()
-            return result
-        }
+        private fun Parcelable.copy(): Parcelable =
+                if (this is EmptyState) {
+                    EmptyState
+                } else {
+                    val parcel = Parcel.obtain()
+                    parcel.writeParcelable(this, 0)
+                    parcel.setDataPosition(0)
+                    val result = parcel.readParcelable<Parcelable>(
+                            javaClass.classLoader ?: Thread.currentThread().contextClassLoader
+                    ) ?: throw IllegalStateException("Failed to copy tab state")
+                    parcel.recycle()
+                    result
+                }
 
     }
 
