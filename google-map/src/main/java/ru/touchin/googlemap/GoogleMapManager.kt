@@ -10,6 +10,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import ru.touchin.basemap.AbstractMapManager
 
+@Suppress("detekt.TooManyFunctions")
 class GoogleMapManager(mapView: MapView) : AbstractMapManager<MapView, GoogleMap, LatLng>(mapView) {
 
     override fun initialize(mapListener: AbstractMapListener<MapView, GoogleMap, LatLng>?) {

@@ -21,15 +21,12 @@ package ru.touchin.roboswag.components.navigation
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.MenuItem
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import ru.touchin.roboswag.core.log.Lc
-import ru.touchin.roboswag.components.navigation.viewcontrollers.EmptyState
-import kotlin.reflect.KClass
 
 /**
  * Created by Gavriil Sitnikov on 07/03/2016.
