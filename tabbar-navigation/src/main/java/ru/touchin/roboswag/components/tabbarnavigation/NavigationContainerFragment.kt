@@ -67,7 +67,8 @@ class NavigationContainerFragment : Fragment() {
             containerLayoutId = args.getInt(CONTAINER_LAYOUT_ID_ARG)
 
             if (savedInstanceState == null) {
-                navigation.setInitialViewController(getViewControllerClass(), args.getParcelable(VIEW_CONTROLLER_STATE_ARG))
+                navigation.setInitialViewController(getViewControllerClass(), args.getParcelable(VIEW_CONTROLLER_STATE_ARG)
+                        ?: throw ShouldNotHappenException("Fragment state must not be null"))
             }
         } ?: throw ShouldNotHappenException("Fragment is not instantiable without arguments")
     }
