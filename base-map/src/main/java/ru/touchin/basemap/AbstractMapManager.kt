@@ -3,6 +3,7 @@ package ru.touchin.basemap
 import android.os.Bundle
 import android.view.View
 
+@Suppress("detekt.TooManyFunctions")
 abstract class AbstractMapManager<TMapView : View, TMap : Any, TLocation : Any>(protected val mapView: TMapView) {
 
     protected lateinit var map: TMap

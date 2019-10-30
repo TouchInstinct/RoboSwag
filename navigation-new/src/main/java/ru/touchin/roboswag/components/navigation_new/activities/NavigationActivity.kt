@@ -2,7 +2,6 @@ package ru.touchin.roboswag.components.navigation_new.activities
 
 import androidx.fragment.app.FragmentTransaction
 import ru.touchin.roboswag.components.navigation.activities.BaseActivity
-import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewControllerNavigation
 import ru.touchin.roboswag.components.navigation_new.FragmentNavigation
 
 /**

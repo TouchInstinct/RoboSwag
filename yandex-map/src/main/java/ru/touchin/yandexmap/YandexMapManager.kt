@@ -21,6 +21,7 @@ import com.yandex.mapkit.user_location.UserLocationView
 import com.yandex.runtime.image.ImageProvider
 import ru.touchin.basemap.AbstractMapManager
 
+@Suppress("detekt.TooManyFunctions")
 class YandexMapManager(
         mapView: MapView,
         private val isDebug: Boolean = false
