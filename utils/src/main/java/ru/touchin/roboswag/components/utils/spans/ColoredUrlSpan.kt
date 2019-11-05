@@ -17,12 +17,10 @@
  *
  */
 
-package ru.touchin.roboswag.components.utils.spans;
+package ru.touchin.roboswag.components.utils.spans
 
-import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
-import android.text.TextPaint;
-import android.text.style.URLSpan;
+import android.text.TextPaint
+import androidx.annotation.ColorInt
 
 /**
  * Created by Anton Arhipov on 05/07/2017.
@@ -32,21 +30,11 @@ import android.text.style.URLSpan;
  * and
  * textView.setText(spannableString, TextView.BufferType.SPANNABLE);
  */
-public class ColoredUrlSpan extends URLSpan {
+class ColoredUrlSpan(@ColorInt private val textColor: Int, url: String) : URLSpanWithoutUnderline(url) {
 
-    @ColorInt
-    private final int textColor;
-
-    public ColoredUrlSpan(@ColorInt final int textColor, @NonNull final String url) {
-        super(url);
-        this.textColor = textColor;
-    }
-
-    @Override
-    public void updateDrawState(@NonNull final TextPaint ds) {
-        super.updateDrawState(ds);
-        ds.setUnderlineText(false);
-        ds.setColor(textColor);
+    override fun updateDrawState(ds: TextPaint) {
+        super.updateDrawState(ds)
+        ds.color = textColor
     }
 
 }

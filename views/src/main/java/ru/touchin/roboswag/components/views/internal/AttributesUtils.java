@@ -152,7 +152,7 @@ public final class AttributesUtils {
      */
     @NonNull
     public static String viewError(@NonNull final View view, @NonNull final String errorText) {
-        return "Errors for view id=" + UiUtils.OfViews.getViewIdString(view) + ":\n" + errorText;
+        return "Errors for view id=" + UiUtils.OfViews.INSTANCE.getViewIdString(view) + ":\n" + errorText;
     }
 
     /**
