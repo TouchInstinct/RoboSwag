@@ -29,6 +29,7 @@ ext {
     ext.buildScriptsDir = "$rootDir/BuildScripts"
     versions = [
             compileSdk   : 28,
+            multidex     : '2.0.1',
             appcompat    : '1.0.2',
             androidx     : '1.0.0',
             material     : '1.0.0',
@@ -41,6 +42,7 @@ ext {
             location     : '16.0.0',
             coreKtx      : '1.0.1',
             yandex_mapkit: '3.4.0',
-            google_maps  : '16.1.0'
+            google_maps  : '16.1.0',
+            danlew_joda  : '2.10.3'
     ]
 }
