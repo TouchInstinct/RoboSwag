@@ -69,9 +69,9 @@ object UiUtils {
      */
     @Deprecated(
             "use extension in SpanUtils",
-            ReplaceWith("text.getSpannedTextWithUrls()", "ru.touchin.roboswag.components.utils.spans.getSpannedTextWithUrls")
+            ReplaceWith("text.getSpannedTextWithUrls(removeUnderline = false)", "ru.touchin.roboswag.components.utils.spans.getSpannedTextWithUrls")
     )
-    fun getSpannedTextWithUrls(text: String) = text.getSpannedTextWithUrls()
+    fun getSpannedTextWithUrls(text: String) = text.getSpannedTextWithUrls(removeUnderline = false)
 
     /**
      * Utilities methods related to metrics.
