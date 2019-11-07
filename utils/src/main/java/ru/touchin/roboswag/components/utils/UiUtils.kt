@@ -169,13 +169,13 @@ object UiUtils {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 val display = activity.windowManager.defaultDisplay
 
-                val realDisplayMetrics = DisplayMetrics()
-                display.getRealMetrics(realDisplayMetrics)
+                val realDisplayMetrics = DisplayMetrics().also(display::getRealMetrics)
 
-                val displayMetrics = DisplayMetrics()
-                display.getMetrics(displayMetrics)
+                val displayMetrics = DisplayMetrics().also(display::getMetrics)
 
-                return realDisplayMetrics.widthPixels - displayMetrics.widthPixels > 0 || realDisplayMetrics.heightPixels - displayMetrics.heightPixels > 0
+
+                return realDisplayMetrics.widthPixels - displayMetrics.widthPixels > 0
+                        || realDisplayMetrics.heightPixels - displayMetrics.heightPixels > 0
             }
 
             val hasMenuKey = ViewConfiguration.get(activity).hasPermanentMenuKey()
@@ -215,10 +215,7 @@ object UiUtils {
          * Hides device keyboard for target activity.
          */
         fun hideSoftInput(activity: Activity) {
-            val focusedView = activity.currentFocus
-            if (focusedView != null) {
-                hideSoftInput(focusedView)
-            }
+            activity.currentFocus?.let(this::hideSoftInput)
         }
 
         /**

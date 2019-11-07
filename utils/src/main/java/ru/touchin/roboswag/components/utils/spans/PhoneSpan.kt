@@ -20,7 +20,6 @@ class PhoneSpan(phoneNumber: String) : URLSpanWithoutUnderline(phoneNumber) {
         } catch (exception: ActivityNotFoundException) {
             // Do nothing
         }
-
     }
 
 }

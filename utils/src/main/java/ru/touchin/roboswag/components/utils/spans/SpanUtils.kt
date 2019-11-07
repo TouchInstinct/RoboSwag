@@ -25,11 +25,15 @@ fun String.getSpannedTextWithUrls(
 
     if (!removeUnderline) {
         spannableText.getUrlSpans()
-                .forEach {
-                    spannableText.removeSpan(it.span)
-                    spannableText.setSpan(URLSpanWithoutUnderline(it.span.url), it.start, it.end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                .forEach { urlSpan ->
+                    spannableText.removeSpan(urlSpan.span)
+                    spannableText.setSpan(
+                            URLSpanWithoutUnderline(urlSpan.span.url),
+                            urlSpan.start,
+                            urlSpan.end,
+                            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
                 }
-
     }
     return spannableText
 }
