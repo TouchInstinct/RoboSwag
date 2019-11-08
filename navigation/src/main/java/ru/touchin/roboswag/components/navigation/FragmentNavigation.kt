@@ -84,6 +84,7 @@ open class FragmentNavigation(
      * @param args             Bundle to be set as [Fragment.getArguments] of instantiated [Fragment];
      * @param backStackName    Name of [Fragment] in back stack;
      * @param transactionSetup Function to setup transaction before commit. It is useful to specify transition animations or additional info.
+     * @param tag              Optional tag name for the [Fragment];
      */
     fun addToStack(
             fragmentClass: Class<out Fragment>,
@@ -92,7 +93,8 @@ open class FragmentNavigation(
             addToStack: Boolean,
             args: Bundle?,
             backStackName: String?,
-            transactionSetup: ((FragmentTransaction) -> Unit)?
+            transactionSetup: ((FragmentTransaction) -> Unit)?,
+            tag: String?
     ) {
         if (fragmentManager.isDestroyed) {
             Lc.assertion("FragmentManager is destroyed")
@@ -104,7 +106,7 @@ open class FragmentNavigation(
 
         val fragmentTransaction = fragmentManager.beginTransaction()
         transactionSetup?.invoke(fragmentTransaction)
-        fragmentTransaction.replace(containerViewId, fragment, null)
+        fragmentTransaction.replace(containerViewId, fragment, tag)
         if (addToStack) {
             fragmentTransaction
                     .addToBackStack(backStackName)
@@ -145,15 +147,17 @@ open class FragmentNavigation(
      * @param fragmentClass    Class of [Fragment] to instantiate;
      * @param args             Bundle to be set as [Fragment.getArguments] of instantiated [Fragment];
      * @param transactionSetup Function to setup transaction before commit. It is useful to specify transition animations or additional info.
+     * @param tag              Optional tag name for the [Fragment];
      */
     fun push(
             fragmentClass: Class<out Fragment>,
             args: Bundle? = null,
             addToStack: Boolean = true,
             backStackName: String? = null,
-            transactionSetup: ((FragmentTransaction) -> Unit)? = null
+            transactionSetup: ((FragmentTransaction) -> Unit)? = null,
+            tag: String? = null
     ) {
-        addToStack(fragmentClass, null, 0, addToStack, args, backStackName, transactionSetup)
+        addToStack(fragmentClass, null, 0, addToStack, args, backStackName, transactionSetup, tag)
     }
 
     /**
@@ -163,13 +167,15 @@ open class FragmentNavigation(
      * @param targetFragment   Target fragment to be set as [Fragment.getTargetFragment] of instantiated [Fragment];
      * @param args             Bundle to be set as [Fragment.getArguments] of instantiated [Fragment];
      * @param transactionSetup Function to setup transaction before commit. It is useful to specify transition animations or additional info.
+     * @param tag              Optional tag name for the [Fragment];
      */
     fun pushForResult(
             fragmentClass: Class<out Fragment>,
             targetFragment: Fragment,
             targetRequestCode: Int,
             args: Bundle? = null,
-            transactionSetup: ((FragmentTransaction) -> Unit)? = null
+            transactionSetup: ((FragmentTransaction) -> Unit)? = null,
+            tag: String? = null
     ) {
         addToStack(
                 fragmentClass,
@@ -178,7 +184,8 @@ open class FragmentNavigation(
                 true,
                 args,
                 null,
-                transactionSetup
+                transactionSetup,
+                tag
         )
     }
 
@@ -189,14 +196,16 @@ open class FragmentNavigation(
      * @param fragmentClass    Class of [Fragment] to instantiate;
      * @param args             Bundle to be set as [Fragment.getArguments] of instantiated [Fragment];
      * @param transactionSetup Function to setup transaction before commit. It is useful to specify transition animations or additional info.
+     * @param tag              Optional tag name for the [Fragment];
      */
     fun setAsTop(
             fragmentClass: Class<out Fragment>,
             args: Bundle? = null,
             addToStack: Boolean = true,
-            transactionSetup: ((FragmentTransaction) -> Unit)? = null
+            transactionSetup: ((FragmentTransaction) -> Unit)? = null,
+            tag: String? = null
     ) {
-        addToStack(fragmentClass, null, 0, addToStack, args, TOP_FRAGMENT_TAG_MARK, transactionSetup)
+        addToStack(fragmentClass, null, 0, addToStack, args, TOP_FRAGMENT_TAG_MARK, transactionSetup, tag)
     }
 
     /**
@@ -205,15 +214,17 @@ open class FragmentNavigation(
      * @param fragmentClass    Class of [Fragment] to instantiate;
      * @param args             Bundle to be set as [Fragment.getArguments] of instantiated [Fragment];
      * @param transactionSetup Function to setup transaction before commit. It is useful to specify transition animations or additional info.
+     * @param tag              Optional tag name for the [Fragment];
      */
     @JvmOverloads
     fun setInitial(
             fragmentClass: Class<out Fragment>,
             args: Bundle? = null,
-            transactionSetup: ((FragmentTransaction) -> Unit)? = null
+            transactionSetup: ((FragmentTransaction) -> Unit)? = null,
+            tag: String? = null
     ) {
         beforeSetInitialActions()
-        setAsTop(fragmentClass, args, false, transactionSetup)
+        setAsTop(fragmentClass, args, false, transactionSetup, tag)
     }
 
     /**
