@@ -52,6 +52,7 @@ open class ViewControllerNavigation<TActivity : FragmentActivity>(
      * @param addToStack          Flag to add this transaction to the back stack;
      * @param backStackName       Name of [Fragment] in back stack;
      * @param transactionSetup    Function to setup transaction before commit. It is useful to specify transition animations or additional info;
+     * @param tag                 Optional tag name for the [Fragment];
      * @param TState              Type of state of fragment.
      */
     fun <TState : Parcelable> pushViewController(
@@ -59,7 +60,8 @@ open class ViewControllerNavigation<TActivity : FragmentActivity>(
             state: TState,
             addToStack: Boolean = true,
             backStackName: String? = null,
-            transactionSetup: ((FragmentTransaction) -> Unit)? = null
+            transactionSetup: ((FragmentTransaction) -> Unit)? = null,
+            tag: String? = null
     ) {
         addToStack(
                 ViewControllerFragment::class.java,
@@ -68,7 +70,8 @@ open class ViewControllerNavigation<TActivity : FragmentActivity>(
                 addToStack,
                 ViewControllerFragment.args(viewControllerClass, state),
                 backStackName,
-                transactionSetup
+                transactionSetup,
+                tag
         )
     }
 
@@ -81,6 +84,7 @@ open class ViewControllerNavigation<TActivity : FragmentActivity>(
      * @param state               [Parcelable] of [ViewController]'s fragment;
      * @param backStackName       Name of [Fragment] in back stack;
      * @param transactionSetup    Function to setup transaction before commit. It is useful to specify transition animations or additional info;
+     * @param tag                 Optional tag name for the [Fragment];
      * @param TState              Type of state of fragment;
      * @param TTargetFragment     Type of target fragment.
      */
@@ -90,7 +94,8 @@ open class ViewControllerNavigation<TActivity : FragmentActivity>(
             targetFragment: TTargetFragment,
             targetRequestCode: Int,
             backStackName: String? = null,
-            transactionSetup: ((FragmentTransaction) -> Unit)? = null
+            transactionSetup: ((FragmentTransaction) -> Unit)? = null,
+            tag: String? = null
     ) {
         addToStack(
                 ViewControllerFragment::class.java,
@@ -99,7 +104,8 @@ open class ViewControllerNavigation<TActivity : FragmentActivity>(
                 true,
                 ViewControllerFragment.args(viewControllerClass, state),
                 backStackName,
-                transactionSetup
+                transactionSetup,
+                tag
         )
     }
 
@@ -110,13 +116,15 @@ open class ViewControllerNavigation<TActivity : FragmentActivity>(
      * @param viewControllerClass Class of [ViewController] to be pushed;
      * @param state               [Parcelable] of [ViewController]'s fragment;
      * @param transactionSetup    Function to setup transaction before commit. It is useful to specify transition animations or additional info;
+     * @param tag                 Optional tag name for the [Fragment];
      * @param TState              Type of state of fragment.
      */
     fun <TState : Parcelable> setViewControllerAsTop(
             viewControllerClass: Class<out ViewController<out TActivity, TState>>,
             state: TState,
             addToStack: Boolean = true,
-            transactionSetup: ((FragmentTransaction) -> Unit)? = null
+            transactionSetup: ((FragmentTransaction) -> Unit)? = null,
+            tag: String? = null
     ) {
         addToStack(
                 ViewControllerFragment::class.java,
@@ -125,7 +133,8 @@ open class ViewControllerNavigation<TActivity : FragmentActivity>(
                 addToStack,
                 ViewControllerFragment.args(viewControllerClass, state),
                 TOP_FRAGMENT_TAG_MARK,
-                transactionSetup
+                transactionSetup,
+                tag
         )
     }
 
@@ -136,15 +145,17 @@ open class ViewControllerNavigation<TActivity : FragmentActivity>(
      * @param viewControllerClass Class of [ViewController] to be pushed;
      * @param state               [Parcelable] of [ViewController]'s fragment;
      * @param transactionSetup    Function to setup transaction before commit. It is useful to specify transition animations or additional info;
+     * @param tag                 Optional tag name for the [Fragment];
      * @param TState              Type of state of fragment.
      */
     fun <TState : Parcelable> setInitialViewController(
             viewControllerClass: Class<out ViewController<out TActivity, TState>>,
             state: TState,
-            transactionSetup: ((FragmentTransaction) -> Unit)? = null
+            transactionSetup: ((FragmentTransaction) -> Unit)? = null,
+            tag: String? = null
     ) {
         beforeSetInitialActions()
-        setViewControllerAsTop(viewControllerClass, state, false, transactionSetup)
+        setViewControllerAsTop(viewControllerClass, state, false, transactionSetup, tag)
     }
 
 }
