@@ -38,7 +38,7 @@ ext {
             rxAndroid    : '2.1.0',
             crashlytics  : '2.9.5',
             location     : '16.0.0',
-            coreKtx      : '1.0.1',
+            coreKtx      : '1.1.0',
             yandex_mapkit: '3.4.0',
             google_maps  : '16.1.0'
     ]

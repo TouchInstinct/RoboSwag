@@ -30,4 +30,16 @@
         <attr name="defaultChild" format="reference"/>
     </declare-styleable>
 
+    <declare-styleable name="SkeletonView">
+        <attr name="skeletonBaseColor" format="color"/>
+        <attr name="skeletonFirstGradientColor" format="color"/>
+        <attr name="skeletonSecondGradientColor" format="color"/>
+        <attr name="skeletonCornerRadius" format="dimension"/>
+        <attr name="skeletonCircleStrokeWidth" format="dimension"/>
+        <attr name="skeletonShape" format="enum">
+            <enum name="circle" value="0"/>
+            <enum name="rectangle" value="1"/>
+        </attr>
+    </declare-styleable>
+
 </resources>

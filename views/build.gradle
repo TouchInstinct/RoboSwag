@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -18,4 +19,6 @@ dependencies {
     api project(":logging")
 
     implementation "com.google.android.material:material:$versions.material"
+    implementation "androidx.core:core-ktx:$versions.coreKtx"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }

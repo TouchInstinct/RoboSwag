@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="skeleton_base">#33E5E5EA</color>
+    <color name="skeleton_gradient">#D9DFE2</color>
+
+</resources>
