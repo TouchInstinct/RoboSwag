@@ -82,10 +82,10 @@ public class MaterialLoadingBar extends AppCompatImageView {
         final TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.MaterialLoadingBar,
                 defStyleAttr,
                 0);
-        final int size = (int) typedArray.getDimension(R.styleable.MaterialLoadingBar_size, UiUtils.OfMetrics.dpToPixels(context, 48));
+        final int size = (int) typedArray.getDimension(R.styleable.MaterialLoadingBar_size, UiUtils.OfMetrics.INSTANCE.dpToPixels(context, 48));
         final int color = typedArray.getColor(R.styleable.MaterialLoadingBar_color, getPrimaryColor(context));
         final float strokeWidth = typedArray.getDimension(R.styleable.MaterialLoadingBar_strokeWidth,
-                UiUtils.OfMetrics.dpToPixels(context, 4));
+                UiUtils.OfMetrics.INSTANCE.dpToPixels(context, 4));
         typedArray.recycle();
 
         progressDrawable = new MaterialProgressDrawable(context, size);

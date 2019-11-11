@@ -69,7 +69,7 @@ public class MaterialProgressDrawable extends Drawable implements Runnable, Anim
         this.size = size;
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(UiUtils.OfMetrics.dpToPixels(context, DEFAULT_STROKE_WIDTH_DP));
+        paint.setStrokeWidth(UiUtils.OfMetrics.INSTANCE.dpToPixels(context, DEFAULT_STROKE_WIDTH_DP));
         paint.setColor(Color.BLACK);
     }
 

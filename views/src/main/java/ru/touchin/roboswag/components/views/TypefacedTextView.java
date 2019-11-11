@@ -326,8 +326,8 @@ public class TypefacedTextView extends AppCompatTextView {
     @SuppressLint("WrongCall")
     //WrongCall: actually this method is always calling from onMeasure
     private void computeScalableTextSize(final int maxWidth, final int maxHeight) {
-        final int minDifference = (int) UiUtils.OfMetrics.dpToPixels(getContext(), 1);
-        int difference = (int) UiUtils.OfMetrics.dpToPixels(getContext(), START_SCALABLE_DIFFERENCE);
+        final int minDifference = (int) UiUtils.OfMetrics.INSTANCE.dpToPixels(getContext(), 1);
+        int difference = (int) UiUtils.OfMetrics.INSTANCE.dpToPixels(getContext(), START_SCALABLE_DIFFERENCE);
         ScaleAction scaleAction = ScaleAction.DO_NOTHING;
         ScaleAction previousScaleAction = ScaleAction.DO_NOTHING;
         do {
