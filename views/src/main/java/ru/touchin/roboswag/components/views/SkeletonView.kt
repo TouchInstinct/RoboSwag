@@ -19,7 +19,21 @@ import java.util.concurrent.TimeUnit
 import kotlin.math.min
 import kotlin.math.tan
 
-class SkeletonView @JvmOverloads constructor(
+/**
+ * View to show to user loading process with gradient changing animation.
+ * Default gradient angle is 20 degrees and default animation duration is 4 seconds.
+ *
+ * See SkeletonView Attributes:
+ * @attr R.styleable#SkeletonView_skeletonGradientAngle
+ * @attr R.styleable#SkeletonView_skeletonAnimationDuration
+ * @attr R.styleable#SkeletonView_skeletonShape
+ * @attr R.styleable#SkeletonView_skeletonBaseColor
+ * @attr R.styleable#SkeletonView_skeletonFirstGradientColor
+ * @attr R.styleable#SkeletonView_skeletonSecondGradientColor
+ * @attr R.styleable#SkeletonView_skeletonCornerRadius
+ * @attr R.styleable#SkeletonView_skeletonCircleStrokeWidth
+ */
+open class SkeletonView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet,
         defStyleAttr: Int = 0
@@ -29,19 +43,12 @@ class SkeletonView @JvmOverloads constructor(
         private const val DEFAULT_CORNER_RADIUS_IN_DP = 2f
         private const val DEFAULT_CIRCLE_STROKE_WIDTH = 0f
         private const val DEFAULT_ANGLE = 20f
-        private const val ANIMATION_DURATION_IN_SEC = 4L
+        private const val DEFAULT_ANIMATION_DURATION_IN_SEC = 4
     }
 
     private val displayMetrics = context.resources.displayMetrics
 
-    private val animationDuration = TimeUnit.SECONDS.toMillis(ANIMATION_DURATION_IN_SEC)
-
-    private val valueAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
-        duration = animationDuration
-        repeatMode = ValueAnimator.RESTART
-        repeatCount = ValueAnimator.INFINITE
-        interpolator = LinearInterpolator()
-    }
+    private val valueAnimator: ValueAnimator
 
     private val paint = Paint()
     private val shaderMatrix = Matrix()
@@ -53,6 +60,8 @@ class SkeletonView @JvmOverloads constructor(
 
     private var cornerRadius = UiUtils.OfMetrics.dpToPixels(context, DEFAULT_CORNER_RADIUS_IN_DP)
     private var circleStrokeWidth = DEFAULT_CIRCLE_STROKE_WIDTH
+    private var angle = 0F
+    private var animationDuration = 0L
 
     private var shape: Shape = Shape.RECTANGLE
 
@@ -66,6 +75,16 @@ class SkeletonView @JvmOverloads constructor(
             circleStrokeWidth = getDimension(R.styleable.SkeletonView_skeletonCircleStrokeWidth, DEFAULT_CIRCLE_STROKE_WIDTH)
             firstGradientColor = getColor(R.styleable.SkeletonView_skeletonFirstGradientColor, firstGradientColor)
             secondGradientColor = getColor(R.styleable.SkeletonView_skeletonSecondGradientColor, secondGradientColor)
+            angle = getFloat(R.styleable.SkeletonView_skeletonGradientAngle, DEFAULT_ANGLE)
+            animationDuration = TimeUnit.SECONDS.toMillis(
+                    getInt(R.styleable.SkeletonView_skeletonAnimationDurationInSec, DEFAULT_ANIMATION_DURATION_IN_SEC).toLong()
+            )
+        }
+        valueAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
+            duration = animationDuration
+            repeatMode = ValueAnimator.RESTART
+            repeatCount = ValueAnimator.INFINITE
+            interpolator = LinearInterpolator()
         }
         if (shape == Shape.CIRCLE && circleStrokeWidth > 0) {
             paint.style = Paint.Style.STROKE
@@ -89,7 +108,7 @@ class SkeletonView @JvmOverloads constructor(
             val positionOnScreen = IntArray(2)
             getLocationOnScreen(positionOnScreen)
 
-            delta = positionOnScreen[1] / tan(Math.toRadians(90.toDouble() - DEFAULT_ANGLE)).toFloat() + positionOnScreen[0]
+            delta = positionOnScreen[1] / tan(Math.toRadians(90.toDouble() - angle)).toFloat() + positionOnScreen[0]
 
             updateValueAnimator(true)
         }
@@ -109,7 +128,7 @@ class SkeletonView @JvmOverloads constructor(
         val dx = offset(-translateWidth * 3, translateWidth, animatedValue)
 
         shaderMatrix.reset()
-        shaderMatrix.setRotate(DEFAULT_ANGLE, translateWidth / 2f, translateWidth / 2f)
+        shaderMatrix.setRotate(angle, translateWidth / 2f, translateWidth / 2f)
         shaderMatrix.postTranslate(dx, 0f)
 
         paint.shader.setLocalMatrix(shaderMatrix)

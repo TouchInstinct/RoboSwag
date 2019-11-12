@@ -31,6 +31,8 @@
     </declare-styleable>
 
     <declare-styleable name="SkeletonView">
+        <attr name="skeletonGradientAngle" format="float"/>
+        <attr name="skeletonAnimationDurationInSec" format="integer"/>
         <attr name="skeletonBaseColor" format="color"/>
         <attr name="skeletonFirstGradientColor" format="color"/>
         <attr name="skeletonSecondGradientColor" format="color"/>
