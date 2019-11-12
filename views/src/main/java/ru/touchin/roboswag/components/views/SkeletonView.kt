@@ -33,7 +33,7 @@ import kotlin.math.tan
  * @attr R.styleable#SkeletonView_skeletonCornerRadius
  * @attr R.styleable#SkeletonView_skeletonCircleStrokeWidth
  */
-open class SkeletonView @JvmOverloads constructor(
+class SkeletonView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet,
         defStyleAttr: Int = 0
