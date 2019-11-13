@@ -36,7 +36,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private val onBackPressedListeners = ArrayList<OnBackPressedListener>()
 
-    open val keyboardBehaviorDetector: KeyboardBehaviorDetector? = null
+    var keyboardBehaviorDetector: KeyboardBehaviorDetector? = null
 
     init {
         lifecycle.addObserver(LifecycleLoggingObserver(this))
