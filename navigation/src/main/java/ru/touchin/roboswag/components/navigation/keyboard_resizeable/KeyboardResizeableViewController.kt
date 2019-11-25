@@ -2,6 +2,7 @@ package ru.touchin.roboswag.components.navigation.keyboard_resizeable
 
 import android.os.Build
 import android.os.Parcelable
+import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.LifecycleObserver
 import ru.touchin.roboswag.components.navigation.activities.BaseActivity
@@ -55,6 +56,7 @@ abstract class KeyboardResizeableViewController<TActivity : BaseActivity, TState
         if (isHideKeyboardOnBackEnabled) activity.removeOnBackPressedListener(keyboardHideListener)
     }
 
+    @CallSuper
     override fun onStart() {
         super.onStart()
         activity.keyboardBehaviorDetector?.apply {
