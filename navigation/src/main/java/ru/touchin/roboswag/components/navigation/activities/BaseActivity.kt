@@ -19,9 +19,12 @@
 
 package ru.touchin.roboswag.components.navigation.activities
 
+import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import ru.touchin.roboswag.components.navigation.keyboard_resizeable.KeyboardBehaviorDetector
 import ru.touchin.roboswag.components.navigation.viewcontrollers.LifecycleLoggingObserver
@@ -38,18 +41,25 @@ abstract class BaseActivity : AppCompatActivity() {
 
     var keyboardBehaviorDetector: KeyboardBehaviorDetector? = null
 
+    open val freezeFontScaleFactor: Boolean = true
+
     init {
         lifecycle.addObserver(LifecycleLoggingObserver(this))
     }
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
+
         // Possible work around for market launches. See http://code.google.com/p/android/issues/detail?id=2373
         // for more details. Essentially, the market launches the main activity on top of other activities.
         // we never want this to happen. Instead, we check if we are the root and if not, we finish.
         if (!isTaskRoot && intent.hasCategory(Intent.CATEGORY_LAUNCHER) && Intent.ACTION_MAIN == intent.action) {
             Lc.e("Finishing activity as it is launcher but not root")
             finish()
+        }
+
+        if (freezeFontScaleFactor) {
+            adjustFontScale(resources.configuration)
         }
     }
 
@@ -87,6 +97,14 @@ abstract class BaseActivity : AppCompatActivity() {
             }
         }
         super.onBackPressed()
+    }
+
+    private fun adjustFontScale(configuration: Configuration) {
+        configuration.fontScale = 1f
+        val metrics = resources.displayMetrics
+        (getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.getMetrics(metrics)
+        metrics.scaledDensity = configuration.fontScale * metrics.density
+        baseContext.resources.updateConfiguration(configuration, metrics)
     }
 
 }
