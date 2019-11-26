@@ -43,7 +43,7 @@ class KeyboardBehaviorDetector(
 
             if (startNavigationBarHeight == -1) startNavigationBarHeight = bottomInset
 
-            windowInsets
+            ViewCompat.onApplyWindowInsets(view, windowInsets)
         }
         ViewCompat.requestApplyInsets(view)
     }
