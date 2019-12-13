@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.os.Build
 import android.os.VibrationEffect
+import android.os.VibrationEffect.DEFAULT_AMPLITUDE
 import android.os.Vibrator
 import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
@@ -23,6 +24,15 @@ fun Context.startVibrate(duration: Long = 500, pattern: LongArray = LongArray(0)
         } else {
             vibrationService.vibrate(pattern, duration.toInt())
         }
+    }
+}
+
+@RequiresPermission(Manifest.permission.VIBRATE)
+fun Context.startSimpleVibration() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        startVibrate(VibrationEffect.createOneShot(200, DEFAULT_AMPLITUDE))
+    } else {
+        startVibrate(200)
     }
 }
 
