@@ -28,11 +28,11 @@ fun Context.startVibrate(duration: Long = 500, pattern: LongArray = LongArray(0)
 }
 
 @RequiresPermission(Manifest.permission.VIBRATE)
-fun Context.startSimpleVibration() {
+fun Context.startSimpleVibration(duration: Long = 200) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        startVibrate(VibrationEffect.createOneShot(200, DEFAULT_AMPLITUDE))
+        startVibrate(VibrationEffect.createOneShot(duration, DEFAULT_AMPLITUDE))
     } else {
-        startVibrate(200)
+        startVibrate(duration)
     }
 }
 
