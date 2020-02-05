@@ -28,5 +28,5 @@ dependencies {
 
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
 
-    implementation "com.google.firebase:firebase-crashlytics:$versions.crashlytics"
+    implementation "com.google.firebase:firebase-crashlytics:$versions.crashlyticsFirebase"
 }
