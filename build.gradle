@@ -36,7 +36,7 @@ ext {
             retrofit     : '2.4.0',
             rxJava       : '2.2.2',
             rxAndroid    : '2.1.0',
-            crashlytics  : '2.9.5',
+            crashlytics  : '17.0.0-beta01',
             location     : '16.0.0',
             coreKtx      : '1.0.1',
             yandex_mapkit: '3.4.0',
