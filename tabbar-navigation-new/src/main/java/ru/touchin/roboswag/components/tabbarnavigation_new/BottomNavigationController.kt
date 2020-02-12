@@ -84,7 +84,7 @@ class BottomNavigationController(
             fragment = if (wrapWithNavigationContainer) {
                 Fragment.instantiate(
                         context,
-                        fragmentClass.name,
+                        NavigationContainerFragment::class.java.name,
                         NavigationContainerFragment.args(fragmentClass, fragmentState, contentContainerViewId, contentContainerLayoutId)
                 )
             } else {

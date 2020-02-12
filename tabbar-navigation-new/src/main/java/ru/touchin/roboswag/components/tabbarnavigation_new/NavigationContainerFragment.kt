@@ -67,7 +67,7 @@ class NavigationContainerFragment : Fragment() {
                 containerLayoutId = getInt(CONTAINER_LAYOUT_ID_ARG)
                 transition = getInt(TRANSITION_ARG)
             }
-            navigation.setInitial(getFragmentClass(), args.getParcelable(FRAGMENT_STATE_ARG))
+            navigation.setInitial(getFragmentClass().kotlin, args.getParcelable(FRAGMENT_STATE_ARG))
         }
     }
 
