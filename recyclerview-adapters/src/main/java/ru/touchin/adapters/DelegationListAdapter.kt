@@ -1,10 +1,10 @@
 package ru.touchin.adapters
 
+import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import android.view.ViewGroup
 import ru.touchin.extensions.setOnRippleClickListener
 
 /**
@@ -36,7 +36,7 @@ open class DelegationListAdapter<TItem>(config: AsyncDifferConfig<TItem>) : Recy
         if (collectionPosition in 0 until getList().size) {
             if (itemClickListener != null) {
                 holder.itemView.setOnRippleClickListener {
-                    itemClickListener?.invoke(getList()[getCollectionPosition(holder.adapterPosition)], holder)
+                    getList().getOrNull(getCollectionPosition(holder.adapterPosition))?.let { item -> itemClickListener?.invoke(item, holder) }
                 }
             } else {
                 holder.itemView.setOnClickListener(null)
