@@ -24,7 +24,7 @@ import android.content.Context;
 import android.os.StrictMode;
 import android.util.Log;
 
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.crashlytics.android.Crashlytics;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
@@ -34,6 +34,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.multidex.MultiDex;
+import io.fabric.sdk.android.Fabric;
 import ru.touchin.roboswag.core.log.ConsoleLogProcessor;
 import ru.touchin.roboswag.core.log.Lc;
 import ru.touchin.roboswag.core.log.LcGroup;
@@ -64,13 +65,16 @@ public abstract class TouchinApp extends Application {
             LcGroup.UI_LIFECYCLE.disable();
         } else {
             try {
-                final FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
-                crashlytics.setCrashlyticsCollectionEnabled(true);
+                final Crashlytics crashlytics = new Crashlytics();
+                Fabric.with(this, crashlytics);
+                Fabric.getLogger().setLogLevel(Log.ERROR);
                 Lc.initialize(new CrashlyticsLogProcessor(crashlytics), false);
             } catch (final NoClassDefFoundError error) {
                 Lc.initialize(new ConsoleLogProcessor(LcLevel.INFO), false);
                 Lc.e("Crashlytics initialization error! Did you forget to add\n"
-                        + "com.google.firebase:firebase-crashlytics\n"
+                        + "compile('com.crashlytics.sdk.android:crashlytics:+@aar') {\n"
+                        + "        transitive = true;\n"
+                        + "}\n"
                         + "to your build.gradle?", error);
             }
         }
@@ -92,15 +96,11 @@ public abstract class TouchinApp extends Application {
     private static class CrashlyticsLogProcessor extends LogProcessor {
 
         @NonNull
-        private final FirebaseCrashlytics crashlytics;
+        private final Crashlytics crashlytics;
 
-        public CrashlyticsLogProcessor(@NonNull final FirebaseCrashlytics crashlytics) {
+        public CrashlyticsLogProcessor(@NonNull final Crashlytics crashlytics) {
             super(LcLevel.INFO);
             this.crashlytics = crashlytics;
-        }
-
-        private String getLogMessage(final int priorityLevel, final String tag, final String message) {
-            return "Priority:" + priorityLevel + ' ' + tag + ':' + message;
         }
 
         @Override
@@ -110,17 +110,17 @@ public abstract class TouchinApp extends Application {
                                       @NonNull final String message,
                                       @Nullable final Throwable throwable) {
             if (group == LcGroup.UI_LIFECYCLE) {
-                crashlytics.log(getLogMessage(level.getPriority(), tag, message));
+                crashlytics.core.log(level.getPriority(), tag, message);
             } else if (!level.lessThan(LcLevel.ASSERT)
                     || (group == ApiModel.API_VALIDATION_LC_GROUP && level == LcLevel.ERROR)) {
                 Log.e(tag, message);
                 if (throwable != null) {
-                    crashlytics.log(getLogMessage(level.getPriority(), tag, message));
-                    crashlytics.recordException(throwable);
+                    crashlytics.core.log(level.getPriority(), tag, message);
+                    crashlytics.core.logException(throwable);
                 } else {
                     final ShouldNotHappenException exceptionToLog = new ShouldNotHappenException(tag + ':' + message);
                     reduceStackTrace(exceptionToLog);
-                    crashlytics.recordException(exceptionToLog);
+                    crashlytics.core.logException(exceptionToLog);
                 }
             }
         }
