@@ -28,5 +28,7 @@ dependencies {
 
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
 
-    implementation "com.google.firebase:firebase-crashlytics:$versions.firebaseCrashlytics"
+    implementation("com.crashlytics.sdk.android:crashlytics:$versions.crashlytics@aar") {
+        transitive = true
+    }
 }
