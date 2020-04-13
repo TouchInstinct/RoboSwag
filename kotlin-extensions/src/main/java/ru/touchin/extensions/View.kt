@@ -2,8 +2,9 @@ package ru.touchin.extensions
 
 import android.os.Build
 import android.view.View
+import ru.touchin.utils.ActionThrottler
 
-private const val RIPPLE_EFFECT_DELAY = 150L
+const val RIPPLE_EFFECT_DELAY = 150L
 
 /**
  * Sets click listener to view. On click it will call something after delay.
@@ -12,7 +13,11 @@ private const val RIPPLE_EFFECT_DELAY = 150L
  */
 fun View.setOnRippleClickListener(listener: () -> Unit) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        setOnClickListener { postDelayed({ if (hasWindowFocus()) listener() }, RIPPLE_EFFECT_DELAY) }
+        setOnClickListener {
+            ActionThrottler.throttleAction {
+                postDelayed({ if (hasWindowFocus()) listener() }, RIPPLE_EFFECT_DELAY)
+            }
+        }
     } else {
         setOnClickListener { listener() }
     }
