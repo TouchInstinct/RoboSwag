@@ -61,6 +61,7 @@ class BottomNavigationController(
 
     fun detach() = callback?.let(fragmentManager::unregisterFragmentLifecycleCallbacks)
 
+    @Suppress("detekt.ComplexMethod")
     fun navigateTo(@IdRes itemId: Int, state: Parcelable? = null) {
         // Find view controller class that needs to open
         val (viewControllerClass, defaultViewControllerState, saveStateOnSwitching) = viewControllers[itemId] ?: return

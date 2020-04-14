@@ -13,8 +13,9 @@ fun String.getSpannedTextWithUrls(
         removeUnderline: Boolean = true,
         flags: Int = HtmlCompat.FROM_HTML_MODE_COMPACT
 ): Spanned {
-
-    val spannableText = SpannableString(HtmlCompat.fromHtml(this, flags))
+    // HtmlCompat.fromHtml doesn't respect line breaks
+    val text = this.replace(lineBreakRegex, "<br/>")
+    val spannableText = SpannableString(HtmlCompat.fromHtml(text, flags))
 
     // Linkify removes all previous URLSpan's, we need to save all created spans for reapply after Linkify
     val spans = spannableText.getUrlSpans()
@@ -36,6 +37,10 @@ fun String.getSpannedTextWithUrls(
                 }
     }
     return spannableText
+}
+
+private val lineBreakRegex by lazy(LazyThreadSafetyMode.NONE) {
+    "\r?\n".toRegex()
 }
 
 private fun SpannableString.getUrlSpans() = getSpans(0, length, URLSpan::class.java)
