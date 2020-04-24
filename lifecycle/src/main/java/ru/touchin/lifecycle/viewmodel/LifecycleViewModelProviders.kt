@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewController
+import ru.touchin.roboswag.components.navigation_viewcontroller.viewcontrollers.ViewController
 
 object LifecycleViewModelProviders {
 
