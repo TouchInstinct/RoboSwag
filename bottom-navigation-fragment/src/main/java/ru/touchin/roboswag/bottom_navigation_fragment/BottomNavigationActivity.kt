@@ -1,19 +1,15 @@
-package ru.touchin.roboswag.components.tabbarnavigation
+package ru.touchin.roboswag.bottom_navigation_fragment
 
 import android.os.Parcelable
 import androidx.annotation.IdRes
 import androidx.fragment.app.FragmentManager
-import ru.touchin.roboswag.components.navigation.activities.NavigationActivity
-import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewControllerNavigation
+import ru.touchin.roboswag.navigation_base.FragmentNavigation
+import ru.touchin.roboswag.navigation_base.activities.NavigationActivity
 
-/**
- * Created by Daniil Borisovskii on 15/08/2019.
- * Activity to manage tab container navigation.
- */
 abstract class BottomNavigationActivity : NavigationActivity() {
 
-    val innerNavigation: ViewControllerNavigation<BottomNavigationActivity>
-        get() = getNavigationContainer(supportFragmentManager)?.navigation ?: navigation as ViewControllerNavigation<BottomNavigationActivity>
+    open val innerNavigation: FragmentNavigation
+        get() = getNavigationContainer(supportFragmentManager)?.navigation ?: navigation
 
     /**
      * Navigates to the given navigation tab.

@@ -16,6 +16,7 @@ android {
 
 dependencies {
     api project(":navigation-viewcontroller")
+    api project(":bottom-navigation-fragment")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 

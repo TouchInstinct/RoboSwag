@@ -95,7 +95,7 @@ open class FragmentNavigation(
             addToStack: Boolean,
             args: Bundle?,
             backStackName: String?,
-            tag: String?,
+            tag: String? = null,
             transactionSetup: ((FragmentTransaction) -> Unit)?
     ) {
         if (fragmentManager.isDestroyed) {

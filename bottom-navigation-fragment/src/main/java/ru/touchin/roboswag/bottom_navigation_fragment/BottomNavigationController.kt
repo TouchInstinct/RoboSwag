@@ -1,4 +1,4 @@
-package ru.touchin.roboswag.components.tabbarnavigation
+package ru.touchin.roboswag.bottom_navigation_fragment
 
 import android.content.Context
 import android.os.Bundle
@@ -12,24 +12,23 @@ import androidx.core.util.forEach
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import ru.touchin.roboswag.components.navigation.fragments.ViewControllerFragment
-import ru.touchin.roboswag.components.navigation.viewcontrollers.ViewController
 import ru.touchin.roboswag.core.utils.ShouldNotHappenException
+import ru.touchin.roboswag.navigation_base.fragments.BaseFragment
 
 class BottomNavigationController(
         private val context: Context,
         private val fragmentManager: FragmentManager,
-        private val viewControllers: SparseArray<BottomNavigationFragment.TabData>,
+        private val fragments: SparseArray<Pair<Class<out BaseFragment<*, *>>, Parcelable>>,
         @IdRes private val contentContainerViewId: Int,
         @LayoutRes private val contentContainerLayoutId: Int,
         private val wrapWithNavigationContainer: Boolean = false,
-        @IdRes private val topLevelViewControllerId: Int = 0, // If it zero back press with empty fragment back stack would close the app
+        @IdRes private val topLevelFragmentId: Int = 0, // If it zero back press with empty fragment back stack would close the app
         private val onReselectListener: (() -> Unit)? = null
 ) {
 
     private var callback: FragmentManager.FragmentLifecycleCallbacks? = null
 
-    private var currentViewControllerId = -1
+    private var currentFragmentId = -1
 
     fun attach(navigationTabsContainer: ViewGroup) {
         detach()
@@ -37,8 +36,8 @@ class BottomNavigationController(
         //This is provides to set pressed tab status to isActivated providing an opportunity to specify custom style
         callback = object : FragmentManager.FragmentLifecycleCallbacks() {
             override fun onFragmentViewCreated(fragmentManager: FragmentManager, fragment: Fragment, view: View, savedInstanceState: Bundle?) {
-                viewControllers.forEach { itemId, (viewControllerClass, _) ->
-                    if (isViewControllerFragment(fragment, viewControllerClass)) {
+                fragments.forEach { itemId, (fragmentClass, _) ->
+                    if (isFragment(fragment, fragmentClass)) {
                         navigationTabsContainer.children.forEach { itemView -> itemView.isActivated = itemView.id == itemId }
                     }
                 }
@@ -47,9 +46,9 @@ class BottomNavigationController(
         fragmentManager.registerFragmentLifecycleCallbacks(callback!!, false)
 
         navigationTabsContainer.children.forEach { itemView ->
-            viewControllers[itemView.id]?.let { (viewControllerClass, _) ->
+            fragments[itemView.id]?.let { (fragmentClass, _) ->
                 itemView.setOnClickListener {
-                    if (!isViewControllerFragment(fragmentManager.primaryNavigationFragment, viewControllerClass)) {
+                    if (!isFragment(fragmentManager.primaryNavigationFragment, fragmentClass)) {
                         navigateTo(itemView.id)
                     } else {
                         onReselectListener?.invoke()
@@ -61,23 +60,22 @@ class BottomNavigationController(
 
     fun detach() = callback?.let(fragmentManager::unregisterFragmentLifecycleCallbacks)
 
-    @Suppress("detekt.ComplexMethod")
     fun navigateTo(@IdRes itemId: Int, state: Parcelable? = null) {
-        // Find view controller class that needs to open
-        val (viewControllerClass, defaultViewControllerState, saveStateOnSwitching) = viewControllers[itemId] ?: return
-        if (state != null && state::class != defaultViewControllerState::class) {
+        // Find fragment class that needs to open
+        val (fragmentClass, defaultFragmentState) = fragments[itemId] ?: return
+        if (state != null && state::class != defaultFragmentState::class) {
             throw ShouldNotHappenException(
-                    "Incorrect state type for navigation tab root ViewController. Should be ${defaultViewControllerState::class}"
+                    "Incorrect state type for navigation tab root Fragment. Should be ${defaultFragmentState::class}"
             )
         }
-        val viewControllerState = state ?: defaultViewControllerState
+        val fragmentState = state ?: defaultFragmentState
         val transaction = fragmentManager.beginTransaction()
         // Detach current primary fragment
         fragmentManager.primaryNavigationFragment?.let(transaction::detach)
-        val viewControllerName = viewControllerClass.canonicalName
-        var fragment = fragmentManager.findFragmentByTag(viewControllerName)
+        val fragmentName = fragmentClass.canonicalName
+        var fragment = fragmentManager.findFragmentByTag(fragmentName)
 
-        if (saveStateOnSwitching && state == null && fragment != null) {
+        if (state == null && fragment != null) {
             transaction.attach(fragment)
         } else {
             // If fragment already exist remove it first
@@ -87,16 +85,16 @@ class BottomNavigationController(
                 Fragment.instantiate(
                         context,
                         NavigationContainerFragment::class.java.name,
-                        NavigationContainerFragment.args(viewControllerClass, viewControllerState, contentContainerViewId, contentContainerLayoutId)
+                        NavigationContainerFragment.args(fragmentClass, fragmentState, contentContainerViewId, contentContainerLayoutId)
                 )
             } else {
                 Fragment.instantiate(
                         context,
-                        ViewControllerFragment::class.java.name,
-                        ViewControllerFragment.args(viewControllerClass, viewControllerState)
+                        fragmentClass.name,
+                        BaseFragment.args(fragmentState)
                 )
             }
-            transaction.add(contentContainerViewId, fragment, viewControllerName)
+            transaction.add(contentContainerViewId, fragment, fragmentName)
         }
 
         transaction
@@ -104,24 +102,24 @@ class BottomNavigationController(
                 .setReorderingAllowed(true)
                 .commit()
 
-        currentViewControllerId = itemId
+        currentFragmentId = itemId
     }
 
     // When you are in any tab instead of main you firstly navigate to main tab before exit application
     fun onBackPressed() =
             if (fragmentManager.primaryNavigationFragment?.childFragmentManager?.backStackEntryCount == 0
-                    && topLevelViewControllerId != 0
-                    && currentViewControllerId != topLevelViewControllerId) {
-                navigateTo(topLevelViewControllerId)
+                    && topLevelFragmentId != 0
+                    && currentFragmentId != topLevelFragmentId) {
+                navigateTo(topLevelFragmentId)
                 true
             } else {
                 false
             }
 
-    private fun isViewControllerFragment(fragment: Fragment?, viewControllerClass: Class<out ViewController<*, *>>) =
+    private fun isFragment(fragment: Fragment?, fragmentClass: Class<out BaseFragment<*, *>>) =
             if (wrapWithNavigationContainer) {
-                (fragment as NavigationContainerFragment).getViewControllerClass()
+                (fragment as NavigationContainerFragment).getFragmentClass()
             } else {
-                (fragment as ViewControllerFragment<*, *>).viewControllerClass
-            } === viewControllerClass
+                (fragment as BaseFragment<*, *>).javaClass
+            } === fragmentClass
 }
