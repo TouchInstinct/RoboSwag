@@ -16,7 +16,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import ru.touchin.roboswag.components.navigation_base.BuildConfig
-import ru.touchin.roboswag.components.navigation_base.LifecycleLoggingObserver
 
 open class BaseFragment<TActivity : FragmentActivity, TState : Parcelable>(@LayoutRes layoutRes: Int) : Fragment(layoutRes) {
 
