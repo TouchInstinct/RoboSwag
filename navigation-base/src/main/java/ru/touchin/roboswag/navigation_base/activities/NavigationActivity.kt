@@ -1,7 +1,7 @@
-package ru.touchin.roboswag.components.navigation_base.activities
+package ru.touchin.roboswag.navigation_base.activities
 
 import androidx.fragment.app.FragmentTransaction
-import ru.touchin.roboswag.components.navigation_base.FragmentNavigation
+import ru.touchin.roboswag.navigation_base.FragmentNavigation
 
 /**
  * Created by Daniil Borisovskii on 15/08/2019.

@@ -1,4 +1,4 @@
-package ru.touchin.roboswag.components.navigation_base.fragments
+package ru.touchin.roboswag.navigation_base.fragments
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver

@@ -9,9 +9,9 @@ import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import ru.touchin.roboswag.components.navigation_base.FragmentNavigation
-import ru.touchin.roboswag.components.navigation_base.fragments.BaseFragment
 import ru.touchin.roboswag.core.utils.ShouldNotHappenException
+import ru.touchin.roboswag.navigation_base.FragmentNavigation
+import ru.touchin.roboswag.navigation_base.fragments.BaseFragment
 
 class NavigationContainerFragment : Fragment() {
 

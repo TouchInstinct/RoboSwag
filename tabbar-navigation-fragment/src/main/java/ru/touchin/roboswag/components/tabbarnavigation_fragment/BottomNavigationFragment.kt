@@ -8,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
-import ru.touchin.roboswag.components.navigation_base.activities.OnBackPressedListener
-import ru.touchin.roboswag.components.navigation_base.fragments.BaseFragment
+import ru.touchin.roboswag.navigation_base.activities.OnBackPressedListener
+import ru.touchin.roboswag.navigation_base.fragments.BaseFragment
 
 abstract class BottomNavigationFragment : Fragment() {
 

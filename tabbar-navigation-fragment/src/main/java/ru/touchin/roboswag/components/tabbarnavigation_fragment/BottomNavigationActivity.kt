@@ -3,8 +3,8 @@ package ru.touchin.roboswag.components.tabbarnavigation_fragment
 import android.os.Parcelable
 import androidx.annotation.IdRes
 import androidx.fragment.app.FragmentManager
-import ru.touchin.roboswag.components.navigation_base.activities.NavigationActivity
-import ru.touchin.roboswag.components.navigation_base.FragmentNavigation
+import ru.touchin.roboswag.navigation_base.FragmentNavigation
+import ru.touchin.roboswag.navigation_base.activities.NavigationActivity
 
 /**
  * Created by Daniil Borisovskii on 15/08/2019.

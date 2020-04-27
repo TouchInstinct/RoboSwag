@@ -1,4 +1,4 @@
-package ru.touchin.roboswag.components.navigation_base.keyboard_resizeable
+package ru.touchin.roboswag.navigation_base.keyboard_resizeable
 
 import android.os.Build
 import android.os.Bundle
@@ -6,10 +6,10 @@ import android.os.Parcelable
 import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.LifecycleObserver
-import ru.touchin.roboswag.components.navigation_base.activities.BaseActivity
-import ru.touchin.roboswag.components.navigation_base.activities.OnBackPressedListener
-import ru.touchin.roboswag.components.navigation_base.fragments.BaseFragment
 import ru.touchin.roboswag.components.utils.UiUtils
+import ru.touchin.roboswag.navigation_base.activities.BaseActivity
+import ru.touchin.roboswag.navigation_base.activities.OnBackPressedListener
+import ru.touchin.roboswag.navigation_base.fragments.BaseFragment
 
 abstract class KeyboardResizeableFragment<TActivity : BaseActivity, TState : Parcelable>(
         @LayoutRes layoutRes: Int

@@ -17,7 +17,7 @@
  *
  */
 
-package ru.touchin.roboswag.components.navigation_base
+package ru.touchin.roboswag.navigation_base
 
 import android.content.Context
 import android.os.Bundle
@@ -28,7 +28,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import ru.touchin.roboswag.core.log.Lc
-import ru.touchin.roboswag.components.navigation_base.fragments.BaseFragment
+import ru.touchin.roboswag.navigation_base.fragments.BaseFragment
 import kotlin.reflect.KClass
 
 /**

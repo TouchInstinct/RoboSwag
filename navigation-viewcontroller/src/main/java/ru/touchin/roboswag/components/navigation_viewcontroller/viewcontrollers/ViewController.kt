@@ -45,8 +45,8 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import ru.touchin.roboswag.components.navigation_viewcontroller.fragments.ViewControllerFragment
-import ru.touchin.roboswag.components.navigation_base.fragments.LifecycleLoggingObserver
 import ru.touchin.roboswag.components.utils.UiUtils
+import ru.touchin.roboswag.navigation_base.fragments.LifecycleLoggingObserver
 
 /**
  * Created by Gavriil Sitnikov on 21/10/2015.

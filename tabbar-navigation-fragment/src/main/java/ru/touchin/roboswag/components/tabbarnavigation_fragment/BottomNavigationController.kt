@@ -12,8 +12,8 @@ import androidx.core.util.forEach
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import ru.touchin.roboswag.components.navigation_base.fragments.BaseFragment
 import ru.touchin.roboswag.core.utils.ShouldNotHappenException
+import ru.touchin.roboswag.navigation_base.fragments.BaseFragment
 
 class BottomNavigationController(
         private val context: Context,

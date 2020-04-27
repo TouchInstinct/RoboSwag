@@ -1,4 +1,4 @@
-package ru.touchin.roboswag.components.navigation_base.fragments
+package ru.touchin.roboswag.navigation_base.fragments
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -15,7 +15,7 @@ import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import ru.touchin.roboswag.components.navigation_base.BuildConfig
+import ru.touchin.roboswag.navigation_base.BuildConfig
 
 open class BaseFragment<TActivity : FragmentActivity, TState : Parcelable>(@LayoutRes layoutRes: Int) : Fragment(layoutRes) {
 

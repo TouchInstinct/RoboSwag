@@ -17,7 +17,7 @@
  *
  */
 
-package ru.touchin.roboswag.components.navigation_base.activities
+package ru.touchin.roboswag.navigation_base.activities
 
 import android.content.Context
 import android.content.Intent
@@ -27,9 +27,9 @@ import android.os.PersistableBundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import ru.touchin.roboswag.components.navigation_viewcontroller.keyboard_resizeable.KeyboardBehaviorDetector
-import ru.touchin.roboswag.components.navigation_base.fragments.LifecycleLoggingObserver
 import ru.touchin.roboswag.core.log.Lc
 import ru.touchin.roboswag.core.log.LcGroup
+import ru.touchin.roboswag.navigation_base.fragments.LifecycleLoggingObserver
 
 /**
  * Created by Gavriil Sitnikov on 08/03/2016.

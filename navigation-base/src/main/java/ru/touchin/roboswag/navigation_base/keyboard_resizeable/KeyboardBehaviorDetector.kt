@@ -5,7 +5,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
-import ru.touchin.roboswag.components.navigation_base.activities.BaseActivity
+import ru.touchin.roboswag.navigation_base.activities.BaseActivity
 
 /**
  *     This detector NOT detect landscape fullscreen keyboard

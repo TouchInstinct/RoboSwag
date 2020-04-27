@@ -17,7 +17,7 @@
  *
  */
 
-package ru.touchin.roboswag.components.navigation_base
+package ru.touchin.roboswag.navigation_base
 
 import android.animation.ValueAnimator
 import android.view.MenuItem
@@ -25,9 +25,9 @@ import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentManager
-import ru.touchin.roboswag.components.navigation_base.activities.BaseActivity
-import ru.touchin.roboswag.components.navigation_base.activities.OnBackPressedListener
 import ru.touchin.roboswag.components.utils.UiUtils
+import ru.touchin.roboswag.navigation_base.activities.BaseActivity
+import ru.touchin.roboswag.navigation_base.activities.OnBackPressedListener
 
 /**
  * Created by Gavriil Sitnikov on 11/03/16.

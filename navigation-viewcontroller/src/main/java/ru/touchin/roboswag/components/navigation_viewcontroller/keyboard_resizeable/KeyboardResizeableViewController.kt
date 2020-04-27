@@ -5,10 +5,10 @@ import android.os.Parcelable
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.LifecycleObserver
-import ru.touchin.roboswag.components.navigation_base.activities.BaseActivity
-import ru.touchin.roboswag.components.navigation_base.activities.OnBackPressedListener
 import ru.touchin.roboswag.components.navigation_viewcontroller.viewcontrollers.ViewController
 import ru.touchin.roboswag.components.utils.UiUtils
+import ru.touchin.roboswag.navigation_base.activities.BaseActivity
+import ru.touchin.roboswag.navigation_base.activities.OnBackPressedListener
 
 abstract class KeyboardResizeableViewController<TActivity : BaseActivity, TState : Parcelable>(
         @LayoutRes layoutRes: Int,

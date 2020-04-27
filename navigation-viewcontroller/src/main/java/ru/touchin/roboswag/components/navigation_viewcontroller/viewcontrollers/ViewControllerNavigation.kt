@@ -28,7 +28,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 
 import ru.touchin.roboswag.components.navigation_viewcontroller.fragments.ViewControllerFragment
-import ru.touchin.roboswag.components.navigation_base.FragmentNavigation
+import ru.touchin.roboswag.navigation_base.FragmentNavigation
 
 /**
  * Created by Gavriil Sitnikov on 07/03/2016.
