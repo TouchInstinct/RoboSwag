@@ -18,8 +18,6 @@ fun <T> Observable<Optional<T>>.unwrapOrError(
             ?: Observable.error(ShouldNotHappenException(errorMessage))
 }
 
-fun <T> Observable<Optional<T>>.unwrapOrSkip(): Observable<T> = this.flatMap { wrapper ->
-    wrapper.get()
-            ?.let { Observable.just(it) }
-            ?: Observable.empty<T>().skip(1)
-}
+fun <T> Observable<Optional<T>>.unwrapOrSkip(): Observable<T> = this
+        .filter { it.get() != null }
+        .map { it.get() }
