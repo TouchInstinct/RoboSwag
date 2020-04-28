@@ -17,3 +17,9 @@ fun <T> Flowable<Optional<T>>.unwrapOrError(
             ?.let { Flowable.just(it) }
             ?: Flowable.error(ShouldNotHappenException(errorMessage))
 }
+
+fun <T> Flowable<Optional<T>>.unwrapOrSkip(): Flowable<T> = this.flatMap { wrapper ->
+    wrapper.get()
+            ?.let { Flowable.just(it) }
+            ?: Flowable.empty<T>().skip(1)
+}
