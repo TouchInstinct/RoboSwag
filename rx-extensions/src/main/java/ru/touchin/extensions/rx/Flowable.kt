@@ -18,6 +18,6 @@ fun <T> Flowable<Optional<T>>.unwrapOrError(
             ?: Flowable.error(ShouldNotHappenException(errorMessage))
 }
 
-fun <T> Flowable<Optional<T>>.unwrapOrSkip(): Flowable<T> = this
+fun <T> Flowable<Optional<T>>.unwrapOrFilter(): Flowable<T> = this
         .filter { it.get() != null }
         .map { it.get() }

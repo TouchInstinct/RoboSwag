@@ -18,6 +18,6 @@ fun <T> Observable<Optional<T>>.unwrapOrError(
             ?: Observable.error(ShouldNotHappenException(errorMessage))
 }
 
-fun <T> Observable<Optional<T>>.unwrapOrSkip(): Observable<T> = this
+fun <T> Observable<Optional<T>>.unwrapOrFilter(): Observable<T> = this
         .filter { it.get() != null }
         .map { it.get() }
