@@ -17,7 +17,7 @@
  *
  */
 
-package ru.touchin.roboswag.components.navigation_viewcontroller.viewcontrollers
+package ru.touchin.roboswag.navigation_viewcontroller.viewcontrollers
 
 import android.content.Context
 import android.os.Parcelable
@@ -26,9 +26,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-
-import ru.touchin.roboswag.components.navigation_viewcontroller.fragments.ViewControllerFragment
 import ru.touchin.roboswag.navigation_base.FragmentNavigation
+import ru.touchin.roboswag.navigation_viewcontroller.fragments.ViewControllerFragment
 
 /**
  * Created by Gavriil Sitnikov on 07/03/2016.

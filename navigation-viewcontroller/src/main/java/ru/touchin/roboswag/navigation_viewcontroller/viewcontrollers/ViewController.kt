@@ -17,7 +17,7 @@
  *
  */
 
-package ru.touchin.roboswag.components.navigation_viewcontroller.viewcontrollers
+package ru.touchin.roboswag.navigation_viewcontroller.viewcontrollers
 
 import android.animation.Animator
 import android.content.Intent
@@ -44,9 +44,9 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import ru.touchin.roboswag.components.navigation_viewcontroller.fragments.ViewControllerFragment
 import ru.touchin.roboswag.components.utils.UiUtils
 import ru.touchin.roboswag.navigation_base.fragments.LifecycleLoggingObserver
+import ru.touchin.roboswag.navigation_viewcontroller.fragments.ViewControllerFragment
 
 /**
  * Created by Gavriil Sitnikov on 21/10/2015.

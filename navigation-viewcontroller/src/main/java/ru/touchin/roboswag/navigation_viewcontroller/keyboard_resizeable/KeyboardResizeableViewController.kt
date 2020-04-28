@@ -1,14 +1,14 @@
-package ru.touchin.roboswag.components.navigation_viewcontroller.keyboard_resizeable
+package ru.touchin.roboswag.navigation_viewcontroller.keyboard_resizeable
 
 import android.os.Build
 import android.os.Parcelable
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.LifecycleObserver
-import ru.touchin.roboswag.components.navigation_viewcontroller.viewcontrollers.ViewController
 import ru.touchin.roboswag.components.utils.UiUtils
 import ru.touchin.roboswag.navigation_base.activities.BaseActivity
 import ru.touchin.roboswag.navigation_base.activities.OnBackPressedListener
+import ru.touchin.roboswag.navigation_viewcontroller.viewcontrollers.ViewController
 
 abstract class KeyboardResizeableViewController<TActivity : BaseActivity, TState : Parcelable>(
         @LayoutRes layoutRes: Int,
@@ -17,6 +17,7 @@ abstract class KeyboardResizeableViewController<TActivity : BaseActivity, TState
         creationContext,
         layoutRes
 ) {
+
     init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
             creationContext.container?.requestApplyInsets()
@@ -85,4 +86,5 @@ abstract class KeyboardResizeableViewController<TActivity : BaseActivity, TState
         if (isKeyboardVisible) onKeyboardHide()
         isKeyboardVisible = false
     }
+
 }

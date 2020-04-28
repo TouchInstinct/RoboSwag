@@ -1,11 +1,13 @@
-package ru.touchin.roboswag.bottom_navigation_fragment
+package ru.touchin.roboswag.bottom_navigation_viewcontroller
+
+import ru.touchin.roboswag.bottom_navigation_fragment.BaseBottomNavigationFragment
 
 abstract class BottomNavigationFragment : BaseBottomNavigationFragment<NavigationTab>() {
 
     override fun createNavigationController() = BottomNavigationController(
             context = requireContext(),
-            fragments = tabs,
             fragmentManager = childFragmentManager,
+            viewControllers = tabs,
             defaultTabId = defaultTabId,
             contentContainerViewId = contentContainerViewId,
             contentContainerLayoutId = contentContainerLayoutId,
@@ -14,3 +16,4 @@ abstract class BottomNavigationFragment : BaseBottomNavigationFragment<Navigatio
     )
 
 }
+

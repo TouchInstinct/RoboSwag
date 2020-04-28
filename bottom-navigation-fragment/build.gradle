@@ -16,6 +16,7 @@ android {
 
 dependencies {
     api project(":navigation-base")
+    api project(":bottom-navigation-base")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 

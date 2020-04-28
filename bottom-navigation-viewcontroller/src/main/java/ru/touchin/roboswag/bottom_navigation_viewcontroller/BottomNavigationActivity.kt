@@ -1,16 +1,18 @@
-package ru.touchin.roboswag.components.tabbarnavigation
+package ru.touchin.roboswag.bottom_navigation_viewcontroller
 
-import android.os.Parcelable
-import androidx.annotation.IdRes
-import androidx.fragment.app.FragmentManager
-import ru.touchin.roboswag.navigation.activities.NavigationActivity
-import ru.touchin.roboswag.navigation.viewcontrollers.ViewControllerNavigation
-import ru.touchin.roboswag.bottom_navigation_fragment.BottomNavigationActivity as FragmentBottomNavigationActivity
+import ru.touchin.roboswag.bottom_navigation_fragment.BaseBottomNavigationActivity
+import ru.touchin.roboswag.navigation_viewcontroller.viewcontrollers.ViewControllerNavigation
 
-abstract class BottomNavigationActivity : FragmentBottomNavigationActivity() {
+abstract class BottomNavigationActivity :
+        BaseBottomNavigationActivity<ViewControllerNavigation<BottomNavigationActivity>, BottomNavigationFragment, NavigationContainerFragment>() {
 
-    final override val innerNavigation: ViewControllerNavigation<BottomNavigationActivity>
-        get() = getNavigationContainer(supportFragmentManager)?.navigation
-                ?: navigation as ViewControllerNavigation<BottomNavigationActivity>
+    final override val navigation by lazy {
+        ViewControllerNavigation<BottomNavigationActivity>(
+                this,
+                supportFragmentManager,
+                fragmentContainerViewId,
+                transition
+        )
+    }
 
 }

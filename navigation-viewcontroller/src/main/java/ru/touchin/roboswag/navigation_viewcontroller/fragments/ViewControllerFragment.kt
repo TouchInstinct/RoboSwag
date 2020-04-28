@@ -17,7 +17,7 @@
  *
  */
 
-package ru.touchin.roboswag.components.navigation_viewcontroller.fragments
+package ru.touchin.roboswag.navigation_viewcontroller.fragments
 
 import android.animation.Animator
 import android.annotation.SuppressLint
@@ -35,8 +35,8 @@ import android.view.animation.Animation
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
-import ru.touchin.roboswag.components.navigation_viewcontroller.BuildConfig
-import ru.touchin.roboswag.components.navigation_viewcontroller.viewcontrollers.ViewController
+import ru.touchin.roboswag.navigation_viewcontroller.BuildConfig
+import ru.touchin.roboswag.navigation_viewcontroller.viewcontrollers.ViewController
 
 /**
  * Created by Gavriil Sitnikov on 21/10/2015.
