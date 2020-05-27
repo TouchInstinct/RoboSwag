@@ -23,7 +23,6 @@ android {
 dependencies {
     api project(":utils")
     api project(":logging")
-    api project(":api-logansquare")
     api project(":navigation-base")
 
     api 'androidx.multidex:multidex:2.0.1'

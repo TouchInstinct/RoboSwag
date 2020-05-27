@@ -15,4 +15,8 @@ android {
 
 dependencies {
     implementation "androidx.annotation:annotation:$versions.androidx"
+
+    implementation("com.crashlytics.sdk.android:crashlytics:$versions.crashlytics@aar") {
+        transitive = true
+    }
 }

@@ -19,12 +19,11 @@
 
 package ru.touchin.roboswag.core.log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import ru.touchin.roboswag.core.utils.ShouldNotHappenException;
 import ru.touchin.roboswag.core.utils.ThreadLocalValue;
 
@@ -45,6 +44,10 @@ public class LcGroup {
      * Logging group to log UI lifecycle (onCreate, onStart, onResume etc.).
      */
     public static final LcGroup UI_LIFECYCLE = new LcGroup("UI_LIFECYCLE");
+    /**
+     * Logging group to log UI lifecycle (onCreate, onStart, onResume etc.).
+     */
+    public static final LcGroup API_VALIDATION = new LcGroup("API_VALIDATION");
 
     private static final ThreadLocalValue<SimpleDateFormat> DATE_TIME_FORMATTER
             = new ThreadLocalValue<>(() -> new SimpleDateFormat("HH:mm:ss.SSS", Locale.getDefault()));
