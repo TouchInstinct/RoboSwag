@@ -1,4 +1,4 @@
-package ru.touchin.roboswag.navigation_viewcontroller.keyboard_resizeable
+package ru.touchin.roboswag.navigation_base.keyboard_resizeable
 
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
