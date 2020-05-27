@@ -10,10 +10,11 @@ import ru.touchin.roboswag.components.utils.UiUtils
 import ru.touchin.roboswag.navigation_base.activities.BaseActivity
 import ru.touchin.roboswag.navigation_base.activities.OnBackPressedListener
 import ru.touchin.roboswag.navigation_base.fragments.BaseFragment
+import ru.touchin.roboswag.navigation_base.fragments.FragmentWithState
 
 abstract class KeyboardResizeableFragment<TActivity : BaseActivity, TState : Parcelable>(
         @LayoutRes layoutRes: Int
-) : BaseFragment<TActivity, TState>(
+) : FragmentWithState<TActivity, TState>(
         layoutRes
 ) {
 
