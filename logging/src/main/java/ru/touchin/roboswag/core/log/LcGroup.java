@@ -45,7 +45,7 @@ public class LcGroup {
      */
     public static final LcGroup UI_LIFECYCLE = new LcGroup("UI_LIFECYCLE");
     /**
-     * Logging group to log UI lifecycle (onCreate, onStart, onResume etc.).
+     * Logging group to log api validation errors.
      */
     public static final LcGroup API_VALIDATION = new LcGroup("API_VALIDATION");
 
