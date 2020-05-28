@@ -20,7 +20,8 @@ android {
 }
 
 dependencies {
-    api project(":navigation-base")
+    implementation project(":logging")
+    implementation project(":navigation-base")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 

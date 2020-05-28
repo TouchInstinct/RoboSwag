@@ -28,7 +28,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import ru.touchin.roboswag.core.log.Lc
-import ru.touchin.roboswag.navigation_base.fragments.FragmentWithState
+import ru.touchin.roboswag.navigation_base.fragments.StatefulFragment
 import kotlin.reflect.KClass
 
 /**
@@ -169,14 +169,14 @@ open class FragmentNavigation(
      * @param transactionSetup Function to setup transaction before commit. It is useful to specify transition animations or additional info.
      */
     fun <T : Parcelable> push(
-            fragmentClass: KClass<out FragmentWithState<*, out T>>,
+            fragmentClass: KClass<out StatefulFragment<*, out T>>,
             state: T,
             addToStack: Boolean = true,
             backStackName: String? = null,
             tag: String? = null,
             transactionSetup: ((FragmentTransaction) -> Unit)? = null
     ) {
-        push(fragmentClass.java, FragmentWithState.args(state), addToStack, backStackName, tag, transactionSetup)
+        push(fragmentClass.java, StatefulFragment.args(state), addToStack, backStackName, tag, transactionSetup)
     }
 
     /**
@@ -216,14 +216,14 @@ open class FragmentNavigation(
      * @param transactionSetup Function to setup transaction before commit. It is useful to specify transition animations or additional info.
      */
     fun <T : Parcelable> pushForResult(
-            fragmentClass: KClass<out FragmentWithState<*, out T>>,
+            fragmentClass: KClass<out StatefulFragment<*, out T>>,
             targetFragment: Fragment,
             targetRequestCode: Int,
             state: T,
             tag: String? = null,
             transactionSetup: ((FragmentTransaction) -> Unit)? = null
     ) {
-        pushForResult(fragmentClass.java, targetFragment, targetRequestCode, FragmentWithState.args(state), tag, transactionSetup)
+        pushForResult(fragmentClass.java, targetFragment, targetRequestCode, StatefulFragment.args(state), tag, transactionSetup)
     }
 
     /**
@@ -270,13 +270,13 @@ open class FragmentNavigation(
      * @param transactionSetup Function to setup transaction before commit. It is useful to specify transition animations or additional info.
      */
     fun <T : Parcelable> setInitial(
-            fragmentClass: KClass<out FragmentWithState<*, out T>>,
+            fragmentClass: KClass<out StatefulFragment<*, out T>>,
             state: T,
             tag: String? = null,
             transactionSetup: ((FragmentTransaction) -> Unit)? = null
     ) {
         beforeSetInitialActions()
-        setAsTop(fragmentClass.java, FragmentWithState.args(state), false, tag, transactionSetup)
+        setAsTop(fragmentClass.java, StatefulFragment.args(state), false, tag, transactionSetup)
     }
 
     /**

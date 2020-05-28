@@ -1,4 +1,4 @@
-package ru.touchin.roboswag.bottom_navigation_fragment
+package ru.touchin.roboswag.bottom_navigation_base
 
 import android.content.Context
 import android.os.Bundle
@@ -13,16 +13,17 @@ import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import ru.touchin.roboswag.core.utils.ShouldNotHappenException
-import ru.touchin.roboswag.navigation_base.fragments.BaseFragment
+import ru.touchin.roboswag.navigation_base.fragments.StatefulFragment
 
 abstract class BaseBottomNavigationController<TNavigationTab : BaseNavigationTab>(
         private val tabs: SparseArray<TNavigationTab>,
         private val context: Context,
         private val fragmentManager: FragmentManager,
-        @IdRes private val defaultTabId: Int = 0, // If it zero back press with empty fragment back stack would close the app
-        @IdRes private val contentContainerViewId: Int,
         @LayoutRes private val contentContainerLayoutId: Int,
-        private val wrapWithNavigationContainer: Boolean = false
+        @IdRes private val contentContainerViewId: Int,
+        @IdRes private val defaultTabId: Int = 0, // If it zero back press with empty fragment back stack would close the app
+        private val wrapWithNavigationContainer: Boolean = false,
+        private val onReselectListener: (() -> Unit)? = null
 ) {
 
     private var callback: FragmentManager.FragmentLifecycleCallbacks? = null
@@ -111,7 +112,9 @@ abstract class BaseBottomNavigationController<TNavigationTab : BaseNavigationTab
 
     protected open fun getNavigationContainerClass(): Class<out BaseNavigationContainerFragment<*, *>> = BaseNavigationContainerFragment::class.java
 
-    protected open fun onTabReselected() = Unit
+    protected open fun onTabReselected() {
+        onReselectListener?.invoke()
+    }
 
     protected open fun isTabClass(tab: TNavigationTab, fragment: Fragment?) = if (wrapWithNavigationContainer) {
         (fragment as BaseNavigationContainerFragment<*, *>).getContainedClass()
@@ -130,7 +133,7 @@ abstract class BaseBottomNavigationController<TNavigationTab : BaseNavigationTab
                 Fragment.instantiate(
                         context,
                         clazz.name,
-                        BaseFragment.args(state)
+                        StatefulFragment.args(state)
                 )
             }
 

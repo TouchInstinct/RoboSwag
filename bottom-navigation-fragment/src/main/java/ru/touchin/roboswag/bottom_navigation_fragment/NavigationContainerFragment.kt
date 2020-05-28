@@ -1,10 +1,12 @@
 package ru.touchin.roboswag.bottom_navigation_fragment
 
 import android.os.Parcelable
+import ru.touchin.roboswag.bottom_navigation_base.BaseNavigationContainerFragment
 import ru.touchin.roboswag.navigation_base.FragmentNavigation
-import ru.touchin.roboswag.navigation_base.fragments.BaseFragment
+import ru.touchin.roboswag.navigation_base.fragments.StatefulFragment
 
-class NavigationContainerFragment : BaseNavigationContainerFragment<BaseFragment<out BottomNavigationActivity, Parcelable>, FragmentNavigation>() {
+class NavigationContainerFragment :
+        BaseNavigationContainerFragment<StatefulFragment<out BottomNavigationActivity, Parcelable>, FragmentNavigation>() {
 
     override val navigation by lazy {
         FragmentNavigation(

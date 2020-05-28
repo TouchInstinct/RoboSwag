@@ -21,12 +21,12 @@ android {
 }
 
 dependencies {
-    api project(":utils")
-    api project(":logging")
+    implementation project(":utils")
+    implementation project(":logging")
 
-    api 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.multidex:multidex:2.0.1'
 
-    api 'net.danlew:android.joda:2.10.2'
+    implementation 'net.danlew:android.joda:2.10.2'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 

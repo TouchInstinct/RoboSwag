@@ -1,4 +1,4 @@
-package ru.touchin.roboswag.bottom_navigation_fragment
+package ru.touchin.roboswag.bottom_navigation_base
 
 import android.os.Bundle
 import android.os.Parcelable

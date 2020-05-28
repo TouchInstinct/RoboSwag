@@ -1,5 +1,7 @@
 package ru.touchin.roboswag.bottom_navigation_fragment
 
+import ru.touchin.roboswag.bottom_navigation_base.BaseBottomNavigationFragment
+
 abstract class BottomNavigationFragment : BaseBottomNavigationFragment<NavigationTab>() {
 
     override fun createNavigationController() = BottomNavigationController(

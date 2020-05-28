@@ -1,4 +1,4 @@
-package ru.touchin.roboswag.bottom_navigation_fragment
+package ru.touchin.roboswag.bottom_navigation_base
 
 import android.os.Parcelable
 import androidx.annotation.IdRes
@@ -6,13 +6,14 @@ import androidx.fragment.app.FragmentManager
 import ru.touchin.roboswag.navigation_base.FragmentNavigation
 import ru.touchin.roboswag.navigation_base.activities.NavigationActivity
 
-abstract class BaseBottomNavigationActivity<
-        TNavigation : FragmentNavigation,
-        TNavigationFragment : BaseBottomNavigationFragment<*>,
-        TNavigationContainer : BaseNavigationContainerFragment<*, TNavigation>> : NavigationActivity<TNavigation>() {
+abstract class BaseBottomNavigationActivity<TNavigation, TNavigationFragment, TNavigationContainer> : NavigationActivity<TNavigation>()
+        where TNavigation : FragmentNavigation,
+              TNavigationFragment : BaseBottomNavigationFragment<*>,
+              TNavigationContainer : BaseNavigationContainerFragment<*, TNavigation>
+{
 
     val innerNavigation: TNavigation
-        get() = getNavigationContainer(supportFragmentManager)?.navigation ?: navigation
+    get() = getNavigationContainer(supportFragmentManager)?.navigation ?: navigation
 
     /**
      * Navigates to the given navigation tab.
