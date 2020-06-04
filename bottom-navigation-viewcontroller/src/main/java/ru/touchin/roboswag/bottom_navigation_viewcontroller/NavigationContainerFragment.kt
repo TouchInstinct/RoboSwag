@@ -1,7 +1,7 @@
 package ru.touchin.roboswag.bottom_navigation_viewcontroller
 
 import android.os.Parcelable
-import ru.touchin.roboswag.bottom_navigation_fragment.BaseNavigationContainerFragment
+import ru.touchin.roboswag.bottom_navigation_base.BaseNavigationContainerFragment
 import ru.touchin.roboswag.navigation_viewcontroller.viewcontrollers.ViewController
 import ru.touchin.roboswag.navigation_viewcontroller.viewcontrollers.ViewControllerNavigation
 

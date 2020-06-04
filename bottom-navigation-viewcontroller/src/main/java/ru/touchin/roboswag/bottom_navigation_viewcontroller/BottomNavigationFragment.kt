@@ -1,6 +1,6 @@
 package ru.touchin.roboswag.bottom_navigation_viewcontroller
 
-import ru.touchin.roboswag.bottom_navigation_fragment.BaseBottomNavigationFragment
+import ru.touchin.roboswag.bottom_navigation_base.BaseBottomNavigationFragment
 
 abstract class BottomNavigationFragment : BaseBottomNavigationFragment<NavigationTab>() {
 

@@ -6,7 +6,7 @@ import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import ru.touchin.roboswag.bottom_navigation_fragment.BaseBottomNavigationController
+import ru.touchin.roboswag.bottom_navigation_base.BaseBottomNavigationController
 import ru.touchin.roboswag.navigation_viewcontroller.fragments.ViewControllerFragment
 
 class BottomNavigationController(

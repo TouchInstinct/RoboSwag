@@ -20,8 +20,9 @@ android {
 }
 
 dependencies {
-    api project(":navigation-viewcontroller")
-    api project(":bottom-navigation-base")
+    implementation project(":navigation-base")
+    implementation project(":navigation-viewcontroller")
+    implementation project(":bottom-navigation-base")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
