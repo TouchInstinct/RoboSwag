@@ -20,7 +20,7 @@ abstract class BaseLifecycleViewModelProviders {
      */
     open fun of(
             lifecycleOwner: LifecycleOwner,
-            factory: ViewModelProvider.Factory = LifecycleViewModelProviders.getViewModelFactory(lifecycleOwner)
+            factory: ViewModelProvider.Factory = getViewModelFactory(lifecycleOwner)
     ): ViewModelProvider =
             when (lifecycleOwner) {
                 is Fragment -> ViewModelProvider(lifecycleOwner, factory)
@@ -39,8 +39,8 @@ abstract class BaseLifecycleViewModelProviders {
     open fun getViewModelFactory(provider: Any): ViewModelProvider.Factory =
             when (provider) {
                 is ViewModelFactoryProvider -> provider.viewModelFactory
-                is Fragment -> LifecycleViewModelProviders.getViewModelFactory(provider.parentFragment ?: provider.requireActivity())
-                is Activity -> LifecycleViewModelProviders.getViewModelFactory(provider.application)
+                is Fragment -> getViewModelFactory(provider.parentFragment ?: provider.requireActivity())
+                is Activity -> getViewModelFactory(provider.application)
                 else -> throw IllegalArgumentException("View model factory not found.")
             }
 
