@@ -1,11 +1,13 @@
 package ru.touchin.roboswag.navigation_base.extensions
 
+import android.annotation.SuppressLint
 import android.os.Parcel
 import android.os.Parcelable
 import ru.touchin.roboswag.navigation_base.fragments.EmptyState
 
 // This method used to check unique state of each fragment.
 // If two fragments share same class for state, you should not pass state instance of current fragment to the one you transition to
+@SuppressLint("Recycle")
 fun <T : Parcelable> Parcelable.reserialize(): T {
     var parcel = Parcel.obtain()
 
@@ -28,6 +30,7 @@ fun <T : Parcelable> Parcelable.reserialize(): T {
     return result
 }
 
+@SuppressLint("Recycle")
 fun Parcelable.copy(): Parcelable =
         if (this is EmptyState) {
             EmptyState

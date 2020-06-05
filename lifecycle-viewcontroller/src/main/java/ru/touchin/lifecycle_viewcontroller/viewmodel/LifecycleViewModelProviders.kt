@@ -1,12 +1,9 @@
 package ru.touchin.lifecycle_viewcontroller.viewmodel
 
-import android.app.Activity
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import ru.touchin.lifecycle.viewmodel.BaseLifecycleViewModelProviders
-import ru.touchin.lifecycle.viewmodel.ViewModelFactoryProvider
 import ru.touchin.roboswag.navigation_viewcontroller.viewcontrollers.ViewController
 
 object LifecycleViewModelProviders : BaseLifecycleViewModelProviders() {
