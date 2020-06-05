@@ -15,7 +15,21 @@ android {
 }
 
 dependencies {
-    implementation "androidx.core:core:$versions.androidx"
-    implementation "androidx.annotation:annotation:$versions.androidx"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.core:core"
+    implementation "androidx.annotation:annotation"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7"
+
+    constraints {
+        implementation("androidx.core:core") {
+            version {
+                require '1.0.0'
+            }
+        }
+
+        implementation("androidx.annotation:annotation") {
+            version {
+                require '1.1.0'
+            }
+        }
+    }
 }

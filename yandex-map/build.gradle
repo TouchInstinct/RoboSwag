@@ -10,9 +10,17 @@ android {
 }
 
 dependencies {
-    api project(":base-map")
+    implementation project(":base-map")
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7"
 
-    implementation "com.yandex.android:mapkit:$versions.yandex_mapkit"
+    implementation "com.yandex.android:mapkit"
+
+    constraints {
+        implementation("com.yandex.android:mapkit") {
+            version {
+                require '3.4.0'
+            }
+        }
+    }
 }

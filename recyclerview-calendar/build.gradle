@@ -9,8 +9,22 @@ android {
 }
 
 dependencies {
-    api project(":logging")
-    api 'net.danlew:android.joda:2.9.9.4'
+    implementation project(":logging")
+    implementation 'net.danlew:android.joda'
 
-    implementation "androidx.recyclerview:recyclerview:$versions.androidx"
+    implementation "androidx.recyclerview:recyclerview"
+
+    constraints {
+        implementation("androidx.recyclerview:recyclerview") {
+            version {
+                require '1.0.0'
+            }
+        }
+
+        implementation("net.danlew:android.joda") {
+            version {
+                require '2.9.9.4'
+            }
+        }
+    }
 }

@@ -12,7 +12,15 @@ android {
 dependencies {
     api project(":base-map")
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7"
 
-    implementation "com.google.android.gms:play-services-maps:$versions.google_maps"
+    implementation "com.google.android.gms:play-services-maps"
+
+    constraints {
+        implementation("com.google.android.gms:play-services-maps") {
+            version {
+                require '17.0.0'
+            }
+        }
+    }
 }

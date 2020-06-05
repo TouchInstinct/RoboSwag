@@ -14,8 +14,16 @@ android {
 }
 
 dependencies {
-    api project(":utils")
-    api project(":logging")
+    implementation project(":utils")
+    implementation project(":logging")
 
-    implementation "com.google.android.material:material:$versions.material"
+    implementation "com.google.android.material:material"
+
+    constraints {
+        implementation("com.google.android.material:material") {
+            version {
+                require '1.0.0'
+            }
+        }
+    }
 }
