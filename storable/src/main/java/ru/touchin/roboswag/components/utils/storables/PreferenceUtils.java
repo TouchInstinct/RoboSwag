@@ -66,7 +66,7 @@ public final class PreferenceUtils {
      * @return {@link Storable} for string.
      */
     @NonNull
-    public static Storable<String, String, String> binaryprefsStringStorable(@NonNull final String name, @NonNull final Preferences preferences) {
+    public static Storable<String, String, String> binaryPreferencesStringStorable(@NonNull final String name, @NonNull final Preferences preferences) {
         return new Storable.Builder<String, String, String>(
                 name,
                 String.class,
