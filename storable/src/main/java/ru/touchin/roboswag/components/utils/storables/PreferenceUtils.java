@@ -20,6 +20,10 @@
 package ru.touchin.roboswag.components.utils.storables;
 
 import android.content.SharedPreferences;
+
+import com.ironz.binaryprefs.BinaryPreferencesBuilder;
+import com.ironz.binaryprefs.Preferences;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -45,6 +49,24 @@ public final class PreferenceUtils {
      */
     @NonNull
     public static Storable<String, String, String> stringStorable(@NonNull final String name, @NonNull final SharedPreferences preferences) {
+        return new Storable.Builder<String, String, String>(
+                name,
+                String.class,
+                String.class,
+                new PreferenceStore<>(preferences),
+                new SameTypesConverter<>()
+        ).build();
+    }
+
+    /**
+     * Creates {@link Storable} that stores string into {@link Preferences} from https://github.com/yandextaxitech/binaryprefs
+     *
+     * @param name        Name of preference;
+     * @param preferences Preferences to store value;
+     * @return {@link Storable} for string.
+     */
+    @NonNull
+    public static Storable<String, String, String> binaryPreferencesStringStorable(@NonNull final String name, @NonNull final Preferences preferences) {
         return new Storable.Builder<String, String, String>(
                 name,
                 String.class,
