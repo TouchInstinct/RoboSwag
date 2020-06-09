@@ -23,7 +23,7 @@ dependencies {
     implementation project(":navigation-base")
     implementation project(":bottom-navigation-base")
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
     implementation "androidx.core:core-ktx"
 

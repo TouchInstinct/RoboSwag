@@ -23,7 +23,7 @@ dependencies {
     implementation project(":logging")
     implementation project(":navigation-base")
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib")
 
     implementation("androidx.core:core-ktx")
 

@@ -13,7 +13,7 @@ android {
 dependencies {
     api project(":lifecycle")
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
     implementation "com.google.android.gms:play-services-location"
 

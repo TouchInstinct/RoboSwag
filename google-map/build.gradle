@@ -12,7 +12,7 @@ android {
 dependencies {
     api project(":base-map")
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
     implementation "com.google.android.gms:play-services-maps"
 

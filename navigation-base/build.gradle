@@ -28,7 +28,7 @@ dependencies {
 
     implementation 'net.danlew:android.joda'
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
     implementation "androidx.appcompat:appcompat"
     
