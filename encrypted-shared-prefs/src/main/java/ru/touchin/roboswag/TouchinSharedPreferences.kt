@@ -94,9 +94,7 @@ class TouchinSharedPreferences(name: String, context: Context, val isEncryption:
 
         override fun putString(key: String?, value: String?) = put(key, value)
 
-        private fun <T> put(key: String?, value: T): SharedPreferences.Editor {
-            return currentPreferences.edit().putString(key, value.toString().encrypt())
-        }
+        private fun <T> put(key: String?, value: T) = currentPreferences.edit().putString(key, value.toString().encrypt())
 
         private fun String.encrypt() = if (isEncryption) cryptoUtils.encrypt(this) else this
 
