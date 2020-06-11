@@ -2,6 +2,8 @@ package ru.touchin.roboswag
 
 import android.content.Context
 import android.content.SharedPreferences
+import ru.touchin.roboswag.TouchinSharedPreferencesCryptoUtils.Companion.ENCRYPTED_BASE64_STRING_LENGTH
+import ru.touchin.roboswag.TouchinSharedPreferencesCryptoUtils.Companion.ENCRYPT_BLOCK_SIZE
 
 class TouchinSharedPreferences(name: String, context: Context, val isEncryption: Boolean = false) : SharedPreferences {
 
@@ -53,14 +55,30 @@ class TouchinSharedPreferences(name: String, context: Context, val isEncryption:
 
     private fun <T> get(key: String?, defaultValue: T): T {
         if (!currentPreferences.contains(key)) return defaultValue
-        val value = currentPreferences.getString(key, "")?.decrypt()
+        val value = currentPreferences.getString(key, "")
+        var resultValue = ""
+        value?.let {
+            var currentValue = ""
+            var pos = 0
+            while (pos < value.length) {
+                currentValue += value[pos]
+                pos++
+                if (currentValue.length == ENCRYPTED_BASE64_STRING_LENGTH) {
+                    resultValue += currentValue.decrypt()
+                    currentValue = ""
+                }
+            }
+            if (currentValue.isNotEmpty()) {
+                resultValue += currentValue.decrypt()
+            }
+        }
         return when (defaultValue) {
-            is Boolean -> value?.toBoolean() as? T
-            is Long -> value?.toLong() as? T
-            is String -> value as? T
-            is Int -> value?.toInt() as? T
-            is Float -> value?.toFloat() as? T
-            else -> value as? T
+            is Boolean -> resultValue.toBoolean() as? T
+            is Long -> resultValue.toLong() as? T
+            is String -> resultValue as? T
+            is Int -> resultValue.toInt() as? T
+            is Float -> resultValue.toFloat() as? T
+            else -> resultValue as? T
         } ?: defaultValue
     }
 
@@ -94,7 +112,26 @@ class TouchinSharedPreferences(name: String, context: Context, val isEncryption:
 
         override fun putString(key: String?, value: String?) = put(key, value)
 
-        private fun <T> put(key: String?, value: T) = currentPreferences.edit().putString(key, value.toString().encrypt())
+        private fun <T> put(key: String?, value: T): SharedPreferences.Editor {
+            val value = value?.toString()
+            var resultValue = ""
+            value?.let {
+                var currentValue = ""
+                var pos = 0
+                while (pos < value.length) {
+                    if (currentValue.length == ENCRYPT_BLOCK_SIZE) {
+                        resultValue += currentValue.encrypt()
+                        currentValue = ""
+                    }
+                    currentValue += value[pos]
+                    pos++
+                }
+                if (currentValue.isNotEmpty()) {
+                    resultValue += currentValue.encrypt()
+                }
+            }
+            return currentPreferences.edit().putString(key, resultValue)
+        }
 
         private fun String.encrypt() = if (isEncryption) cryptoUtils.encrypt(this) else this
 

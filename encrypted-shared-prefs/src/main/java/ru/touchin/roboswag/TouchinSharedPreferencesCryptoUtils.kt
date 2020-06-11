@@ -23,9 +23,13 @@ class TouchinSharedPreferencesCryptoUtils constructor(val context: Context) {
     companion object {
 
         private const val ANDROID_KEY_STORE = "AndroidKeyStore"
-        private const val STORAGE_KEY = "STORAGE_KEY"
         private const val KEY_ALGORITHM_RSA = "RSA"
         private const val TRANSFORMATION_ASYMMETRIC = "RSA/ECB/PKCS1Padding"
+        private const val CIPHER_STRING_SIZE_BYTES = 256
+        private const val BASE_64_PADDING = 2
+        private const val STORAGE_KEY = "STORAGE_KEY"
+        const val ENCRYPTED_BASE64_STRING_LENGTH = (CIPHER_STRING_SIZE_BYTES + BASE_64_PADDING) * 4 / 3 + 5
+        const val ENCRYPT_BLOCK_SIZE = 128
 
         private fun getAndroidKeystore(): KeyStore? = try {
             KeyStore.getInstance(ANDROID_KEY_STORE).also { it.load(null) }
