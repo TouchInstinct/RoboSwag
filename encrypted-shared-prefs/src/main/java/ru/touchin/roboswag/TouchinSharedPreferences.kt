@@ -2,7 +2,7 @@ package ru.touchin.roboswag
 
 import android.content.Context
 import android.content.SharedPreferences
-import ru.touchin.roboswag.TouchinSharedPreferencesCryptoUtils.Companion.ENCRYPTED_BASE64_STRING_LENGTH
+import ru.touchin.roboswag.TouchinSharedPreferencesCryptoUtils.Companion.ENCRYPT_BASE64_STRING_LENGTH
 import ru.touchin.roboswag.TouchinSharedPreferencesCryptoUtils.Companion.ENCRYPT_BLOCK_SIZE
 
 class TouchinSharedPreferences(name: String, context: Context, val isEncryption: Boolean = false) : SharedPreferences {
@@ -63,7 +63,7 @@ class TouchinSharedPreferences(name: String, context: Context, val isEncryption:
             while (pos < value.length) {
                 currentValue += value[pos]
                 pos++
-                if (currentValue.length == ENCRYPTED_BASE64_STRING_LENGTH) {
+                if (currentValue.length == ENCRYPT_BASE64_STRING_LENGTH) {
                     resultValue += currentValue.decrypt()
                     currentValue = ""
                 }

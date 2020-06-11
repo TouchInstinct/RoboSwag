@@ -28,7 +28,7 @@ class TouchinSharedPreferencesCryptoUtils constructor(val context: Context) {
         private const val CIPHER_STRING_SIZE_BYTES = 256
         private const val BASE_64_PADDING = 2
         private const val STORAGE_KEY = "STORAGE_KEY"
-        const val ENCRYPTED_BASE64_STRING_LENGTH = (CIPHER_STRING_SIZE_BYTES + BASE_64_PADDING) * 4 / 3 + 5
+        const val ENCRYPT_BASE64_STRING_LENGTH = (CIPHER_STRING_SIZE_BYTES + BASE_64_PADDING) * 4 / 3 + 5
         const val ENCRYPT_BLOCK_SIZE = 128
 
         private fun getAndroidKeystore(): KeyStore? = try {
