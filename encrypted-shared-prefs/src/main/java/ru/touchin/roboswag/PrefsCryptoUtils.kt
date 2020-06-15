@@ -18,14 +18,24 @@ import javax.security.auth.x500.X500Principal
 
 // https://proandroiddev.com/secure-data-in-android-encryption-in-android-part-2-991a89e55a23
 @Suppress("detekt.TooGenericExceptionCaught")
-class TouchinSharedPreferencesCryptoUtils constructor(val context: Context) {
+class PrefsCryptoUtils constructor(val context: Context) {
 
     companion object {
 
         private const val ANDROID_KEY_STORE = "AndroidKeyStore"
-        private const val STORAGE_KEY = "STORAGE_KEY"
         private const val KEY_ALGORITHM_RSA = "RSA"
         private const val TRANSFORMATION_ASYMMETRIC = "RSA/ECB/PKCS1Padding"
+        private const val CIPHER_STRING_SIZE_BYTES = 256
+        private const val BASE_64_PADDING = 2
+        private const val STORAGE_KEY = "STORAGE_KEY"
+
+        //https://stackoverflow.com/questions/13378815/base64-length-calculation
+        private const val DECRYPTED_BYTES_COUNT = 3
+        private const val ENCRYPTED_BYTES_COUNT = 4
+        private const val BASE64_DIVIDER_COUNT = 5
+        const val ENCRYPT_BASE64_STRING_LENGTH =
+                (CIPHER_STRING_SIZE_BYTES + BASE_64_PADDING) * ENCRYPTED_BYTES_COUNT / DECRYPTED_BYTES_COUNT + BASE64_DIVIDER_COUNT
+        const val ENCRYPT_BLOCK_SIZE = 128
 
         private fun getAndroidKeystore(): KeyStore? = try {
             KeyStore.getInstance(ANDROID_KEY_STORE).also { it.load(null) }
