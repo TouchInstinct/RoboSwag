@@ -2,13 +2,13 @@ package ru.touchin.roboswag
 
 import android.content.Context
 import android.content.SharedPreferences
-import ru.touchin.roboswag.TouchinSharedPreferencesCryptoUtils.Companion.ENCRYPT_BASE64_STRING_LENGTH
-import ru.touchin.roboswag.TouchinSharedPreferencesCryptoUtils.Companion.ENCRYPT_BLOCK_SIZE
+import ru.touchin.roboswag.PrefsCryptoUtils.Companion.ENCRYPT_BASE64_STRING_LENGTH
+import ru.touchin.roboswag.PrefsCryptoUtils.Companion.ENCRYPT_BLOCK_SIZE
 
-class TouchinSharedPreferences(name: String, context: Context, val encrypt: Boolean = false) : SharedPreferences {
+class CipherSharedPreferences(name: String, context: Context, val encrypt: Boolean = false) : SharedPreferences {
 
     private val currentPreferences: SharedPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE)
-    private val cryptoUtils = TouchinSharedPreferencesCryptoUtils(context)
+    private val cryptoUtils = PrefsCryptoUtils(context)
 
     override fun contains(key: String?) = currentPreferences.contains(key)
 
