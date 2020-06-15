@@ -30,11 +30,11 @@ class PrefsCryptoUtils constructor(val context: Context) {
         private const val STORAGE_KEY = "STORAGE_KEY"
 
         //https://stackoverflow.com/questions/13378815/base64-length-calculation
-        private const val ORIGINALLY_BYTES_COUNT = 3
-        private const val ENCRYPT_BYTES_COUNT = 4
+        private const val DECRYPTED_BYTES_COUNT = 3
+        private const val ENCRYPTED_BYTES_COUNT = 4
         private const val BASE64_DIVIDER_COUNT = 5
         const val ENCRYPT_BASE64_STRING_LENGTH =
-                (CIPHER_STRING_SIZE_BYTES + BASE_64_PADDING) * ENCRYPT_BYTES_COUNT / ORIGINALLY_BYTES_COUNT + BASE64_DIVIDER_COUNT
+                (CIPHER_STRING_SIZE_BYTES + BASE_64_PADDING) * ENCRYPTED_BYTES_COUNT / DECRYPTED_BYTES_COUNT + BASE64_DIVIDER_COUNT
         const val ENCRYPT_BLOCK_SIZE = 128
 
         private fun getAndroidKeystore(): KeyStore? = try {
