@@ -1,24 +1,6 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
+apply from: "../android-configs/lib-config.gradle"
+
 apply plugin: 'kotlin-kapt'
-
-android {
-    compileSdkVersion versions.compileSdk
-
-    defaultConfig {
-        minSdkVersion 16
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
-    }
-
-}
 
 dependencies {
     implementation project(":utils")
