@@ -5,7 +5,7 @@ Encrypted shared preferences
 
 ### Пример
 
-Пример создания получения экземпляра `TouchinSharedPreferences`. При isEncryption = false, `TouchinSharedPreferences` абсолютно аналогичны стандартной реализации `SharedPreferences`
+Пример получения экземпляра `TouchinSharedPreferences`. При isEncryption = false, `TouchinSharedPreferences` абсолютно аналогичны стандартной реализации `SharedPreferences`
 
 ```kotlin
 val prefs = TouchinSharedPreferences(name = "APPLICATION_DATA_ENCRYPTED", context = context, isEncryption = true)
