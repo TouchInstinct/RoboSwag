@@ -38,7 +38,7 @@ dependencies {
 
         implementation("com.crashlytics.sdk.android:crashlytics") {
             version {
-                require '2.0.0'
+                require '2.10.0'
             }
         }
     }
