@@ -1,41 +1,61 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
+apply from: "../android-configs/lib-config.gradle"
+
 apply plugin: 'kotlin-kapt'
-
-android {
-    compileSdkVersion versions.compileSdk
-
-    defaultConfig {
-        minSdkVersion 16
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
-    }
-
-}
 
 dependencies {
     implementation project(":utils")
     implementation project(":logging")
 
-    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.multidex:multidex'
 
-    implementation 'net.danlew:android.joda:2.10.2'
+    implementation 'net.danlew:android.joda'
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
-    implementation "androidx.appcompat:appcompat:$versions.appcompat"
+    implementation "androidx.appcompat:appcompat"
     
-    implementation "androidx.fragment:fragment:$versions.fragment"
-    implementation "androidx.fragment:fragment-ktx:$versions.fragment"
+    implementation "androidx.fragment:fragment"
+    implementation "androidx.fragment:fragment-ktx"
 
-    implementation("com.crashlytics.sdk.android:crashlytics:$versions.crashlytics@aar") {
+    implementation("com.crashlytics.sdk.android:crashlytics") {
         transitive = true
+    }
+
+    constraints {
+        implementation("androidx.multidex:multidex") {
+            version {
+                require '2.0.0'
+            }
+        }
+
+        implementation("net.danlew:android.joda") {
+            version {
+                require '2.10.0'
+            }
+        }
+
+        implementation("androidx.appcompat:appcompat") {
+            version {
+                require '1.0.0'
+            }
+        }
+
+        implementation("androidx.fragment:fragment") {
+            version {
+                require '1.1.0'
+            }
+        }
+
+        implementation("androidx.fragment:fragment-ktx") {
+            version {
+                require '1.1.0'
+            }
+        }
+
+        implementation("com.crashlytics.sdk.android:crashlytics") {
+            version {
+                require '2.10.0'
+            }
+        }
     }
 }

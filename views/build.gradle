@@ -1,21 +1,16 @@
-apply plugin: 'com.android.library'
-
-android {
-    compileSdkVersion versions.compileSdk
-
-    defaultConfig {
-        minSdkVersion 16
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-}
+apply from: "../android-configs/lib-config.gradle"
 
 dependencies {
-    api project(":utils")
-    api project(":logging")
+    implementation project(":utils")
+    implementation project(":logging")
 
-    implementation "com.google.android.material:material:$versions.material"
+    implementation "com.google.android.material:material"
+
+    constraints {
+        implementation("com.google.android.material:material") {
+            version {
+                require '1.0.0'
+            }
+        }
+    }
 }

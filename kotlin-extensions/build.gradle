@@ -1,16 +1,15 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-
-android {
-    compileSdkVersion versions.compileSdk
-
-    defaultConfig {
-        minSdkVersion 16
-    }
-}
+apply from: "../android-configs/lib-config.gradle"
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
-    implementation "androidx.recyclerview:recyclerview:$versions.androidx"
+    implementation "androidx.recyclerview:recyclerview"
+
+    constraints {
+        implementation("androidx.recyclerview:recyclerview") {
+            version {
+                require '1.0.0'
+            }
+        }
+    }
 }

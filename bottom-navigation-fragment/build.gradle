@@ -1,31 +1,26 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-
-android {
-    compileSdkVersion versions.compileSdk
-
-    defaultConfig {
-        minSdkVersion 16
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
-    }
-
-}
+apply from: "../android-configs/lib-config.gradle"
 
 dependencies {
     implementation project(":navigation-base")
     implementation project(":bottom-navigation-base")
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
-    implementation "androidx.core:core-ktx:$versions.coreKtx"
+    implementation "androidx.core:core-ktx"
 
-    implementation "androidx.appcompat:appcompat:$versions.appcompat"
+    implementation "androidx.appcompat:appcompat"
+
+    constraints {
+        implementation("androidx.core:core-ktx") {
+            version {
+                require '1.0.0'
+            }
+        }
+
+        implementation("androidx.appcompat:appcompat") {
+            version {
+                require '1.0.0'
+            }
+        }
+    }
 }

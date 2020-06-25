@@ -1,19 +1,17 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-
-android {
-    compileSdkVersion versions.compileSdk
-
-    defaultConfig {
-        minSdkVersion 16
-    }
-
-}
+apply from: "../android-configs/lib-config.gradle"
 
 dependencies {
     api project(":lifecycle")
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
-    implementation "com.google.android.gms:play-services-location:$versions.location"
+    implementation "com.google.android.gms:play-services-location"
+
+    constraints {
+        implementation("com.google.android.gms:play-services-location") {
+            version {
+                require '1.0.0'
+            }
+        }
+    }
 }

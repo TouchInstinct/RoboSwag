@@ -1,0 +1,26 @@
+apply plugin: 'kotlin-android'
+
+rootProject.ext {
+    compileSdk = 29
+
+    minSdk = 21
+    targetSdk = 29
+}
+
+android {
+    compileSdkVersion rootProject.ext.compileSdk
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdk
+        targetSdkVersion rootProject.ext.targetSdk
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+}
