@@ -1,13 +1,18 @@
 apply plugin: 'kotlin-android'
 
+rootProject.ext {
+    compileSdk = 29
+
+    minSdk = 21
+    targetSdk = 29
+}
+
 android {
-    compileSdkVersion 29
+    compileSdkVersion rootProject.ext.compileSdk
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 29
-
-        multiDexEnabled = true
+        minSdkVersion rootProject.ext.minSdk
+        targetSdkVersion rootProject.ext.targetSdk
     }
 
     compileOptions {
@@ -18,5 +23,4 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
-
 }

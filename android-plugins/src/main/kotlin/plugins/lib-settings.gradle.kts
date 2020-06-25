@@ -1,4 +1,3 @@
-
 plugins {
     id("com.android.application") apply false
     id("kotlin-android")
@@ -10,9 +9,7 @@ android {
 
     defaultConfig {
         minSdkVersion(21)
-    	targetSdkVersion(29)
-
-	    multiDexEnabled = true
+        targetSdkVersion(29)
     }
 
     compileOptions {
@@ -23,5 +20,4 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
-
 }
