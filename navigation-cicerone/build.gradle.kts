@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    implementationModule(Module.Core.DI)
+    implementationModule(Module.RoboSwag.NAVIGATION_BASE)
     implementation(Library.CICERONE)
     fragment()
     dagger(withAssistedInject = false)
