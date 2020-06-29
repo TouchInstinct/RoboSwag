@@ -5,7 +5,7 @@ import dagger.Provides
 import ru.terrakok.cicerone.Cicerone
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
-import ru.touchin.mvi_arch.di.FeatureScope
+import ru.touchin.roboswag.navigation_base.scopes.FeatureScope
 
 @Module
 class FlowNavigationModule {
