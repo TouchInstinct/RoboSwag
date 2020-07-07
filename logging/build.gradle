@@ -3,7 +3,7 @@ apply from: "../android-configs/lib-config.gradle"
 dependencies {
     implementation "androidx.annotation:annotation"
 
-    implementation "com.crashlytics.sdk.android:crashlytics"
+    implementation "com.google.firebase:firebase-crashlytics"
 
     constraints {
         implementation("androidx.annotation:annotation") {
@@ -12,9 +12,9 @@ dependencies {
             }
         }
 
-        implementation("com.crashlytics.sdk.android:crashlytics") {
+        implementation("com.google.firebase:firebase-crashlytics") {
             version {
-                require '2.10.0'
+                require '17.1.0'
             }
         }
     }
