@@ -19,11 +19,12 @@
 
 package ru.touchin.roboswag.core.utils;
 
-import androidx.annotation.NonNull;
-
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by Gavriil Sitnikov on 29/08/2016.
@@ -40,7 +41,7 @@ public final class StringUtils {
     @NonNull
     public static String md5(@NonNull final String string) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         final MessageDigest digest = MessageDigest.getInstance("MD5");
-        digest.update(string.getBytes("UTF-8"));
+        digest.update(string.getBytes(StandardCharsets.UTF_8));
         final byte[] messageDigestArray = digest.digest();
 
         final StringBuilder hexString = new StringBuilder();
