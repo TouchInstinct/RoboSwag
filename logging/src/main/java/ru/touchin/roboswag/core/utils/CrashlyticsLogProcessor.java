@@ -2,7 +2,7 @@ package ru.touchin.roboswag.core.utils;
 
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +17,15 @@ import ru.touchin.roboswag.core.log.LogProcessor;
 public class CrashlyticsLogProcessor extends LogProcessor {
 
     @NonNull
-    private final Crashlytics crashlytics;
+    private final FirebaseCrashlytics crashlytics;
 
-    public CrashlyticsLogProcessor(@NonNull final Crashlytics crashlytics) {
+    public CrashlyticsLogProcessor(@NonNull final FirebaseCrashlytics crashlytics) {
         super(LcLevel.INFO);
         this.crashlytics = crashlytics;
+    }
+
+    private String getLogMessage(final int priorityLevel, final String tag, final String message) {
+        return "Priority:" + priorityLevel + ' ' + tag + ':' + message;
     }
 
     @Override
@@ -31,17 +35,17 @@ public class CrashlyticsLogProcessor extends LogProcessor {
                                   @NonNull final String message,
                                   @Nullable final Throwable throwable) {
         if (group == LcGroup.UI_LIFECYCLE) {
-            crashlytics.core.log(level.getPriority(), tag, message);
+            crashlytics.log(getLogMessage(level.getPriority(), tag, message));
         } else if (!level.lessThan(LcLevel.ASSERT)
                 || (group == LcGroup.API_VALIDATION && level == LcLevel.ERROR)) {
             Log.e(tag, message);
             if (throwable != null) {
-                crashlytics.core.log(level.getPriority(), tag, message);
-                crashlytics.core.logException(throwable);
+                crashlytics.log(getLogMessage(level.getPriority(), tag, message));
+                crashlytics.recordException(throwable);
             } else {
                 final ShouldNotHappenException exceptionToLog = new ShouldNotHappenException(tag + ':' + message);
                 reduceStackTrace(exceptionToLog);
-                crashlytics.core.logException(exceptionToLog);
+                crashlytics.recordException(exceptionToLog);
             }
         }
     }

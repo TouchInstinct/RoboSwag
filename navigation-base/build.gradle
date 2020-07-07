@@ -10,8 +10,6 @@ dependencies {
     implementation project(":utils")
     implementation project(":logging")
 
-    implementation 'androidx.multidex:multidex'
-
     implementation "com.google.dagger:dagger"
 
     implementation 'net.danlew:android.joda'
@@ -26,16 +24,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-common-java8"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx"
 
-    implementation("com.crashlytics.sdk.android:crashlytics") {
-        transitive = true
-    }
+    implementation "com.google.firebase:firebase-crashlytics"
 
     constraints {
-        implementation("androidx.multidex:multidex") {
-            version {
-                require '2.0.0'
-            }
-        }
 
         implementation("com.google.dagger:dagger") {
             version {
@@ -67,9 +58,9 @@ dependencies {
             }
         }
 
-        implementation("com.crashlytics.sdk.android:crashlytics") {
+        implementation("com.google.firebase:firebase-crashlytics") {
             version {
-                require '2.10.0'
+                require '17.1.0'
             }
         }
 

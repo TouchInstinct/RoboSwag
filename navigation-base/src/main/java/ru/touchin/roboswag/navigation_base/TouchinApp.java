@@ -20,17 +20,12 @@
 package ru.touchin.roboswag.navigation_base;
 
 import android.app.Application;
-import android.content.Context;
 import android.os.StrictMode;
-import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
-import androidx.annotation.NonNull;
-import androidx.multidex.MultiDex;
-import io.fabric.sdk.android.Fabric;
 import ru.touchin.roboswag.core.log.ConsoleLogProcessor;
 import ru.touchin.roboswag.core.log.Lc;
 import ru.touchin.roboswag.core.log.LcGroup;
@@ -44,12 +39,6 @@ import ru.touchin.roboswag.core.utils.CrashlyticsLogProcessor;
 public abstract class TouchinApp extends Application {
 
     @Override
-    protected void attachBaseContext(@NonNull final Context base) {
-        super.attachBaseContext(base);
-        MultiDex.install(base);
-    }
-
-    @Override
     public void onCreate() {
         super.onCreate();
         JodaTimeAndroid.init(this);
@@ -59,16 +48,13 @@ public abstract class TouchinApp extends Application {
             LcGroup.UI_LIFECYCLE.disable();
         } else {
             try {
-                final Crashlytics crashlytics = new Crashlytics();
-                Fabric.with(this, crashlytics);
-                Fabric.getLogger().setLogLevel(Log.ERROR);
+                final FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
+                crashlytics.setCrashlyticsCollectionEnabled(true);
                 Lc.initialize(new CrashlyticsLogProcessor(crashlytics), false);
             } catch (final NoClassDefFoundError error) {
                 Lc.initialize(new ConsoleLogProcessor(LcLevel.INFO), false);
                 Lc.e("Crashlytics initialization error! Did you forget to add\n"
-                        + "compile('com.crashlytics.sdk.android:crashlytics:+@aar') {\n"
-                        + "        transitive = true;\n"
-                        + "}\n"
+                        + "com.google.firebase:firebase-crashlytics\n"
                         + "to your build.gradle?", error);
             }
         }
