@@ -1,9 +1,7 @@
 package ru.touchin.extensions
 
-import android.content.Context
 import android.os.Build
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import ru.touchin.utils.ActionThrottler
 
 const val RIPPLE_EFFECT_DELAY_MS = 150L
