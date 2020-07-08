@@ -1,7 +1,9 @@
 package ru.touchin.extensions
 
+import android.content.Context
 import android.os.Build
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import ru.touchin.utils.ActionThrottler
 
 const val RIPPLE_EFFECT_DELAY_MS = 150L
@@ -21,4 +23,16 @@ fun View.setOnRippleClickListener(listener: () -> Unit) {
     } else {
         setOnClickListener { listener() }
     }
+}
+
+fun View.showSoftInput() {
+    requestFocus()
+    val inputManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputManager.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+}
+
+fun View.hideSoftInput() {
+    clearFocus()
+    val inputManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputManager.hideSoftInputFromWindow(windowToken, 0)
 }
