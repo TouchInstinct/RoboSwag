@@ -23,7 +23,6 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
 import android.os.Build
 import android.util.DisplayMetrics
 import android.util.TypedValue
@@ -33,7 +32,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewConfiguration
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import androidx.annotation.LayoutRes
 import ru.touchin.roboswag.components.utils.spans.getSpannedTextWithUrls
 
@@ -205,27 +203,30 @@ object UiUtils {
          * @param view [View] to get ID from;
          * @return Readable ID.
          */
-        fun getViewIdString(view: View): String = try {
-            view.resources.getResourceName(view.id)
-        } catch (exception: Resources.NotFoundException) {
-            view.id.toString()
-        }
+        @Deprecated(
+                message = "Use extension instead",
+                replaceWith = ReplaceWith("view.getViewIdString()")
+        )
+        fun getViewIdString(view: View): String = view.getViewIdString()
 
         /**
          * Hides device keyboard for target activity.
          */
-        fun hideSoftInput(activity: Activity) {
-            activity.currentFocus?.let(this::hideSoftInput)
-        }
+        @Deprecated(
+                message = "Use extension instead",
+                replaceWith = ReplaceWith("activity.hideSoftInput()")
+        )
+        fun hideSoftInput(activity: Activity) = activity.hideSoftInput()
+
 
         /**
          * Hides device keyboard for target view.
          */
-        fun hideSoftInput(view: View) {
-            view.clearFocus()
-            val inputManager = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputManager.hideSoftInputFromWindow(view.windowToken, 0)
-        }
+        @Deprecated(
+                message = "Use extension instead",
+                replaceWith = ReplaceWith("view.hideSoftInput()")
+        )
+        fun hideSoftInput(view: View) = view.hideSoftInput()
 
         /**
          * Shows device keyboard over [Activity] and focuses [View].
@@ -234,11 +235,11 @@ object UiUtils {
          *
          * @param view View to get focus for input from keyboard.
          */
-        fun showSoftInput(view: View) {
-            view.requestFocus()
-            val inputManager = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-        }
+        @Deprecated(
+                message = "Use extension instead",
+                replaceWith = ReplaceWith("view.showSoftInput()")
+        )
+        fun showSoftInput(view: View) = view.showSoftInput()
 
     }
 
