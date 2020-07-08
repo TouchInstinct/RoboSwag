@@ -205,6 +205,10 @@ object UiUtils {
          * @param view [View] to get ID from;
          * @return Readable ID.
          */
+        @Deprecated(
+                message = "Use extension instead",
+                replaceWith = ReplaceWith("view.getViewIdString()")
+        )
         fun getViewIdString(view: View): String = try {
             view.resources.getResourceName(view.id)
         } catch (exception: Resources.NotFoundException) {
@@ -214,6 +218,10 @@ object UiUtils {
         /**
          * Hides device keyboard for target activity.
          */
+        @Deprecated(
+                message = "Use extension instead",
+                replaceWith = ReplaceWith("activity.hideSoftInput()")
+        )
         fun hideSoftInput(activity: Activity) {
             activity.currentFocus?.let(this::hideSoftInput)
         }
@@ -221,6 +229,10 @@ object UiUtils {
         /**
          * Hides device keyboard for target view.
          */
+        @Deprecated(
+                message = "Use extension instead",
+                replaceWith = ReplaceWith("view.hideSoftInput()")
+        )
         fun hideSoftInput(view: View) {
             view.clearFocus()
             val inputManager = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -234,6 +246,10 @@ object UiUtils {
          *
          * @param view View to get focus for input from keyboard.
          */
+        @Deprecated(
+                message = "Use extension instead",
+                replaceWith = ReplaceWith("view.showSoftInput()")
+        )
         fun showSoftInput(view: View) {
             view.requestFocus()
             val inputManager = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

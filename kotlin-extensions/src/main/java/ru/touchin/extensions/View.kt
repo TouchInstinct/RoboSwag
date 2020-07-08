@@ -24,15 +24,3 @@ fun View.setOnRippleClickListener(listener: () -> Unit) {
         setOnClickListener { listener() }
     }
 }
-
-fun View.showSoftInput() {
-    requestFocus()
-    val inputManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    inputManager.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
-}
-
-fun View.hideSoftInput() {
-    clearFocus()
-    val inputManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    inputManager.hideSoftInputFromWindow(windowToken, 0)
-}
