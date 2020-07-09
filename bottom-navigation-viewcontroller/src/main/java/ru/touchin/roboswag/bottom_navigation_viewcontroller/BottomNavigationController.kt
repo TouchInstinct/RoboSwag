@@ -38,8 +38,8 @@ class BottomNavigationController(
             if (wrapWithNavigationContainer) {
                 super.isTabClass(tab, fragment)
             } else {
-                (fragment as ViewControllerFragment<*, *>).viewControllerClass
-            }  === tab.cls
+                (fragment as ViewControllerFragment<*, *>).viewControllerClass === tab.cls
+            }
 
 }
 
