@@ -6,7 +6,7 @@ import android.os.Parcelable
 import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.LifecycleObserver
-import ru.touchin.roboswag.components.utils.UiUtils
+import ru.touchin.roboswag.components.utils.hideSoftInput
 import ru.touchin.roboswag.navigation_base.activities.BaseActivity
 import ru.touchin.roboswag.navigation_base.activities.OnBackPressedListener
 import ru.touchin.roboswag.navigation_base.fragments.StatefulFragment
@@ -21,7 +21,7 @@ abstract class KeyboardResizeableFragment<TActivity : BaseActivity, TState : Par
 
     private val keyboardHideListener = OnBackPressedListener {
         if (isKeyboardVisible) {
-            UiUtils.OfViews.hideSoftInput(activity)
+            activity.hideSoftInput()
             true
         } else {
             false
