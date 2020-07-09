@@ -36,20 +36,18 @@ fun Context.getDisplayMetrics(): DisplayMetrics {
  *
  * @return Size in pixels.
  */
-fun Int.toPixels() = (this * Resources.getSystem().displayMetrics.density).toInt()
-
+fun Int.toPixels(): Int = (this * Resources.getSystem().displayMetrics.density).toInt()
 
 /**
  * Simply converts Dp to pixels.
  *
  * @return Size in pixels.
  */
-fun Float.toPixels() = this * Resources.getSystem().displayMetrics.density
-
+fun Float.toPixels(): Float = this * Resources.getSystem().displayMetrics.density
 
 /**
  * Simply converts pixels to Dp.
  *
  * @return Size in dp.
  */
-fun Int.toDp() = (this / Resources.getSystem().displayMetrics.density).toInt()
+fun Int.toDp(): Int = (this / Resources.getSystem().displayMetrics.density).toInt()
