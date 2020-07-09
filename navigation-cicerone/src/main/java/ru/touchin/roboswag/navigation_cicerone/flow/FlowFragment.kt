@@ -2,6 +2,7 @@ package ru.touchin.roboswag.navigation_cicerone.flow
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
@@ -40,6 +41,12 @@ abstract class FlowFragment : Fragment(R.layout.fragment_flow) {
                         fragmentManager = childFragmentManager
                 )
         )
+
+        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                router.exit()
+            }
+        })
     }
 
     abstract fun getLaunchScreen(): SupportAppScreen
