@@ -25,7 +25,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.DisplayMetrics
-import android.util.TypedValue
 import android.view.KeyCharacterMap
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -85,22 +84,11 @@ object UiUtils {
          * @param context [Context] of metrics;
          * @return [DisplayMetrics].
          */
-        fun getDisplayMetrics(context: Context): DisplayMetrics {
-            var result = context.resources.displayMetrics
-            // it is needed to avoid bug with invalid metrics when user restore application from other application
-            var metricsTryNumber = 0
-            while (metricsTryNumber < MAX_METRICS_TRIES_COUNT && (result.heightPixels <= 0 || result.widthPixels <= 0)) {
-                try {
-                    Thread.sleep(500)
-                } catch (ignored: InterruptedException) {
-                    return result
-                }
-
-                result = context.resources.displayMetrics
-                metricsTryNumber++
-            }
-            return result
-        }
+        @Deprecated(
+                message = "Use extension instead",
+                replaceWith = ReplaceWith("context.getDisplayMetrics()")
+        )
+        fun getDisplayMetrics(context: Context): DisplayMetrics = context.getDisplayMetrics()
 
         /**
          * Simply converts DP to pixels.
@@ -109,10 +97,17 @@ object UiUtils {
          * @param sizeInDp Size in DP;
          * @return Size in pixels.
          */
-        fun dpToPixels(context: Context, sizeInDp: Float): Float =
-                TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, sizeInDp, getDisplayMetrics(context))
+        @Deprecated(
+                message = "Use extension instead",
+                replaceWith = ReplaceWith("sizeInDp.toPixels()")
+        )
+        fun dpToPixels(context: Context, sizeInDp: Float): Float = sizeInDp.px
 
-        fun pixelsToDp(context: Context, pixels: Int): Int = (pixels * getDisplayMetrics(context).density + 0.5f).toInt()
+        @Deprecated(
+                message = "Use extension instead",
+                replaceWith = ReplaceWith("pixels.toDp()")
+        )
+        fun pixelsToDp(context: Context, pixels: Int): Int = pixels.dp
 
     }
 
