@@ -75,8 +75,6 @@ object UiUtils {
      */
     object OfMetrics {
 
-        private const val MAX_METRICS_TRIES_COUNT = 5
-
         /**
          * Returns right metrics with non-zero height/width.
          * It is common bug when metrics are calling at [Application.onCreate] method and it returns metrics with zero height/width.
@@ -101,12 +99,14 @@ object UiUtils {
                 message = "Use extension instead",
                 replaceWith = ReplaceWith("sizeInDp.toPixels()")
         )
+        @Suppress("detekt.UnusedPrivateMember")
         fun dpToPixels(context: Context, sizeInDp: Float): Float = sizeInDp.px
 
         @Deprecated(
                 message = "Use extension instead",
                 replaceWith = ReplaceWith("pixels.toDp()")
         )
+        @Suppress("detekt.UnusedPrivateMember")
         fun pixelsToDp(context: Context, pixels: Int): Int = pixels.dp
 
     }
