@@ -105,7 +105,7 @@ object UiUtils {
 
         @Deprecated(
                 message = "Use extension instead",
-                replaceWith = ReplaceWith("pixels.px")
+                replaceWith = ReplaceWith("pixels.dp")
         )
         fun pixelsToDp(context: Context, pixels: Int): Int = pixels.dp
 
