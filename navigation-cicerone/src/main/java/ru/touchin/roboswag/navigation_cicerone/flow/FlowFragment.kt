@@ -3,9 +3,12 @@ package ru.touchin.roboswag.navigation_cicerone.flow
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
+import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
+import ru.terrakok.cicerone.android.support.SupportAppNavigator
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 import ru.touchin.mvi_arch.core_nav.R
 import ru.touchin.roboswag.navigation_cicerone.CiceroneTuner
@@ -34,12 +37,7 @@ abstract class FlowFragment : Fragment(R.layout.fragment_flow) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewLifecycleOwner.lifecycle.addObserver(
-                CiceroneTuner(
-                        activity = requireActivity(),
-                        navigatorHolder = navigatorHolder,
-                        fragmentContainerId = R.id.flow_parent,
-                        fragmentManager = childFragmentManager
-                )
+                CiceroneTuner(navigatorHolder = navigatorHolder, navigator = createNavigator())
         )
 
         requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
@@ -48,6 +46,15 @@ abstract class FlowFragment : Fragment(R.layout.fragment_flow) {
             }
         })
     }
+
+    open fun createNavigator(): Navigator = SupportAppNavigator(
+            requireActivity(),
+            childFragmentManager,
+            getFragmentContainerId()
+    )
+
+    @IdRes
+    protected fun getFragmentContainerId(): Int = R.id.flow_parent
 
     abstract fun getLaunchScreen(): SupportAppScreen
 }
