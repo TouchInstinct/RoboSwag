@@ -101,13 +101,13 @@ object UiUtils {
                 message = "Use extension instead",
                 replaceWith = ReplaceWith("sizeInDp.toPixels()")
         )
-        fun dpToPixels(context: Context, sizeInDp: Float): Float = sizeInDp.toPixels()
+        fun dpToPixels(context: Context, sizeInDp: Float): Float = sizeInDp.px
 
         @Deprecated(
                 message = "Use extension instead",
                 replaceWith = ReplaceWith("pixels.toDp()")
         )
-        fun pixelsToDp(context: Context, pixels: Int): Int = pixels.toDp()
+        fun pixelsToDp(context: Context, pixels: Int): Int = pixels.dp
 
     }
 
