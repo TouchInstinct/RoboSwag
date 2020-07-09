@@ -99,13 +99,13 @@ object UiUtils {
          */
         @Deprecated(
                 message = "Use extension instead",
-                replaceWith = ReplaceWith("sizeInDp.toPixels()")
+                replaceWith = ReplaceWith("sizeInDp.px")
         )
         fun dpToPixels(context: Context, sizeInDp: Float): Float = sizeInDp.px
 
         @Deprecated(
                 message = "Use extension instead",
-                replaceWith = ReplaceWith("pixels.toDp()")
+                replaceWith = ReplaceWith("pixels.px")
         )
         fun pixelsToDp(context: Context, pixels: Int): Int = pixels.dp
 
@@ -122,7 +122,7 @@ object UiUtils {
          * @param activity Activity of action bar;
          * @return Height of action bar.
          */
-        fun getActionBarHeight(activity: Activity): Int = OfMetrics.dpToPixels(activity, 56f).toInt()
+        fun getActionBarHeight(activity: Activity): Int = 56f.px.toInt()
 
         /**
          * Returns status bar (on top where system info is) common height.
