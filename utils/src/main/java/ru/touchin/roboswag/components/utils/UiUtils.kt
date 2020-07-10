@@ -122,7 +122,7 @@ object UiUtils {
          * @param activity Activity of action bar;
          * @return Height of action bar.
          */
-        fun getActionBarHeight(activity: Activity): Int = 56f.px.toInt()
+        fun getActionBarHeight(activity: Activity): Int = 56.px
 
         /**
          * Returns status bar (on top where system info is) common height.
