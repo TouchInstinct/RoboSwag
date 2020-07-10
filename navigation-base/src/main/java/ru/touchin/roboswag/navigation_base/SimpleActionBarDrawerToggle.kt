@@ -25,7 +25,7 @@ import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentManager
-import ru.touchin.roboswag.components.utils.UiUtils
+import ru.touchin.roboswag.components.utils.hideSoftInput
 import ru.touchin.roboswag.navigation_base.activities.BaseActivity
 import ru.touchin.roboswag.navigation_base.activities.OnBackPressedListener
 
@@ -174,7 +174,7 @@ class SimpleActionBarDrawerToggle(
     }
 
     override fun onDrawerOpened(drawerView: View) {
-        UiUtils.OfViews.hideSoftInput(activity)
+        activity.hideSoftInput()
         if (isInvalidateOptionsMenuSupported) {
             activity.invalidateOptionsMenu()
         }
