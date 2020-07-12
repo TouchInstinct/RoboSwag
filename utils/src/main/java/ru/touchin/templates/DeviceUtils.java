@@ -19,15 +19,10 @@
 
 package ru.touchin.templates;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Process;
+
 import androidx.annotation.NonNull;
-import android.telephony.TelephonyManager;
 
 /**
  * Utility class that is providing common methods related to android device.
@@ -40,28 +35,10 @@ public final class DeviceUtils {
      * @param context Application context
      * @return Active network type {@link NetworkType}
      */
+    @Deprecated
     @NonNull
     public static NetworkType getNetworkType(@NonNull final Context context) {
-        if (context.checkPermission(Manifest.permission.ACCESS_NETWORK_STATE, Process.myPid(), Process.myUid())
-                != PackageManager.PERMISSION_GRANTED) {
-            return NetworkType.UNKNOWN;
-        }
-        final ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (cm == null) {
-            return NetworkType.UNKNOWN;
-        }
-        @SuppressLint("MissingPermission") final NetworkInfo info = cm.getActiveNetworkInfo();
-        if (info == null || !info.isConnected()) {
-            return NetworkType.NONE;
-        }
-        switch (info.getType()) {
-            case ConnectivityManager.TYPE_WIFI:
-                return NetworkType.WI_FI;
-            case ConnectivityManager.TYPE_MOBILE:
-                return getMobileNetworkType(info);
-            default:
-                return NetworkType.UNKNOWN;
-        }
+        return DeviceUtilsExtensionsKt.getNetworkType(context);
     }
 
     /**
@@ -70,36 +47,15 @@ public final class DeviceUtils {
      * @param context Application context
      * @return true if network connected, false otherwise.
      */
+    @Deprecated
     public static boolean isNetworkConnected(@NonNull final Context context) {
-        return getNetworkType(context) != NetworkType.NONE;
+        return DeviceUtilsExtensionsKt.isNetworkConnected(context);
     }
 
+    @Deprecated
     @NonNull
-    private static NetworkType getMobileNetworkType(@NonNull final NetworkInfo info) {
-        switch (info.getSubtype()) {
-            case TelephonyManager.NETWORK_TYPE_GPRS:
-            case TelephonyManager.NETWORK_TYPE_EDGE:
-            case TelephonyManager.NETWORK_TYPE_CDMA:
-            case TelephonyManager.NETWORK_TYPE_1xRTT:
-            case TelephonyManager.NETWORK_TYPE_IDEN:
-                return NetworkType.MOBILE_2G;
-            case TelephonyManager.NETWORK_TYPE_UMTS:
-            case TelephonyManager.NETWORK_TYPE_EVDO_0:
-            case TelephonyManager.NETWORK_TYPE_EVDO_A:
-            case TelephonyManager.NETWORK_TYPE_HSDPA:
-            case TelephonyManager.NETWORK_TYPE_HSUPA:
-            case TelephonyManager.NETWORK_TYPE_HSPA:
-            case TelephonyManager.NETWORK_TYPE_EVDO_B:
-            case TelephonyManager.NETWORK_TYPE_EHRPD:
-            case TelephonyManager.NETWORK_TYPE_HSPAP:
-                return NetworkType.MOBILE_3G;
-            case TelephonyManager.NETWORK_TYPE_LTE:
-            case 19: // NETWORK_TYPE_LTE_CA is hide
-                return NetworkType.MOBILE_LTE;
-            case TelephonyManager.NETWORK_TYPE_UNKNOWN:
-            default:
-                return NetworkType.UNKNOWN;
-        }
+    static NetworkType getMobileNetworkType(@NonNull final NetworkInfo info) {
+        return DeviceUtilsExtensionsKt.getMobileNetworkType(info);
     }
 
     private DeviceUtils() {
