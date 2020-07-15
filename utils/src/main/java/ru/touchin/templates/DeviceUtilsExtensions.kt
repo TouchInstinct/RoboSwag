@@ -10,6 +10,7 @@ import android.net.NetworkInfo
 import android.os.Build
 import android.os.Process
 import android.telephony.TelephonyManager
+import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import ru.touchin.templates.DeviceUtils.NetworkType
@@ -56,14 +57,14 @@ fun getMobileNetworkType(info: NetworkInfo): NetworkType =
         }
 
 
+@RequiresApi(Build.VERSION_CODES.M)
+@Suppress("InlinedApi")
 @RequiresPermission(anyOf = [Manifest.permission.USE_FINGERPRINT, Manifest.permission.USE_BIOMETRIC])
-fun Context.canAuthenticateWithBiometrics(): Boolean {
-    return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-        val fingerprintManagerCompat = FingerprintManagerCompat.from(this)
-        fingerprintManagerCompat.hasEnrolledFingerprints() && fingerprintManagerCompat.isHardwareDetected
-    } else {
-        getSystemService(BiometricManager::class.java)?.let { biometricManager ->
-            (biometricManager.canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS)
-        } ?: false
-    }
+fun Context.canAuthenticateWithBiometrics(): Boolean = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+    val fingerprintManagerCompat = FingerprintManagerCompat.from(this)
+    fingerprintManagerCompat.hasEnrolledFingerprints() && fingerprintManagerCompat.isHardwareDetected
+} else {
+    getSystemService(BiometricManager::class.java)?.let { biometricManager ->
+        biometricManager.canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS
+    } ?: false
 }
