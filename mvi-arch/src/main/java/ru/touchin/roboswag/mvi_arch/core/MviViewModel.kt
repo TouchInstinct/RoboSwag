@@ -1,6 +1,7 @@
 package ru.touchin.roboswag.mvi_arch.core
 
 import android.os.Parcelable
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.Transformations
@@ -36,7 +37,7 @@ abstract class MviViewModel<NavArgs : Parcelable, Action : ViewAction, State : V
     protected val navArgs: NavArgs = handle.get(MviFragment.INIT_ARGS_KEY) ?: throw IllegalStateException("Nav args mustn't be null")
 
     protected val _state = MutableLiveData(initialState)
-    internal val state = Transformations.distinctUntilChanged(_state)
+    internal val state = _state as LiveData<State>
 
     protected val currentState: State
         get() = state.value ?: initialState
