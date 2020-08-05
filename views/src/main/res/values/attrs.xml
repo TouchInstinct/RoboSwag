@@ -30,4 +30,8 @@
         <attr name="defaultChild" format="reference"/>
     </declare-styleable>
 
+    <declare-styleable name="PinCodeDotsView">
+        <attr name="dotSize" format="dimension" />
+    </declare-styleable>
+
 </resources>
