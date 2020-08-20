@@ -39,7 +39,7 @@ abstract class MviViewModel<NavArgs : Parcelable, Action : ViewAction, State : V
     internal val state = Transformations.distinctUntilChanged(_state)
 
     protected val currentState: State
-        get() = state.value ?: initialState
+        get() = _state.value ?: initialState
 
     abstract fun dispatchAction(action: Action)
 
