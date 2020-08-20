@@ -30,4 +30,8 @@
         <attr name="defaultChild" format="reference"/>
     </declare-styleable>
 
+    <declare-styleable name="LoadingContentView">
+        <attr name="stubText" format="string"/>
+    </declare-styleable>
+
 </resources>

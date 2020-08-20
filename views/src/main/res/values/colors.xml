@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="loadingContentViewProgressBar">#8D8EA6</color>
+    <color name="loadingContentViewTextColor">#999BBF</color>
+    <color name="loadingContentViewButtonTextColor">#141233</color>
+</resources>

@@ -1,9 +1,19 @@
 apply from: "../android-configs/lib-config.gradle"
+apply plugin: 'kotlin-android'
+
+android {
+    buildFeatures {
+        viewBinding true
+    }
+}
 
 dependencies {
     implementation project(":utils")
+    implementation project(":kotlin-extensions")
     implementation project(":logging")
 
+    implementation "androidx.annotation:annotation"
+    implementation "androidx.core:core"
     implementation "com.google.android.material:material"
 
     constraints {
@@ -13,4 +23,10 @@ dependencies {
             }
         }
     }
+    implementation "androidx.core:core-ktx:1.3.1"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+}
+
+repositories {
+    mavenCentral()
 }
