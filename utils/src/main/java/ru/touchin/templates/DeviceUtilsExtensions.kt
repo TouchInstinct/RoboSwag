@@ -6,14 +6,13 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.hardware.biometrics.BiometricManager
 import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.os.Build
 import android.os.Process
-import android.telephony.TelephonyManager
 import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import ru.touchin.templates.DeviceUtils.NetworkType
+import ru.touchin.templates.DeviceUtils.getMobileNetworkType
 
 fun Context.isNetworkConnected(): Boolean = getNetworkType() != NetworkType.NONE
 
@@ -33,29 +32,6 @@ fun Context.getNetworkType(): NetworkType {
         else -> NetworkType.UNKNOWN
     }
 }
-
-fun getMobileNetworkType(info: NetworkInfo): NetworkType =
-        when (info.subtype) {
-            TelephonyManager.NETWORK_TYPE_GPRS,
-            TelephonyManager.NETWORK_TYPE_EDGE,
-            TelephonyManager.NETWORK_TYPE_CDMA,
-            TelephonyManager.NETWORK_TYPE_1xRTT,
-            TelephonyManager.NETWORK_TYPE_IDEN -> NetworkType.MOBILE_2G
-            TelephonyManager.NETWORK_TYPE_UMTS,
-            TelephonyManager.NETWORK_TYPE_EVDO_0,
-            TelephonyManager.NETWORK_TYPE_EVDO_A,
-            TelephonyManager.NETWORK_TYPE_HSDPA,
-            TelephonyManager.NETWORK_TYPE_HSUPA,
-            TelephonyManager.NETWORK_TYPE_HSPA,
-            TelephonyManager.NETWORK_TYPE_EVDO_B,
-            TelephonyManager.NETWORK_TYPE_EHRPD,
-            TelephonyManager.NETWORK_TYPE_HSPAP -> NetworkType.MOBILE_3G
-            TelephonyManager.NETWORK_TYPE_LTE,
-            19 -> NetworkType.MOBILE_LTE
-            TelephonyManager.NETWORK_TYPE_UNKNOWN -> NetworkType.UNKNOWN
-            else -> NetworkType.UNKNOWN
-        }
-
 
 @RequiresApi(Build.VERSION_CODES.M)
 @Suppress("InlinedApi")
