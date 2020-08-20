@@ -12,7 +12,6 @@ dependencies {
     implementation project(":kotlin-extensions")
     implementation project(":logging")
 
-    implementation "androidx.annotation:annotation"
     implementation "androidx.core:core"
     implementation "com.google.android.material:material"
 
