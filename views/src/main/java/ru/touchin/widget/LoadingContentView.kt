@@ -10,6 +10,7 @@ import ru.touchin.roboswag.components.views.R
 import ru.touchin.roboswag.components.views.databinding.ProgressViewBinding
 import kotlin.properties.Delegates
 
+//TODO make customizable views list and views style
 class LoadingContentView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
