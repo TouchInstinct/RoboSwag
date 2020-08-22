@@ -97,6 +97,11 @@ class AmountWithDecimalEditText @JvmOverloads constructor(
                     text.withoutFormatting().formatMoney(decimalPartLength_)
                 } else ""
 
+                if (textAfter.isEmpty()) {
+                    setText("")
+                    return@doOnTextChanged
+                }
+
                 if (!isTextErased(textBefore, textAfter)) {
                     val diff = textAfter.length - textBefore.length - 1
                     setText(textAfter)
@@ -169,17 +174,21 @@ class AmountWithDecimalEditText @JvmOverloads constructor(
             textAfter.length <= textBefore.length
 
     private fun String.formatMoney(decimalPartLength_: Int?): String {
-        var mask = COMMON_MONEY_MASK
-        if (decimalPartLength_ != null && decimalPartLength != 0) {
-            mask += "." + "0".repeat(min(decimalPartLength_, decimalPartLength))
-        }
+        try {
+            var mask = COMMON_MONEY_MASK
+            if (decimalPartLength_ != null && decimalPartLength != 0) {
+                mask += "." + "0".repeat(min(decimalPartLength_, decimalPartLength))
+            }
 
-        val formatter = DecimalFormat(mask)
-        formatter.decimalFormatSymbols = DecimalFormatSymbols().also {
-            it.decimalSeparator = decimalSeparator[0]
-            it.groupingSeparator = GROUPING_SEPARATOR
+            val formatter = DecimalFormat(mask)
+            formatter.decimalFormatSymbols = DecimalFormatSymbols().also {
+                it.decimalSeparator = decimalSeparator[0]
+                it.groupingSeparator = GROUPING_SEPARATOR
+            }
+            return formatter.format(this.prepareForDoubleCast().toDouble().floor())
+        } catch (e: Throwable) {
+            return ""
         }
-        return formatter.format(this.prepareForDoubleCast().toDouble().floor())
     }
 
     private fun Double.floor() =
