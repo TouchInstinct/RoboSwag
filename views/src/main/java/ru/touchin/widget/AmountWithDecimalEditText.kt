@@ -26,10 +26,8 @@ class AmountWithDecimalEditText @JvmOverloads constructor(
         private const val DEFAULT_DECIMAL_PART_LENGTH = 2
         private val hardcodedSymbols = listOf(GROUPING_SEPARATOR)
         private val possibleDecimalSeparators = listOf(",", ".")
+        
     }
-
-    private var textBefore = ""
-    private var isTextWasArtificiallyChanged = true
 
     var decimalSeparator = DEFAULT_DECIMAL_SEPARATOR
         set(value) {
@@ -37,10 +35,11 @@ class AmountWithDecimalEditText @JvmOverloads constructor(
                 throw Exception("Not allowed decimal separator. Supports only: $possibleDecimalSeparators")
             field = value
         }
-
-
     var decimalPartLength = DEFAULT_DECIMAL_PART_LENGTH
     var isSeparatorCutInvalidDecimalLength = false
+
+    private var textBefore = ""
+    private var isTextWasArtificiallyChanged = true
 
     init {
         doOnTextChanged { text, _, _, _ ->
@@ -130,6 +129,8 @@ class AmountWithDecimalEditText @JvmOverloads constructor(
         }
     }
 
+    fun getTextWithoutFormatting() = text.toString().withoutFormatting()
+
     private fun setTextWhichWasPasted(text: String) {
         var result = ""
         var decimalLength = -1
@@ -151,9 +152,6 @@ class AmountWithDecimalEditText @JvmOverloads constructor(
         setText(result)
         setSelection(result.length)
     }
-
-
-    fun getTextWithoutFormatting() = text.toString().withoutFormatting()
 
     private fun String.withoutFormatting(): String {
         var result = this
