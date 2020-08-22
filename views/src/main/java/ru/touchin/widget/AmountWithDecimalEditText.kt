@@ -47,82 +47,81 @@ class AmountWithDecimalEditText @JvmOverloads constructor(
             if (isTextWasArtificiallyChanged) {
                 isTextWasArtificiallyChanged = false
                 val cursorPos = selectionStart
-                var text = text.toString()
-                possibleDecimalSeparators.forEach {
-                    text = text.replace(it, decimalSeparator)
-                }
-
-                if (text == decimalSeparator || text.count { it == decimalSeparator[0] } > 1) {
-                    if (abs(textBefore.length - text.length) > 1) {
-                        setTextWhichWasPasted(text)
-                    } else {
-                        setText(textBefore)
-                        setSelection(max(cursorPos - 1, 0))
+                try {
+                    var text = text.toString()
+                    possibleDecimalSeparators.forEach {
+                        text = text.replace(it, decimalSeparator)
                     }
-                    return@doOnTextChanged
-                }
 
-                if (text.take(2) == "00") {
-                    if (abs(textBefore.length - text.length) > 1) {
-                        setTextWhichWasPasted(text)
-                    } else {
-                        setText(textBefore)
-                        setSelection(max(cursorPos - 1, 0))
-                    }
-                    return@doOnTextChanged
-                }
-
-                if (text.length >= 2 && text[0] == '0' && text[1] != decimalSeparator[0]) {
-                    if (abs(textBefore.length - text.length) > 1) {
-                        setTextWhichWasPasted(text)
-                    } else {
-                        setTextWhichWasPasted(text)
-                        setSelection(max(cursorPos - 1, 0))
-                    }
-                    return@doOnTextChanged
-                }
-
-                val decimalPartLength_ = text.split(decimalSeparator).getOrNull(1)?.length
-                if (!isSeparatorCutInvalidDecimalLength && decimalPartLength_ != null && decimalPartLength_ > decimalPartLength) {
-                    if (abs(textBefore.length - text.length) > 1) {
-                        setTextWhichWasPasted(text)
-                    } else {
-                        setText(textBefore)
-                        setSelection(max(cursorPos - 1, 0))
-                    }
-                    return@doOnTextChanged
-                }
-
-                val textAfter = if (text.isNotEmpty()) {
-                    text.withoutFormatting().formatMoney(decimalPartLength_)
-                } else ""
-
-                if (textAfter.isEmpty()) {
-                    setText("")
-                    return@doOnTextChanged
-                }
-
-                if (!isTextErased(textBefore, textAfter)) {
-                    val diff = textAfter.length - textBefore.length - 1
-                    setText(textAfter)
-                    setSelection(min(cursorPos + diff, textAfter.length))
-                } else {
-                    if (!textBefore.contains(decimalSeparator)
-                            && textAfter.contains(decimalSeparator)
-                    ) {
-                        setText(textAfter)
-                        setSelection(min(textAfter.length, textAfter.indexOf(decimalSeparator) + 1))
+                    if (text == decimalSeparator || text.count { it == decimalSeparator[0] } > 1) {
+                        if (abs(textBefore.length - text.length) > 1) {
+                            setTextWhichWasPasted(text)
+                        } else {
+                            setText(textBefore)
+                            setSelection(max(cursorPos - 1, 0))
+                        }
                         return@doOnTextChanged
                     }
-                    val diff = textBefore.length - textAfter.length
-                    if (diff == 0) {
-                        setText(textAfter)
-                        setSelection(min(cursorPos, textAfter.length))
-                    } else {
-                        setText(textAfter)
-                        setSelection(max(cursorPos - diff + 1, 0))
+
+                    if (text.take(2) == "00") {
+                        if (abs(textBefore.length - text.length) > 1) {
+                            setTextWhichWasPasted(text)
+                        } else {
+                            setText(textBefore)
+                            setSelection(max(cursorPos - 1, 0))
+                        }
+                        return@doOnTextChanged
                     }
 
+                    if (text.length >= 2 && text[0] == '0' && text[1] != decimalSeparator[0]) {
+                        if (abs(textBefore.length - text.length) > 1) {
+                            setTextWhichWasPasted(text)
+                        } else {
+                            setTextWhichWasPasted(text)
+                            setSelection(max(cursorPos - 1, 0))
+                        }
+                        return@doOnTextChanged
+                    }
+
+                    val decimalPartLength_ = text.split(decimalSeparator).getOrNull(1)?.length
+                    if (!isSeparatorCutInvalidDecimalLength && decimalPartLength_ != null && decimalPartLength_ > decimalPartLength) {
+                        if (abs(textBefore.length - text.length) > 1) {
+                            setTextWhichWasPasted(text)
+                        } else {
+                            setText(textBefore)
+                            setSelection(max(cursorPos - 1, 0))
+                        }
+                        return@doOnTextChanged
+                    }
+
+                    val textAfter = if (text.isNotEmpty()) {
+                        text.withoutFormatting().formatMoney(decimalPartLength_)
+                    } else ""
+
+                    if (!isTextErased(textBefore, textAfter)) {
+                        val diff = textAfter.length - textBefore.length - 1
+                        setText(textAfter)
+                        setSelection(min(cursorPos + diff, textAfter.length))
+                    } else {
+                        if (!textBefore.contains(decimalSeparator)
+                                && textAfter.contains(decimalSeparator)
+                        ) {
+                            setText(textAfter)
+                            setSelection(min(textAfter.length, textAfter.indexOf(decimalSeparator) + 1))
+                            return@doOnTextChanged
+                        }
+                        val diff = textBefore.length - textAfter.length
+                        if (diff == 0) {
+                            setText(textAfter)
+                            setSelection(min(cursorPos, textAfter.length))
+                        } else {
+                            setText(textAfter)
+                            setSelection(max(cursorPos - diff + 1, 0))
+                        }
+
+                    }
+                } catch (e: Throwable) {
+                    setText("")
                 }
             } else {
                 textBefore = text.toString()
@@ -174,21 +173,17 @@ class AmountWithDecimalEditText @JvmOverloads constructor(
             textAfter.length <= textBefore.length
 
     private fun String.formatMoney(decimalPartLength_: Int?): String {
-        try {
-            var mask = COMMON_MONEY_MASK
-            if (decimalPartLength_ != null && decimalPartLength != 0) {
-                mask += "." + "0".repeat(min(decimalPartLength_, decimalPartLength))
-            }
-
-            val formatter = DecimalFormat(mask)
-            formatter.decimalFormatSymbols = DecimalFormatSymbols().also {
-                it.decimalSeparator = decimalSeparator[0]
-                it.groupingSeparator = GROUPING_SEPARATOR
-            }
-            return formatter.format(this.prepareForDoubleCast().toDouble().floor())
-        } catch (e: Throwable) {
-            return ""
+        var mask = COMMON_MONEY_MASK
+        if (decimalPartLength_ != null && decimalPartLength != 0) {
+            mask += "." + "0".repeat(min(decimalPartLength_, decimalPartLength))
         }
+
+        val formatter = DecimalFormat(mask)
+        formatter.decimalFormatSymbols = DecimalFormatSymbols().also {
+            it.decimalSeparator = decimalSeparator[0]
+            it.groupingSeparator = GROUPING_SEPARATOR
+        }
+        return formatter.format(this.prepareForDoubleCast().toDouble().floor())
     }
 
     private fun Double.floor() =
