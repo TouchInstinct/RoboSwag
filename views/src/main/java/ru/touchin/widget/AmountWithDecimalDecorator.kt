@@ -1,6 +1,6 @@
 package ru.touchin.widget
 
-import androidx.appcompat.widget.AppCompatEditText
+import android.widget.EditText
 import androidx.core.widget.doOnTextChanged
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
@@ -11,7 +11,7 @@ import kotlin.math.pow
 
 @Suppress("detekt.LabeledExpression")
 class AmountWithDecimalDecorator(
-        val editText: AppCompatEditText
+        val editText: EditText
 ) {
 
     companion object {
@@ -50,45 +50,22 @@ class AmountWithDecimalDecorator(
                         text = text.replace(it, decimalSeparator)
                     }
 
-                    if (text == decimalSeparator || text.count { it == decimalSeparator[0] } > 1) {
-                        if (abs(textBefore.length - text.length) > 1) {
-                            setTextWhichWasPasted(text)
-                        } else {
-                            editText.setText(textBefore)
-                            editText.setSelection(max(cursorPos - 1, 0))
-                        }
-                        return@doOnTextChanged
-                    }
-
-                    if (text.take(2) == "00") {
-                        if (abs(textBefore.length - text.length) > 1) {
-                            setTextWhichWasPasted(text)
-                        } else {
-                            editText.setText(textBefore)
-                            editText.setSelection(max(cursorPos - 1, 0))
-                        }
+                    if (text == decimalSeparator || text.count { it == decimalSeparator[0] } > 1 || text.take(2) == "00") {
+                        setTextWhenNewInputIncorrect(text, cursorPos)
                         return@doOnTextChanged
                     }
 
                     if (text.length >= 2 && text[0] == '0' && text[1] != decimalSeparator[0]) {
-                        if (abs(textBefore.length - text.length) > 1) {
-                            setTextWhichWasPasted(text)
-                        } else {
-                            setTextWhichWasPasted(text)
+                        setTextWhichWasPasted(text)
+                        if (abs(textBefore.length - text.length) <= 1) {
                             editText.setSelection(max(cursorPos - 1, 0))
                         }
                         return@doOnTextChanged
                     }
 
                     val currentDecimalPartLength = text.split(decimalSeparator).getOrNull(1)?.length
-                    if (!isSeparatorCutInvalidDecimalLength && currentDecimalPartLength != null
-                            && currentDecimalPartLength > decimalPartLength) {
-                        if (abs(textBefore.length - text.length) > 1) {
-                            setTextWhichWasPasted(text)
-                        } else {
-                            editText.setText(textBefore)
-                            editText.setSelection(max(cursorPos - 1, 0))
-                        }
+                    if (isDecimalPathTooLong(currentDecimalPartLength)) {
+                        setTextWhenNewInputIncorrect(text, cursorPos)
                         return@doOnTextChanged
                     }
 
@@ -97,26 +74,9 @@ class AmountWithDecimalDecorator(
                     } else ""
 
                     if (!isTextErased(textBefore, textAfter)) {
-                        val diff = textAfter.length - textBefore.length - 1
-                        editText.setText(textAfter)
-                        editText.setSelection(min(cursorPos + diff, textAfter.length))
+                        onTextErased(textAfter, cursorPos)
                     } else {
-                        if (!textBefore.contains(decimalSeparator)
-                                && textAfter.contains(decimalSeparator)
-                        ) {
-                            editText.setText(textAfter)
-                            editText.setSelection(min(textAfter.length, textAfter.indexOf(decimalSeparator) + 1))
-                            return@doOnTextChanged
-                        }
-                        val diff = textBefore.length - textAfter.length
-                        if (diff == 0) {
-                            editText.setText(textAfter)
-                            editText.setSelection(min(cursorPos, textAfter.length))
-                        } else {
-                            editText.setText(textAfter)
-                            editText.setSelection(max(cursorPos - diff + 1, 0))
-                        }
-
+                        onTextInserted(textAfter, cursorPos)
                     }
                 } catch (e: Throwable) {
                     editText.setText("")
@@ -128,7 +88,44 @@ class AmountWithDecimalDecorator(
         }
     }
 
-    fun getTextWithoutFormatting() = editText.text.toString().withoutFormatting()
+    fun getTextWithoutFormatting(): String = editText.text.toString().withoutFormatting()
+
+    private fun setTextWhenNewInputIncorrect(text: String, cursorPos: Int) {
+        if (abs(textBefore.length - text.length) > 1) {
+            setTextWhichWasPasted(text)
+        } else {
+            editText.setText(textBefore)
+            editText.setSelection(max(cursorPos - 1, 0))
+        }
+    }
+
+    private fun onTextErased(textAfter: String, cursorPos: Int) {
+        val diff = textAfter.length - textBefore.length - 1
+        editText.setText(textAfter)
+        editText.setSelection(min(cursorPos + diff, textAfter.length))
+    }
+
+    private fun onTextInserted(textAfter: String, cursorPos: Int) {
+        if (!textBefore.contains(decimalSeparator)
+                && textAfter.contains(decimalSeparator)
+        ) {
+            editText.setText(textAfter)
+            editText.setSelection(min(textAfter.length, textAfter.indexOf(decimalSeparator) + 1))
+            return
+        }
+        val diff = textBefore.length - textAfter.length
+        if (diff == 0) {
+            editText.setText(textAfter)
+            editText.setSelection(min(cursorPos, textAfter.length))
+        } else {
+            editText.setText(textAfter)
+            editText.setSelection(max(cursorPos - diff + 1, 0))
+        }
+    }
+
+    private fun isDecimalPathTooLong(currentDecimalPartLength: Int?) =
+            !isSeparatorCutInvalidDecimalLength && currentDecimalPartLength != null
+                    && currentDecimalPartLength > decimalPartLength
 
     private fun setTextWhichWasPasted(text: String) {
         var result = ""
