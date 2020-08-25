@@ -17,7 +17,7 @@ class AmountWithDecimalDecorator(
     companion object {
 
         private const val COMMON_MONEY_MASK = "###,##0"
-        private const val DEFAULT_DECIMAL_SEPARATOR = ","
+        private const val DEFAULT_DECIMAL_SEPARATOR = "."
         private const val GROUPING_SEPARATOR = ' '
         private const val DEFAULT_DECIMAL_PART_LENGTH = 2
         private val hardcodedSymbols = listOf(GROUPING_SEPARATOR)
@@ -34,6 +34,7 @@ class AmountWithDecimalDecorator(
         }
     var decimalPartLength = DEFAULT_DECIMAL_PART_LENGTH
     var isSeparatorCutInvalidDecimalLength = false
+    var onTextChanged: (text: String) -> Unit = {}
 
     private var textBefore = ""
     private var isTextWasArtificiallyChanged = true
@@ -81,11 +82,13 @@ class AmountWithDecimalDecorator(
             } else {
                 textBefore = text.toString()
                 isTextWasArtificiallyChanged = true
+                onTextChanged(text.toString())
             }
         }
     }
 
-    fun getTextWithoutFormatting(): String = editText.text.toString().withoutFormatting()
+    fun getTextWithoutFormatting(decimalSeparatorToReplace: String = decimalSeparator): String =
+            textBefore.withoutFormatting(decimalSeparatorToReplace)
 
     private fun setTextWithHeadZero(text: String, cursorPos: Int) {
         if (abs(textBefore.length - text.length) > 1) {
@@ -155,9 +158,10 @@ class AmountWithDecimalDecorator(
         editText.setSelection(result.length)
     }
 
-    private fun String.withoutFormatting(): String {
+    private fun String.withoutFormatting(decimalSeparatorToReplace: String = decimalSeparator): String {
         var result = this
         hardcodedSymbols.forEach { result = this.replace(it.toString(), "") }
+        result = result.replace(decimalSeparator, decimalSeparatorToReplace)
         return result
     }
 
