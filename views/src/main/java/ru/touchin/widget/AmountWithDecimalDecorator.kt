@@ -77,7 +77,8 @@ class AmountWithDecimalDecorator(
                         onTextInserted(textAfter, cursorPos)
                     }
                 } catch (e: Throwable) {
-                    editText.setText("")
+                    editText.setText(textBefore)
+                    editText.setSelection(textBefore.length)
                 }
             } else {
                 textBefore = text.toString()
