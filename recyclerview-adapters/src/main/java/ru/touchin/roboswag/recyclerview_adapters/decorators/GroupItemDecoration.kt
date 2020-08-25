@@ -24,21 +24,12 @@ class GroupItemDecoration<TViewHolder : GroupItemDecoration.ViewHolder>(
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         val adapterPosition = parent.getChildAdapterPosition(view)
         if (predicate(adapterPosition)) {
-            val groupViewHolder = viewHoldersPool[adapterPosition]
-                    ?: onCreateViewHolder(parent).also { viewHoldersPool[adapterPosition] = it }
+            val groupViewHolder = obtainViewHolder(adapterPosition, parent)
             onBindViewHolder(adapterPosition, groupViewHolder)
             val groupView = groupViewHolder.view
             val layoutParams = groupView.layoutParams as ViewGroup.MarginLayoutParams
-            val widthSpec = ViewGroup.getChildMeasureSpec(
-                    View.MeasureSpec.makeMeasureSpec(parent.measuredWidth, View.MeasureSpec.EXACTLY),
-                    parent.paddingLeft + parent.paddingRight + layoutParams.leftMargin + layoutParams.rightMargin,
-                    groupView.layoutParams.width
-            )
-            val heightSpec = ViewGroup.getChildMeasureSpec(
-                    View.MeasureSpec.makeMeasureSpec(parent.measuredHeight, View.MeasureSpec.EXACTLY),
-                    parent.paddingTop + parent.paddingBottom + layoutParams.topMargin + layoutParams.bottomMargin,
-                    groupView.layoutParams.height
-            )
+            val widthSpec = getWidthChildMeasureSpec(parent, layoutParams, groupView)
+            val heightSpec = getHeightChildMeasureSpec(parent, layoutParams, groupView)
             groupView.measure(widthSpec, heightSpec)
             groupView.layout(0, 0, groupView.measuredWidth, groupView.measuredHeight)
             when (orientation) {
@@ -52,7 +43,7 @@ class GroupItemDecoration<TViewHolder : GroupItemDecoration.ViewHolder>(
 
     @Suppress("detekt.NestedBlockDepth")
     override fun onDraw(canvas: Canvas, parent: RecyclerView, state: RecyclerView.State) {
-        var invalidate = false
+        var isInvalidated = false
         for (child in parent.children) {
             val adapterPosition = parent.getChildAdapterPosition(child)
             val groupView = viewHoldersPool[adapterPosition]?.view
@@ -61,24 +52,47 @@ class GroupItemDecoration<TViewHolder : GroupItemDecoration.ViewHolder>(
                     val layoutParams = groupView.layoutParams as ViewGroup.MarginLayoutParams
                     parent.getDecoratedBoundsWithMargins(child, bounds)
                     canvas.save()
-                    when (orientation) {
-                        RecyclerView.VERTICAL -> canvas.translate(parent.paddingLeft.toFloat() + layoutParams.leftMargin, bounds.top.toFloat())
-                        RecyclerView.HORIZONTAL -> canvas.translate(bounds.left.toFloat(), parent.paddingTop.toFloat() + layoutParams.topMargin)
-                    }
+                    translateCanvasByOrientation(canvas, parent, layoutParams)
                     groupView.draw(canvas)
                     canvas.restore()
                 } else {
-                    invalidate = true
+                    isInvalidated = true
                     break
                 }
             } else if (groupView != null) {
-                invalidate = true
+                isInvalidated = true
                 break
             }
         }
-        if (invalidate) {
+        if (isInvalidated) {
             parent.invalidateItemDecorations()
         }
+    }
+
+    private fun translateCanvasByOrientation(canvas: Canvas, parent: RecyclerView, layoutParams: ViewGroup.MarginLayoutParams) {
+        when (orientation) {
+            RecyclerView.VERTICAL -> canvas.translate(parent.paddingLeft.toFloat() + layoutParams.leftMargin, bounds.top.toFloat())
+            RecyclerView.HORIZONTAL -> canvas.translate(bounds.left.toFloat(), parent.paddingTop.toFloat() + layoutParams.topMargin)
+        }
+    }
+
+    private fun obtainViewHolder(adapterPosition: Int, parent: RecyclerView) = viewHoldersPool[adapterPosition]
+            ?: onCreateViewHolder(parent).also { viewHoldersPool[adapterPosition] = it }
+
+    private fun getHeightChildMeasureSpec(parent: RecyclerView, layoutParams: ViewGroup.MarginLayoutParams, groupView: View): Int {
+        return ViewGroup.getChildMeasureSpec(
+                View.MeasureSpec.makeMeasureSpec(parent.measuredHeight, View.MeasureSpec.EXACTLY),
+                parent.paddingTop + parent.paddingBottom + layoutParams.topMargin + layoutParams.bottomMargin,
+                groupView.layoutParams.height
+        )
+    }
+
+    private fun getWidthChildMeasureSpec(parent: RecyclerView, layoutParams: ViewGroup.MarginLayoutParams, groupView: View): Int {
+        return ViewGroup.getChildMeasureSpec(
+                View.MeasureSpec.makeMeasureSpec(parent.measuredWidth, View.MeasureSpec.EXACTLY),
+                parent.paddingLeft + parent.paddingRight + layoutParams.leftMargin + layoutParams.rightMargin,
+                groupView.layoutParams.width
+        )
     }
 
     open class ViewHolder(val view: View) {
