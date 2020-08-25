@@ -56,10 +56,7 @@ class AmountWithDecimalDecorator(
                     }
 
                     if (text.length >= 2 && text[0] == '0' && text[1] != decimalSeparator[0]) {
-                        setTextWhichWasPasted(text)
-                        if (abs(textBefore.length - text.length) <= 1) {
-                            editText.setSelection(max(cursorPos - 1, 0))
-                        }
+                        setTextWithHeadZero(text, cursorPos)
                         return@doOnTextChanged
                     }
 
@@ -89,6 +86,15 @@ class AmountWithDecimalDecorator(
     }
 
     fun getTextWithoutFormatting(): String = editText.text.toString().withoutFormatting()
+
+    private fun setTextWithHeadZero(text: String, cursorPos: Int) {
+        if (abs(textBefore.length - text.length) > 1) {
+            setTextWhichWasPasted(text)
+        } else {
+            editText.setText(text.substring(1, text.length))
+            editText.setSelection(max(cursorPos - 1, 0))
+        }
+    }
 
     private fun setTextWhenNewInputIncorrect(text: String, cursorPos: Int) {
         if (abs(textBefore.length - text.length) > 1) {
