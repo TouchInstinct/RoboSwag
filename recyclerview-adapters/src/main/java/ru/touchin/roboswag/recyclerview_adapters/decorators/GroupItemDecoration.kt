@@ -24,18 +24,7 @@ class GroupItemDecoration<TViewHolder : GroupItemDecoration.ViewHolder>(
     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         val adapterPosition = parent.getChildAdapterPosition(view)
         if (predicate(adapterPosition)) {
-            val groupViewHolder = obtainViewHolder(adapterPosition, parent)
-            onBindViewHolder(adapterPosition, groupViewHolder)
-            val groupView = groupViewHolder.view
-            val layoutParams = groupView.layoutParams as ViewGroup.MarginLayoutParams
-            val widthSpec = getWidthChildMeasureSpec(parent, layoutParams, groupView)
-            val heightSpec = getHeightChildMeasureSpec(parent, layoutParams, groupView)
-            groupView.measure(widthSpec, heightSpec)
-            groupView.layout(0, 0, groupView.measuredWidth, groupView.measuredHeight)
-            when (orientation) {
-                RecyclerView.VERTICAL -> outRect.top = groupView.measuredHeight
-                RecyclerView.HORIZONTAL -> outRect.left = groupView.measuredWidth
-            }
+            calculateOutRectPosition(adapterPosition, parent, outRect)
         } else {
             viewHoldersPool.remove(adapterPosition)
         }
@@ -44,28 +33,46 @@ class GroupItemDecoration<TViewHolder : GroupItemDecoration.ViewHolder>(
     @Suppress("detekt.NestedBlockDepth")
     override fun onDraw(canvas: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         var isInvalidated = false
-        for (child in parent.children) {
+        loop@ for (child in parent.children) {
             val adapterPosition = parent.getChildAdapterPosition(child)
             val groupView = viewHoldersPool[adapterPosition]?.view
-            if (predicate(adapterPosition)) {
-                if (groupView != null) {
-                    val layoutParams = groupView.layoutParams as ViewGroup.MarginLayoutParams
-                    parent.getDecoratedBoundsWithMargins(child, bounds)
-                    canvas.save()
-                    translateCanvasByOrientation(canvas, parent, layoutParams)
-                    groupView.draw(canvas)
-                    canvas.restore()
-                } else {
-                    isInvalidated = true
-                    break
+            when {
+                predicate(adapterPosition) -> {
+                    if (groupView != null) {
+                        val layoutParams = groupView.layoutParams as ViewGroup.MarginLayoutParams
+                        parent.getDecoratedBoundsWithMargins(child, bounds)
+                        canvas.save()
+                        translateCanvasByOrientation(canvas, parent, layoutParams)
+                        groupView.draw(canvas)
+                        canvas.restore()
+                    } else {
+                        isInvalidated = true
+                        break@loop
+                    }
                 }
-            } else if (groupView != null) {
-                isInvalidated = true
-                break
+                groupView != null -> {
+                    isInvalidated = true
+                    break@loop
+                }
             }
         }
         if (isInvalidated) {
             parent.invalidateItemDecorations()
+        }
+    }
+
+    private fun calculateOutRectPosition(adapterPosition: Int, parent: RecyclerView, outRect: Rect) {
+        val groupViewHolder = obtainViewHolder(adapterPosition, parent)
+        onBindViewHolder(adapterPosition, groupViewHolder)
+        val groupView = groupViewHolder.view
+        val layoutParams = groupView.layoutParams as ViewGroup.MarginLayoutParams
+        val widthSpec = getWidthChildMeasureSpec(parent, layoutParams, groupView)
+        val heightSpec = getHeightChildMeasureSpec(parent, layoutParams, groupView)
+        groupView.measure(widthSpec, heightSpec)
+        groupView.layout(0, 0, groupView.measuredWidth, groupView.measuredHeight)
+        when (orientation) {
+            RecyclerView.VERTICAL -> outRect.top = groupView.measuredHeight
+            RecyclerView.HORIZONTAL -> outRect.left = groupView.measuredWidth
         }
     }
 
