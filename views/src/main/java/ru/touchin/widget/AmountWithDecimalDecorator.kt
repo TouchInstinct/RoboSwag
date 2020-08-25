@@ -1,10 +1,7 @@
 package ru.touchin.widget
 
-import android.content.Context
-import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.widget.doOnTextChanged
-import ru.touchin.roboswag.components.views.R
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import kotlin.math.abs
@@ -12,11 +9,10 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
 
-class AmountWithDecimalEditText @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet?,
-        defStyleAttr: Int = R.attr.editTextStyle
-) : AppCompatEditText(context, attrs, defStyleAttr) {
+@Suppress("detekt.LabeledExpression")
+class AmountWithDecimalDecorator(
+        val editText: AppCompatEditText
+) {
 
     companion object {
 
@@ -26,13 +22,14 @@ class AmountWithDecimalEditText @JvmOverloads constructor(
         private const val DEFAULT_DECIMAL_PART_LENGTH = 2
         private val hardcodedSymbols = listOf(GROUPING_SEPARATOR)
         private val possibleDecimalSeparators = listOf(",", ".")
-        
+
     }
 
     var decimalSeparator = DEFAULT_DECIMAL_SEPARATOR
         set(value) {
-            if (!possibleDecimalSeparators.contains(value))
-                throw Exception("Not allowed decimal separator. Supports only: $possibleDecimalSeparators")
+            if (!possibleDecimalSeparators.contains(value)) {
+                throw IllegalArgumentException("Not allowed decimal separator. Supports only: $possibleDecimalSeparators")
+            }
             field = value
         }
     var decimalPartLength = DEFAULT_DECIMAL_PART_LENGTH
@@ -42,10 +39,11 @@ class AmountWithDecimalEditText @JvmOverloads constructor(
     private var isTextWasArtificiallyChanged = true
 
     init {
-        doOnTextChanged { text, _, _, _ ->
+        @Suppress("detekt.TooGenericExceptionCaught")
+        editText.doOnTextChanged { text, _, _, _ ->
             if (isTextWasArtificiallyChanged) {
                 isTextWasArtificiallyChanged = false
-                val cursorPos = selectionStart
+                val cursorPos = editText.selectionStart
                 try {
                     var text = text.toString()
                     possibleDecimalSeparators.forEach {
@@ -56,8 +54,8 @@ class AmountWithDecimalEditText @JvmOverloads constructor(
                         if (abs(textBefore.length - text.length) > 1) {
                             setTextWhichWasPasted(text)
                         } else {
-                            setText(textBefore)
-                            setSelection(max(cursorPos - 1, 0))
+                            editText.setText(textBefore)
+                            editText.setSelection(max(cursorPos - 1, 0))
                         }
                         return@doOnTextChanged
                     }
@@ -66,8 +64,8 @@ class AmountWithDecimalEditText @JvmOverloads constructor(
                         if (abs(textBefore.length - text.length) > 1) {
                             setTextWhichWasPasted(text)
                         } else {
-                            setText(textBefore)
-                            setSelection(max(cursorPos - 1, 0))
+                            editText.setText(textBefore)
+                            editText.setSelection(max(cursorPos - 1, 0))
                         }
                         return@doOnTextChanged
                     }
@@ -77,50 +75,51 @@ class AmountWithDecimalEditText @JvmOverloads constructor(
                             setTextWhichWasPasted(text)
                         } else {
                             setTextWhichWasPasted(text)
-                            setSelection(max(cursorPos - 1, 0))
+                            editText.setSelection(max(cursorPos - 1, 0))
                         }
                         return@doOnTextChanged
                     }
 
-                    val decimalPartLength_ = text.split(decimalSeparator).getOrNull(1)?.length
-                    if (!isSeparatorCutInvalidDecimalLength && decimalPartLength_ != null && decimalPartLength_ > decimalPartLength) {
+                    val currentDecimalPartLength = text.split(decimalSeparator).getOrNull(1)?.length
+                    if (!isSeparatorCutInvalidDecimalLength && currentDecimalPartLength != null
+                            && currentDecimalPartLength > decimalPartLength) {
                         if (abs(textBefore.length - text.length) > 1) {
                             setTextWhichWasPasted(text)
                         } else {
-                            setText(textBefore)
-                            setSelection(max(cursorPos - 1, 0))
+                            editText.setText(textBefore)
+                            editText.setSelection(max(cursorPos - 1, 0))
                         }
                         return@doOnTextChanged
                     }
 
                     val textAfter = if (text.isNotEmpty()) {
-                        text.withoutFormatting().formatMoney(decimalPartLength_)
+                        text.withoutFormatting().formatMoney(currentDecimalPartLength)
                     } else ""
 
                     if (!isTextErased(textBefore, textAfter)) {
                         val diff = textAfter.length - textBefore.length - 1
-                        setText(textAfter)
-                        setSelection(min(cursorPos + diff, textAfter.length))
+                        editText.setText(textAfter)
+                        editText.setSelection(min(cursorPos + diff, textAfter.length))
                     } else {
                         if (!textBefore.contains(decimalSeparator)
                                 && textAfter.contains(decimalSeparator)
                         ) {
-                            setText(textAfter)
-                            setSelection(min(textAfter.length, textAfter.indexOf(decimalSeparator) + 1))
+                            editText.setText(textAfter)
+                            editText.setSelection(min(textAfter.length, textAfter.indexOf(decimalSeparator) + 1))
                             return@doOnTextChanged
                         }
                         val diff = textBefore.length - textAfter.length
                         if (diff == 0) {
-                            setText(textAfter)
-                            setSelection(min(cursorPos, textAfter.length))
+                            editText.setText(textAfter)
+                            editText.setSelection(min(cursorPos, textAfter.length))
                         } else {
-                            setText(textAfter)
-                            setSelection(max(cursorPos - diff + 1, 0))
+                            editText.setText(textAfter)
+                            editText.setSelection(max(cursorPos - diff + 1, 0))
                         }
 
                     }
                 } catch (e: Throwable) {
-                    setText("")
+                    editText.setText("")
                 }
             } else {
                 textBefore = text.toString()
@@ -129,7 +128,7 @@ class AmountWithDecimalEditText @JvmOverloads constructor(
         }
     }
 
-    fun getTextWithoutFormatting() = text.toString().withoutFormatting()
+    fun getTextWithoutFormatting() = editText.text.toString().withoutFormatting()
 
     private fun setTextWhichWasPasted(text: String) {
         var result = ""
@@ -149,8 +148,8 @@ class AmountWithDecimalEditText @JvmOverloads constructor(
             index++
         }
         result = result.formatMoney(decimalPartLength)
-        setText(result)
-        setSelection(result.length)
+        editText.setText(result)
+        editText.setSelection(result.length)
     }
 
     private fun String.withoutFormatting(): String {
@@ -170,10 +169,10 @@ class AmountWithDecimalEditText @JvmOverloads constructor(
     private fun isTextErased(textBefore: String, textAfter: String) =
             textAfter.length <= textBefore.length
 
-    private fun String.formatMoney(decimalPartLength_: Int?): String {
+    private fun String.formatMoney(currentDecimalPartLength: Int?): String {
         var mask = COMMON_MONEY_MASK
-        if (decimalPartLength_ != null && decimalPartLength != 0) {
-            mask += "." + "0".repeat(min(decimalPartLength_, decimalPartLength))
+        if (currentDecimalPartLength != null && decimalPartLength != 0) {
+            mask += "." + "0".repeat(min(currentDecimalPartLength, decimalPartLength))
         }
 
         val formatter = DecimalFormat(mask)
