@@ -1,4 +1,4 @@
-package ru.touchin.decorators
+package ru.touchin.roboswag.recyclerview_adapters.decorators
 
 import android.graphics.Canvas
 import android.graphics.Rect

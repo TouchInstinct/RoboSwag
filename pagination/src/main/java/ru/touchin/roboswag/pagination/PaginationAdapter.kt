@@ -3,8 +3,8 @@ package ru.touchin.roboswag.pagination
 import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import ru.touchin.adapters.AdapterDelegate
-import ru.touchin.adapters.DelegationListAdapter
+import ru.touchin.roboswag.recyclerview_adapters.adapters.AdapterDelegate
+import ru.touchin.roboswag.recyclerview_adapters.adapters.DelegationListAdapter
 import ru.touchin.mvi_test.core_ui.pagination.ProgressItem
 
 class PaginationAdapter(
