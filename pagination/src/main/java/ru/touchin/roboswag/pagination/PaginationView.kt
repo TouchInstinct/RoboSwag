@@ -7,7 +7,6 @@ import android.widget.FrameLayout
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import ru.touchin.extensions.setOnRippleClickListener
 import ru.touchin.mvi_arch.core_pagination.databinding.ViewPaginationBinding
-import ru.touchin.mvi_test.core_ui.pagination.Paginator
 
 // TODO: add an errorview with empty state and error text
 class PaginationView @JvmOverloads constructor(
