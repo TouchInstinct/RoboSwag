@@ -1,4 +1,4 @@
-package ru.touchin.mvi_test.core_ui.pagination
+package ru.touchin.roboswag.pagination
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -9,7 +9,7 @@ import ru.touchin.roboswag.mvi_arch.marker.StateChange
 import ru.touchin.roboswag.mvi_arch.marker.ViewState
 
 class Paginator<Item>(
-        private val showError: (Error) -> Unit,
+        private val errorHandleMod: ErrorHandleMod,
         private val loadPage: suspend (Int) -> List<Item>
 ) : Store<Paginator.Change, Paginator.Effect, Paginator.State>(State.Empty) {
 
@@ -30,7 +30,7 @@ class Paginator<Item>(
         object Empty : State()
         object EmptyProgress : State()
         data class EmptyError(val error: Throwable) : State()
-        data class Data<T>(val pageCount: Int = 0, val data: List<T>) : State()
+        data class Data<T>(val pageCount: Int = 0, val data: List<T>, val error: Throwable? = null) : State()
         data class Refresh<T>(val pageCount: Int, val data: List<T>) : State()
         data class NewPageProgress<T>(val pageCount: Int, val data: List<T>) : State()
         data class FullData<T>(val pageCount: Int, val data: List<T>) : State()
@@ -39,6 +39,11 @@ class Paginator<Item>(
     sealed class Error {
         object NewPageFailed : Error()
         object RefreshFailed : Error()
+    }
+
+    sealed class ErrorHandleMod {
+        data class Alert(val showError: (Error) -> Unit) : ErrorHandleMod()
+        object ErrorItem : ErrorHandleMod()
     }
 
     override fun reduce(currentState: State, change: Change): Pair<State, Effect?> = when (change) {
@@ -97,12 +102,34 @@ class Paginator<Item>(
             when (currentState) {
                 is State.EmptyProgress -> State.EmptyError(change.error)
                 is State.Refresh<*> -> {
-                    showError(Error.RefreshFailed)
-                    State.Data(currentState.pageCount, currentState.data)
+                    when (errorHandleMod) {
+                        is ErrorHandleMod.Alert -> {
+                            errorHandleMod.showError(Error.RefreshFailed)
+                            State.Data(currentState.pageCount, currentState.data)
+                        }
+                        is ErrorHandleMod.ErrorItem -> {
+                            State.Data(
+                                    pageCount = currentState.pageCount,
+                                    data = currentState.data,
+                                    error = change.error
+                            )
+                        }
+                    }
                 }
                 is State.NewPageProgress<*> -> {
-                    showError(Error.NewPageFailed)
-                    State.Data(currentState.pageCount, currentState.data)
+                    when (errorHandleMod) {
+                        is ErrorHandleMod.Alert -> {
+                            errorHandleMod.showError(Error.NewPageFailed)
+                            State.Data(currentState.pageCount, currentState.data)
+                        }
+                        is ErrorHandleMod.ErrorItem -> {
+                            State.Data(
+                                    pageCount = currentState.pageCount,
+                                    data = currentState.data,
+                                    error = change.error
+                            )
+                        }
+                    }
                 }
                 else -> currentState
             }.only()
