@@ -11,7 +11,10 @@ import kotlin.math.pow
 
 @Suppress("detekt.LabeledExpression")
 class AmountWithDecimalDecorator(
-        val editText: EditText
+        val editText: EditText,
+        val decimalSeparator: String = DEFAULT_DECIMAL_SEPARATOR,
+        val decimalPartLength: Int = DEFAULT_DECIMAL_PART_LENGTH,
+        val isSeparatorCutInvalidDecimalLength: Boolean = false
 ) {
 
     companion object {
@@ -25,56 +28,51 @@ class AmountWithDecimalDecorator(
 
     }
 
-    var decimalSeparator = DEFAULT_DECIMAL_SEPARATOR
-        set(value) {
-            if (!possibleDecimalSeparators.contains(value)) {
-                throw IllegalArgumentException("Not allowed decimal separator. Supports only: $possibleDecimalSeparators")
-            }
-            field = value
-        }
-    var decimalPartLength = DEFAULT_DECIMAL_PART_LENGTH
-    var isSeparatorCutInvalidDecimalLength = false
     var onTextChanged: (text: String) -> Unit = {}
 
     private var textBefore = ""
     private var isTextWasArtificiallyChanged = true
 
     init {
+        if (!possibleDecimalSeparators.contains(decimalSeparator)) {
+            throw IllegalArgumentException("Not allowed decimal separator. Supports only: $possibleDecimalSeparators")
+        }
+
         @Suppress("detekt.TooGenericExceptionCaught")
         editText.doOnTextChanged { text, _, _, _ ->
             if (isTextWasArtificiallyChanged) {
                 isTextWasArtificiallyChanged = false
-                val cursorPos = editText.selectionStart
+                val cursorPosition = editText.selectionStart
                 try {
-                    var text = text.toString()
+                    var currentText = text.toString()
                     possibleDecimalSeparators.forEach {
-                        text = text.replace(it, decimalSeparator)
+                        currentText = currentText.replace(it, decimalSeparator)
                     }
 
-                    if (text == decimalSeparator || text.count { it == decimalSeparator[0] } > 1 || text.take(2) == "00") {
-                        setTextWhenNewInputIncorrect(text, cursorPos)
+                    if (isTextFormatIncorrect(currentText)) {
+                        setTextWhenNewInputIncorrect(currentText, cursorPosition)
                         return@doOnTextChanged
                     }
 
-                    if (text.length >= 2 && text[0] == '0' && text[1] != decimalSeparator[0]) {
-                        setTextWithHeadZero(text, cursorPos)
+                    if (isTextHasHeadZero(currentText)) {
+                        setTextWithHeadZero(currentText, cursorPosition)
                         return@doOnTextChanged
                     }
 
-                    val currentDecimalPartLength = text.split(decimalSeparator).getOrNull(1)?.length
+                    val currentDecimalPartLength = currentText.split(decimalSeparator).getOrNull(1)?.length
                     if (isDecimalPathTooLong(currentDecimalPartLength)) {
-                        setTextWhenNewInputIncorrect(text, cursorPos)
+                        setTextWhenNewInputIncorrect(currentText, cursorPosition)
                         return@doOnTextChanged
                     }
 
-                    val textAfter = if (text.isNotEmpty()) {
-                        text.withoutFormatting().formatMoney(currentDecimalPartLength)
+                    val textAfter = if (currentText.isNotEmpty()) {
+                        currentText.withoutFormatting().formatMoney(currentDecimalPartLength)
                     } else ""
 
                     if (!isTextErased(textBefore, textAfter)) {
-                        onTextErased(textAfter, cursorPos)
+                        onTextErased(textAfter, cursorPosition)
                     } else {
-                        onTextInserted(textAfter, cursorPos)
+                        onTextInserted(textAfter, cursorPosition)
                     }
                 } catch (e: Throwable) {
                     editText.setText(textBefore)
@@ -90,6 +88,12 @@ class AmountWithDecimalDecorator(
 
     fun getTextWithoutFormatting(decimalSeparatorToReplace: String = decimalSeparator): String =
             textBefore.withoutFormatting(decimalSeparatorToReplace)
+
+    private fun isTextFormatIncorrect(currentText: String) =
+            currentText == decimalSeparator || currentText.count { it == decimalSeparator[0] } > 1 || currentText.take(2) == "00"
+
+    private fun isTextHasHeadZero(currentText: String) =
+            currentText.length >= 2 && currentText[0] == '0' && currentText[1] != decimalSeparator[0]
 
     private fun setTextWithHeadZero(text: String, cursorPos: Int) {
         if (abs(textBefore.length - text.length) > 1) {
@@ -166,7 +170,7 @@ class AmountWithDecimalDecorator(
         return result
     }
 
-    private fun String.prepareForDoubleCast(): String {
+    private fun String.replaceSeparatorsToDot(): String {
         var result = this
         possibleDecimalSeparators.forEach {
             result = result.replace(it, ".")
@@ -188,7 +192,7 @@ class AmountWithDecimalDecorator(
             it.decimalSeparator = decimalSeparator[0]
             it.groupingSeparator = GROUPING_SEPARATOR
         }
-        return formatter.format(this.prepareForDoubleCast().toDouble().floor())
+        return formatter.format(this.replaceSeparatorsToDot().toDouble().floor())
     }
 
     private fun Double.floor() =
