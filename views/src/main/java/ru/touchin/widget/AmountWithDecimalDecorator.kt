@@ -30,7 +30,7 @@ class AmountWithDecimalDecorator(
 
     var onTextChanged: (text: String) -> Unit = {}
 
-    private var textBefore = ""
+    private var previousInputtedText = ""
     private var isTextWasArtificiallyChanged = true
 
     init {
@@ -42,7 +42,7 @@ class AmountWithDecimalDecorator(
     }
 
     fun getTextWithoutFormatting(decimalSeparatorToReplace: String = decimalSeparator): String =
-            textBefore.withoutFormatting(decimalSeparatorToReplace)
+            previousInputtedText.withoutFormatting(decimalSeparatorToReplace)
 
     @Suppress("detekt.TooGenericExceptionCaught")
     private fun doOnTextChanged(text: String) {
@@ -75,72 +75,75 @@ class AmountWithDecimalDecorator(
                     currentText.withoutFormatting().formatMoney(currentDecimalPartLength)
                 } else ""
 
-                if (!isTextErased(textBefore, formattedText)) {
-                    onTextErased(formattedText, cursorPosition)
+                if (isTextErased(previousInputtedText, formattedText)) {
+                    setTextAfterUserErase(formattedText, cursorPosition)
                 } else {
-                    onNewUserInput(formattedText, cursorPosition)
+                    setTextAfterUserInput(formattedText, cursorPosition)
                 }
             } catch (e: Throwable) {
-                editText.setText(textBefore)
-                editText.setSelection(textBefore.length)
+                editText.setText(previousInputtedText)
+                editText.setSelection(previousInputtedText.length)
             }
         } else {
-            textBefore = text
+            previousInputtedText = text
             isTextWasArtificiallyChanged = true
             onTextChanged(text)
         }
     }
 
     private fun isTextFormatIncorrect(currentText: String) =
-            currentText == decimalSeparator || currentText.count { it == decimalSeparator[0] } > 1 || currentText.take(2) == "00"
+            currentText == decimalSeparator
+                    || currentText.count { it == decimalSeparator[0] } > 1
+                    || currentText.take(2) == "00"
 
     private fun isTextHasHeadZero(currentText: String) =
             currentText.length >= 2 && currentText[0] == '0' && currentText[1] != decimalSeparator[0]
 
-    private fun setTextWithHeadZero(text: String, cursorPos: Int) {
-        if (abs(textBefore.length - text.length) > 1) {
+    private fun setTextWithHeadZero(text: String, cursorPosition: Int) {
+        if (abs(previousInputtedText.length - text.length) > 1) {
             setTextWhichWasInserted(text)
         } else {
             editText.setText(text.substring(1, text.length))
-            editText.setSelection(max(cursorPos - 1, 0))
+            editText.setSelection(max(cursorPosition - 1, 0))
         }
     }
 
-    private fun setTextWhenNewInputIncorrect(text: String, cursorPos: Int) {
-        if (abs(textBefore.length - text.length) > 1) {
+    private fun setTextWhenNewInputIncorrect(text: String, cursorPosition: Int) {
+        if (abs(previousInputtedText.length - text.length) > 1) {
             setTextWhichWasInserted(text)
         } else {
-            editText.setText(textBefore)
-            editText.setSelection(max(cursorPos - 1, 0))
+            editText.setText(previousInputtedText)
+            editText.setSelection(max(cursorPosition - 1, 0))
         }
     }
 
-    private fun onTextErased(textAfter: String, cursorPos: Int) {
-        val diff = textAfter.length - textBefore.length - 1
-        editText.setText(textAfter)
-        editText.setSelection(min(cursorPos + diff, textAfter.length))
+    private fun setTextAfterUserErase(formattedText: String, cursorPosition: Int) {
+        val diff = formattedText.length - previousInputtedText.length - 1
+        editText.setText(formattedText)
+        editText.setSelection(min(cursorPosition + diff, formattedText.length))
     }
 
-    private fun onNewUserInput(textAfter: String, cursorPos: Int) {
-        if (!textBefore.contains(decimalSeparator)
-                && textAfter.contains(decimalSeparator)
+    private fun setTextAfterUserInput(formattedText: String, cursorPosition: Int) {
+        if (!previousInputtedText.contains(decimalSeparator)
+                && formattedText.contains(decimalSeparator)
         ) {
-            editText.setText(textAfter)
-            editText.setSelection(min(textAfter.length, textAfter.indexOf(decimalSeparator) + 1))
+            editText.setText(formattedText)
+            editText.setSelection(min(formattedText.length, formattedText.indexOf(decimalSeparator) + 1))
             return
         }
-        val diff = textBefore.length - textAfter.length
+        val diff = previousInputtedText.length - formattedText.length
         if (diff == 0) {
-            editText.setText(textAfter)
-            editText.setSelection(min(cursorPos, textAfter.length))
+            editText.setText(formattedText)
+            editText.setSelection(min(cursorPosition, formattedText.length))
         } else {
-            editText.setText(textAfter)
-            editText.setSelection(max(cursorPos - diff + 1, 0))
+            editText.setText(formattedText)
+            editText.setSelection(max(cursorPosition - diff + 1, 0))
         }
     }
 
     private fun isDecimalPathTooLong(currentDecimalPartLength: Int?) =
-            !isSeparatorCutInvalidDecimalLength && currentDecimalPartLength != null
+            !isSeparatorCutInvalidDecimalLength
+                    && currentDecimalPartLength != null
                     && currentDecimalPartLength > decimalPartLength
 
     private fun setTextWhichWasInserted(text: String) {
@@ -180,8 +183,8 @@ class AmountWithDecimalDecorator(
         return result.withoutFormatting()
     }
 
-    private fun isTextErased(textBefore: String, textAfter: String) =
-            textAfter.length <= textBefore.length
+    private fun isTextErased(textBefore: String, formattedText: String) =
+            formattedText.length <= textBefore.length
 
     private fun String.formatMoney(currentDecimalPartLength: Int?): String {
         var mask = COMMON_MONEY_MASK
