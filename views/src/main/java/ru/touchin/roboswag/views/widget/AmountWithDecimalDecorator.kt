@@ -1,4 +1,4 @@
-package ru.touchin.widget
+package ru.touchin.roboswag.views.widget
 
 import android.widget.EditText
 import androidx.core.widget.doOnTextChanged
@@ -51,9 +51,7 @@ class AmountWithDecimalDecorator(
             val cursorPosition = editText.selectionStart
             try {
                 var currentText = text
-                possibleDecimalSeparators.forEach {
-                    currentText = currentText.replace(it, decimalSeparator)
-                }
+                possibleDecimalSeparators.forEach { currentText = currentText.replace(it, decimalSeparator) }
 
                 if (isTextFormatIncorrect(currentText)) {
                     setTextWhenNewInputIncorrect(currentText, cursorPosition)
