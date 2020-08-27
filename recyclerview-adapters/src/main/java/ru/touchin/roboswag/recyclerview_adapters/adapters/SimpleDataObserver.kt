@@ -1,4 +1,4 @@
-package ru.touchin.adapters
+package ru.touchin.roboswag.recyclerview_adapters.adapters
 
 import androidx.recyclerview.widget.RecyclerView
 

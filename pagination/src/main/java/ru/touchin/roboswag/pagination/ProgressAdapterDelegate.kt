@@ -2,7 +2,7 @@ package ru.touchin.roboswag.pagination
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ru.touchin.adapters.ItemAdapterDelegate
+import ru.touchin.roboswag.recyclerview_adapters.adapters.ItemAdapterDelegate
 import ru.touchin.mvi_arch.core_pagination.R
 import ru.touchin.roboswag.components.utils.UiUtils
 
