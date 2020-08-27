@@ -17,7 +17,7 @@
  *
  */
 
-package ru.touchin.roboswag.components.views.internal;
+package ru.touchin.roboswag.views.internal;
 
 import android.content.Context;
 import android.content.res.TypedArray;

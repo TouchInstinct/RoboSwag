@@ -17,7 +17,7 @@
  *
  */
 
-package ru.touchin.roboswag.components.views;
+package ru.touchin.roboswag.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
