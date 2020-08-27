@@ -17,7 +17,7 @@
  *
  */
 
-package ru.touchin.roboswag.components.views;
+package ru.touchin.roboswag.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -40,7 +40,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.touchin.defaults.DefaultTextWatcher;
-import ru.touchin.roboswag.components.views.internal.AttributesUtils;
+import ru.touchin.roboswag.components.views.BuildConfig;
+import ru.touchin.roboswag.components.views.R;
+import ru.touchin.roboswag.views.internal.AttributesUtils;
 import ru.touchin.roboswag.core.log.Lc;
 
 /**

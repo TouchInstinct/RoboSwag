@@ -17,7 +17,7 @@
  *
  */
 
-package ru.touchin.roboswag.components.views;
+package ru.touchin.roboswag.views;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -30,6 +30,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 
 import ru.touchin.roboswag.components.utils.UiUtils;
+import ru.touchin.roboswag.components.views.R;
 
 /**
  * Created by Ilia Kurtov on 07/12/2016.

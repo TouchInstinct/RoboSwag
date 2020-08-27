@@ -1,4 +1,4 @@
-package ru.touchin.widget
+package ru.touchin.roboswag.views.widget
 
 import android.content.Context
 import android.util.AttributeSet

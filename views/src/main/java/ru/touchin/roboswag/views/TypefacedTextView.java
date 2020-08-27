@@ -17,7 +17,7 @@
  *
  */
 
-package ru.touchin.roboswag.components.views;
+package ru.touchin.roboswag.views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -34,7 +34,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.touchin.roboswag.components.utils.UiUtils;
-import ru.touchin.roboswag.components.views.internal.AttributesUtils;
+import ru.touchin.roboswag.components.views.BuildConfig;
+import ru.touchin.roboswag.components.views.R;
+import ru.touchin.roboswag.views.internal.AttributesUtils;
 import ru.touchin.roboswag.core.log.Lc;
 
 /**

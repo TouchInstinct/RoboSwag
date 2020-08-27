@@ -1,4 +1,4 @@
-package ru.touchin.widget
+package ru.touchin.roboswag.views.widget
 
 import android.widget.EditText
 import androidx.core.widget.doOnTextChanged
