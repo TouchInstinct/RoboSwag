@@ -115,13 +115,13 @@ class AmountWithDecimalDecorator(
         }
     }
 
-    private fun setTextAfterUserErase(formattedText: String, cursorPosition: Int) {
+    private fun setTextAfterUserInput(formattedText: String, cursorPosition: Int) {
         val diff = formattedText.length - previousInputtedText.length - 1
         editText.setText(formattedText)
         editText.setSelection(min(cursorPosition + diff, formattedText.length))
     }
 
-    private fun setTextAfterUserInput(formattedText: String, cursorPosition: Int) {
+    private fun setTextAfterUserErase(formattedText: String, cursorPosition: Int) {
         if (!previousInputtedText.contains(decimalSeparator)
                 && formattedText.contains(decimalSeparator)
         ) {
