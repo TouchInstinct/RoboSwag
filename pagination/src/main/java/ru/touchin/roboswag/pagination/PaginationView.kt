@@ -47,26 +47,20 @@ class PaginationView @JvmOverloads constructor(
             adapter.fullData = state === Paginator.State.Empty || state is Paginator.State.FullData<*>
 
             when (state) {
-                is Paginator.State.Empty -> {
-                    adapter.update(emptyList(), false)
-                }
-                is Paginator.State.EmptyProgress -> {
-                    adapter.update(emptyList(), false)
-                }
-                is Paginator.State.EmptyError -> {
-                    adapter.update(emptyList(), false)
+                is Paginator.State.EmptyError, Paginator.State.Empty, Paginator.State.EmptyProgress  -> {
+                    adapter.update(emptyList(), PaginationAdapter.UpdateState.Common)
                 }
                 is Paginator.State.Data<*> -> {
-                    adapter.update(state.data as List<Any>, false)
+                    adapter.update(state.data as List<Any>, PaginationAdapter.UpdateState.Common)
                 }
                 is Paginator.State.Refresh<*> -> {
-                    adapter.update(state.data as List<Any>, false)
+                    adapter.update(state.data as List<Any>, PaginationAdapter.UpdateState.Common)
                 }
                 is Paginator.State.NewPageProgress<*> -> {
-                    adapter.update(state.data as List<Any>, true)
+                    adapter.update(state.data as List<Any>, PaginationAdapter.UpdateState.Progress)
                 }
                 is Paginator.State.FullData<*> -> {
-                    adapter.update(state.data as List<Any>, false)
+                    adapter.update(state.data as List<Any>, PaginationAdapter.UpdateState.Common)
                 }
             }
         }

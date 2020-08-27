@@ -30,7 +30,7 @@ class Paginator<Item>(
         object Empty : State()
         object EmptyProgress : State()
         data class EmptyError(val error: Throwable) : State()
-        data class Data<T>(val pageCount: Int = 0, val data: List<T>) : State()
+        data class Data<T>(val pageCount: Int = 0, val data: List<T>, val error: Throwable? = null) : State()
         data class Refresh<T>(val pageCount: Int, val data: List<T>) : State()
         data class NewPageProgress<T>(val pageCount: Int, val data: List<T>) : State()
         data class FullData<T>(val pageCount: Int, val data: List<T>) : State()
@@ -108,7 +108,11 @@ class Paginator<Item>(
                             State.Data(currentState.pageCount, currentState.data)
                         }
                         is ErrorHandleMod.ErrorItem -> {
-                            State.Data(currentState.pageCount, currentState.data + ErrorItem)
+                            State.Data(
+                                    pageCount = currentState.pageCount,
+                                    data = currentState.data,
+                                    error = change.error
+                            )
                         }
                     }
                 }
@@ -119,7 +123,11 @@ class Paginator<Item>(
                             State.Data(currentState.pageCount, currentState.data)
                         }
                         is ErrorHandleMod.ErrorItem -> {
-                            State.Data(currentState.pageCount, currentState.data + ErrorItem)
+                            State.Data(
+                                    pageCount = currentState.pageCount,
+                                    data = currentState.data,
+                                    error = change.error
+                            )
                         }
                     }
                 }
