@@ -9,7 +9,6 @@ import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
 
-@Suppress("detekt.LabeledExpression")
 class AmountWithDecimalDecorator(
         val editText: EditText,
         val decimalSeparator: String = DEFAULT_DECIMAL_SEPARATOR,
@@ -20,7 +19,8 @@ class AmountWithDecimalDecorator(
     companion object {
 
         private const val COMMON_MONEY_MASK = "###,##0"
-        private const val DEFAULT_DECIMAL_SEPARATOR = "."
+        private const val DOT_SYMBOL = "."
+        private const val DEFAULT_DECIMAL_SEPARATOR = DOT_SYMBOL
         private const val GROUPING_SEPARATOR = ' '
         private const val DEFAULT_DECIMAL_PART_LENGTH = 2
         private val hardcodedSymbols = listOf(GROUPING_SEPARATOR)
@@ -38,56 +38,58 @@ class AmountWithDecimalDecorator(
             throw IllegalArgumentException("Not allowed decimal separator. Supports only: $possibleDecimalSeparators")
         }
 
-        @Suppress("detekt.TooGenericExceptionCaught")
-        editText.doOnTextChanged { text, _, _, _ ->
-            if (isTextWasArtificiallyChanged) {
-                isTextWasArtificiallyChanged = false
-                val cursorPosition = editText.selectionStart
-                try {
-                    var currentText = text.toString()
-                    possibleDecimalSeparators.forEach {
-                        currentText = currentText.replace(it, decimalSeparator)
-                    }
-
-                    if (isTextFormatIncorrect(currentText)) {
-                        setTextWhenNewInputIncorrect(currentText, cursorPosition)
-                        return@doOnTextChanged
-                    }
-
-                    if (isTextHasHeadZero(currentText)) {
-                        setTextWithHeadZero(currentText, cursorPosition)
-                        return@doOnTextChanged
-                    }
-
-                    val currentDecimalPartLength = currentText.split(decimalSeparator).getOrNull(1)?.length
-                    if (isDecimalPathTooLong(currentDecimalPartLength)) {
-                        setTextWhenNewInputIncorrect(currentText, cursorPosition)
-                        return@doOnTextChanged
-                    }
-
-                    val textAfter = if (currentText.isNotEmpty()) {
-                        currentText.withoutFormatting().formatMoney(currentDecimalPartLength)
-                    } else ""
-
-                    if (!isTextErased(textBefore, textAfter)) {
-                        onTextErased(textAfter, cursorPosition)
-                    } else {
-                        onTextInserted(textAfter, cursorPosition)
-                    }
-                } catch (e: Throwable) {
-                    editText.setText(textBefore)
-                    editText.setSelection(textBefore.length)
-                }
-            } else {
-                textBefore = text.toString()
-                isTextWasArtificiallyChanged = true
-                onTextChanged(text.toString())
-            }
-        }
+        editText.doOnTextChanged { text, _, _, _ -> doOnTextChanged(text.toString()) }
     }
 
     fun getTextWithoutFormatting(decimalSeparatorToReplace: String = decimalSeparator): String =
             textBefore.withoutFormatting(decimalSeparatorToReplace)
+
+    @Suppress("detekt.TooGenericExceptionCaught")
+    private fun doOnTextChanged(text: String) {
+        if (isTextWasArtificiallyChanged) {
+            isTextWasArtificiallyChanged = false
+            val cursorPosition = editText.selectionStart
+            try {
+                var currentText = text
+                possibleDecimalSeparators.forEach {
+                    currentText = currentText.replace(it, decimalSeparator)
+                }
+
+                if (isTextFormatIncorrect(currentText)) {
+                    setTextWhenNewInputIncorrect(currentText, cursorPosition)
+                    return
+                }
+
+                if (isTextHasHeadZero(currentText)) {
+                    setTextWithHeadZero(currentText, cursorPosition)
+                    return
+                }
+
+                val currentDecimalPartLength = currentText.split(decimalSeparator).getOrNull(1)?.length
+                if (isDecimalPathTooLong(currentDecimalPartLength)) {
+                    setTextWhenNewInputIncorrect(currentText, cursorPosition)
+                    return
+                }
+
+                val formattedText = if (currentText.isNotEmpty()) {
+                    currentText.withoutFormatting().formatMoney(currentDecimalPartLength)
+                } else ""
+
+                if (!isTextErased(textBefore, formattedText)) {
+                    onTextErased(formattedText, cursorPosition)
+                } else {
+                    onNewUserInput(formattedText, cursorPosition)
+                }
+            } catch (e: Throwable) {
+                editText.setText(textBefore)
+                editText.setSelection(textBefore.length)
+            }
+        } else {
+            textBefore = text
+            isTextWasArtificiallyChanged = true
+            onTextChanged(text)
+        }
+    }
 
     private fun isTextFormatIncorrect(currentText: String) =
             currentText == decimalSeparator || currentText.count { it == decimalSeparator[0] } > 1 || currentText.take(2) == "00"
@@ -97,7 +99,7 @@ class AmountWithDecimalDecorator(
 
     private fun setTextWithHeadZero(text: String, cursorPos: Int) {
         if (abs(textBefore.length - text.length) > 1) {
-            setTextWhichWasPasted(text)
+            setTextWhichWasInserted(text)
         } else {
             editText.setText(text.substring(1, text.length))
             editText.setSelection(max(cursorPos - 1, 0))
@@ -106,7 +108,7 @@ class AmountWithDecimalDecorator(
 
     private fun setTextWhenNewInputIncorrect(text: String, cursorPos: Int) {
         if (abs(textBefore.length - text.length) > 1) {
-            setTextWhichWasPasted(text)
+            setTextWhichWasInserted(text)
         } else {
             editText.setText(textBefore)
             editText.setSelection(max(cursorPos - 1, 0))
@@ -119,7 +121,7 @@ class AmountWithDecimalDecorator(
         editText.setSelection(min(cursorPos + diff, textAfter.length))
     }
 
-    private fun onTextInserted(textAfter: String, cursorPos: Int) {
+    private fun onNewUserInput(textAfter: String, cursorPos: Int) {
         if (!textBefore.contains(decimalSeparator)
                 && textAfter.contains(decimalSeparator)
         ) {
@@ -141,7 +143,7 @@ class AmountWithDecimalDecorator(
             !isSeparatorCutInvalidDecimalLength && currentDecimalPartLength != null
                     && currentDecimalPartLength > decimalPartLength
 
-    private fun setTextWhichWasPasted(text: String) {
+    private fun setTextWhichWasInserted(text: String) {
         var result = ""
         var decimalLength = -1
         var index = 0
@@ -173,7 +175,7 @@ class AmountWithDecimalDecorator(
     private fun String.replaceSeparatorsToDot(): String {
         var result = this
         possibleDecimalSeparators.forEach {
-            result = result.replace(it, ".")
+            result = result.replace(it, DOT_SYMBOL)
         }
         return result.withoutFormatting()
     }
@@ -184,7 +186,7 @@ class AmountWithDecimalDecorator(
     private fun String.formatMoney(currentDecimalPartLength: Int?): String {
         var mask = COMMON_MONEY_MASK
         if (currentDecimalPartLength != null && decimalPartLength != 0) {
-            mask += "." + "0".repeat(min(currentDecimalPartLength, decimalPartLength))
+            mask += DOT_SYMBOL + "0".repeat(min(currentDecimalPartLength, decimalPartLength))
         }
 
         val formatter = DecimalFormat(mask)
