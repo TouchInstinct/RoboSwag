@@ -44,16 +44,14 @@ class AmountWithDecimalDecorator(
     fun getTextWithoutFormatting(decimalSeparatorToReplace: String = decimalSeparator): String =
             textBefore.withoutFormatting(decimalSeparatorToReplace)
 
-    @Suppress("detekt.TooGenericExceptionCaught", "detekt.LongMethod")
+    @Suppress("detekt.TooGenericExceptionCaught")
     private fun doOnTextChanged(text: String) {
         if (isTextWasArtificiallyChanged) {
             isTextWasArtificiallyChanged = false
             val cursorPosition = editText.selectionStart
             try {
                 var currentText = text
-                possibleDecimalSeparators.forEach {
-                    currentText = currentText.replace(it, decimalSeparator)
-                }
+                possibleDecimalSeparators.forEach { currentText = currentText.replace(it, decimalSeparator) }
 
                 if (isTextFormatIncorrect(currentText)) {
                     setTextWhenNewInputIncorrect(currentText, cursorPosition)
