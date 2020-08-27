@@ -31,28 +31,19 @@ class GroupItemDecoration<TViewHolder : GroupItemDecoration.ViewHolder>(
     }
 
     @Suppress("detekt.NestedBlockDepth")
-    override fun onDraw(canvas: Canvas, parent: RecyclerView, state: RecyclerView.State) {
-        var isInvalidated = false
-        loop@ for (child in parent.children) {
-            val adapterPosition = parent.getChildAdapterPosition(child)
-            val groupView = viewHoldersPool[adapterPosition]?.view
-            when {
-                predicate(adapterPosition) -> {
-                    if (groupView != null) {
-                        onDrawGroupView(groupView, parent, child, canvas)
-                    } else {
-                        isInvalidated = true
-                        break@loop
-                    }
-                }
-                groupView != null -> {
-                    isInvalidated = true
-                    break@loop
-                }
+    override fun onDraw(canvas: Canvas, parent: RecyclerView, state: RecyclerView.State) = parent.children.forEach { child ->
+        val adapterPosition = parent.getChildAdapterPosition(child)
+        val groupView = viewHoldersPool[adapterPosition]?.view
+        if (predicate(adapterPosition)) {
+            if (groupView != null) {
+                onDrawGroupView(groupView, parent, child, canvas)
+            } else {
+                parent.invalidateItemDecorations()
+                return
             }
-        }
-        if (isInvalidated) {
+        } else if (groupView != null) {
             parent.invalidateItemDecorations()
+            return
         }
     }
 
