@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import ru.touchin.extensions.setOnRippleClickListener
+import ru.touchin.roboswag.extensions.setOnRippleClickListener
 import ru.touchin.roboswag.mvi_arch.di.ViewModelAssistedFactory
 import ru.touchin.roboswag.mvi_arch.di.ViewModelFactory
 import ru.touchin.roboswag.mvi_arch.marker.ViewAction
