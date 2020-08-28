@@ -3,19 +3,21 @@ package ru.touchin.utils
 import android.os.SystemClock
 import ru.touchin.extensions.RIPPLE_EFFECT_DELAY_MS
 
-object ActionThrottler {
+class ActionThrottler(private val throttleDelay: Long = DEFAULT_DELAY_MS) {
 
-    // It is necessary because in interval after ripple effect finish and before
-    // action invoking start user may be in time to click and launch action again
-    private const val PREVENTION_OF_REPEAT_COEFFICIENT = 2
-    private const val DEFAULT_DELAY_MS = PREVENTION_OF_REPEAT_COEFFICIENT * RIPPLE_EFFECT_DELAY_MS
+    companion object {
+
+        private const val DEFAULT_DELAY_MS = 500L
+
+    }
+
     private var lastActionTime = 0L
 
-    fun throttleAction(delay: Long = DEFAULT_DELAY_MS, action: () -> Unit): Boolean {
+    fun throttleAction(action: () -> Unit): Boolean {
         val currentTime = SystemClock.elapsedRealtime()
         val diff = currentTime - lastActionTime
 
-        return if (diff >= delay) {
+        return if (diff >= throttleDelay) {
             lastActionTime = currentTime
             action.invoke()
             true
@@ -23,5 +25,14 @@ object ActionThrottler {
             false
         }
     }
+
+}
+
+object RippleEffectThrottler {
+
+    private const val PREVENTION_OF_CLICK_AGAIN_COEFFICIENT = 2
+    private const val DELAY_MS = PREVENTION_OF_CLICK_AGAIN_COEFFICIENT * RIPPLE_EFFECT_DELAY_MS
+
+    val throttler = ActionThrottler(DELAY_MS)
 
 }

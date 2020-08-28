@@ -2,7 +2,7 @@ package ru.touchin.extensions
 
 import android.os.Build
 import android.view.View
-import ru.touchin.utils.ActionThrottler
+import ru.touchin.utils.RippleEffectThrottler
 
 const val RIPPLE_EFFECT_DELAY_MS = 150L
 
@@ -14,7 +14,7 @@ const val RIPPLE_EFFECT_DELAY_MS = 150L
 fun View.setOnRippleClickListener(listener: () -> Unit) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         setOnClickListener {
-            ActionThrottler.throttleAction {
+            RippleEffectThrottler.throttler.throttleAction {
                 postDelayed({ if (hasWindowFocus()) listener() }, RIPPLE_EFFECT_DELAY_MS)
             }
         }
