@@ -17,7 +17,7 @@
  *
  */
 
-package ru.touchin.roboswag.core.utils;
+package ru.touchin.roboswag.utils.core;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;

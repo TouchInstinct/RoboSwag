@@ -1,4 +1,4 @@
-package ru.touchin.utils
+package ru.touchin.roboswag.extensions.utils
 
 import android.os.SystemClock
 import ru.touchin.roboswag.extensions.RIPPLE_EFFECT_DELAY_MS

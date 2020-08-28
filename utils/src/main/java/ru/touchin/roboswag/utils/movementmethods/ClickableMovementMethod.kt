@@ -1,4 +1,4 @@
-package ru.touchin.roboswag.components.utils.movementmethods
+package ru.touchin.roboswag.utils.movementmethods
 
 import android.text.Selection
 import android.text.Spannable

@@ -1,4 +1,4 @@
-package ru.touchin.hardware
+package ru.touchin.roboswag.utils.hardware
 
 import android.Manifest
 import android.content.Context

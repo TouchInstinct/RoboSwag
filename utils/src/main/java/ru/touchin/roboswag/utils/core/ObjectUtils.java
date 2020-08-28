@@ -17,7 +17,7 @@
  *
  */
 
-package ru.touchin.roboswag.core.utils;
+package ru.touchin.roboswag.utils.core;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

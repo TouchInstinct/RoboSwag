@@ -17,7 +17,7 @@
  *
  */
 
-package ru.touchin.roboswag.components.utils.spans
+package ru.touchin.roboswag.utils.spans
 
 import android.graphics.Paint
 import android.graphics.Typeface

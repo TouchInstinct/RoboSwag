@@ -1,4 +1,4 @@
-package ru.touchin.roboswag.components.utils.spans
+package ru.touchin.roboswag.utils.spans
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
