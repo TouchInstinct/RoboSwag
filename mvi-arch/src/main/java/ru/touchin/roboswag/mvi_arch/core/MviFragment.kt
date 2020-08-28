@@ -105,11 +105,7 @@ abstract class MviFragment<NavArgs, State, Action, VM>(
     }
 
     protected fun addOnBackPressedCallback(actionProvider: () -> Action) {
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                dispatchAction(actionProvider)
-            }
-        })
+        addOnBackPressedCallback(actionProvider.invoke())
     }
 
     protected fun addOnBackPressedCallback(action: Action) {
