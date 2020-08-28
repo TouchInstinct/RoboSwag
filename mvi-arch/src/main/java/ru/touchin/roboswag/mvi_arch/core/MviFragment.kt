@@ -3,6 +3,7 @@ package ru.touchin.roboswag.mvi_arch.core
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.annotation.MainThread
@@ -101,6 +102,22 @@ abstract class MviFragment<NavArgs, State, Action, VM>(
      */
     protected fun dispatchAction(action: Action) {
         viewModel.dispatchAction(action)
+    }
+
+    protected fun addOnBackPressedCallback(actionProvider: () -> Action) {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                dispatchAction(actionProvider)
+            }
+        })
+    }
+
+    protected fun addOnBackPressedCallback(action: Action) {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                dispatchAction(action)
+            }
+        })
     }
 
     /**
