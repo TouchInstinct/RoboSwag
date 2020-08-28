@@ -6,7 +6,7 @@ import android.os.Parcelable
 import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.LifecycleObserver
-import ru.touchin.roboswag.components.utils.hideSoftInput
+import ru.touchin.roboswag.utils.hideSoftInput
 import ru.touchin.roboswag.navigation_base.activities.BaseActivity
 import ru.touchin.roboswag.navigation_base.activities.OnBackPressedListener
 import ru.touchin.roboswag.navigation_base.fragments.StatefulFragment

@@ -4,8 +4,8 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.core.content.withStyledAttributes
-import ru.touchin.extensions.observable
-import ru.touchin.extensions.setOnRippleClickListener
+import ru.touchin.roboswag.extensions.observable
+import ru.touchin.roboswag.extensions.setOnRippleClickListener
 import ru.touchin.roboswag.components.views.R
 import ru.touchin.roboswag.components.views.databinding.ProgressViewBinding
 import kotlin.properties.Delegates

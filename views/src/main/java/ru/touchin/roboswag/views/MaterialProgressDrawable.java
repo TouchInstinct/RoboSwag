@@ -34,7 +34,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import ru.touchin.roboswag.components.utils.UiUtils;
+import ru.touchin.roboswag.utils.UiUtils;
 
 /**
  * Created by Gavriil Sitnikov on 01/03/16.

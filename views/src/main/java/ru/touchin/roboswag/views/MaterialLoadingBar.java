@@ -29,7 +29,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 
-import ru.touchin.roboswag.components.utils.UiUtils;
+import ru.touchin.roboswag.utils.UiUtils;
 import ru.touchin.roboswag.components.views.R;
 
 /**

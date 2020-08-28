@@ -1,8 +1,8 @@
-package ru.touchin.extensions
+package ru.touchin.roboswag.extensions
 
 import android.os.Build
 import android.view.View
-import ru.touchin.utils.RippleEffectThrottler
+import ru.touchin.roboswag.extensions.utils.RippleEffectThrottler
 
 const val RIPPLE_EFFECT_DELAY_MS = 150L
 

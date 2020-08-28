@@ -1,9 +1,9 @@
-package ru.touchin.extensions.rx
+package ru.touchin.roboswag.extensions.rx
 
 import io.reactivex.Completable
 import io.reactivex.Observable
-import ru.touchin.extensions.rx.utils.StringConstants
-import ru.touchin.roboswag.core.utils.Optional
+import ru.touchin.roboswag.extensions.rx.utils.StringConstants
+import ru.touchin.roboswag.utils.core.Optional
 import ru.touchin.roboswag.core.utils.ShouldNotHappenException
 
 fun <T> Observable<T>.emitAfter(other: Completable): Observable<T> = this.flatMap { value ->

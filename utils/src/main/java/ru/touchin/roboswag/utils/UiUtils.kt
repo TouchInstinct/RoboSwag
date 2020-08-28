@@ -17,7 +17,7 @@
  *
  */
 
-package ru.touchin.roboswag.components.utils
+package ru.touchin.roboswag.utils
 
 import android.app.Activity
 import android.app.Application
@@ -32,7 +32,7 @@ import android.view.View
 import android.view.ViewConfiguration
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import ru.touchin.roboswag.components.utils.spans.getSpannedTextWithUrls
+import ru.touchin.roboswag.utils.spans.getSpannedTextWithUrls
 
 /**
  * Created by Gavriil Sitnikov on 13/11/2015.
@@ -66,7 +66,7 @@ object UiUtils {
      */
     @Deprecated(
             "use extension in SpanUtils",
-            ReplaceWith("text.getSpannedTextWithUrls(removeUnderline = false)", "ru.touchin.roboswag.components.utils.spans.getSpannedTextWithUrls")
+            ReplaceWith("text.getSpannedTextWithUrls(removeUnderline = false)", "ru.touchin.roboswag.utils.spans.getSpannedTextWithUrls")
     )
     fun getSpannedTextWithUrls(text: String) = text.getSpannedTextWithUrls(removeUnderline = false)
 

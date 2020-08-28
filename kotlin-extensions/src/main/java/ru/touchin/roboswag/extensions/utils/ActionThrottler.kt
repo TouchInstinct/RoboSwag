@@ -1,7 +1,7 @@
 package ru.touchin.utils
 
 import android.os.SystemClock
-import ru.touchin.extensions.RIPPLE_EFFECT_DELAY_MS
+import ru.touchin.roboswag.extensions.RIPPLE_EFFECT_DELAY_MS
 
 class ActionThrottler(private val throttleDelay: Long = DEFAULT_DELAY_MS) {
 

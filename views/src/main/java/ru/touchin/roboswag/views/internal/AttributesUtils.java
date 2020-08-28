@@ -31,7 +31,7 @@ import android.view.View;
 import java.lang.reflect.Field;
 import java.util.Collection;
 
-import ru.touchin.roboswag.components.utils.UiUtils;
+import ru.touchin.roboswag.utils.UiUtils;
 import ru.touchin.roboswag.core.log.Lc;
 import ru.touchin.roboswag.core.utils.ShouldNotHappenException;
 

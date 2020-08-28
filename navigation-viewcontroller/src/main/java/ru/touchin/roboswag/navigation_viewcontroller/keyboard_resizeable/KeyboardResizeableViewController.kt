@@ -5,7 +5,7 @@ import android.os.Parcelable
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.LifecycleObserver
-import ru.touchin.roboswag.components.utils.UiUtils
+import ru.touchin.roboswag.utils.UiUtils
 import ru.touchin.roboswag.navigation_base.activities.BaseActivity
 import ru.touchin.roboswag.navigation_base.activities.OnBackPressedListener
 import ru.touchin.roboswag.navigation_viewcontroller.viewcontrollers.ViewController

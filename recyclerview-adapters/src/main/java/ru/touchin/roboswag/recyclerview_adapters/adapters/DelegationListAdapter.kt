@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import ru.touchin.extensions.setOnRippleClickListener
+import ru.touchin.roboswag.extensions.setOnRippleClickListener
 
 /**
  * Base adapter with delegation and diff computing on background thread.

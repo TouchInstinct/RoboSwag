@@ -1,4 +1,4 @@
-package ru.touchin.templates
+package ru.touchin.roboswag.utils.templates
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -11,8 +11,8 @@ import android.os.Process
 import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat
-import ru.touchin.templates.DeviceUtils.NetworkType
-import ru.touchin.templates.DeviceUtils.getMobileNetworkType
+import ru.touchin.roboswag.utils.templates.DeviceUtils.NetworkType
+import ru.touchin.roboswag.utils.templates.DeviceUtils.getMobileNetworkType
 
 fun Context.isNetworkConnected(): Boolean = getNetworkType() != NetworkType.NONE
 

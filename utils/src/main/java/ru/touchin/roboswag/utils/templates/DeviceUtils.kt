@@ -16,7 +16,7 @@
  *  limitations under the License.
  *
  */
-package ru.touchin.templates
+package ru.touchin.roboswag.utils.templates
 
 import android.content.Context
 import android.net.NetworkInfo

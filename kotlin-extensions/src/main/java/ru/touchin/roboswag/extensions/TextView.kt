@@ -1,4 +1,4 @@
-package ru.touchin.extensions
+package ru.touchin.roboswag.extensions
 
 import android.graphics.drawable.Drawable
 import android.os.Build

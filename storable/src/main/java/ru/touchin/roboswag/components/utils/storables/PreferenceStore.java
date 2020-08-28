@@ -29,7 +29,7 @@ import io.reactivex.Completable;
 import io.reactivex.Single;
 import ru.touchin.roboswag.core.log.Lc;
 import ru.touchin.roboswag.core.observables.storable.Store;
-import ru.touchin.roboswag.core.utils.Optional;
+import ru.touchin.roboswag.utils.core.Optional;
 
 /**
  * Created by Gavriil Sitnikov on 18/03/16.

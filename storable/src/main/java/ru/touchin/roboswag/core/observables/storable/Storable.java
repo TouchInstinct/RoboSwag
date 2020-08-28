@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
-import ru.touchin.roboswag.core.utils.Optional;
+import ru.touchin.roboswag.utils.core.Optional;
 
 /**
  * Created by Gavriil Sitnikov on 04/10/2015.

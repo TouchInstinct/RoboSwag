@@ -1,4 +1,4 @@
-package ru.touchin.roboswag.components.utils
+package ru.touchin.roboswag.utils
 
 import android.app.Application
 import android.content.Context

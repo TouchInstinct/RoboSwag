@@ -1,4 +1,4 @@
-package ru.touchin.extensions
+package ru.touchin.roboswag.extensions
 
 import android.app.Activity
 import android.app.ActivityManager

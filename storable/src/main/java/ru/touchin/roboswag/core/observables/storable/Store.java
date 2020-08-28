@@ -26,7 +26,7 @@ import java.lang.reflect.Type;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
-import ru.touchin.roboswag.core.utils.Optional;
+import ru.touchin.roboswag.utils.core.Optional;
 
 /**
  * Created by Gavriil Sitnikov on 04/10/2015.

@@ -36,8 +36,8 @@ import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import ru.touchin.roboswag.core.log.LcGroup;
 import ru.touchin.roboswag.core.observables.ObservableRefCountWithCacheTime;
-import ru.touchin.roboswag.core.utils.ObjectUtils;
-import ru.touchin.roboswag.core.utils.Optional;
+import ru.touchin.roboswag.utils.core.ObjectUtils;
+import ru.touchin.roboswag.utils.core.Optional;
 
 /**
  * Created by Gavriil Sitnikov on 04/10/2015.
