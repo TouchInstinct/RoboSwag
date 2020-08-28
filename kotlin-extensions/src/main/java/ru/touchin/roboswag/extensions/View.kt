@@ -14,7 +14,7 @@ const val RIPPLE_EFFECT_DELAY_MS = 150L
 fun View.setOnRippleClickListener(listener: () -> Unit) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
         setOnClickListener {
-            RippleEffectThrottler.throttleAction {
+            RippleEffectThrottler.throttler.throttleAction {
                 postDelayed({ if (hasWindowFocus()) listener() }, RIPPLE_EFFECT_DELAY_MS)
             }
         }
