@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import androidx.core.content.withStyledAttributes
 import ru.touchin.extensions.observable
 import ru.touchin.extensions.setOnRippleClickListener
-import ru.touchin.roboswag.components.views.R
-import ru.touchin.roboswag.components.views.databinding.ProgressViewBinding
+import ru.touchin.roboswag.views.databinding.ProgressViewBinding
+import ru.touchin.roboswag.views.R
 import kotlin.properties.Delegates
 
 //TODO make customizable views list and views style
