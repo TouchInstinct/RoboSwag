@@ -15,7 +15,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
-import ru.touchin.roboswag.components.views.R;
+import ru.touchin.roboswag.views.R;
 
 public class Switcher extends FrameLayout {
 
