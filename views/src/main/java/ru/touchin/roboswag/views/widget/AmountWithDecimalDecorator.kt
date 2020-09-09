@@ -13,6 +13,7 @@ class AmountWithDecimalDecorator(
         val editText: EditText,
         val decimalSeparator: String = DEFAULT_DECIMAL_SEPARATOR,
         val decimalPartLength: Int = DEFAULT_DECIMAL_PART_LENGTH,
+        val integerPartLength: Int = DEFAULT_INTEGER_PART_LENGTH,
         val isSeparatorCutInvalidDecimalLength: Boolean = false
 ) {
 
@@ -23,6 +24,7 @@ class AmountWithDecimalDecorator(
         private const val DEFAULT_DECIMAL_SEPARATOR = DOT_SYMBOL
         private const val GROUPING_SEPARATOR = ' '
         private const val DEFAULT_DECIMAL_PART_LENGTH = 2
+        private const val DEFAULT_INTEGER_PART_LENGTH = 13
         private val hardcodedSymbols = listOf(GROUPING_SEPARATOR)
         private val possibleDecimalSeparators = listOf(",", ".")
 
@@ -52,6 +54,12 @@ class AmountWithDecimalDecorator(
             try {
                 var currentText = text
                 possibleDecimalSeparators.forEach { currentText = currentText.replace(it, decimalSeparator) }
+                val currentIntegerPathLength = currentText.withoutFormatting().split(decimalSeparator)[0].length
+
+                if (isIntegerPathToLong(currentIntegerPathLength)) {
+                    setTextWhenNewInputIncorrect(currentText, cursorPosition)
+                    return
+                }
 
                 if (isTextFormatIncorrect(currentText)) {
                     setTextWhenNewInputIncorrect(currentText, cursorPosition)
@@ -88,6 +96,8 @@ class AmountWithDecimalDecorator(
             onTextChanged(text)
         }
     }
+
+    private fun isIntegerPathToLong(currentIntegerPathLength: Int) = currentIntegerPathLength > integerPartLength
 
     private fun isTextFormatIncorrect(currentText: String) =
             currentText == decimalSeparator
