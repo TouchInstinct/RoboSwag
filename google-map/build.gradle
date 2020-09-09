@@ -3,8 +3,6 @@ apply from: "../android-configs/lib-config.gradle"
 dependencies {
     api project(":base-map")
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
-
     implementation "com.google.android.gms:play-services-maps"
 
     constraints {

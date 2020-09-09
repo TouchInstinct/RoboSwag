@@ -1,6 +1,1 @@
 apply from: "../android-configs/lib-config.gradle"
-
-dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
-
-}

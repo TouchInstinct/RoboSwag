@@ -3,7 +3,6 @@ apply from: "../android-configs/lib-config.gradle"
 dependencies {
     implementation "androidx.core:core"
     implementation "androidx.annotation:annotation"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
 
     constraints {
         implementation("androidx.core:core") {

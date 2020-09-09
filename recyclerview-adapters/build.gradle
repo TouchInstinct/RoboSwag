@@ -3,8 +3,6 @@ apply from: "../android-configs/lib-config.gradle"
 dependencies {
     implementation project(':kotlin-extensions')
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
-
     implementation "androidx.recyclerview:recyclerview"
 
     implementation "androidx.core:core-ktx"
