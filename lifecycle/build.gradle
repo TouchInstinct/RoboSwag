@@ -3,8 +3,6 @@ apply from: "../android-configs/lib-config.gradle"
 dependencies {
     compileOnly "javax.inject:javax.inject:1"
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
-
     implementation "androidx.appcompat:appcompat"
 
     implementation "androidx.fragment:fragment"

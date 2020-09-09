@@ -5,8 +5,6 @@ dependencies {
     api project(":logging")
     api project(":lifecycle")
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
-
     implementation "androidx.appcompat:appcompat"
 
     implementation "androidx.lifecycle:lifecycle-extensions"

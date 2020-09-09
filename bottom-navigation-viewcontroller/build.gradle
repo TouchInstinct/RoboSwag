@@ -5,8 +5,6 @@ dependencies {
     implementation project(":navigation-viewcontroller")
     implementation project(":bottom-navigation-base")
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
-
     implementation "androidx.core:core-ktx"
 
     implementation "androidx.appcompat:appcompat"

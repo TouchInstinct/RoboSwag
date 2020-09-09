@@ -1,4 +1,5 @@
 apply from: "../android-configs/lib-config.gradle"
+apply plugin: 'kotlin-kapt'
 
 dependencies {
     implementation project(":navigation-base")
@@ -6,6 +7,9 @@ dependencies {
     implementation("ru.terrakok.cicerone:cicerone")
     implementation("androidx.fragment:fragment")
     implementation("com.google.dagger:dagger")
+    kapt("com.google.dagger:dagger-compiler")
+
+    def daggerVersion = "2.27"
 
     constraints {
         implementation("ru.terrakok.cicerone:cicerone") {
@@ -20,7 +24,12 @@ dependencies {
         }
         implementation("com.google.dagger:dagger") {
             version {
-                require("2.27")
+                require(daggerVersion)
+            }
+        }
+        kapt("com.google.dagger:dagger-compiler") {
+            version {
+                require(daggerVersion)
             }
         }
     }

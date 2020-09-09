@@ -34,17 +34,19 @@ abstract class FlowFragment : Fragment(R.layout.fragment_flow) {
 
     abstract fun injectComponent()
 
+    private val exitRouterOnBackPressed = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            router.exit()
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewLifecycleOwner.lifecycle.addObserver(
                 CiceroneTuner(navigatorHolder = navigatorHolder, navigator = createNavigator())
         )
 
-        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                router.exit()
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, exitRouterOnBackPressed)
     }
 
     open fun createNavigator(): Navigator = SupportAppNavigator(
