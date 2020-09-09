@@ -10,7 +10,8 @@ import ru.touchin.roboswag.mvi_arch.marker.ViewState
 
 class Paginator<Item>(
         private val errorHandleMod: ErrorHandleMod,
-        private val loadPage: suspend (Int) -> List<Item>
+        private val loadPage: suspend (Int) -> List<Item>,
+        private val pageSize: Int
 ) : Store<Paginator.Change, Paginator.Effect, Paginator.State>(State.Empty) {
 
     sealed class Change : StateChange {
@@ -89,7 +90,7 @@ class Paginator<Item>(
                     }
                 }
                 is State.NewPageProgress<*> -> {
-                    if (items.isEmpty()) {
+                    if (items.size < pageSize) {
                         State.FullData(currentState.pageCount, currentState.data)
                     } else {
                         State.Data(currentState.pageCount + 1, currentState.data + items)
