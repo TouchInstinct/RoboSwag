@@ -1,0 +1,27 @@
+apply from: "../android-configs/lib-config.gradle"
+
+dependencies {
+    implementation project(":navigation-base")
+
+    implementation("ru.terrakok.cicerone:cicerone")
+    implementation("androidx.fragment:fragment")
+    implementation("com.google.dagger:dagger")
+
+    constraints {
+        implementation("ru.terrakok.cicerone:cicerone") {
+            version {
+                require("5.1.0")
+            }
+        }
+        implementation("androidx.fragment:fragment") {
+            version {
+                require("1.2.1")
+            }
+        }
+        implementation("com.google.dagger:dagger") {
+            version {
+                require("2.27")
+            }
+        }
+    }
+}
