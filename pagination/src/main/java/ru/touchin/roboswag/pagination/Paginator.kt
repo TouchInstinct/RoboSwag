@@ -90,7 +90,7 @@ class Paginator<Item>(
                     }
                 }
                 is State.NewPageProgress<*> -> {
-                    if (items.isEmpty() || items.size < pageSize) {
+                    if (items.size < pageSize) {
                         State.FullData(currentState.pageCount, currentState.data)
                     } else {
                         State.Data(currentState.pageCount + 1, currentState.data + items)
