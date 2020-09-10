@@ -76,17 +76,17 @@ class Paginator<Item>(
             val items = change.items
             when (currentState) {
                 is State.EmptyProgress -> {
-                    if (items.isEmpty()) {
-                        State.Empty
-                    } else {
-                        State.Data(0, items)
+                    when {
+                        items.isEmpty() -> State.Empty
+                        items.size < pageSize -> State.FullData(0, items)
+                        else -> State.Data(0, items)
                     }
                 }
                 is State.Refresh<*> -> {
-                    if (items.isEmpty()) {
-                        State.Empty
-                    } else {
-                        State.Data(0, items)
+                    when {
+                        items.isEmpty() -> State.Empty
+                        items.size < pageSize -> State.FullData(0, items)
+                        else -> State.Data(0, items)
                     }
                 }
                 is State.NewPageProgress<*> -> {
