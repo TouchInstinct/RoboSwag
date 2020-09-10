@@ -54,11 +54,10 @@ class AmountWithDecimalDecorator(
             try {
                 var currentText = text
                 possibleDecimalSeparators.forEach { currentText = currentText.replace(it, decimalSeparator) }
-                val currentIntegerPathLength = currentText.withoutFormatting().split(decimalSeparator)[0].length
+                val currentIntegerPartLength = currentText.withoutFormatting().split(decimalSeparator)[0].length
 
-                if (isIntegerPathToLong(currentIntegerPathLength)) {
-                    setTextWhenNewInputIncorrect(currentText, cursorPosition)
-                    return
+                if (isIntegerPartToLong(currentIntegerPartLength)) {
+                    currentText = trimIntegerPart(currentText)
                 }
 
                 if (isTextFormatIncorrect(currentText)) {
@@ -72,7 +71,7 @@ class AmountWithDecimalDecorator(
                 }
 
                 val currentDecimalPartLength = currentText.split(decimalSeparator).getOrNull(1)?.length
-                if (isDecimalPathTooLong(currentDecimalPartLength)) {
+                if (isDecimalPartTooLong(currentDecimalPartLength)) {
                     setTextWhenNewInputIncorrect(currentText, cursorPosition)
                     return
                 }
@@ -97,7 +96,14 @@ class AmountWithDecimalDecorator(
         }
     }
 
-    private fun isIntegerPathToLong(currentIntegerPathLength: Int) = currentIntegerPathLength > integerPartLength
+    private fun isIntegerPartToLong(currentIntegerPartLength: Int) = currentIntegerPartLength > integerPartLength
+
+    private fun trimIntegerPart(currentText: String): String {
+        val splittedText = currentText.withoutFormatting().split(decimalSeparator)
+        val integerPart = splittedText[0]
+        val decimalPart = if (splittedText.size > 1) decimalSeparator + splittedText[1] else ""
+        return integerPart.take(integerPartLength) + decimalPart
+    }
 
     private fun isTextFormatIncorrect(currentText: String) =
             currentText == decimalSeparator
@@ -149,7 +155,7 @@ class AmountWithDecimalDecorator(
         }
     }
 
-    private fun isDecimalPathTooLong(currentDecimalPartLength: Int?) =
+    private fun isDecimalPartTooLong(currentDecimalPartLength: Int?) =
             !isSeparatorCutInvalidDecimalLength
                     && currentDecimalPartLength != null
                     && currentDecimalPartLength > decimalPartLength
