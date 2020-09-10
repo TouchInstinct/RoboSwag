@@ -57,8 +57,7 @@ class AmountWithDecimalDecorator(
                 val currentIntegerPathLength = currentText.withoutFormatting().split(decimalSeparator)[0].length
 
                 if (isIntegerPathToLong(currentIntegerPathLength)) {
-                    setTextWhenNewInputIncorrect(currentText, cursorPosition)
-                    return
+                    currentText = trimIntegerPath(currentText)
                 }
 
                 if (isTextFormatIncorrect(currentText)) {
@@ -98,6 +97,13 @@ class AmountWithDecimalDecorator(
     }
 
     private fun isIntegerPathToLong(currentIntegerPathLength: Int) = currentIntegerPathLength > integerPartLength
+
+    private fun trimIntegerPath(currentText: String): String {
+        val textSplit = currentText.withoutFormatting().split(decimalSeparator)
+        val integerPath = textSplit[0]
+        val decimalPath = if (textSplit.size > 1) decimalSeparator + textSplit[1] else ""
+        return integerPath.take(integerPartLength) + decimalPath
+    }
 
     private fun isTextFormatIncorrect(currentText: String) =
             currentText == decimalSeparator
