@@ -215,6 +215,7 @@ class AmountWithDecimalDecorator(
         return formatter.format(this.replaceSeparatorsToDot().toDouble().floor())
     }
 
+    // TODO make it simple
     private fun Double.floor() = (this * 10f.pow(decimalPartLength)).roundToLong() / 10f.pow(decimalPartLength)
 
 }
