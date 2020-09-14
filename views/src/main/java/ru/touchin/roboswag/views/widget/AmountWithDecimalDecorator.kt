@@ -8,6 +8,7 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
+import kotlin.math.roundToLong
 
 class AmountWithDecimalDecorator(
         val editText: EditText,
@@ -214,8 +215,6 @@ class AmountWithDecimalDecorator(
         return formatter.format(this.replaceSeparatorsToDot().toDouble().floor())
     }
 
-    private fun Double.floor() =
-            (this * 10.toDouble().pow(decimalPartLength)).toLong() / 10.toDouble()
-                    .pow(decimalPartLength)
+    private fun Double.floor() = (this * 10f.pow(decimalPartLength)).roundToLong() / 10f.pow(decimalPartLength)
 
 }
