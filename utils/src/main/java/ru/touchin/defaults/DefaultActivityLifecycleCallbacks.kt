@@ -14,7 +14,7 @@ open class DefaultActivityLifecycleCallbacks : Application.ActivityLifecycleCall
 
     override fun onActivityDestroyed(activity: Activity) = Unit
 
-    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle?) = Unit
+    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
 
     override fun onActivityStopped(activity: Activity) = Unit
 
