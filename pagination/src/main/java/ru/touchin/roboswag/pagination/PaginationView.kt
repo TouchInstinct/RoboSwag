@@ -8,7 +8,11 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import ru.touchin.extensions.setOnRippleClickListener
 import ru.touchin.mvi_arch.core_pagination.databinding.ViewPaginationBinding
 
+/**
+ * Вьюшка, оторая отвечает за отображение списка элементов с постраничной загрузкой
+ */
 // TODO: add an errorview with empty state and error text
+// TODO: add LoadingContentView
 class PaginationView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
@@ -27,6 +31,7 @@ class PaginationView @JvmOverloads constructor(
         }
     }
 
+    //
     fun init(refreshCallback: () -> Unit, adapter: PaginationAdapter) {
         this.refreshCallback = refreshCallback
         this.adapter = adapter

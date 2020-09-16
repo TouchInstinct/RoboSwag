@@ -6,6 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.touchin.roboswag.recyclerview_adapters.adapters.AdapterDelegate
 import ru.touchin.roboswag.recyclerview_adapters.adapters.DelegationListAdapter
 
+/**
+ * Адаптер для отображения постраничного списка.
+ */
 class PaginationAdapter(
         private val nextPageCallback: () -> Unit,
         private val itemIdDiff: (old: Any, new: Any) -> Boolean,
@@ -26,6 +29,7 @@ class PaginationAdapter(
         delegate.forEach(this::addDelegate)
     }
 
+    // TODO: перенести в Paginator
     fun update(data: List<Any>, updateState: UpdateState) {
         submitList(data + listOfNotNull(when (updateState) {
             is UpdateState.Common -> null
@@ -34,6 +38,7 @@ class PaginationAdapter(
         }))
     }
 
+    // При байндинге одного из последних элементов списка запускается загрузка следующей страницы
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: List<Any>) {
         super.onBindViewHolder(holder, position, payloads)
         if (!fullData && position >= itemCount - 10) nextPageCallback.invoke()

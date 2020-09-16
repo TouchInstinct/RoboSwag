@@ -2,10 +2,13 @@ package ru.touchin.roboswag.pagination
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ru.touchin.roboswag.recyclerview_adapters.adapters.ItemAdapterDelegate
 import ru.touchin.mvi_arch.core_pagination.R
 import ru.touchin.roboswag.components.utils.UiUtils
+import ru.touchin.roboswag.recyclerview_adapters.adapters.ItemAdapterDelegate
 
+/**
+ * Делегат для отображения лоадера в конце списка
+ */
 class ProgressAdapterDelegate : ItemAdapterDelegate<RecyclerView.ViewHolder, ProgressItem>() {
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder =
