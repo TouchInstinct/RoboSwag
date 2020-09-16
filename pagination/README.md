@@ -11,4 +11,6 @@
 View, которая отвечает за отображение постраничного списка. Основной метод - render, который принимает на вход Paginator.State. View состоит из 
 SwipeRefreshLayout и Switcher на 3 состояния: loading, error/empty, success. Success state состоит из RecyclerView, который работает с PaginationAdapter.
 
-### PaginationAdapter
+## Дополнительные материалы
+
+- [Доклад, на котором основан модуль](https://www.youtube.com/watch?v=n9mfLWI8ktE)

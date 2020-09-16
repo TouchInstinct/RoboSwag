@@ -8,6 +8,10 @@ import ru.touchin.roboswag.mvi_arch.marker.SideEffect
 import ru.touchin.roboswag.mvi_arch.marker.StateChange
 import ru.touchin.roboswag.mvi_arch.marker.ViewState
 
+/**
+ * Класс, наследник Store, который реализует изменение состояния списка элементов, который поддерживает постраничную загрузку.
+ * На выход принимает способ обработки ошибки загрузки страницы, метод загрузки страницы и размер страницы.
+ */
 class Paginator<Item>(
         private val errorHandleMod: ErrorHandleMod,
         private val loadPage: suspend (Int) -> List<Item>,
@@ -15,35 +19,67 @@ class Paginator<Item>(
 ) : Store<Paginator.Change, Paginator.Effect, Paginator.State>(State.Empty) {
 
     sealed class Change : StateChange {
+        // Вызов pull-to-refresh
         object Refresh : Change()
+
+        // Полная перезагрузка данных при смене внешних параметров: фильтров, сортировок итд
         object Restart : Change()
+
+        // Пользователь скроллит до конца списка. Вызывает загрузку новой страницы
         object LoadMore : Change()
+
+        // Пока не понятно
         object Reset : Change()
+
+        // Загрузка новой страницы прошла успешно
         data class NewPageLoaded<T>(val pageNumber: Int, val items: List<T>) : Change()
+
+        // Загрузка новой страницы прошла с ошибкой
         data class PageLoadError(val error: Throwable) : Change()
     }
 
     sealed class Effect : SideEffect {
+        // Вызов асинхронной загрузки новой страницы
         data class LoadPage(val page: Int = 0) : Effect()
     }
 
     sealed class State : ViewState {
+        // Пустой экран
         object Empty : State()
+
+        // Лоадер в середине экрана
         object EmptyProgress : State()
+
+        // Ошибка при загрузке первой страницы
         data class EmptyError(val error: Throwable) : State()
+
+        // Загружен список элементов
         data class Data<T>(val pageCount: Int = 0, val data: List<T>, val error: Throwable? = null) : State()
+
+        // Показать лоадер при pull-to-refresh
         data class Refresh<T>(val pageCount: Int, val data: List<T>) : State()
+
+        // Загрузка новой страницы
         data class NewPageProgress<T>(val pageCount: Int, val data: List<T>) : State()
+
+        // Весь список загружен. Больше нечего грузить
         data class FullData<T>(val pageCount: Int, val data: List<T>) : State()
     }
 
     sealed class Error {
+        // Ошибка загрузки новой страницы
         object NewPageFailed : Error()
+
+        // Ошибка обновления страницы
         object RefreshFailed : Error()
     }
 
+    // Способы обработки ошибки
     sealed class ErrorHandleMod {
+        // Показывать алерт на ошибку
         data class Alert(val showError: (Error) -> Unit) : ErrorHandleMod()
+
+        // Показывать в конце списка элемент списка с ошибкой
         object ErrorItem : ErrorHandleMod()
     }
 
