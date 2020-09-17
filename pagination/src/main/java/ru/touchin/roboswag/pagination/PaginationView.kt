@@ -26,12 +26,13 @@ class PaginationView @JvmOverloads constructor(
     init {
         with(binding) {
             swipeToRefresh.setOnRefreshListener { refreshCallback() }
+            // TODO: удалить и перенести настройку layoutManager в init
             elementsRecycler.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             emptyText.setOnRippleClickListener { refreshCallback() }
         }
     }
 
-    //
+    // Метод, который настраивает view: выставляет adapter для recyclerView и передает лямбду, которую надо вызвать при pull-to-refresh
     fun init(refreshCallback: () -> Unit, adapter: PaginationAdapter) {
         this.refreshCallback = refreshCallback
         this.adapter = adapter
