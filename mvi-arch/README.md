@@ -1,4 +1,28 @@
-mvi_arch
-====
+# mvi_arch
 
-TODO: rewrite dependencies
+Модуль для реализации presentation слоя с помощью паттерна mvi.
+
+Модуль содержит две реализации mvi: упрощенная и полная.
+
+## Упрощенная реализация через MviViewModel
+
+### Отличия от стандартного ViewModel
+
+### ViewModel и AssistedInject
+
+### MviFragment
+
+## Полная реализация через MviStoreViewModel
+
+### Store
+
+### MviStoreViewModel
+
+### Почему всегда не использовать MviStoreViewModel
+
+## Дополнительные материалы
+
+- [Доклад про MVI от Сергея Рябова]()
+- [Доклад про эволюцию презентационных паттернов]()
+- [Доклад про расширяемую архитектуру в Lyft]()
+
