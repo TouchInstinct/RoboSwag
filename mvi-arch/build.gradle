@@ -5,6 +5,7 @@ dependencies {
     implementation project(":navigation-base")
     implementation project(":lifecycle")
     implementation project(":kotlin-extensions")
+    implementation project(":logging")
 
     implementation("androidx.core:core-ktx")
     implementation("androidx.appcompat:appcompat")
@@ -22,6 +23,8 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android")
+
+    implementation("com.tylerthrailkill.helpers:pretty-print:2.0.2")
 
     def fragmentVersion = "1.2.1"
     def lifecycleVersion = "2.2.0"
