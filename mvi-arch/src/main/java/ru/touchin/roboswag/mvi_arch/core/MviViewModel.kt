@@ -67,6 +67,7 @@ abstract class MviViewModel<NavArgs : Parcelable, Action : ViewAction, State : V
         mediatorStore.onAction(action)
     }
 
+    @CallSuper
     override fun onCleared() {
         super.onCleared()
         state.removeObserver(stateMediatorObserver)
