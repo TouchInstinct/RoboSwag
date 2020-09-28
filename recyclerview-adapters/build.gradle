@@ -14,5 +14,5 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation "androidx.recyclerview:recyclerview:$versions.androidx"
+    implementation "androidx.recyclerview:recyclerview:$versions.recyclerview"
 }

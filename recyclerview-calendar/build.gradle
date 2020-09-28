@@ -12,5 +12,5 @@ dependencies {
     api project(":logging")
     api 'net.danlew:android.joda:2.9.9.4'
 
-    implementation "androidx.recyclerview:recyclerview:$versions.androidx"
+    implementation "androidx.recyclerview:recyclerview:$versions.recyclerview"
 }
