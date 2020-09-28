@@ -1,12 +1,19 @@
 package ru.touchin.roboswag.mvi_arch.core
 
 import android.os.Parcelable
+import androidx.annotation.CallSuper
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import ru.touchin.mvi_arch.BuildConfig
 import ru.touchin.roboswag.mvi_arch.marker.ViewAction
 import ru.touchin.roboswag.mvi_arch.marker.ViewState
+import ru.touchin.roboswag.mvi_arch.mediator.LoggingMediator
+import ru.touchin.roboswag.mvi_arch.mediator.MediatorStore
 
 /**
  *  Base [ViewModel] to use in MVI architecture.
@@ -33,6 +40,12 @@ abstract class MviViewModel<NavArgs : Parcelable, Action : ViewAction, State : V
         protected val handle: SavedStateHandle
 ) : ViewModel() {
 
+    private val mediatorStore = MediatorStore(
+            listOfNotNull(
+                    LoggingMediator(this::class.simpleName!!).takeIf { BuildConfig.DEBUG }
+            )
+    )
+
     protected val navArgs: NavArgs = handle.get(MviFragment.INIT_ARGS_KEY) ?: throw IllegalStateException("Nav args mustn't be null")
 
     protected val _state = MutableLiveData(initialState)
@@ -41,6 +54,23 @@ abstract class MviViewModel<NavArgs : Parcelable, Action : ViewAction, State : V
     protected val currentState: State
         get() = _state.value ?: initialState
 
-    abstract fun dispatchAction(action: Action)
+    private val stateMediatorObserver = Observer<State>(mediatorStore::onNewState)
+
+    init {
+        viewModelScope.launch {
+            state.observeForever(stateMediatorObserver)
+        }
+    }
+
+    @CallSuper
+    open fun dispatchAction(action: Action) {
+        mediatorStore.onAction(action)
+    }
+
+    @CallSuper
+    override fun onCleared() {
+        super.onCleared()
+        state.removeObserver(stateMediatorObserver)
+    }
 
 }
