@@ -7,7 +7,12 @@ import ru.touchin.roboswag.recyclerview_adapters.adapters.AdapterDelegate
 import ru.touchin.roboswag.recyclerview_adapters.adapters.DelegationListAdapter
 
 /**
- * Адаптер для отображения постраничного списка.
+ * Adapter for showing [Paginator].
+ *
+ * @param nextPageCallback - callback to load data for next page (if not all data loaded);
+ * @param itemIdDiff - compares whether two elements are equal;
+ * @param delegate - list of delegates to add to adapter of RecyclerView.
+ *
  */
 class PaginationAdapter(
         private val nextPageCallback: () -> Unit,

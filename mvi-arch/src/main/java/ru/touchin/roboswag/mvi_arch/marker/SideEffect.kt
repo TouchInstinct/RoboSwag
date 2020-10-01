@@ -1,6 +1,8 @@
 package ru.touchin.roboswag.mvi_arch.marker
 
 /**
- * Класс-маркер для вызова асинхронных действий. Например, запрос на сервер или в бд
- */
+ * Class-marker to invoke asynchronous actions such as API call or database query.
+ * Side effects create in [Store.reduce].
+ *
+ * */
 interface SideEffect

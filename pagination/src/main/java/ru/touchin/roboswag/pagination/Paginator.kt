@@ -9,9 +9,13 @@ import ru.touchin.roboswag.mvi_arch.marker.StateChange
 import ru.touchin.roboswag.mvi_arch.marker.ViewState
 
 /**
- * Класс, наследник Store, который реализует изменение состояния списка элементов, который поддерживает постраничную загрузку.
- * На выход принимает способ обработки ошибки загрузки страницы, метод загрузки страницы и размер страницы.
+ * Class for state changing of list, support page-loading, implements [Store]
+ *
+ * @param errorHandleMod - error handling method (show Alert or ErrorItem);
+ * @param loadPage - method for loading data;
+ * @param pageSize - size of one page
  */
+
 class Paginator<Item>(
         private val errorHandleMod: ErrorHandleMod,
         private val loadPage: suspend (Int) -> List<Item>,

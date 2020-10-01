@@ -1,6 +1,7 @@
 package ru.touchin.roboswag.pagination
 
 /**
- * Элемент списка, который будет показан в конце списка при неудачной загрузке новой страницы
+ * Element to display in the end of list if an error occurred while loading new page
  */
+
 object ErrorItem

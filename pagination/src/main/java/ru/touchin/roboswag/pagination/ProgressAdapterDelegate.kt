@@ -7,8 +7,9 @@ import ru.touchin.roboswag.components.utils.UiUtils
 import ru.touchin.roboswag.recyclerview_adapters.adapters.ItemAdapterDelegate
 
 /**
- * Делегат для отображения лоадера в конце списка
+ * Delegate for displaying loader in the end of list
  */
+
 class ProgressAdapterDelegate : ItemAdapterDelegate<RecyclerView.ViewHolder, ProgressItem>() {
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder =

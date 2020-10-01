@@ -9,8 +9,9 @@ import ru.touchin.extensions.setOnRippleClickListener
 import ru.touchin.mvi_arch.core_pagination.databinding.ViewPaginationBinding
 
 /**
- * Вьюшка, оторая отвечает за отображение списка элементов с постраничной загрузкой
+ * View, responsible for displaying paginator
  */
+
 // TODO: add an errorview with empty state and error text
 // TODO: add LoadingContentView
 class PaginationView @JvmOverloads constructor(

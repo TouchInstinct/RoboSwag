@@ -18,6 +18,15 @@ import ru.touchin.roboswag.mvi_arch.marker.SideEffect
 import ru.touchin.roboswag.mvi_arch.marker.StateChange
 import ru.touchin.roboswag.mvi_arch.marker.ViewState
 
+/**
+ * Base [Store] to use in [MviStoreViewModel].
+ *
+ * You should implement it:
+ * 1) define [StateChange], [SideEffect] and [ViewState] - usually sealed class with objects and data classes.
+ * 2) override method [reduce] - it should transform current state ViewState and StateChange to pair of <ViewState, SideEffect>
+ *
+ **/
+
 abstract class Store<Change : StateChange, Effect : SideEffect, State : ViewState>(
         initialState: State
 ) {

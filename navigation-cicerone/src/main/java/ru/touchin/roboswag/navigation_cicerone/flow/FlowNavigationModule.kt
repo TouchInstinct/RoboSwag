@@ -7,6 +7,12 @@ import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
 import ru.touchin.roboswag.navigation_base.scopes.FeatureScope
 
+/**
+ * Module to provide Cicerone.
+ *
+ * You should add it to @Component annotation of your feature's component.
+ */
+
 @Module
 class FlowNavigationModule {
 
