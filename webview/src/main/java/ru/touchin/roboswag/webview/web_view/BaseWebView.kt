@@ -1,4 +1,4 @@
-package ru.touchin.roboswag.views.widget.web_view
+package ru.touchin.roboswag.webview.web_view
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -11,10 +11,9 @@ import android.webkit.WebView
 import androidx.core.content.withStyledAttributes
 import androidx.core.widget.TextViewCompat
 import ru.touchin.extensions.setOnRippleClickListener
-import ru.touchin.roboswag.components.utils.UiUtils
-import ru.touchin.roboswag.views.R
-import ru.touchin.roboswag.views.databinding.BaseWebViewBinding
 import ru.touchin.roboswag.views.widget.Switcher
+import ru.touchin.roboswag.webview.R
+import ru.touchin.roboswag.webview.databinding.BaseWebViewBinding
 
 open class BaseWebView @JvmOverloads constructor(
         context: Context,

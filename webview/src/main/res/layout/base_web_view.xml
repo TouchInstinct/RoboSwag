@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ru.touchin.roboswag.views.widget.web_view.CustomWebView
+    <ru.touchin.roboswag.webview.web_view.CustomWebView
         android:id="@+id/web_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,7 +26,6 @@
 
         <TextView
             android:id="@+id/error_text"
-            style="@style/Text.Regular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
