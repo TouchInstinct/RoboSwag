@@ -13,12 +13,18 @@ dependencies {
     implementation project(":logging")
 
     implementation "com.google.android.material:material"
+    implementation "androidx.constraintlayout:constraintlayout"
     implementation "androidx.core:core-ktx"
 
     constraints {
         implementation("com.google.android.material:material") {
             version {
                 require '1.0.0'
+            }
+        }
+        implementation("androidx.constraintlayout:constraintlayout") {
+            version {
+                require '2.0.0-beta4'
             }
         }
         implementation("androidx.core:core-ktx") {
