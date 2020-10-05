@@ -216,6 +216,6 @@ class AmountWithDecimalDecorator(
     }
 
     // TODO make it simple
-    private fun Double.floor() = (this * 10f.pow(decimalPartLength)).roundToLong() / 10f.pow(decimalPartLength)
+    private fun Double.floor() = (this * 10.0.pow(decimalPartLength)).roundToLong() / 10.0.pow(decimalPartLength)
 
 }
