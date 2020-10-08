@@ -15,7 +15,7 @@ import ru.touchin.roboswag.navigation_cicerone.CiceroneTuner
 import javax.inject.Inject
 
 /**
- * Base parent fragment for fragments of hole feature. FlowFragment has own navigator based on childFragmentManager.
+ * Base parent fragment for fragments of whole feature. FlowFragment has own navigator based on childFragmentManager.
  * FlowFragment is responsible for handling of back button press.
  *
  * You should connect FlowNavigationModule to your Dagger component and add inject method for your flow fragment.

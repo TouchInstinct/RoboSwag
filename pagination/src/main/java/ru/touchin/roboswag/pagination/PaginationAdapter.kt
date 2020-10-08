@@ -27,16 +27,15 @@ class PaginationAdapter(
         }
 ) {
 
-    // TODO: перенести в список
-    // Переменная, которая отвечает за отображение лоадера в конце списка. Если переменная равна true, лоадер не будет показан
-    internal var fullData = false
+    // TODO: transfer to list
+    internal var isLoaderInTheEndInvisible = false
 
     init {
         addDelegate(ProgressAdapterDelegate())
         delegate.forEach(this::addDelegate)
     }
 
-    // TODO: перенести в Paginator
+    // TODO: transfer to Paginator
     fun update(data: List<Any>, updateState: UpdateState) {
         submitList(data + listOfNotNull(when (updateState) {
             is UpdateState.Common -> null
@@ -45,10 +44,10 @@ class PaginationAdapter(
         }))
     }
 
-    // При байндинге одного из последних элементов списка запускается загрузка следующей страницы
+    // While binding one of the last elements of the list loading of the next page starts
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: List<Any>) {
         super.onBindViewHolder(holder, position, payloads)
-        if (!fullData && position >= itemCount - 10) nextPageCallback.invoke()
+        if (!isLoaderInTheEndInvisible && position >= itemCount - 10) nextPageCallback.invoke()
     }
 
     sealed class UpdateState {

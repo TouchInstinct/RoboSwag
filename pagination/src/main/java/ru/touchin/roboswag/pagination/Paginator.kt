@@ -23,67 +23,67 @@ class Paginator<Item>(
 ) : Store<Paginator.Change, Paginator.Effect, Paginator.State>(State.Empty) {
 
     sealed class Change : StateChange {
-        // Вызов pull-to-refresh
+        // call pull-to-refresh
         object Refresh : Change()
 
-        // Полная перезагрузка данных при смене внешних параметров: фильтров, сортировок итд
+        // Full reloading data when changing external parameters: filters, sorts, etc.
         object Restart : Change()
 
-        // Пользователь скроллит до конца списка. Вызывает загрузку новой страницы
+        // User scrolls to the end of the list. Calls loading of new page
         object LoadMore : Change()
 
-        // Очищение списка загруженных элементов
+        // Clearing the list and loaded elements
         object Reset : Change()
 
-        // Загрузка новой страницы прошла успешно
+        // Loading the new page was successful
         data class NewPageLoaded<T>(val pageNumber: Int, val items: List<T>) : Change()
 
-        // Загрузка новой страницы прошла с ошибкой
+        // Loading the new page ended with error
         data class PageLoadError(val error: Throwable) : Change()
     }
 
     sealed class Effect : SideEffect {
-        // Вызов асинхронной загрузки новой страницы
+        // Call asynchronous load of a new page
         data class LoadPage(val page: Int = 0) : Effect()
     }
 
     sealed class State : ViewState {
-        // Пустой экран
+        // Empty screen
         object Empty : State()
 
-        // Лоадер в середине экрана
+        // Loader in the middle of screen
         object EmptyProgress : State()
 
-        // Ошибка при загрузке первой страницы
+        // Error while loading first page
         data class EmptyError(val error: Throwable) : State()
 
-        // Загружен список элементов
+        // Loaded list of elements
         data class Data<T>(val pageCount: Int = 0, val data: List<T>, val error: Throwable? = null) : State()
 
-        // Показать лоадер при pull-to-refresh
+        // Show loader on pull-to-refresh
         data class Refresh<T>(val pageCount: Int, val data: List<T>) : State()
 
-        // Загрузка новой страницы
+        // Loading new page
         data class NewPageProgress<T>(val pageCount: Int, val data: List<T>) : State()
 
-        // Весь список загружен. Больше нечего грузить
+        // The whole list is loaded. Nothing to load more.
         data class FullData<T>(val pageCount: Int, val data: List<T>) : State()
     }
 
     sealed class Error {
-        // Ошибка загрузки новой страницы
-        object NewPageFailed : Error()
 
-        // Ошибка обновления страницы
-        object RefreshFailed : Error()
+        object NewPageLoadingFailed : Error()
+
+        object RefreshPageFailed : Error()
+
     }
 
-    // Способы обработки ошибки
+    // How to react to an error
     sealed class ErrorHandleMod {
-        // Показывать алерт на ошибку
+        // Show alert for error
         data class Alert(val showError: (Error) -> Unit) : ErrorHandleMod()
 
-        // Показывать в конце списка элемент списка с ошибкой
+        // Show in the end of list an element of list with error
         object ErrorItem : ErrorHandleMod()
     }
 
@@ -145,7 +145,7 @@ class Paginator<Item>(
                 is State.Refresh<*> -> {
                     when (errorHandleMod) {
                         is ErrorHandleMod.Alert -> {
-                            errorHandleMod.showError(Error.RefreshFailed)
+                            errorHandleMod.showError(Error.RefreshPageFailed)
                             State.Data(currentState.pageCount, currentState.data)
                         }
                         is ErrorHandleMod.ErrorItem -> {
@@ -160,7 +160,7 @@ class Paginator<Item>(
                 is State.NewPageProgress<*> -> {
                     when (errorHandleMod) {
                         is ErrorHandleMod.Alert -> {
-                            errorHandleMod.showError(Error.NewPageFailed)
+                            errorHandleMod.showError(Error.NewPageLoadingFailed)
                             State.Data(currentState.pageCount, currentState.data)
                         }
                         is ErrorHandleMod.ErrorItem -> {
