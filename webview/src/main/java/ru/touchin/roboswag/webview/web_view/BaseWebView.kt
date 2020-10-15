@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.webkit.ConsoleMessage
 import android.webkit.WebView
 import androidx.core.content.withStyledAttributes
 import androidx.core.widget.TextViewCompat
@@ -27,7 +28,20 @@ open class BaseWebView @JvmOverloads constructor(
     var onWebViewRepeatButtonClicked: (() -> Unit)? = null
     var onWebViewScrolled: ((WebView, Int, Int) -> Unit)? = null
 
+    var onJsConfirm: (() -> Unit)? = null
+    var onJsAlert: (() -> Unit)? = null
+    var onJsPrompt: ((defaultValue: String?) -> Unit)? = null
+    var onJsError: ((error: ConsoleMessage) -> Unit)? = null
+
+    var isPullToRefreshEnable = false
+        set(value) {
+            binding.pullToRefresh.isEnabled = value
+            binding.pullToRefresh.isRefreshing = false
+            field = value
+        }
+
     init {
+        binding.pullToRefresh.isEnabled = isPullToRefreshEnable
         binding.apply {
             context.withStyledAttributes(attrs, R.styleable.BaseWebView, defStyleAttr, 0) {
                 if (hasValue(R.styleable.BaseWebView_errorTextAppearance)) {
@@ -52,7 +66,9 @@ open class BaseWebView @JvmOverloads constructor(
                     errorRepeatButton.text = getString(R.styleable.BaseWebView_repeatButtonText)
                 }
             }
-
+            pullToRefresh.setOnRefreshListener {
+                webView.reload()
+            }
             errorRepeatButton.setOnRippleClickListener {
                 onWebViewRepeatButtonClicked?.invoke()
             }
@@ -67,15 +83,17 @@ open class BaseWebView @JvmOverloads constructor(
     }
 
     override fun onStateChanged(newState: WebViewLoadingState) {
-        when (newState) {
-            WebViewLoadingState.LOADED -> {
+        when {
+            newState == WebViewLoadingState.LOADED -> {
                 onWebViewLoaded?.invoke()
-                showChild(R.id.web_view)
+                binding.pullToRefresh.isRefreshing = false
+                showChild(R.id.pull_to_refresh)
             }
-            WebViewLoadingState.LOADING -> {
+            newState == WebViewLoadingState.LOADING
+                    && !binding.pullToRefresh.isRefreshing -> {
                 showChild(R.id.progress_bar)
             }
-            WebViewLoadingState.ERROR -> {
+            newState == WebViewLoadingState.ERROR -> {
                 showChild(R.id.error_layout)
             }
         }
@@ -83,6 +101,7 @@ open class BaseWebView @JvmOverloads constructor(
 
     fun setBaseWebViewClient() {
         binding.webView.webViewClient = BaseWebViewClient(this)
+        binding.webView.webChromeClient = BaseChromeWebViewClient(onJsConfirm, onJsAlert, onJsPrompt, onJsError)
     }
 
     fun getWebView() = binding.webView
