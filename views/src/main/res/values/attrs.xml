@@ -3,44 +3,47 @@
 
     <declare-styleable name="TypefacedTextView">
         <attr name="lineStrategy" format="enum">
-            <enum name="singleLineEllipsize" value="0"/>
-            <enum name="singleLineMarquee" value="1"/>
-            <enum name="singleLineAutoScale" value="2"/>
-            <enum name="multilineEllipsize" value="3"/>
-            <enum name="multilineMarquee" value="4"/>
-            <enum name="singleLineEllipsizeMiddle" value="5"/>
-            <enum name="multilineLineEllipsizeMiddle" value="6"/>
+            <enum name="singleLineEllipsize" value="0" />
+            <enum name="singleLineMarquee" value="1" />
+            <enum name="singleLineAutoScale" value="2" />
+            <enum name="multilineEllipsize" value="3" />
+            <enum name="multilineMarquee" value="4" />
+            <enum name="singleLineEllipsizeMiddle" value="5" />
+            <enum name="multilineLineEllipsizeMiddle" value="6" />
         </attr>
     </declare-styleable>
 
     <declare-styleable name="TypefacedEditText">
-        <attr name="isMultiline" format="boolean"/>
+        <attr name="isMultiline" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="MaterialLoadingBar">
-        <attr name="strokeWidth" format="dimension"/>
-        <attr name="color" format="color"/>
-        <attr name="size" format="dimension"/>
-        <attr name="materialLoadingBarStyle" format="reference"/>
+        <attr name="strokeWidth" format="dimension" />
+        <attr name="color" format="color" />
+        <attr name="size" format="dimension" />
+        <attr name="materialLoadingBarStyle" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="Switcher">
-        <attr name="android:inAnimation" format="reference"/>
-        <attr name="android:outAnimation" format="reference"/>
-        <attr name="defaultChild" format="reference"/>
+        <attr name="android:inAnimation" format="reference" />
+        <attr name="android:outAnimation" format="reference" />
+        <attr name="defaultChild" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="SkeletonView">
-        <attr name="skeletonGradientAngle" format="float"/>
-        <attr name="skeletonAnimationDurationInSec" format="integer"/>
-        <attr name="skeletonBaseColor" format="color"/>
-        <attr name="skeletonFirstGradientColor" format="color"/>
-        <attr name="skeletonSecondGradientColor" format="color"/>
-        <attr name="skeletonCornerRadius" format="dimension"/>
-        <attr name="skeletonCircleStrokeWidth" format="dimension"/>
+        <!-- Angle of gradient animation direction counting vertical from north. Currently works good with values​from 0 to 60. Default value is 20 -->
+        <attr name="skeletonGradientAngle" format="float" />
+        <!-- Default value is 4 seconds-->
+        <attr name="skeletonAnimationDurationInSec" format="integer" />
+        <attr name="skeletonBaseColor" format="color" />
+        <attr name="skeletonFirstGradientColor" format="color" />
+        <attr name="skeletonSecondGradientColor" format="color" />
+        <attr name="skeletonCornerRadius" format="dimension" />
+        <!-- If !=0 and shape is circle sets stroke style of painting -->
+        <attr name="skeletonCircleStrokeWidth" format="dimension" />
         <attr name="skeletonShape" format="enum">
-            <enum name="circle" value="0"/>
-            <enum name="rectangle" value="1"/>
+            <enum name="circle" value="0" />
+            <enum name="rectangle" value="1" />
         </attr>
     </declare-styleable>
 

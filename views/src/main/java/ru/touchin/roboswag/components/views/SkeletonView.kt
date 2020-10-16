@@ -20,7 +20,8 @@ import kotlin.math.min
 import kotlin.math.tan
 
 /**
- * View to show to user loading process with gradient changing animation.
+ * View to show to user loading process with gradient changing animation ("shimmer"). It shows two subsequent gradient "waves".
+ * To show only one "wave", you need to set one of the gradient colors to skeleton base color.
  * Default gradient angle is 20 degrees and default animation duration is 4 seconds.
  *
  * See SkeletonView Attributes:
