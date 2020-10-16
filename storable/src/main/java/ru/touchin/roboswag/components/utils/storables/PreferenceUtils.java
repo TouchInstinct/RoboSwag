@@ -20,6 +20,7 @@
 package ru.touchin.roboswag.components.utils.storables;
 
 import android.content.SharedPreferences;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -37,7 +38,7 @@ import ru.touchin.roboswag.core.observables.storable.NonNullStorable;
 public final class PreferenceUtils {
 
     /**
-     * Creates {@link Storable} that stores string into {@link SharedPreferences}.
+     * Creates {@link Storable} that stores string into {@link SharedPreferences}. Default value is null
      *
      * @param name        Name of preference;
      * @param preferences Preferences to store value;

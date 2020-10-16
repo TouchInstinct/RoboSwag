@@ -1,0 +1,16 @@
+apply from: "../android-configs/lib-config.gradle"
+
+dependencies {
+    implementation project(":utils")
+    implementation project(":logging")
+
+    implementation "io.reactivex.rxjava2:rxjava"
+
+    constraints {
+        implementation("io.reactivex.rxjava2:rxjava") {
+            version {
+                require '2.2.9'
+            }
+        }
+    }
+}

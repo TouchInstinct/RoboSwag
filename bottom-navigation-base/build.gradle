@@ -1,0 +1,26 @@
+apply from: "../android-configs/lib-config.gradle"
+
+dependencies {
+    implementation project(":logging")
+    implementation project(":navigation-base")
+
+    implementation("org.jetbrains.kotlin:kotlin-stdlib")
+
+    implementation("androidx.core:core-ktx")
+
+    implementation("androidx.appcompat:appcompat")
+
+    constraints {
+        implementation("androidx.appcompat:appcompat") {
+            version {
+                require '1.0.0'
+            }
+        }
+
+        implementation("androidx.core:core-ktx") {
+            version {
+                require '1.0.0'
+            }
+        }
+    }
+}

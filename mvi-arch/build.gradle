@@ -1,0 +1,97 @@
+apply from: "../android-configs/lib-config.gradle"
+apply plugin: 'kotlin-kapt'
+
+dependencies {
+    implementation project(":navigation-base")
+    implementation project(":lifecycle")
+    implementation project(":kotlin-extensions")
+    implementation project(":logging")
+
+    implementation("androidx.core:core-ktx")
+    implementation("androidx.appcompat:appcompat")
+
+    implementation("androidx.fragment:fragment")
+    implementation("androidx.fragment:fragment-ktx")
+
+    implementation("androidx.lifecycle:lifecycle-extensions")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx")
+
+    implementation("com.google.dagger:dagger")
+    kapt("com.google.dagger:dagger-compiler")
+    implementation("com.github.valeryponomarenko.componentsmanager:androidx")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android")
+
+    implementation("com.tylerthrailkill.helpers:pretty-print:2.0.2")
+
+    def fragmentVersion = "1.2.1"
+    def lifecycleVersion = "2.2.0"
+    def coroutinesVersion = "1.3.7"
+    def daggerVersion = "2.27"
+
+    constraints {
+        implementation("androidx.core:core-ktx") {
+            version {
+                require("1.2.0")
+            }
+        }
+        implementation("androidx.appcompat:appcompat") {
+            version {
+                require("1.0.2")
+            }
+        }
+        implementation("androidx.fragment:fragment") {
+            version {
+                require(fragmentVersion)
+            }
+        }
+        implementation("androidx.fragment:fragment-ktx") {
+            version {
+                require(fragmentVersion)
+            }
+        }
+        implementation("androidx.lifecycle:lifecycle-extensions") {
+            version {
+                require(lifecycleVersion)
+            }
+        }
+        implementation("androidx.lifecycle:lifecycle-viewmodel-ktx") {
+            version {
+                require(lifecycleVersion)
+            }
+        }
+        implementation("androidx.lifecycle:lifecycle-livedata-ktx") {
+            version {
+                require(lifecycleVersion)
+            }
+        }
+        implementation("com.google.dagger:dagger") {
+            version {
+                require(daggerVersion)
+            }
+        }
+        kapt("com.google.dagger:dagger-compiler") {
+            version {
+                require(daggerVersion)
+            }
+        }
+        implementation("com.github.valeryponomarenko.componentsmanager:androidx") {
+            version {
+                require("2.1.0")
+            }
+        }
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core") {
+            version {
+                require(coroutinesVersion)
+            }
+        }
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android") {
+            version {
+                require(coroutinesVersion)
+            }
+        }
+    }
+
+}

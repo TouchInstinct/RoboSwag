@@ -1,0 +1,43 @@
+apply from: "../android-configs/lib-config.gradle"
+
+apply plugin: 'kotlin-kapt'
+
+dependencies {
+    implementation project(":utils")
+    implementation project(":logging")
+    implementation project(":navigation-base")
+
+    implementation 'androidx.multidex:multidex'
+
+    implementation 'net.danlew:android.joda'
+
+    implementation "androidx.appcompat:appcompat"
+
+    implementation("com.crashlytics.sdk.android:crashlytics")
+
+    constraints {
+        implementation("androidx.multidex:multidex") {
+            version {
+                require '2.0.1'
+            }
+        }
+
+        implementation("net.danlew:android.joda") {
+            version {
+                require '2.10.2'
+            }
+        }
+
+        implementation("androidx.appcompat:appcompat") {
+            version {
+                require '1.0.2'
+            }
+        }
+
+        implementation("com.crashlytics.sdk.android:crashlytics") {
+            version {
+                require '2.10.0'
+            }
+        }
+    }
+}

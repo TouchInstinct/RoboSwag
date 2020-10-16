@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="paginator_new_page_error_message">New page load error. Try again.</string>
+    <string name="paginator_refresh_error_message">Refresh screen error. Try again.</string>
+</resources>
