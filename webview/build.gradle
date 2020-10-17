@@ -1,0 +1,44 @@
+apply from: "../android-configs/lib-config.gradle"
+apply plugin: 'kotlin-android'
+
+android {
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation project(":views")
+    implementation project(":kotlin-extensions")
+
+    implementation "com.google.android.material:material"
+    implementation "androidx.constraintlayout:constraintlayout"
+    implementation "androidx.core:core-ktx"
+
+    constraints {
+        implementation("com.google.android.material:material") {
+            version {
+                require '1.0.0'
+            }
+        }
+        implementation("androidx.constraintlayout:constraintlayout") {
+            version {
+                require '2.0.0-beta4'
+            }
+        }
+        implementation("androidx.core:core-ktx") {
+            version {
+                require '1.3.1'
+            }
+        }
+        implementation("org.jetbrains.kotlin:kotlin-stdlib") {
+            version {
+                require '1.3.0'
+            }
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+}

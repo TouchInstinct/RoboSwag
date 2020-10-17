@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="BaseWebView">
+        <attr name="screenBackground" format="reference"/>
+        <attr name="errorText" format="string"/>
+        <attr name="repeatButtonText" format="string"/>
+        <attr name="repeatButtonBackground" format="reference"/>
+        <attr name="repeatButtonTextAppearance" format="reference"/>
+        <attr name="errorTextAppearance" format="reference"/>
+        <attr name="progressBarTintColor" format="color"/>
+    </declare-styleable>
+
+</resources>

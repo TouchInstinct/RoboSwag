@@ -63,6 +63,7 @@ gradle.ext.roboswag = [
         'base-map',
         'yandex-map',
         'google-map',
+        'webview',
         'encrypted-shared-prefs'
 ]
 
