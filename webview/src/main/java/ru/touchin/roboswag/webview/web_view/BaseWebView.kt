@@ -27,6 +27,7 @@ open class BaseWebView @JvmOverloads constructor(
     var onWebViewLoaded: (() -> Unit)? = null
     var onWebViewRepeatButtonClicked: (() -> Unit)? = null
     var onWebViewScrolled: ((WebView, Int, Int) -> Unit)? = null
+    var onCookieLoaded: ((cookies: Map<String, String>) -> Unit)? = null
 
     var onJsConfirm: (() -> Unit)? = null
     var onJsAlert: (() -> Unit)? = null
@@ -39,6 +40,8 @@ open class BaseWebView @JvmOverloads constructor(
             binding.pullToRefresh.isRefreshing = false
             field = value
         }
+
+    var isRedirectEnable = false
 
     init {
         binding.pullToRefresh.isEnabled = isPullToRefreshEnable
@@ -72,14 +75,11 @@ open class BaseWebView @JvmOverloads constructor(
             errorRepeatButton.setOnRippleClickListener {
                 onWebViewRepeatButtonClicked?.invoke()
             }
+            webView.onScrollChanged = { scrollX, scrollY, _, _ ->
+                onWebViewScrolled?.invoke(binding.webView, scrollX, scrollY)
+            }
+            setWebViewPreferences()
         }
-    }
-
-    init {
-        binding.webView.onScrollChanged = { scrollX, scrollY, _, _ ->
-            onWebViewScrolled?.invoke(binding.webView, scrollX, scrollY)
-        }
-        setWebViewPreferences()
     }
 
     override fun onStateChanged(newState: WebViewLoadingState) {
@@ -99,8 +99,14 @@ open class BaseWebView @JvmOverloads constructor(
         }
     }
 
-    fun setBaseWebViewClient() {
-        binding.webView.webViewClient = BaseWebViewClient(this)
+    override fun onOverrideUrlLoading(url: String?): Boolean = isRedirectEnable
+
+    override fun onPageCookiesLoaded(cookies: Map<String, String>) {
+        onCookieLoaded?.invoke(cookies)
+    }
+
+    fun setBaseWebViewClient(isSSlPinningEnable: Boolean = false) {
+        binding.webView.webViewClient = BaseWebViewClient(this, isSSlPinningEnable)
         binding.webView.webChromeClient = BaseChromeWebViewClient(onJsConfirm, onJsAlert, onJsPrompt, onJsError)
     }
 
