@@ -75,7 +75,7 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
         this.split(";")
                 .forEach { cookie ->
                     val splittedCookie = cookie.trim().split("=")
-                    cookiesMap[splittedCookie.first()] = splittedCookie.last()
+                    cookiesMap[splittedCookie.first()] = if (splittedCookie.size != 3) "" else splittedCookie.last()
                 }
         return cookiesMap
     }
