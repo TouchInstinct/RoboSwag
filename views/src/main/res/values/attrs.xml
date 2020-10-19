@@ -31,7 +31,6 @@
     </declare-styleable>
 
     <declare-styleable name="SkeletonView">
-        <!-- Angle of gradient animation direction, counting clockwise from north. Currently works good with values​from 0 to 60. Default value is 20 -->
         <attr name="skeletonGradientAngle" format="float" />
         <!-- Default value is 4 seconds-->
         <attr name="skeletonAnimationDurationInSec" format="integer" />
