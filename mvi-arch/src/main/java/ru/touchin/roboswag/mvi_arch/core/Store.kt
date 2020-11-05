@@ -37,7 +37,8 @@ abstract class Store<Change : StateChange, Effect : SideEffect, State : ViewStat
 
     private val mediatorStore = MediatorStore(
             listOfNotNull(
-                    LoggingMediator(this::class.simpleName!!).takeIf { BuildConfig.DEBUG }
+// https://github.com/TouchInstinct/RoboSwag/issues/180
+//                    LoggingMediator(this::class.simpleName!!).takeIf { BuildConfig.DEBUG }
             )
     )
 
