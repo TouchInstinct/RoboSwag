@@ -14,11 +14,9 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import ru.touchin.mvi_arch.BuildConfig
 import ru.touchin.roboswag.mvi_arch.marker.SideEffect
 import ru.touchin.roboswag.mvi_arch.marker.StateChange
 import ru.touchin.roboswag.mvi_arch.marker.ViewState
-import ru.touchin.roboswag.mvi_arch.mediator.LoggingMediator
 import ru.touchin.roboswag.mvi_arch.mediator.MediatorStore
 
 abstract class Store<Change : StateChange, Effect : SideEffect, State : ViewState>(
@@ -37,7 +35,9 @@ abstract class Store<Change : StateChange, Effect : SideEffect, State : ViewStat
 
     private val mediatorStore = MediatorStore(
             listOfNotNull(
-                    LoggingMediator(this::class.simpleName!!).takeIf { BuildConfig.DEBUG }
+//                    Min api 24
+//                    https://github.com/TouchInstinct/RoboSwag/issues/180
+//                    LoggingMediator(this::class.simpleName!!).takeIf { BuildConfig.DEBUG }
             )
     )
 
