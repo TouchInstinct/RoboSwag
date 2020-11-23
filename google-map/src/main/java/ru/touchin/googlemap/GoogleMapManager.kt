@@ -8,6 +8,7 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.VisibleRegion
 import ru.touchin.basemap.AbstractMapManager
 
 @Suppress("detekt.TooManyFunctions")
@@ -77,8 +78,14 @@ class GoogleMapManager(mapView: MapView) : AbstractMapManager<MapView, GoogleMap
 
     override fun getCameraTilt(): Float = map.cameraPosition.tilt
 
+    override fun getVisibleRegion(): VisibleRegion = map.projection.visibleRegion
+
     override fun moveCamera(target: LatLng, zoom: Float, azimuth: Float, tilt: Float) {
         map.moveCamera(CameraUpdateFactory.newCameraPosition(buildCameraPosition(target, zoom, azimuth, tilt)))
+    }
+
+    fun moveCamera(target: LatLng, userRegionZoom: Float) {
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(target, userRegionZoom))
     }
 
     override fun smoothMoveCamera(target: LatLng, zoom: Float, azimuth: Float, tilt: Float) {

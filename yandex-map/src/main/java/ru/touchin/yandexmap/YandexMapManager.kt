@@ -15,6 +15,8 @@ import com.yandex.mapkit.map.InputListener
 import com.yandex.mapkit.map.Map
 import com.yandex.mapkit.map.MapLoadStatistics
 import com.yandex.mapkit.map.MapLoadedListener
+import com.yandex.mapkit.map.MapObjectCollection
+import com.yandex.mapkit.map.VisibleRegion
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.mapkit.user_location.UserLocationObjectListener
 import com.yandex.mapkit.user_location.UserLocationView
@@ -91,6 +93,8 @@ class YandexMapManager(
         mapListener?.onMapTap(point)
     }
 
+    fun getCameraPosition(): CameraPosition = map.cameraPosition
+
     override fun getCameraTarget(): Point = map.cameraPosition.target
 
     override fun getCameraZoom(): Float = map.cameraPosition.zoom
@@ -98,6 +102,10 @@ class YandexMapManager(
     override fun getCameraAzimuth(): Float = map.cameraPosition.azimuth
 
     override fun getCameraTilt(): Float = map.cameraPosition.tilt
+
+    fun moveCamera(target: CameraPosition) {
+        map.move(target)
+    }
 
     override fun moveCamera(target: Point, zoom: Float, azimuth: Float, tilt: Float) {
         map.move(CameraPosition(target, zoom, azimuth, tilt), Animation(Animation.Type.LINEAR, CAMERA_ANIMATION_DURATION), null)
@@ -152,9 +160,9 @@ class YandexMapManager(
         userLocationAccuracyCirceColor = accuracyCircleColor
     }
 
-    fun getVisibleRegion() = map.visibleRegion
+    override fun getVisibleRegion(): VisibleRegion = map.visibleRegion
 
-    fun getMapObjects() = map.mapObjects
+    fun getMapObjects(): MapObjectCollection = map.mapObjects
 
     interface MapListener : AbstractMapListener<MapView, Map, Point>
 

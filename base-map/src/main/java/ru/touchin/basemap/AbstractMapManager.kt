@@ -42,6 +42,8 @@ abstract class AbstractMapManager<TMapView : View, TMap : Any, TLocation : Any>(
 
     abstract fun isLocationInVisibleRegion(location: TLocation): Boolean
 
+    abstract fun getVisibleRegion(): Any
+
     open fun initialize(mapListener: AbstractMapListener<TMapView, TMap, TLocation>? = null) {
         this.mapListener = mapListener
     }
