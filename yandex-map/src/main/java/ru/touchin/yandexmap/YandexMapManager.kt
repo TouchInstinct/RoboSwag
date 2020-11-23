@@ -160,7 +160,7 @@ class YandexMapManager(
         userLocationAccuracyCirceColor = accuracyCircleColor
     }
 
-    override fun getVisibleRegion(): VisibleRegion = map.visibleRegion
+    fun getVisibleRegion(): VisibleRegion = map.visibleRegion
 
     fun getMapObjects(): MapObjectCollection = map.mapObjects
 

@@ -78,7 +78,7 @@ class GoogleMapManager(mapView: MapView) : AbstractMapManager<MapView, GoogleMap
 
     override fun getCameraTilt(): Float = map.cameraPosition.tilt
 
-    override fun getVisibleRegion(): VisibleRegion = map.projection.visibleRegion
+    fun getVisibleRegion(): VisibleRegion = map.projection.visibleRegion
 
     override fun moveCamera(target: LatLng, zoom: Float, azimuth: Float, tilt: Float) {
         map.moveCamera(CameraUpdateFactory.newCameraPosition(buildCameraPosition(target, zoom, azimuth, tilt)))
