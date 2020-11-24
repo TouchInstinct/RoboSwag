@@ -46,7 +46,7 @@ abstract class AbstractMapManager<TMapView : View, TMap : Any, TLocation : Any>(
         this.mapListener = mapListener
     }
 
-    open fun onCreate(savedInstanceState: Bundle) = Unit
+    open fun onCreate(savedInstanceState: Bundle?) = Unit
 
     open fun onDestroy() = Unit
 

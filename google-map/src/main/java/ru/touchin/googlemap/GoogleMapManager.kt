@@ -30,7 +30,7 @@ class GoogleMapManager(mapView: MapView) : AbstractMapManager<MapView, GoogleMap
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mapView.onCreate(savedInstanceState)
     }
