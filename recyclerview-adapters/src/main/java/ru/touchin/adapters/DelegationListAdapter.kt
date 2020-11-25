@@ -72,6 +72,19 @@ open class DelegationListAdapter<TItem>(config: AsyncDifferConfig<TItem>) : Recy
     fun submitList(list: List<TItem>?) = differ.submitList(list)
 
     /**
+     * Submits a new list to be diffed, and displayed.
+     *
+     * The commit callback can be used to know when the List is committed, but note that it
+     * may not be executed. If List B is submitted immediately after List A, and is
+     * committed directly, the callback associated with List A will not be run.
+     *
+     * @param newList The new List.
+     * @param commitCallback Optional runnable that is executed when the List is committed, if
+     *                       it is committed.
+     */
+    fun submitList(list: List<TItem>?, commitCallback: (() -> Unit)?) = differ.submitList(list, commitCallback)
+
+    /**
      * Same as [submitList] with fast simple remove all items of a previous list
      */
     fun replaceList(list: List<TItem>) {
