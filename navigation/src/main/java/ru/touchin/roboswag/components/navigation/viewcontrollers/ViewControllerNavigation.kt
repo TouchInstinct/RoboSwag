@@ -121,7 +121,7 @@ open class ViewControllerNavigation<TActivity : FragmentActivity>(
      */
     fun <TState : Parcelable> setViewControllerAsTop(
             viewControllerClass: Class<out ViewController<out TActivity, TState>>,
-            state: TState,
+            state: TState?,
             addToStack: Boolean = true,
             tag: String? = null,
             transactionSetup: ((FragmentTransaction) -> Unit)? = null
@@ -150,7 +150,7 @@ open class ViewControllerNavigation<TActivity : FragmentActivity>(
      */
     fun <TState : Parcelable> setInitialViewController(
             viewControllerClass: Class<out ViewController<out TActivity, TState>>,
-            state: TState,
+            state: TState?,
             tag: String? = null,
             transactionSetup: ((FragmentTransaction) -> Unit)? = null
     ) {
