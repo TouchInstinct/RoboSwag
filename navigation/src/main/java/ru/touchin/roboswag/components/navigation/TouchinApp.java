@@ -22,10 +22,14 @@ import android.app.Application;
 import android.content.Context;
 import android.os.StrictMode;
 import android.util.Log;
+
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
 import net.danlew.android.joda.JodaTimeAndroid;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.multidex.MultiDex;
@@ -58,7 +62,7 @@ public abstract class TouchinApp extends Application {
             enableStrictMode();
             Lc.initialize(new ConsoleLogProcessor(LcLevel.VERBOSE), true);
             LcGroup.UI_LIFECYCLE.disable();
-        } else if(ProcessKt.isOnMainProcess(this)){
+        } else if (ProcessKt.isOnMainProcess(this)) {
             try {
                 final FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
                 crashlytics.setCrashlyticsCollectionEnabled(true);
@@ -66,9 +70,7 @@ public abstract class TouchinApp extends Application {
             } catch (final NoClassDefFoundError error) {
                 Lc.initialize(new ConsoleLogProcessor(LcLevel.INFO), false);
                 Lc.e("Crashlytics initialization error! Did you forget to add\n"
-                        + "implementation com.google.firebase:firebase-crashlytics{\n"
-                        + "        transitive = true;\n"
-                        + "}\n"
+                        + "implementation com.google.firebase:firebase-crashlytics\n"
                         + "to your build.gradle?", error);
             }
         }
