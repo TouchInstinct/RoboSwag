@@ -57,12 +57,19 @@ public abstract class TouchinApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        if (ProcessKt.isOnMainProcess(this)) {
+            onMainProcessCreate();
+        }
+    }
+
+    protected void onMainProcessCreate() {
         JodaTimeAndroid.init(this);
         if (BuildConfig.DEBUG) {
             enableStrictMode();
             Lc.initialize(new ConsoleLogProcessor(LcLevel.VERBOSE), true);
             LcGroup.UI_LIFECYCLE.disable();
-        } else if (ProcessKt.isOnMainProcess(this)) {
+        } else {
             try {
                 final FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
                 crashlytics.setCrashlyticsCollectionEnabled(true);
