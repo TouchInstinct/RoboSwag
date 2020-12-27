@@ -1,0 +1,64 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/loadingContentViewProgressBar" />
+
+    <LinearLayout
+        android:id="@+id/error_with_repeat"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/error_text"
+            style="@style/Text.Regular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:gravity="center"
+            android:textColor="@color/loadingContentViewTextColor"
+            android:textSize="15sp"
+            tools:text="Error text" />
+
+        <TextView
+            android:id="@+id/error_repeat_button"
+            style="@style/Text.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/light_button_background"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:textColor="@color/loadingContentViewButtonTextColor"
+            android:textSize="18sp"
+            tools:text="Повторить" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_stub"
+        style="@style/Text.Regular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:gravity="center"
+        android:textColor="@color/loadingContentViewTextColor"
+        android:textSize="15sp"
+        tools:text="Stub text" />
+
+</merge>
+

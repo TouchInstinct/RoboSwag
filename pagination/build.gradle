@@ -1,0 +1,46 @@
+apply from: "../android-configs/lib-config.gradle"
+
+dependencies {
+    implementation project(":mvi-arch")
+    implementation project(":recyclerview-adapters")
+    implementation project(":utils")
+    implementation project(":views")
+    implementation project(":kotlin-extensions")
+
+    implementation("com.google.android.material:material")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout")
+    implementation("androidx.recyclerview:recyclerview")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android")
+
+    def coroutinesVersion = "1.3.7"
+
+    constraints {
+        implementation("com.google.android.material:material") {
+            version {
+                require("1.2.0")
+            }
+        }
+        implementation("androidx.swiperefreshlayout:swiperefreshlayout") {
+            version {
+                require("1.0.0")
+            }
+        }
+        implementation("androidx.recyclerview:recyclerview") {
+            version {
+                require("1.1.0")
+            }
+        }
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core") {
+            version {
+                require(coroutinesVersion)
+            }
+        }
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android") {
+            version {
+                require(coroutinesVersion)
+            }
+        }
+    }
+}

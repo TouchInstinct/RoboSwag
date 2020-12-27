@@ -1,34 +1,38 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-
-android {
-    compileSdkVersion versions.compileSdk
-
-    defaultConfig {
-        minSdkVersion 16
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
-    }
-}
+apply from: "../android-configs/lib-config.gradle"
 
 dependencies {
-    api project(":navigation")
-
     compileOnly "javax.inject:javax.inject:1"
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.appcompat:appcompat"
 
-    implementation "androidx.appcompat:appcompat:$versions.appcompat"
+    implementation "androidx.fragment:fragment"
+    implementation "androidx.fragment:fragment-ktx"
 
-    implementation "androidx.fragment:fragment:$versions.fragment"
-    implementation "androidx.fragment:fragment-ktx:$versions.fragment"
+    implementation "androidx.lifecycle:lifecycle-extensions"
 
-    implementation "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle"
+    constraints {
+        implementation("androidx.appcompat:appcompat") {
+            version {
+                require '1.0.0'
+            }
+        }
+
+        implementation("androidx.lifecycle:lifecycle-extensions") {
+            version {
+                require '2.1.0'
+            }
+        }
+
+        implementation("androidx.fragment:fragment") {
+            version {
+                require '1.0.0'
+            }
+        }
+
+        implementation("androidx.fragment:fragment-ktx") {
+            version {
+                require '1.1.0'
+            }
+        }
+    }
 }

@@ -1,18 +1,21 @@
-apply plugin: 'com.android.library'
-
-android {
-    compileSdkVersion versions.compileSdk
-
-    defaultConfig {
-        minSdkVersion 16
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-}
+apply from: "../android-configs/lib-config.gradle"
 
 dependencies {
-    implementation "androidx.annotation:annotation:$versions.androidx"
+    implementation "androidx.annotation:annotation"
+
+    implementation "com.google.firebase:firebase-crashlytics"
+
+    constraints {
+        implementation("androidx.annotation:annotation") {
+            version {
+                require '1.0.0'
+            }
+        }
+
+        implementation("com.google.firebase:firebase-crashlytics") {
+            version {
+                require '17.1.0'
+            }
+        }
+    }
 }

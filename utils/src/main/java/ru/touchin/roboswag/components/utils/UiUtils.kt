@@ -23,17 +23,14 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
 import android.os.Build
 import android.util.DisplayMetrics
-import android.util.TypedValue
 import android.view.KeyCharacterMap
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewConfiguration
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import androidx.annotation.LayoutRes
 import ru.touchin.roboswag.components.utils.spans.getSpannedTextWithUrls
 
@@ -78,8 +75,6 @@ object UiUtils {
      */
     object OfMetrics {
 
-        private const val MAX_METRICS_TRIES_COUNT = 5
-
         /**
          * Returns right metrics with non-zero height/width.
          * It is common bug when metrics are calling at [Application.onCreate] method and it returns metrics with zero height/width.
@@ -87,22 +82,11 @@ object UiUtils {
          * @param context [Context] of metrics;
          * @return [DisplayMetrics].
          */
-        fun getDisplayMetrics(context: Context): DisplayMetrics {
-            var result = context.resources.displayMetrics
-            // it is needed to avoid bug with invalid metrics when user restore application from other application
-            var metricsTryNumber = 0
-            while (metricsTryNumber < MAX_METRICS_TRIES_COUNT && (result.heightPixels <= 0 || result.widthPixels <= 0)) {
-                try {
-                    Thread.sleep(500)
-                } catch (ignored: InterruptedException) {
-                    return result
-                }
-
-                result = context.resources.displayMetrics
-                metricsTryNumber++
-            }
-            return result
-        }
+        @Deprecated(
+                message = "Use extension instead",
+                replaceWith = ReplaceWith("context.getDisplayMetrics()")
+        )
+        fun getDisplayMetrics(context: Context): DisplayMetrics = context.getDisplayMetrics()
 
         /**
          * Simply converts DP to pixels.
@@ -111,10 +95,19 @@ object UiUtils {
          * @param sizeInDp Size in DP;
          * @return Size in pixels.
          */
-        fun dpToPixels(context: Context, sizeInDp: Float): Float =
-                TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, sizeInDp, getDisplayMetrics(context))
+        @Deprecated(
+                message = "Use extension instead",
+                replaceWith = ReplaceWith("sizeInDp.px")
+        )
+        @Suppress("detekt.UnusedPrivateMember")
+        fun dpToPixels(context: Context, sizeInDp: Float): Float = sizeInDp.px
 
-        fun pixelsToDp(context: Context, pixels: Int): Int = (pixels * getDisplayMetrics(context).density + 0.5f).toInt()
+        @Deprecated(
+                message = "Use extension instead",
+                replaceWith = ReplaceWith("pixels.dp")
+        )
+        @Suppress("detekt.UnusedPrivateMember")
+        fun pixelsToDp(context: Context, pixels: Int): Int = pixels.dp
 
     }
 
@@ -129,7 +122,7 @@ object UiUtils {
          * @param activity Activity of action bar;
          * @return Height of action bar.
          */
-        fun getActionBarHeight(activity: Activity): Int = OfMetrics.dpToPixels(activity, 56f).toInt()
+        fun getActionBarHeight(): Int = 56.px
 
         /**
          * Returns status bar (on top where system info is) common height.
@@ -205,27 +198,30 @@ object UiUtils {
          * @param view [View] to get ID from;
          * @return Readable ID.
          */
-        fun getViewIdString(view: View): String = try {
-            view.resources.getResourceName(view.id)
-        } catch (exception: Resources.NotFoundException) {
-            view.id.toString()
-        }
+        @Deprecated(
+                message = "Use extension instead",
+                replaceWith = ReplaceWith("view.getViewIdString()")
+        )
+        fun getViewIdString(view: View): String = view.getViewIdString()
 
         /**
          * Hides device keyboard for target activity.
          */
-        fun hideSoftInput(activity: Activity) {
-            activity.currentFocus?.let(this::hideSoftInput)
-        }
+        @Deprecated(
+                message = "Use extension instead",
+                replaceWith = ReplaceWith("activity.hideSoftInput()")
+        )
+        fun hideSoftInput(activity: Activity) = activity.hideSoftInput()
+
 
         /**
          * Hides device keyboard for target view.
          */
-        fun hideSoftInput(view: View) {
-            view.clearFocus()
-            val inputManager = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputManager.hideSoftInputFromWindow(view.windowToken, 0)
-        }
+        @Deprecated(
+                message = "Use extension instead",
+                replaceWith = ReplaceWith("view.hideSoftInput()")
+        )
+        fun hideSoftInput(view: View) = view.hideSoftInput()
 
         /**
          * Shows device keyboard over [Activity] and focuses [View].
@@ -234,11 +230,11 @@ object UiUtils {
          *
          * @param view View to get focus for input from keyboard.
          */
-        fun showSoftInput(view: View) {
-            view.requestFocus()
-            val inputManager = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-        }
+        @Deprecated(
+                message = "Use extension instead",
+                replaceWith = ReplaceWith("view.showSoftInput()")
+        )
+        fun showSoftInput(view: View) = view.showSoftInput()
 
     }
 

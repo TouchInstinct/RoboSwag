@@ -19,14 +19,13 @@
 
 package ru.touchin.templates;
 
-import androidx.annotation.CallSuper;
-import androidx.annotation.NonNull;
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Iterator;
 
+import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
 import ru.touchin.roboswag.core.log.Lc;
 import ru.touchin.roboswag.core.log.LcGroup;
 
@@ -37,11 +36,6 @@ import ru.touchin.roboswag.core.log.LcGroup;
 public abstract class ApiModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * Logging group to log API validation errors.
-     */
-    public static final LcGroup API_VALIDATION_LC_GROUP = new LcGroup("API_VALIDATION");
 
     /**
      * Validates list of objects. Use it if objects in list extends {@link ApiModel}.
@@ -76,14 +70,14 @@ public abstract class ApiModel implements Serializable {
                         throw exception;
                     case EXCEPTION_IF_ALL_INVALID:
                         iterator.remove();
-                        API_VALIDATION_LC_GROUP.e(exception, "Item %s is invalid at " + Lc.getCodePoint(null, 1), position);
+                        LcGroup.API_VALIDATION.e(exception, "Item %s is invalid at " + Lc.getCodePoint(null, 1), position);
                         if (!iterator.hasNext() && !haveValidItem) {
                             throw new ValidationException("Whole list is invalid at " + Lc.getCodePoint(null, 1));
                         }
                         break;
                     case REMOVE_INVALID_ITEMS:
                         iterator.remove();
-                        API_VALIDATION_LC_GROUP.e(exception, "Item %s is invalid at " + Lc.getCodePoint(null, 1), position);
+                        LcGroup.API_VALIDATION.e(exception, "Item %s is invalid at " + Lc.getCodePoint(null, 1), position);
                         break;
                     default:
                         Lc.assertion("Unexpected rule " + collectionValidationRule);

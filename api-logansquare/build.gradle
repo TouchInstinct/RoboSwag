@@ -1,23 +1,48 @@
-apply plugin: 'com.android.library'
-
-android {
-    compileSdkVersion versions.compileSdk
-
-    defaultConfig {
-        minSdkVersion 16
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-}
+apply from: "../android-configs/lib-config.gradle"
 
 dependencies {
-    api project(":storable")
-    api 'net.danlew:android.joda:2.9.9.4'
+    implementation project(":utils")
+    implementation project(":logging")
+    implementation project(":storable")
 
-    implementation "androidx.annotation:annotation:$versions.androidx"
-    implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
-    implementation 'ru.touchin:logansquare:1.4.3'
+    implementation 'net.danlew:android.joda'
+
+    implementation "androidx.core:core"
+    implementation "androidx.annotation:annotation"
+
+    implementation "com.squareup.retrofit2:retrofit"
+
+    implementation 'ru.touchin:logansquare'
+
+    constraints {
+        implementation("androidx.core:core") {
+            version {
+                require '1.0.0'
+            }
+        }
+
+        implementation("ru.touchin:logansquare") {
+            version {
+                require '1.4.3'
+            }
+        }
+
+        implementation("com.squareup.retrofit2:retrofit") {
+            version {
+                require '2.7.0'
+            }
+        }
+
+        implementation("androidx.annotation:annotation") {
+            version {
+                require '1.0.0'
+            }
+        }
+
+        implementation("net.danlew:android.joda") {
+            version {
+                require '2.9.9.4'
+            }
+        }
+    }
 }
