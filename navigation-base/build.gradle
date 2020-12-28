@@ -1,0 +1,77 @@
+apply from: "../android-configs/lib-config.gradle"
+
+apply plugin: 'kotlin-kapt'
+
+android {
+    buildFeatures.viewBinding = true
+}
+
+dependencies {
+    implementation project(":utils")
+    implementation project(":logging")
+
+    implementation "com.google.dagger:dagger"
+
+    implementation 'net.danlew:android.joda'
+
+    implementation "androidx.appcompat:appcompat"
+    
+    implementation "androidx.fragment:fragment"
+    implementation "androidx.fragment:fragment-ktx"
+
+    implementation "androidx.lifecycle:lifecycle-common-java8"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx"
+
+    implementation "com.google.firebase:firebase-crashlytics"
+
+    constraints {
+
+        implementation("com.google.dagger:dagger") {
+            version {
+                require '2.10'
+            }
+        }
+
+        implementation("net.danlew:android.joda") {
+            version {
+                require '2.10.0'
+            }
+        }
+
+        implementation("androidx.appcompat:appcompat") {
+            version {
+                require '1.0.0'
+            }
+        }
+
+        implementation("androidx.fragment:fragment") {
+            version {
+                require '1.1.0'
+            }
+        }
+
+        implementation("androidx.fragment:fragment-ktx") {
+            version {
+                require '1.1.0'
+            }
+        }
+
+        implementation("com.google.firebase:firebase-crashlytics") {
+            version {
+                require '17.1.0'
+            }
+        }
+
+        implementation("androidx.lifecycle:lifecycle-common-java8") {
+            version {
+                require '2.2.0'
+            }
+        }
+
+        implementation("androidx.lifecycle:lifecycle-livedata-ktx") {
+            version {
+                require '2.2.0'
+            }
+        }
+    }
+}

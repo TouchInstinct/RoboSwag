@@ -1,0 +1,41 @@
+apply from: "../android-configs/lib-config.gradle"
+
+dependencies {
+    implementation project(":lifecycle")
+    implementation project(":navigation-viewcontroller")
+
+    compileOnly "javax.inject:javax.inject:1"
+
+    implementation "androidx.appcompat:appcompat"
+
+    implementation "androidx.fragment:fragment"
+    implementation "androidx.fragment:fragment-ktx"
+
+    implementation "androidx.lifecycle:lifecycle-extensions"
+
+    constraints {
+        implementation("androidx.appcompat:appcompat") {
+            version {
+                require '1.0.0'
+            }
+        }
+
+        implementation("androidx.fragment:fragment") {
+            version {
+                require '1.1.0'
+            }
+        }
+
+        implementation("androidx.fragment:fragment-ktx") {
+            version {
+                require '1.1.0'
+            }
+        }
+
+        implementation("androidx.lifecycle:lifecycle-extensions") {
+            version {
+                require '2.1.0'
+            }
+        }
+    }
+}
