@@ -26,6 +26,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import net.danlew.android.joda.JodaTimeAndroid;
 
+import ru.touchin.hardware.ProcessKt;
 import ru.touchin.roboswag.core.log.ConsoleLogProcessor;
 import ru.touchin.roboswag.core.log.Lc;
 import ru.touchin.roboswag.core.log.LcGroup;
@@ -46,7 +47,7 @@ public abstract class TouchinApp extends Application {
             enableStrictMode();
             Lc.initialize(new ConsoleLogProcessor(LcLevel.VERBOSE), true);
             LcGroup.UI_LIFECYCLE.disable();
-        } else {
+        } else if (ProcessKt.isOnMainProcess(this)) {
             try {
                 final FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
                 crashlytics.setCrashlyticsCollectionEnabled(true);
