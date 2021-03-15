@@ -67,6 +67,8 @@ abstract class AbstractMapManager<TMapView : View, TMap : Any, TLocation : Any>(
         this.mapListener?.onMapInitialized(map)
     }
 
+    fun isMapInitialized(): Boolean = this::map.isInitialized
+
     interface AbstractMapListener<TMapView, TMap, TLocation> {
 
         fun onMapInitialized(map: TMap)
