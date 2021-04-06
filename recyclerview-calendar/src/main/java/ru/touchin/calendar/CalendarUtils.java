@@ -276,7 +276,7 @@ public final class CalendarUtils {
         final int firstDayInNextMonth = nextMonthFirstDay.getDayOfWeek() - 1;
 
         if (daysLeftInWeek != 0) {
-            calendarItems.add(new CalendarEmptyItem(shift, shift + daysLeftInWeek));
+            calendarItems.add(new CalendarEmptyItem(shift, shift + daysLeftInWeek - 1));
             shift += daysLeftInWeek;
         }
         calendarItems.add(new CalendarHeaderItem(nextMonthFirstDay.getYear(), nextMonthFirstDay.getMonthOfYear() - 1, shift, shift));
