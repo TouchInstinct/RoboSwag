@@ -10,7 +10,7 @@ dependencies {
     constraints {
         implementation("androidx.recyclerview:recyclerview") {
             version {
-                require '1.0.0'
+                require '1.1.0'
             }
         }
         implementation("androidx.core:core-ktx") {
