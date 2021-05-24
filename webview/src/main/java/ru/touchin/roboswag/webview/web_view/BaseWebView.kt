@@ -27,7 +27,7 @@ open class BaseWebView @JvmOverloads constructor(
     var onWebViewLoaded: (() -> Unit)? = null
     var onWebViewRepeatButtonClicked: (() -> Unit)? = null
     var onWebViewScrolled: ((WebView, Int, Int) -> Unit)? = null
-    var onCookieLoaded: ((cookies: Map<String, String>) -> Unit)? = null
+    var onCookieLoaded: ((cookies: Map<String, String>?) -> Unit)? = null
 
     var onJsConfirm: (() -> Unit)? = null
     var onJsAlert: (() -> Unit)? = null
@@ -101,7 +101,7 @@ open class BaseWebView @JvmOverloads constructor(
 
     override fun onOverrideUrlLoading(url: String?): Boolean = isRedirectEnable
 
-    override fun onPageCookiesLoaded(cookies: Map<String, String>) {
+    override fun onPageCookiesLoaded(cookies: Map<String, String>?) {
         onCookieLoaded?.invoke(cookies)
     }
 

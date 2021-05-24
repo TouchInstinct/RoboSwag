@@ -6,6 +6,6 @@ interface WebViewCallback {
 
     fun onOverrideUrlLoading(url: String?): Boolean
 
-    fun onPageCookiesLoaded(cookies: Map<String, String>)
+    fun onPageCookiesLoaded(cookies: Map<String, String>?)
 
 }
