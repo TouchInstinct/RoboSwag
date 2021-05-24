@@ -33,11 +33,17 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
         }
     }
 
+    /**
+     * onPageFinished calls always, but after onReceivedError
+     */
     override fun onPageFinished(view: WebView, url: String) {
         super.onPageFinished(view, url)
         isTimeout = false
         if (!isError) {
             callback.onPageCookiesLoaded(CookieManager.getInstance().getCookie(url).processCookies())
+        }
+        if (url == "about:blank") {
+            isError = true
         }
         pageFinished()
     }
@@ -56,11 +62,13 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
         }
     }
 
+    /**
+     * onReceivedError don't calls when url is "about:blank" (url string isBlank)
+     */
     override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
-        if (!(error.errorCode == -10 && "about:blank" == request.url.toString()) || request.url.toString().isBlank()) {
+        if (error.errorCode != -10) {
             isError = true
         }
-        pageFinished()
     }
 
     private fun pageFinished() {

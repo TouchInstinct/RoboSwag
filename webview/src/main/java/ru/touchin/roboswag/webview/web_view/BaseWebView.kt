@@ -128,12 +128,14 @@ open class BaseWebView @JvmOverloads constructor(
     open fun setWebViewPreferences() {
         binding.webView.apply {
             scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
-            setLayerType(View.LAYER_TYPE_SOFTWARE, null)
+            setLayerType(View.LAYER_TYPE_HARDWARE, null)
             with(settings) {
                 loadsImagesAutomatically = true
                 javaScriptEnabled = true
                 domStorageEnabled = true
                 loadWithOverviewMode = true
+                useWideViewPort = true
+                setInitialScale(1)
             }
         }
     }
