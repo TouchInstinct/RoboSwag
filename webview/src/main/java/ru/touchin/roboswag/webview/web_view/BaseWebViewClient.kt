@@ -66,7 +66,7 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
      * onReceivedError isn't called when url is "about:blank" (url string isBlank)
      */
     override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
-        if (error.errorCode != -10) {
+        if (error.errorCode != -10 || error.errorCode == -2) {
             isError = true
         }
     }
