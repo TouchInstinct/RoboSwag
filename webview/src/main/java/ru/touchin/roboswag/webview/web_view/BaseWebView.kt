@@ -112,8 +112,12 @@ open class BaseWebView @JvmOverloads constructor(
 
     fun getWebView() = binding.webView
 
+    /**
+     * if url is null it changes to empty string
+     * to prevent infinite LOADING state
+     */
     fun loadUrl(url: String?) {
-        binding.webView.loadUrl(url)
+        binding.webView.loadUrl(url ?: String())
     }
 
     fun setState(newState: WebViewLoadingState) {
