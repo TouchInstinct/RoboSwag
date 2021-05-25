@@ -124,6 +124,12 @@ open class BaseWebView @JvmOverloads constructor(
         binding.webView.onWebViewDisplayedContent = action
     }
 
+    /**
+     * loadWithOverviewMode loads the WebView completely zoomed out
+     * useWideViewPort sets page size to fit screen
+     * setInitialScale(1) prevents horizontal scrolling when
+     * page has horizontal paddings
+     */
     @SuppressLint("SetJavaScriptEnabled")
     open fun setWebViewPreferences() {
         binding.webView.apply {
