@@ -4,12 +4,7 @@ import android.graphics.Bitmap
 import android.net.http.SslError
 import android.os.Handler
 import android.os.Looper
-import android.webkit.CookieManager
-import android.webkit.SslErrorHandler
-import android.webkit.WebResourceError
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import androidx.core.os.postDelayed
 
 open class BaseWebViewClient(private val callback: WebViewCallback, private val isSslPinningEnable: Boolean) : WebViewClient() {
@@ -39,8 +34,8 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
     }
 
     /**
-     * onPageFinished вызывается всегда после onReceivedError,
-     * кроме случая, когда в кэше есть страница для ошибки -2 и сначала вызывается onReceivedError
+     * onPageFinished is always called after onReceivedError,
+     * except when there is a error page in the cache and onReceivedError is called first
      */
     override fun onPageFinished(view: WebView, url: String) {
         super.onPageFinished(view, url)
@@ -72,9 +67,7 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
      * onReceivedError isn't called when url is "about:blank" (url string isBlank)
      */
     override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
-        if (error.errorCode != -10 || error.errorCode == -2) {
-            isError = true
-        }
+        isError = true
     }
 
     private fun pageFinished() {
