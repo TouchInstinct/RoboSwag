@@ -38,10 +38,19 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
         }
     }
 
+    /**
+     * onPageFinished is always called after onReceivedError,
+     * except when there is a error page in the cache and onReceivedError is called first
+     */
     override fun onPageFinished(view: WebView, url: String) {
         super.onPageFinished(view, url)
         isTimeout = false
-        callback.onPageCookiesLoaded(CookieManager.getInstance().getCookie(url).processCookies())
+        if (url == "about:blank") {
+            isError = true
+        }
+        if (!isError) {
+            callback.onPageCookiesLoaded(CookieManager.getInstance().getCookie(url).processCookies())
+        }
         pageFinished()
     }
 
@@ -59,24 +68,24 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
         }
     }
 
+    /**
+     * onReceivedError isn't called when url is "about:blank" (url string isBlank)
+     */
     override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
-        if (!(error.errorCode == -10 && "about:blank" == request.url.toString())) {
-            isError = true
-        }
-        pageFinished()
+        isError = true
     }
 
     private fun pageFinished() {
         callback.onStateChanged(if (isError) WebViewLoadingState.ERROR else WebViewLoadingState.LOADED)
     }
 
-    private fun String.processCookies(): Map<String, String> {
+    private fun String?.processCookies(): Map<String, String> {
         val cookiesMap = mutableMapOf<String, String>()
-        this.split(";")
-                .forEach { cookie ->
-                    val splittedCookie = cookie.trim().split("=")
-                    cookiesMap[splittedCookie.first()] = splittedCookie.last()
-                }
+        this?.split(";")
+            ?.forEach { cookie ->
+                val splittedCookie = cookie.trim().split("=")
+                cookiesMap[splittedCookie.first()] = splittedCookie.last()
+            }
         return cookiesMap
     }
 

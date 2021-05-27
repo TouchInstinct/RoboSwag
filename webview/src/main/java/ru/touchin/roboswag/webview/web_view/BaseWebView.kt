@@ -27,7 +27,7 @@ open class BaseWebView @JvmOverloads constructor(
     var onWebViewLoaded: (() -> Unit)? = null
     var onWebViewRepeatButtonClicked: (() -> Unit)? = null
     var onWebViewScrolled: ((WebView, Int, Int) -> Unit)? = null
-    var onCookieLoaded: ((cookies: Map<String, String>) -> Unit)? = null
+    var onCookieLoaded: ((cookies: Map<String, String>?) -> Unit)? = null
 
     var onJsConfirm: (() -> Unit)? = null
     var onJsAlert: (() -> Unit)? = null
@@ -101,7 +101,7 @@ open class BaseWebView @JvmOverloads constructor(
 
     override fun onOverrideUrlLoading(url: String?): Boolean = isRedirectEnable
 
-    override fun onPageCookiesLoaded(cookies: Map<String, String>) {
+    override fun onPageCookiesLoaded(cookies: Map<String, String>?) {
         onCookieLoaded?.invoke(cookies)
     }
 
@@ -112,8 +112,12 @@ open class BaseWebView @JvmOverloads constructor(
 
     fun getWebView() = binding.webView
 
+    /**
+     * if url is null it changes to empty string
+     * to prevent infinite LOADING state
+     */
     fun loadUrl(url: String?) {
-        binding.webView.loadUrl(url)
+        binding.webView.loadUrl(url ?: "")
     }
 
     fun setState(newState: WebViewLoadingState) {
@@ -124,16 +128,24 @@ open class BaseWebView @JvmOverloads constructor(
         binding.webView.onWebViewDisplayedContent = action
     }
 
+    /**
+     * loadWithOverviewMode loads the WebView completely zoomed out
+     * useWideViewPort sets page size to fit screen
+     * setInitialScale(1) prevents horizontal scrolling when
+     * page has horizontal paddings
+     */
     @SuppressLint("SetJavaScriptEnabled")
     open fun setWebViewPreferences() {
         binding.webView.apply {
             scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
-            setLayerType(View.LAYER_TYPE_SOFTWARE, null)
+            setLayerType(View.LAYER_TYPE_HARDWARE, null)
             with(settings) {
                 loadsImagesAutomatically = true
                 javaScriptEnabled = true
                 domStorageEnabled = true
                 loadWithOverviewMode = true
+                useWideViewPort = true
+                setInitialScale(1)
             }
         }
     }
