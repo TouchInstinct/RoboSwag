@@ -42,7 +42,11 @@ open class BaseWebView @JvmOverloads constructor(
         }
 
     var isRedirectEnable = false
-    var openBrowserOnRedirectInsideWebView: Boolean = true
+
+    /**
+     * If you need to do some action on url click inside WebView, just assign this parameter.
+     **/
+    var openBrowserOnRedirectInsideWebView: ((String?, WebView) -> Unit)? = null
 
     init {
         binding.pullToRefresh.isEnabled = isPullToRefreshEnable
@@ -106,7 +110,7 @@ open class BaseWebView @JvmOverloads constructor(
         onCookieLoaded?.invoke(cookies)
     }
 
-    override fun openBrowserOnInsideWebViewRedirect(url: String?):Boolean = openBrowserOnRedirectInsideWebView
+    override fun actionOnRedirectInsideWebView(webView: WebView, url: String?): Unit? = openBrowserOnRedirectInsideWebView?.invoke(url, webView)
 
     fun setBaseWebViewClient(isSSlPinningEnable: Boolean = false) {
         binding.webView.webViewClient = BaseWebViewClient(this, isSSlPinningEnable)

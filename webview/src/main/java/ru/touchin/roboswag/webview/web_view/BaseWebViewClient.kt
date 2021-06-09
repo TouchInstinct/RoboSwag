@@ -6,7 +6,6 @@ import android.os.Handler
 import android.os.Looper
 import android.webkit.*
 import androidx.core.os.postDelayed
-import ru.touchin.extensions.openBrowser
 
 open class BaseWebViewClient(private val callback: WebViewCallback, private val isSslPinningEnable: Boolean) : WebViewClient() {
 
@@ -51,11 +50,10 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
     }
 
     override fun shouldOverrideUrlLoading(view: WebView, url: String?): Boolean {
-        if (callback.openBrowserOnInsideWebViewRedirect(url)) {
-            url?.let { view.context.openBrowser(it) }
-        }
 
-        return !callback.onOverrideUrlLoading(url) && view.originalUrl != null && callback.openBrowserOnInsideWebViewRedirect(url)
+        return !callback.onOverrideUrlLoading(url)
+                && view.originalUrl != null
+                && callback.actionOnRedirectInsideWebView(webView = view, url = url) != null
     }
 
     override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
