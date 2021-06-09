@@ -50,7 +50,6 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
     }
 
     override fun shouldOverrideUrlLoading(view: WebView, url: String?): Boolean {
-
         return !callback.onOverrideUrlLoading(url)
                 && view.originalUrl != null
                 && callback.actionOnRedirectInsideWebView(webView = view, url = url) != null
