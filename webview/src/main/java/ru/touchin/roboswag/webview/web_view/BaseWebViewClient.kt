@@ -1,17 +1,10 @@
 package ru.touchin.roboswag.webview.web_view
 
-import android.content.Intent
 import android.graphics.Bitmap
-import android.net.Uri
 import android.net.http.SslError
 import android.os.Handler
 import android.os.Looper
-import android.webkit.CookieManager
-import android.webkit.SslErrorHandler
-import android.webkit.WebResourceError
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import androidx.core.os.postDelayed
 import ru.touchin.extensions.openBrowser
 
@@ -58,8 +51,11 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
     }
 
     override fun shouldOverrideUrlLoading(view: WebView, url: String?): Boolean {
-        callback.onInsideWebViewRedirect(url)
-        return !callback.onOverrideUrlLoading(url) && view.originalUrl != null
+        if (callback.openBrowserOnInsideWebViewRedirect(url)) {
+            url?.let { view.context.openBrowser(it) }
+        }
+
+        return !callback.onOverrideUrlLoading(url) && view.originalUrl != null && callback.openBrowserOnInsideWebViewRedirect(url)
     }
 
     override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
@@ -86,10 +82,10 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
     private fun String?.processCookies(): Map<String, String> {
         val cookiesMap = mutableMapOf<String, String>()
         this?.split(";")
-            ?.forEach { cookie ->
-                val splittedCookie = cookie.trim().split("=")
-                cookiesMap[splittedCookie.first()] = splittedCookie.last()
-            }
+                ?.forEach { cookie ->
+                    val splittedCookie = cookie.trim().split("=")
+                    cookiesMap[splittedCookie.first()] = splittedCookie.last()
+                }
         return cookiesMap
     }
 
