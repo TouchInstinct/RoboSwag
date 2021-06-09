@@ -1,6 +1,8 @@
 package ru.touchin.roboswag.webview.web_view
 
+import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.net.http.SslError
 import android.os.Handler
 import android.os.Looper
@@ -11,6 +13,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.core.os.postDelayed
+import ru.touchin.extensions.openBrowser
 
 open class BaseWebViewClient(private val callback: WebViewCallback, private val isSslPinningEnable: Boolean) : WebViewClient() {
 
@@ -55,6 +58,7 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
     }
 
     override fun shouldOverrideUrlLoading(view: WebView, url: String?): Boolean {
+        callback.onInsideWebViewRedirect(url)
         return !callback.onOverrideUrlLoading(url) && view.originalUrl != null
     }
 

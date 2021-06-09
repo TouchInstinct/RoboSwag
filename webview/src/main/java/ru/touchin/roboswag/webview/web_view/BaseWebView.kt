@@ -11,6 +11,7 @@ import android.webkit.ConsoleMessage
 import android.webkit.WebView
 import androidx.core.content.withStyledAttributes
 import androidx.core.widget.TextViewCompat
+import ru.touchin.extensions.openBrowser
 import ru.touchin.extensions.setOnRippleClickListener
 import ru.touchin.roboswag.views.widget.Switcher
 import ru.touchin.roboswag.webview.R
@@ -42,6 +43,7 @@ open class BaseWebView @JvmOverloads constructor(
         }
 
     var isRedirectEnable = false
+    var onRedirectInsideWebView: ((String) -> Unit) = {context.openBrowser(it)}
 
     init {
         binding.pullToRefresh.isEnabled = isPullToRefreshEnable
@@ -103,6 +105,10 @@ open class BaseWebView @JvmOverloads constructor(
 
     override fun onPageCookiesLoaded(cookies: Map<String, String>?) {
         onCookieLoaded?.invoke(cookies)
+    }
+
+    override fun onInsideWebViewRedirect(url: String?) {
+        onRedirectInsideWebView
     }
 
     fun setBaseWebViewClient(isSSlPinningEnable: Boolean = false) {
