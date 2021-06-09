@@ -43,7 +43,7 @@ open class BaseWebView @JvmOverloads constructor(
         }
 
     var isRedirectEnable = false
-    var onRedirectInsideWebView: ((String) -> Unit) = {context.openBrowser(it)}
+    var onRedirectInsideWebView: ((String) -> Unit)? = null
 
     init {
         binding.pullToRefresh.isEnabled = isPullToRefreshEnable
