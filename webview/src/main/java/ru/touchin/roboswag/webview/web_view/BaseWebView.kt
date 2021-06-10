@@ -44,7 +44,7 @@ open class BaseWebView @JvmOverloads constructor(
     var isRedirectEnable = false
 
     /**
-     * If you need to do some action on url click inside WebView, just assign this parameter.
+     * If you need to do some action on url click inside WebView, just assign this parameter and disable isRedirectEnable
      **/
     var openBrowserOnRedirectInsideWebView: ((String?, WebView) -> Unit)? = null
 

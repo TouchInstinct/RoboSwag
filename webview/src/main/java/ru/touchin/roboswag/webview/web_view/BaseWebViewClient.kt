@@ -4,7 +4,12 @@ import android.graphics.Bitmap
 import android.net.http.SslError
 import android.os.Handler
 import android.os.Looper
-import android.webkit.*
+import android.webkit.CookieManager
+import android.webkit.SslErrorHandler
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import android.webkit.WebResourceRequest
+import android.webkit.WebResourceError
 import androidx.core.os.postDelayed
 
 open class BaseWebViewClient(private val callback: WebViewCallback, private val isSslPinningEnable: Boolean) : WebViewClient() {
@@ -50,9 +55,12 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
     }
 
     override fun shouldOverrideUrlLoading(view: WebView, url: String?): Boolean {
-        return !callback.onOverrideUrlLoading(url)
-                && view.originalUrl != null
-                && callback.actionOnRedirectInsideWebView(webView = view, url = url) != null
+        return if (!callback.onOverrideUrlLoading(url) && view.originalUrl != null) {
+            callback.actionOnRedirectInsideWebView(webView = view, url = url)
+            true
+        } else {
+            false
+        }
     }
 
     override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
