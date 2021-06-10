@@ -10,6 +10,6 @@ interface WebViewCallback {
 
     fun onPageCookiesLoaded(cookies: Map<String, String>?)
 
-    fun actionOnRedirectInsideWebView(webView: WebView, url: String?): Unit?
+    fun actionOnRedirectInsideWebView(webView: WebView, url: String?)
 
 }

@@ -6,10 +6,10 @@ import android.os.Handler
 import android.os.Looper
 import android.webkit.CookieManager
 import android.webkit.SslErrorHandler
+import android.webkit.WebResourceError
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.webkit.WebResourceRequest
-import android.webkit.WebResourceError
 import androidx.core.os.postDelayed
 
 open class BaseWebViewClient(private val callback: WebViewCallback, private val isSslPinningEnable: Boolean) : WebViewClient() {

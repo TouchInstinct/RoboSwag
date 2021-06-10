@@ -110,7 +110,9 @@ open class BaseWebView @JvmOverloads constructor(
         onCookieLoaded?.invoke(cookies)
     }
 
-    override fun actionOnRedirectInsideWebView(webView: WebView, url: String?): Unit? = openBrowserOnRedirectInsideWebView?.invoke(url, webView)
+    override fun actionOnRedirectInsideWebView(webView: WebView, url: String?) {
+        openBrowserOnRedirectInsideWebView?.invoke(url, webView)
+    }
 
     fun setBaseWebViewClient(isSSlPinningEnable: Boolean = false) {
         binding.webView.webViewClient = BaseWebViewClient(this, isSSlPinningEnable)
