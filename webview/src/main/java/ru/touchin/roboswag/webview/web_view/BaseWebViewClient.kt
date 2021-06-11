@@ -55,7 +55,12 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
     }
 
     override fun shouldOverrideUrlLoading(view: WebView, url: String?): Boolean {
-        return !callback.onOverrideUrlLoading(url) && view.originalUrl != null
+        return if (!callback.onOverrideUrlLoading(url) && view.originalUrl != null) {
+            callback.actionOnRedirectInsideWebView(webView = view, url = url)
+            true
+        } else {
+            false
+        }
     }
 
     override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
@@ -82,10 +87,10 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
     private fun String?.processCookies(): Map<String, String> {
         val cookiesMap = mutableMapOf<String, String>()
         this?.split(";")
-            ?.forEach { cookie ->
-                val splittedCookie = cookie.trim().split("=")
-                cookiesMap[splittedCookie.first()] = splittedCookie.last()
-            }
+                ?.forEach { cookie ->
+                    val splittedCookie = cookie.trim().split("=")
+                    cookiesMap[splittedCookie.first()] = splittedCookie.last()
+                }
         return cookiesMap
     }
 
