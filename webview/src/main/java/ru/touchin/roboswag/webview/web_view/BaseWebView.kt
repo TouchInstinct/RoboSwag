@@ -129,6 +129,14 @@ open class BaseWebView @JvmOverloads constructor(
         binding.webView.loadUrl(url ?: "")
     }
 
+    /**
+     * works like loadUrl(url: String?),
+     * but with extra headers to send
+     */
+    fun loadUrl(url: String?, extraHeaders: Map<String,String>?){
+        binding.webView.loadUrl(url ?: "", extraHeaders?: emptyMap())
+    }
+
     fun setState(newState: WebViewLoadingState) {
         onStateChanged(newState)
     }
