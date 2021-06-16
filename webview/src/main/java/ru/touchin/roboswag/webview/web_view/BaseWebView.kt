@@ -125,15 +125,7 @@ open class BaseWebView @JvmOverloads constructor(
      * if url is null it changes to empty string
      * to prevent infinite LOADING state
      */
-    fun loadUrl(url: String?) {
-        binding.webView.loadUrl(url ?: "")
-    }
-
-    /**
-     * works like loadUrl(url: String?),
-     * but with extra headers to send
-     */
-    fun loadUrl(url: String?, extraHeaders: Map<String,String>?){
+    fun loadUrl(url: String?, extraHeaders: Map<String,String>? = null) {
         binding.webView.loadUrl(url ?: "", extraHeaders?: emptyMap())
     }
 
