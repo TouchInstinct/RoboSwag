@@ -47,7 +47,7 @@ class AmountWithDecimalDecorator(
     fun getTextWithoutFormatting(decimalSeparatorToReplace: String = decimalSeparator): String =
             previousInputtedText.withoutFormatting(decimalSeparatorToReplace)
 
-    @Suppress("detekt.TooGenericExceptionCaught")
+    @Suppress("detekt.TooGenericExceptionCaught", "detekt.ComplexMethod", "detekt.LongMethod")
     private fun doOnTextChanged(text: String) {
         if (isTextWasArtificiallyChanged) {
             isTextWasArtificiallyChanged = false

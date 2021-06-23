@@ -48,6 +48,7 @@ abstract class MviViewModel<NavArgs : Parcelable, Action : ViewAction, State : V
 
     protected val navArgs: NavArgs = handle.get(MviFragment.INIT_ARGS_KEY) ?: throw IllegalStateException("Nav args mustn't be null")
 
+    @SuppressWarnings("detekt.VariableNaming")
     protected val _state = MutableLiveData(initialState)
     internal val state = Transformations.distinctUntilChanged(_state)
 
