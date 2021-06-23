@@ -63,8 +63,8 @@ public class NonNullStorable<TKey, TObject, TStoreObject> extends BaseStorable<T
      * @param <TObject>      Type of actual object;
      * @param <TStoreObject> Type of store object. Could be same as {@link TObject}.
      */
-    @SuppressWarnings("CPD-START")
-    //CPD: it is same code as Builder of Storable because it's methods returning this and can't be inherited
+    // CPD-OFF
+    // CPD: it is same code as Builder of Storable because it's methods returning this and can't be inherited
     public static class Builder<TKey, TObject, TStoreObject> extends BuilderCore<TKey, TObject, TStoreObject> {
 
         public Builder(@NonNull final Storable.Builder<TKey, TObject, TStoreObject> sourceBuilder,
@@ -133,7 +133,8 @@ public class NonNullStorable<TKey, TObject, TStoreObject> extends BaseStorable<T
          * @return New {@link NonNullStorable}.
          */
         @NonNull
-        @SuppressWarnings("CPD-END")
+        // CPD-ON
+
         public NonNullStorable<TKey, TObject, TStoreObject> build() {
             if (getDefaultValue() == null) {
                 throw new ShouldNotHappenException();

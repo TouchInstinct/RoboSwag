@@ -430,7 +430,8 @@ public abstract class BaseStorable<TKey, TObject, TStoreObject, TReturnObject> {
                     sourceBuilder.migration, sourceBuilder.defaultValue, sourceBuilder.storeScheduler, sourceBuilder.cacheTimeMillis);
         }
 
-        @SuppressWarnings({"PMD.ExcessiveParameterList", "CPD-START"})
+        @SuppressWarnings("PMD.ExcessiveParameterList")
+        //CPD-OFF
         //CPD: it is same code as constructor of Storable
         //ExcessiveParameterList: that's why we are using builder to create it
         private BuilderCore(@NonNull final TKey key,
@@ -455,7 +456,7 @@ public abstract class BaseStorable<TKey, TObject, TStoreObject, TReturnObject> {
             this.cacheTimeMillis = cacheTimeMillis;
         }
 
-        @SuppressWarnings("CPD-END")
+        //CPD-ON
         protected void setStoreSchedulerInternal(@Nullable final Scheduler storeScheduler) {
             this.storeScheduler = storeScheduler;
         }
