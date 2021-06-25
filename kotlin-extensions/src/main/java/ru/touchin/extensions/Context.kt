@@ -5,8 +5,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 
-fun Context.safeStartActivity(intent: Intent, options: Bundle? = null, resolveFlags: Int = 0): Boolean =
-        packageManager.resolveActivity(intent, resolveFlags)?.let { startActivity(intent, options) } != null
+fun Context.safeStartActivity(intent: Intent, options: Bundle? = null, resolveFlags: Int = 0) =
+        try {
+            startActivity(intent, options)
+        } catch (e: Throwable) {
+        }
 
 fun Context.openBrowser(url: String) = Intent(Intent.ACTION_VIEW)
         .setData(Uri.parse(url))
