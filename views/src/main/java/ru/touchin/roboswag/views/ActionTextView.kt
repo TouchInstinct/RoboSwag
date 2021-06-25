@@ -26,11 +26,13 @@ class ActionTextView @JvmOverloads constructor(
         context.withStyledAttributes(attrs, R.styleable.ActionTextView, defStyleAttr, 0) {
             val actionText = getString(R.styleable.ActionTextView_actionText).orEmpty()
             val actionColor = getColor(R.styleable.ActionTextView_actionColor, currentTextColor)
+            val isUnderlineText = getBoolean(R.styleable.ActionTextView_isUnderlineText, false)
 
             text = text.toClickableSubstringText(
                     substring = actionText,
                     clickAction = { onClickAction.invoke() },
-                    color = actionColor
+                    color = actionColor,
+                    isUnderlineText = isUnderlineText
             )
         }
     }
