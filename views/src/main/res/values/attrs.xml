@@ -50,4 +50,9 @@
         <attr name="stubText" format="string" />
     </declare-styleable>
 
+    <declare-styleable name="ActionTextView">
+        <attr name="actionText" format="string"/>
+        <attr name="actionColor" format="color"/>
+    </declare-styleable>
+
 </resources>
