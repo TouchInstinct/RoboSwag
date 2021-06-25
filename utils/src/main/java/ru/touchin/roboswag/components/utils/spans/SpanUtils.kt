@@ -8,6 +8,7 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.URLSpan
 import android.text.util.Linkify
 import android.view.View
+import androidx.annotation.ColorInt
 import androidx.core.text.HtmlCompat
 import ru.touchin.extensions.indexesOf
 
@@ -56,7 +57,12 @@ private data class UrlSpanWithBorders(val span: URLSpan, val start: Int, val end
 /**
  * Find substring inside string (for example in TextView) and fill it with ClickableSpan
  */
-fun CharSequence.getClickableSubstring(substring: String, clickAction: () -> Unit, color: Int? = null) = SpannableString(this)
+fun CharSequence.toClickableSubstringText(
+        substring: String,
+        clickAction: () -> Unit,
+        @ColorInt color: Int? = null,
+        isUnderlineText: Boolean = false
+) = SpannableString(this)
         .apply {
             indexesOf(substring)?.let { (startSpan, endSpan) ->
                 setSpan(object : ClickableSpan() {
@@ -66,10 +72,9 @@ fun CharSequence.getClickableSubstring(substring: String, clickAction: () -> Uni
 
                     override fun updateDrawState(ds: TextPaint) {
                         super.updateDrawState(ds)
-                        ds.isUnderlineText = false
+                        ds.isUnderlineText = isUnderlineText
+                        if (color != null) ds.color = color
                     }
                 }, startSpan, endSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-                color?.let { setSpan(ForegroundColorSpan(it), startSpan, endSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE) }
             }
         }

@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.withStyledAttributes
 import ru.touchin.roboswag.components.utils.movementmethods.ClickableMovementMethod
-import ru.touchin.roboswag.components.utils.spans.getClickableSubstring
+import ru.touchin.roboswag.components.utils.spans.toClickableSubstringText
 
 class ActionTextView @JvmOverloads constructor(
         context: Context,
@@ -27,7 +27,7 @@ class ActionTextView @JvmOverloads constructor(
             val actionText = getString(R.styleable.ActionTextView_actionText).orEmpty()
             val actionColor = getColor(R.styleable.ActionTextView_actionColor, currentTextColor)
 
-            text = text.getClickableSubstring(
+            text = text.toClickableSubstringText(
                     substring = actionText,
                     clickAction = { onClickAction.invoke() },
                     color = actionColor
