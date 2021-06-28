@@ -8,7 +8,12 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import ru.touchin.extensions.setOnRippleClickListener
 import ru.touchin.mvi_arch.core_pagination.databinding.ViewPaginationBinding
 
+/**
+ * View, responsible for displaying paginator
+ */
+
 // TODO: add an errorview with empty state and error text
+// TODO: add LoadingContentView
 class PaginationView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null
@@ -22,11 +27,13 @@ class PaginationView @JvmOverloads constructor(
     init {
         with(binding) {
             swipeToRefresh.setOnRefreshListener { refreshCallback() }
+            // TODO: delete and transfer the layoutManager setting to init
             elementsRecycler.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             emptyText.setOnRippleClickListener { refreshCallback() }
         }
     }
 
+    // Method for setting View: sets adapter for recyclerView and passes lambda to call while pull-to-refresh
     fun init(refreshCallback: () -> Unit, adapter: PaginationAdapter) {
         this.refreshCallback = refreshCallback
         this.adapter = adapter
@@ -44,7 +51,7 @@ class PaginationView @JvmOverloads constructor(
                         else -> elementsRecycler.id
                     }
             )
-            adapter.fullData = state === Paginator.State.Empty || state is Paginator.State.FullData<*>
+            adapter.isLoaderInTheEndInvisible = state === Paginator.State.Empty || state is Paginator.State.FullData<*>
 
             when (state) {
                 is Paginator.State.EmptyError, Paginator.State.Empty, Paginator.State.EmptyProgress  -> {

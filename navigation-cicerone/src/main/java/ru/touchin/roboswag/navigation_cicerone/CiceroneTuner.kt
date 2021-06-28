@@ -6,6 +6,16 @@ import androidx.lifecycle.OnLifecycleEvent
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 
+/**
+ * CiceroneTuner is responsible for adding Navigator to NavigatorHolder in onResume and
+ * removing Navigator in onPause.
+ *
+ * You should add CiceroneTuner like an Observer of SingleActivity or FlowFragment lifecycle.
+ *
+ * @param navigatorHolder - interface to connect a {@link Navigator} to the {@link Cicerone};
+ * @param navigator - {@link Navigator} implementation;
+ */
+
 class CiceroneTuner(
         private val navigatorHolder: NavigatorHolder,
         private val navigator: Navigator

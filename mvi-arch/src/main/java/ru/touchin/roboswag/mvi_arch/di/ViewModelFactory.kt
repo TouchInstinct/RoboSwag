@@ -6,6 +6,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 
+/**
+ * Factory that will be used by [ViewModelProvider] to instantiate viewModel in [MviFragment].
+ *
+ */
 class ViewModelFactory(
         private val viewModelMap: MutableMap<Class<out ViewModel>, ViewModelAssistedFactory<out ViewModel>>,
         owner: SavedStateRegistryOwner,

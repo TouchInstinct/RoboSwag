@@ -8,6 +8,14 @@ import ru.touchin.roboswag.mvi_arch.marker.SideEffect
 import ru.touchin.roboswag.mvi_arch.marker.StateChange
 import ru.touchin.roboswag.mvi_arch.marker.ViewState
 
+/**
+ * Class for state changing of list, support page-loading, implements [Store]
+ *
+ * @param errorHandleMod - error handling method (show Alert or ErrorItem);
+ * @param loadPage - method for loading data;
+ * @param pageSize - size of one page
+ */
+
 class Paginator<Item>(
         private val errorHandleMod: ErrorHandleMod,
         private val loadPage: suspend (Int) -> List<Item>,
@@ -15,35 +23,67 @@ class Paginator<Item>(
 ) : Store<Paginator.Change, Paginator.Effect, Paginator.State>(State.Empty) {
 
     sealed class Change : StateChange {
+        // call pull-to-refresh
         object Refresh : Change()
+
+        // Full reloading data when changing external parameters: filters, sorts, etc.
         object Restart : Change()
+
+        // User scrolls to the end of the list. Calls loading of new page
         object LoadMore : Change()
+
+        // Clearing the list and loaded elements
         object Reset : Change()
+
+        // Loading the new page was successful
         data class NewPageLoaded<T>(val pageNumber: Int, val items: List<T>) : Change()
+
+        // Loading the new page ended with error
         data class PageLoadError(val error: Throwable) : Change()
     }
 
     sealed class Effect : SideEffect {
+        // Call asynchronous load of a new page
         data class LoadPage(val page: Int = 0) : Effect()
     }
 
     sealed class State : ViewState {
+        // Empty screen
         object Empty : State()
+
+        // Loader in the middle of screen
         object EmptyProgress : State()
+
+        // Error while loading first page
         data class EmptyError(val error: Throwable) : State()
+
+        // Loaded list of elements
         data class Data<T>(val pageCount: Int = 0, val data: List<T>, val error: Throwable? = null) : State()
+
+        // Show loader on pull-to-refresh
         data class Refresh<T>(val pageCount: Int, val data: List<T>) : State()
+
+        // Loading new page
         data class NewPageProgress<T>(val pageCount: Int, val data: List<T>) : State()
+
+        // The whole list is loaded. Nothing to load more.
         data class FullData<T>(val pageCount: Int, val data: List<T>) : State()
     }
 
     sealed class Error {
-        object NewPageFailed : Error()
-        object RefreshFailed : Error()
+
+        object NewPageLoadingFailed : Error()
+
+        object RefreshPageFailed : Error()
+
     }
 
+    // How to react to an error
     sealed class ErrorHandleMod {
+        // Show alert for error
         data class Alert(val showError: (Error) -> Unit) : ErrorHandleMod()
+
+        // Show in the end of list an element of list with error
         object ErrorItem : ErrorHandleMod()
     }
 
@@ -105,7 +145,7 @@ class Paginator<Item>(
                 is State.Refresh<*> -> {
                     when (errorHandleMod) {
                         is ErrorHandleMod.Alert -> {
-                            errorHandleMod.showError(Error.RefreshFailed)
+                            errorHandleMod.showError(Error.RefreshPageFailed)
                             State.Data(currentState.pageCount, currentState.data)
                         }
                         is ErrorHandleMod.ErrorItem -> {
@@ -120,7 +160,7 @@ class Paginator<Item>(
                 is State.NewPageProgress<*> -> {
                     when (errorHandleMod) {
                         is ErrorHandleMod.Alert -> {
-                            errorHandleMod.showError(Error.NewPageFailed)
+                            errorHandleMod.showError(Error.NewPageLoadingFailed)
                             State.Data(currentState.pageCount, currentState.data)
                         }
                         is ErrorHandleMod.ErrorItem -> {
