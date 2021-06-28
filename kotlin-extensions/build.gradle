@@ -2,6 +2,7 @@ apply from: "../android-configs/lib-config.gradle"
 
 dependencies {
     implementation "androidx.recyclerview:recyclerview"
+    implementation project(path: ':logging')
 
     constraints {
         implementation("androidx.recyclerview:recyclerview") {
