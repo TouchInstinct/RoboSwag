@@ -7,4 +7,5 @@ dependencies {
     implementation(Library.CICERONE)
     fragment()
     dagger(withAssistedInject = false)
+    androidX()
 }
