@@ -5,16 +5,18 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
+import me.vponomarenko.injectionmanager.customlifecycle.StoredComponent
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 import ru.touchin.mvi_arch.core_nav.R
+import ru.touchin.roboswag.navigation_base.scopes.FeatureScope
 import ru.touchin.roboswag.navigation_cicerone.CiceroneTuner
 import javax.inject.Inject
 
-abstract class FlowFragment : Fragment(R.layout.fragment_flow) {
+abstract class FlowFragment<TComponent> : Fragment(R.layout.fragment_flow) {
 
     @Inject
     @FlowNavigation
@@ -24,21 +26,25 @@ abstract class FlowFragment : Fragment(R.layout.fragment_flow) {
     @FlowNavigation
     lateinit var router: Router
 
+    @Inject
+    @FeatureScope
+    lateinit var componentHolder: ComponentHolder<TComponent>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        injectComponent()
+        if (!injectExistedComponent()) {
+            val storedComponent = injectComponent()
+            componentHolder.setStoredComponent(storedComponent)
+        }
+
         if (childFragmentManager.fragments.isEmpty()) {
             router.newRootScreen(getLaunchScreen())
         }
     }
 
-    abstract fun injectComponent()
+    abstract fun injectComponent(): StoredComponent<TComponent>
 
-    private val exitRouterOnBackPressed = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            router.exit()
-        }
-    }
+    abstract fun injectExistedComponent(): Boolean
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -57,6 +63,13 @@ abstract class FlowFragment : Fragment(R.layout.fragment_flow) {
 
     @IdRes
     protected fun getFragmentContainerId(): Int = R.id.flow_parent
+
+    private val exitRouterOnBackPressed = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            componentHolder.destroy()
+            router.exit()
+        }
+    }
 
     abstract fun getLaunchScreen(): SupportAppScreen
 }
