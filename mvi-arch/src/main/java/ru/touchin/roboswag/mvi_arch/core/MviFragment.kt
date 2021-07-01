@@ -46,8 +46,7 @@ import javax.inject.Inject
  *  @author Created by Max Bachinsky and Ivan Vlasov at Touch Instinct.
  */
 abstract class MviFragment<NavArgs, State, Action, VM>(
-        @LayoutRes layout: Int,
-        navArgs: NavArgs = EmptyState as NavArgs
+        @LayoutRes layout: Int
 ) : BaseFragment<FragmentActivity>(layout)
         where NavArgs : Parcelable,
               State : ViewState,
@@ -70,9 +69,11 @@ abstract class MviFragment<NavArgs, State, Action, VM>(
     lateinit var viewModelMap: MutableMap<Class<out ViewModel>, ViewModelAssistedFactory<out ViewModel>>
 
     init {
-        arguments?.putParcelable(INIT_ARGS_KEY, navArgs) ?: let {
-            arguments = bundleOf(INIT_ARGS_KEY to navArgs)
-        }
+        arguments = bundleOf(INIT_ARGS_KEY to EmptyState)
+    }
+
+    fun initArgs(navArgs: NavArgs) {
+        arguments?.putParcelable(INIT_ARGS_KEY, navArgs)
     }
 
     @CallSuper
