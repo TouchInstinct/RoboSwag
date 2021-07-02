@@ -11,6 +11,12 @@ import ru.touchin.roboswag.mvi_arch.marker.ViewState
 import ru.touchin.roboswag.navigation_base.activities.OnBackPressedListener
 import ru.touchin.roboswag.navigation_base.keyboard_resizeable.KeyboardBehaviorDetector
 
+// CPD-OFF
+/**
+ * Same code as in [ru.touchin.roboswag.navigation_base.keyboard_resizeable.KeyboardResizeableFragment] but inherited from MviFragment
+ * Used to detect IME events (show, hide)
+ */
+
 abstract class MviKeyboardResizableFragment<NavArgs, State, Action, VM>(
         @LayoutRes layout: Int
 ) : MviFragment<NavArgs, State, Action, VM>(layout)
@@ -89,3 +95,4 @@ abstract class MviKeyboardResizableFragment<NavArgs, State, Action, VM>(
     }
 
 }
+// CPD-ON
