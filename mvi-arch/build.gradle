@@ -6,6 +6,7 @@ dependencies {
     implementation project(":lifecycle")
     implementation project(":kotlin-extensions")
     implementation project(":logging")
+    implementation project(":utils")
 
     implementation("androidx.core:core-ktx")
     implementation("androidx.appcompat:appcompat")
