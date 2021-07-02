@@ -9,7 +9,6 @@ import ru.touchin.roboswag.components.utils.hideSoftInput
 import ru.touchin.roboswag.mvi_arch.marker.ViewAction
 import ru.touchin.roboswag.mvi_arch.marker.ViewState
 import ru.touchin.roboswag.navigation_base.activities.OnBackPressedListener
-import ru.touchin.roboswag.navigation_base.keyboard_resizeable.KeyboardBehaviorDetector
 
 // CPD-OFF
 /**
@@ -48,7 +47,6 @@ abstract class MviKeyboardResizableFragment<NavArgs, State, Action, VM>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity.keyboardBehaviorDetector = KeyboardBehaviorDetector(activity)
 
         view.requestApplyInsets()
         lifecycle.addObserver(activity.keyboardBehaviorDetector as LifecycleObserver)
