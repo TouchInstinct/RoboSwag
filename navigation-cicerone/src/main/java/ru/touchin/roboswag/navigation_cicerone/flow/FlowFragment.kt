@@ -1,5 +1,6 @@
 package ru.touchin.roboswag.navigation_cicerone.flow
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -30,12 +31,16 @@ abstract class FlowFragment<TComponent> : Fragment(R.layout.fragment_flow) {
     @FeatureScope
     lateinit var componentHolder: ComponentHolder<TComponent>
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onAttach(context: Context) {
         if (!injectExistedComponent()) {
             val storedComponent = injectComponent()
             componentHolder.setStoredComponent(storedComponent)
         }
+        super.onAttach(context)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         if (childFragmentManager.fragments.isEmpty()) {
             router.newRootScreen(getLaunchScreen())
