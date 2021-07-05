@@ -41,7 +41,6 @@ abstract class FlowFragment<TComponent> : Fragment(R.layout.fragment_flow) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         if (childFragmentManager.fragments.isEmpty()) {
             router.newRootScreen(getLaunchScreen())
         }
