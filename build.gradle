@@ -17,7 +17,7 @@ allprojects {
         google()
         jcenter()
         maven {
-            url "https://dl.bintray.com/touchin/touchin-tools"
+            url "https://maven.dev.touchin.ru"
             metadataSources {
                 artifact()
             }
