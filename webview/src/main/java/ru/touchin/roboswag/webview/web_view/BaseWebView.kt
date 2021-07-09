@@ -133,6 +133,10 @@ open class BaseWebView @JvmOverloads constructor(
         onStateChanged(newState)
     }
 
+    fun stopLoading(){
+        binding.webView.stopLoading()
+    }
+
     fun setOnWebViewDisplayedContentAction(action: () -> Unit) {
         binding.webView.onWebViewDisplayedContent = action
     }
