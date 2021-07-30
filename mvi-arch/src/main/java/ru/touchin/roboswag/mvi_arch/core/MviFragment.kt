@@ -9,7 +9,6 @@ import androidx.annotation.LayoutRes
 import androidx.annotation.MainThread
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -18,6 +17,7 @@ import ru.touchin.roboswag.mvi_arch.di.ViewModelAssistedFactory
 import ru.touchin.roboswag.mvi_arch.di.ViewModelFactory
 import ru.touchin.roboswag.mvi_arch.marker.ViewAction
 import ru.touchin.roboswag.mvi_arch.marker.ViewState
+import ru.touchin.roboswag.navigation_base.activities.BaseActivity
 import ru.touchin.roboswag.navigation_base.fragments.BaseFragment
 import ru.touchin.roboswag.navigation_base.fragments.EmptyState
 import javax.inject.Inject
@@ -47,7 +47,7 @@ import javax.inject.Inject
  */
 abstract class MviFragment<NavArgs, State, Action, VM>(
         @LayoutRes layout: Int
-) : BaseFragment<FragmentActivity>(layout)
+) : BaseFragment<BaseActivity>(layout)
         where NavArgs : Parcelable,
               State : ViewState,
               Action : ViewAction,

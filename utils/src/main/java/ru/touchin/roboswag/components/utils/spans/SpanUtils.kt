@@ -4,7 +4,6 @@ import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextPaint
 import android.text.style.ClickableSpan
-import android.text.style.ForegroundColorSpan
 import android.text.style.URLSpan
 import android.text.util.Linkify
 import android.view.View
