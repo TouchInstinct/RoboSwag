@@ -6,14 +6,12 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
-import me.vponomarenko.injectionmanager.customlifecycle.StoredComponent
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 import ru.touchin.mvi_arch.core_nav.R
-import ru.touchin.roboswag.navigation_base.scopes.FeatureScope
 import ru.touchin.roboswag.navigation_cicerone.CiceroneTuner
 import javax.inject.Inject
 
@@ -27,15 +25,8 @@ abstract class FlowFragment<TComponent> : Fragment(R.layout.fragment_flow) {
     @FlowNavigation
     lateinit var router: Router
 
-    @Inject
-    @FeatureScope
-    lateinit var componentHolder: ComponentHolder<TComponent>
-
     override fun onAttach(context: Context) {
-        if (!injectExistedComponent()) {
-            val storedComponent = injectComponent()
-            componentHolder.setStoredComponent(storedComponent)
-        }
+        injectComponent()
         super.onAttach(context)
     }
 
@@ -46,9 +37,7 @@ abstract class FlowFragment<TComponent> : Fragment(R.layout.fragment_flow) {
         }
     }
 
-    abstract fun injectComponent(): StoredComponent<TComponent>
-
-    abstract fun injectExistedComponent(): Boolean
+    abstract fun injectComponent()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -70,7 +59,6 @@ abstract class FlowFragment<TComponent> : Fragment(R.layout.fragment_flow) {
 
     private val exitRouterOnBackPressed = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            componentHolder.destroy()
             router.exit()
         }
     }
