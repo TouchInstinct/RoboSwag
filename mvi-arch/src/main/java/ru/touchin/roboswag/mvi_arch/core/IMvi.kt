@@ -9,8 +9,11 @@ import ru.touchin.roboswag.mvi_arch.marker.ViewState
 /**
  * Interface with the main MVI methods and fields
  */
-interface IMvi<NavArgs : Parcelable, Action : ViewAction, State : ViewState, VM>
-        where VM : MviViewModel<NavArgs, Action, State> {
+interface IMvi<NavArgs, Action, State, VM>
+        where NavArgs : Parcelable,
+              State : ViewState,
+              Action : ViewAction,
+              VM : MviViewModel<NavArgs, Action, State> {
 
     /**
      * Use [viewModel] extension to get an instance of your view model class.

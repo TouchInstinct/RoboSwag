@@ -46,7 +46,7 @@ import javax.inject.Inject
  */
 abstract class MviFragment<NavArgs, State, Action, VM>(
         @LayoutRes layout: Int
-) : BaseFragment<BaseActivity>(layout), IMvi<NavArgs, State, Action, VM>
+) : BaseFragment<BaseActivity>(layout), IMvi<NavArgs, Action, State, VM>
         where NavArgs : Parcelable,
               State : ViewState,
               Action : ViewAction,
