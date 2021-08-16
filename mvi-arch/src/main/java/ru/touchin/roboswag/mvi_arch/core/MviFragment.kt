@@ -76,7 +76,7 @@ abstract class MviFragment<NavArgs, State, Action, VM>(
         arguments?.putParcelable(INIT_ARGS_KEY, navArgs)
     }
 
-    protected val navArgs: NavArgs by lazy {
+    protected val navArgs: NavArgs by lazy(mode = LazyThreadSafetyMode.NONE) {
         arguments?.getParcelable<NavArgs>(INIT_ARGS_KEY) as NavArgs
     }
 
