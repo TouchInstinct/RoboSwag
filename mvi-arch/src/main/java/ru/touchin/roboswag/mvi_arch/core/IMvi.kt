@@ -9,7 +9,7 @@ import ru.touchin.roboswag.mvi_arch.marker.ViewState
 /**
  * Interface with the main MVI methods and fields
  */
-interface IMvi<NavArgs, Action, State, VM>
+interface IMvi<NavArgs, State, Action, VM>
         where NavArgs : Parcelable,
               State : ViewState,
               Action : ViewAction,
