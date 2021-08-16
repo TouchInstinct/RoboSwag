@@ -76,6 +76,10 @@ abstract class MviFragment<NavArgs, State, Action, VM>(
         arguments?.putParcelable(INIT_ARGS_KEY, navArgs)
     }
 
+    protected val navArgs: NavArgs by lazy {
+        arguments?.getParcelable<NavArgs>(INIT_ARGS_KEY) as NavArgs
+    }
+
     @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
