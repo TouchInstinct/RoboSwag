@@ -6,14 +6,12 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
-import me.vponomarenko.injectionmanager.customlifecycle.StoredComponent
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.Router
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 import ru.touchin.mvi_arch.core_nav.R
-import ru.touchin.roboswag.navigation_base.scopes.FeatureScope
 import ru.touchin.roboswag.navigation_cicerone.CiceroneTuner
 import javax.inject.Inject
 
