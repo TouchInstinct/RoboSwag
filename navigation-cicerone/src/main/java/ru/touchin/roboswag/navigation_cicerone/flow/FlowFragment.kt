@@ -27,15 +27,8 @@ abstract class FlowFragment<TComponent> : Fragment(R.layout.fragment_flow) {
     @FlowNavigation
     lateinit var router: Router
 
-    @Inject
-    @FeatureScope
-    lateinit var componentHolder: ComponentHolder<TComponent>
-
     override fun onAttach(context: Context) {
-        if (!injectExistedComponent()) {
-            val storedComponent = injectComponent()
-            componentHolder.setStoredComponent(storedComponent)
-        }
+        injectComponent()
         super.onAttach(context)
     }
 
@@ -46,9 +39,7 @@ abstract class FlowFragment<TComponent> : Fragment(R.layout.fragment_flow) {
         }
     }
 
-    abstract fun injectComponent(): StoredComponent<TComponent>
-
-    abstract fun injectExistedComponent(): Boolean
+    abstract fun injectComponent()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -70,7 +61,6 @@ abstract class FlowFragment<TComponent> : Fragment(R.layout.fragment_flow) {
 
     private val exitRouterOnBackPressed = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            componentHolder.destroy()
             router.exit()
         }
     }
