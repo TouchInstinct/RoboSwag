@@ -35,7 +35,7 @@ class KeyboardBehaviorDetector(
         }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun startDetection() {
         ViewCompat.setOnApplyWindowInsetsListener(view) { _, windowInsets ->
             val bottomInset = windowInsets.systemWindowInsetBottom
