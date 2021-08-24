@@ -8,6 +8,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.webkit.ConsoleMessage
+import android.webkit.CookieManager
 import android.webkit.WebView
 import androidx.core.content.withStyledAttributes
 import androidx.core.widget.TextViewCompat
@@ -125,7 +126,12 @@ open class BaseWebView @JvmOverloads constructor(
      * if url is null it changes to empty string
      * to prevent infinite LOADING state
      */
-    fun loadUrl(url: String?, extraHeaders: Map<String,String> = emptyMap()) {
+    fun loadUrl(url: String?, extraHeaders: Map<String, String> = emptyMap(), cookies: Map<String, String> = mapOf()) {
+        CookieManager.getInstance().apply {
+            cookies.forEach {
+                setCookie(url, "${it.key}=${it.value}")
+            }
+        }
         binding.webView.loadUrl(url ?: "", extraHeaders)
     }
 
