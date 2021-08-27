@@ -7,9 +7,12 @@ dependencies {
     implementation project(":kotlin-extensions")
     implementation project(":logging")
     implementation project(":utils")
+    implementation project(":views")
 
     implementation("androidx.core:core-ktx")
     implementation("androidx.appcompat:appcompat")
+
+    implementation("com.google.android.material:material")
 
     implementation("androidx.fragment:fragment")
     implementation("androidx.fragment:fragment-ktx")
@@ -31,6 +34,7 @@ dependencies {
     def lifecycleVersion = "2.2.0"
     def coroutinesVersion = "1.3.7"
     def daggerVersion = "2.27"
+    def materialDesignVersion = "1.2.0-rc01"
 
     constraints {
         implementation("androidx.core:core-ktx") {
@@ -41,6 +45,11 @@ dependencies {
         implementation("androidx.appcompat:appcompat") {
             version {
                 require("1.0.2")
+            }
+        }
+        implementation("com.google.android.material:material") {
+            version {
+                require(materialDesignVersion)
             }
         }
         implementation("androidx.fragment:fragment") {
