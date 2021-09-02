@@ -59,7 +59,7 @@ abstract class MviKeyboardResizableFragment<NavArgs, State, Action, VM>(
 
     override fun onPause() {
         super.onPause()
-        notifyKeyboardHidden()
+        if (isKeyboardVisible) activity.hideSoftInput()
         if (isHideKeyboardOnBackEnabled) activity.removeOnBackPressedListener(keyboardHideListener)
     }
 
@@ -85,11 +85,6 @@ abstract class MviKeyboardResizableFragment<NavArgs, State, Action, VM>(
             keyboardHideListener = null
             keyboardShowListener = null
         }
-    }
-
-    private fun notifyKeyboardHidden() {
-        if (isKeyboardVisible) onKeyboardHide()
-        isKeyboardVisible = false
     }
 
 }
