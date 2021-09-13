@@ -57,7 +57,7 @@
     </declare-styleable>
 
     <declare-styleable name="CrossfadeView">
-        <attr name="defaultChild" format="reference"/>
+        <attr name="crossfadeDefaultChild" format="reference"/>
     </declare-styleable>
 
 </resources>
