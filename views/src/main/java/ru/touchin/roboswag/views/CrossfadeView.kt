@@ -22,7 +22,7 @@ class CrossfadeView @JvmOverloads constructor(
         setOutAnimation(context, R.anim.fade_out_animation)
 
         context.withStyledAttributes(attrs, R.styleable.CrossfadeView, 0) {
-            defaultChild = getResourceId(R.styleable.CrossfadeView_defaultChild, 0)
+            defaultChild = getResourceId(R.styleable.CrossfadeView_crossfadeDefaultChild, 0)
         }
     }
 
