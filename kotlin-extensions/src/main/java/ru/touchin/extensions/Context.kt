@@ -1,15 +1,18 @@
 package ru.touchin.extensions
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import ru.touchin.roboswag.core.log.Lc
 import android.provider.Browser
 
-fun Context.safeStartActivity(intent: Intent, options: Bundle? = null, resolveFlags: Int = 0) =
+fun Context.safeStartActivity(intent: Intent, options: Bundle? = null) =
         try {
             startActivity(intent, options)
-        } catch (e: Throwable) {
+        } catch (e: ActivityNotFoundException) {
+            Lc.e(e, "Couldn't find activity with this parameters")
         }
 
 fun Context.openBrowser(url: String) = Intent(Intent.ACTION_VIEW)
