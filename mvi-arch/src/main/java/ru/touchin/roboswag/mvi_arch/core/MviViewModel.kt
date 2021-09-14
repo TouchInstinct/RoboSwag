@@ -38,18 +38,23 @@ abstract class MviViewModel<NavArgs : Parcelable, Action : ViewAction, State : V
         protected val handle: SavedStateHandle
 ) : ViewModel() {
 
+    companion object {
+        private const val STATE_KEY = "STATE_KEY"
+    }
+
     private val mediatorStore = MediatorStore(
-            listOfNotNull(
+        listOfNotNull(
 //                    Min api 24
 //                    https://github.com/TouchInstinct/RoboSwag/issues/180
 //                    LoggingMediator(this::class.simpleName!!).takeIf { BuildConfig.DEBUG }
-            )
+        )
     )
 
     protected val navArgs: NavArgs = handle.get(MviFragment.INIT_ARGS_KEY) ?: throw IllegalStateException("Nav args mustn't be null")
+    protected val savedState: State = handle.get(STATE_KEY) ?: initialState
 
     @SuppressWarnings("detekt.VariableNaming")
-    protected val _state = MutableLiveData(initialState)
+    protected val _state = handle.getLiveData<State>(STATE_KEY, initialState)
     internal val state = Transformations.distinctUntilChanged(_state)
 
     protected val currentState: State
@@ -59,6 +64,9 @@ abstract class MviViewModel<NavArgs : Parcelable, Action : ViewAction, State : V
 
     init {
         viewModelScope.launch {
+             if (!handle.contains(STATE_KEY)){
+                 _state.value = initialState
+             }
             state.observeForever(stateMediatorObserver)
         }
     }
