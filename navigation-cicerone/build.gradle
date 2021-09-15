@@ -9,6 +9,8 @@ dependencies {
     implementation("com.google.dagger:dagger")
     kapt("com.google.dagger:dagger-compiler")
 
+    implementation("com.github.valeryponomarenko.componentsmanager:androidx:2.1.0")
+
     def daggerVersion = "2.27"
 
     constraints {

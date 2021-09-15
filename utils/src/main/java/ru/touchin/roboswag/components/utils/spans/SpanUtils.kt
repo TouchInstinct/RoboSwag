@@ -2,9 +2,14 @@ package ru.touchin.roboswag.components.utils.spans
 
 import android.text.SpannableString
 import android.text.Spanned
+import android.text.TextPaint
+import android.text.style.ClickableSpan
 import android.text.style.URLSpan
 import android.text.util.Linkify
+import android.view.View
+import androidx.annotation.ColorInt
 import androidx.core.text.HtmlCompat
+import ru.touchin.extensions.indexesOf
 
 /**
  * Convert text with 'href' tags and raw links to spanned text with clickable URLSpan.
@@ -47,3 +52,28 @@ private fun SpannableString.getUrlSpans() = getSpans(0, length, URLSpan::class.j
         .map { UrlSpanWithBorders(it, this.getSpanStart(it), this.getSpanEnd(it)) }
 
 private data class UrlSpanWithBorders(val span: URLSpan, val start: Int, val end: Int)
+
+/**
+ * Find substring inside string (for example in TextView) and fill it with ClickableSpan
+ */
+fun CharSequence.toClickableSubstringText(
+        substring: String,
+        clickAction: () -> Unit,
+        @ColorInt color: Int? = null,
+        isUnderlineText: Boolean = false
+) = SpannableString(this)
+        .apply {
+            indexesOf(substring)?.let { (startSpan, endSpan) ->
+                setSpan(object : ClickableSpan() {
+                    override fun onClick(widget: View) {
+                        clickAction.invoke()
+                    }
+
+                    override fun updateDrawState(ds: TextPaint) {
+                        super.updateDrawState(ds)
+                        ds.isUnderlineText = isUnderlineText
+                        if (color != null) ds.color = color
+                    }
+                }, startSpan, endSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
+        }

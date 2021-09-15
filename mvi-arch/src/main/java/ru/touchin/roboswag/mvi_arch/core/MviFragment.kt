@@ -9,15 +9,14 @@ import androidx.annotation.LayoutRes
 import androidx.annotation.MainThread
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import ru.touchin.extensions.setOnRippleClickListener
 import ru.touchin.roboswag.mvi_arch.di.ViewModelAssistedFactory
 import ru.touchin.roboswag.mvi_arch.di.ViewModelFactory
 import ru.touchin.roboswag.mvi_arch.marker.ViewAction
 import ru.touchin.roboswag.mvi_arch.marker.ViewState
+import ru.touchin.roboswag.navigation_base.activities.BaseActivity
 import ru.touchin.roboswag.navigation_base.fragments.BaseFragment
 import ru.touchin.roboswag.navigation_base.fragments.EmptyState
 import javax.inject.Inject
@@ -46,9 +45,8 @@ import javax.inject.Inject
  *  @author Created by Max Bachinsky and Ivan Vlasov at Touch Instinct.
  */
 abstract class MviFragment<NavArgs, State, Action, VM>(
-        @LayoutRes layout: Int,
-        navArgs: NavArgs = EmptyState as NavArgs
-) : BaseFragment<FragmentActivity>(layout)
+        @LayoutRes layout: Int
+) : BaseFragment<BaseActivity>(layout), IMvi<NavArgs, State, Action, VM>
         where NavArgs : Parcelable,
               State : ViewState,
               Action : ViewAction,
@@ -59,20 +57,21 @@ abstract class MviFragment<NavArgs, State, Action, VM>(
     }
 
     /**
-     * Use [viewModel] extension to get an instance of your view model class.
-     */
-    protected abstract val viewModel: VM
-
-    /**
      * Used for smooth view model injection to this class.
      */
     @Inject
     lateinit var viewModelMap: MutableMap<Class<out ViewModel>, ViewModelAssistedFactory<out ViewModel>>
 
     init {
-        arguments?.putParcelable(INIT_ARGS_KEY, navArgs) ?: let {
-            arguments = bundleOf(INIT_ARGS_KEY to navArgs)
-        }
+        arguments = bundleOf(INIT_ARGS_KEY to EmptyState)
+    }
+
+    fun initArgs(navArgs: NavArgs) {
+        arguments?.putParcelable(INIT_ARGS_KEY, navArgs)
+    }
+
+    protected val navArgs: NavArgs by lazy(mode = LazyThreadSafetyMode.NONE) {
+        arguments?.getParcelable<NavArgs>(INIT_ARGS_KEY) as NavArgs
     }
 
     @CallSuper
@@ -81,34 +80,7 @@ abstract class MviFragment<NavArgs, State, Action, VM>(
         viewModel.state.observe(viewLifecycleOwner, Observer(this::renderState))
     }
 
-    /**
-     * Use this method to subscribe on view state changes.
-     *
-     * You should render view state here.
-     *
-     * Must not be called before [onAttach] and after [onDetach].
-     */
-    protected open fun renderState(viewState: State) {}
-
-    /**
-     * Use this method to dispatch view actions to view model.
-     */
-    protected fun dispatchAction(actionProvider: () -> Action) {
-        viewModel.dispatchAction(actionProvider.invoke())
-    }
-
-    /**
-     * Use this method to dispatch view actions to view model.
-     */
-    protected fun dispatchAction(action: Action) {
-        viewModel.dispatchAction(action)
-    }
-
-    protected fun addOnBackPressedCallback(actionProvider: () -> Action) {
-        addOnBackPressedCallback(actionProvider.invoke())
-    }
-
-    protected fun addOnBackPressedCallback(action: Action) {
+    override fun addOnBackPressedCallback(action: Action) {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 dispatchAction(action)
@@ -131,33 +103,5 @@ abstract class MviFragment<NavArgs, State, Action, VM>(
                         ViewModelFactory(viewModelMap, this, fragmentArguments)
                 ).get(ViewModel::class.java)
             }
-
-    /**
-     * Simple extension for dispatching view events to view model with on click.
-     */
-    protected fun View.dispatchActionOnClick(actionProvider: () -> Action) {
-        setOnClickListener { dispatchAction(actionProvider) }
-    }
-
-    /**
-     * Simple extension for dispatching view events to view model with on click.
-     */
-    protected fun View.dispatchActionOnClick(action: Action) {
-        setOnClickListener { dispatchAction(action) }
-    }
-
-    /**
-     * Simple extension for dispatching view events to view model with on ripple click.
-     */
-    protected fun View.dispatchActionOnRippleClick(actionProvider: () -> Action) {
-        setOnRippleClickListener { dispatchAction(actionProvider) }
-    }
-
-    /**
-     * Simple extension for dispatching view events to view model with on ripple click.
-     */
-    protected fun View.dispatchActionOnRippleClick(action: Action) {
-        setOnRippleClickListener { dispatchAction(action) }
-    }
 
 }

@@ -8,6 +8,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.webkit.ConsoleMessage
+import android.webkit.CookieManager
 import android.webkit.WebView
 import androidx.core.content.withStyledAttributes
 import androidx.core.widget.TextViewCompat
@@ -27,7 +28,7 @@ open class BaseWebView @JvmOverloads constructor(
     var onWebViewLoaded: (() -> Unit)? = null
     var onWebViewRepeatButtonClicked: (() -> Unit)? = null
     var onWebViewScrolled: ((WebView, Int, Int) -> Unit)? = null
-    var onCookieLoaded: ((cookies: Map<String, String>) -> Unit)? = null
+    var onCookieLoaded: ((cookies: Map<String, String>?) -> Unit)? = null
 
     var onJsConfirm: (() -> Unit)? = null
     var onJsAlert: (() -> Unit)? = null
@@ -42,6 +43,11 @@ open class BaseWebView @JvmOverloads constructor(
         }
 
     var isRedirectEnable = false
+
+    /**
+     * If you need to do some action on url click inside WebView, just assign this parameter and disable isRedirectEnable
+     **/
+    var actionOnRedirect: ((String?, WebView) -> Unit)? = null
 
     init {
         binding.pullToRefresh.isEnabled = isPullToRefreshEnable
@@ -101,8 +107,12 @@ open class BaseWebView @JvmOverloads constructor(
 
     override fun onOverrideUrlLoading(url: String?): Boolean = isRedirectEnable
 
-    override fun onPageCookiesLoaded(cookies: Map<String, String>) {
+    override fun onPageCookiesLoaded(cookies: Map<String, String>?) {
         onCookieLoaded?.invoke(cookies)
+    }
+
+    override fun actionOnRedirectInsideWebView(webView: WebView, url: String?) {
+        actionOnRedirect?.invoke(url, webView)
     }
 
     fun setBaseWebViewClient(isSSlPinningEnable: Boolean = false) {
@@ -112,8 +122,17 @@ open class BaseWebView @JvmOverloads constructor(
 
     fun getWebView() = binding.webView
 
-    fun loadUrl(url: String?) {
-        binding.webView.loadUrl(url)
+    /**
+     * if url is null it changes to empty string
+     * to prevent infinite LOADING state
+     */
+    fun loadUrl(url: String?, extraHeaders: Map<String, String> = emptyMap(), cookies: Map<String, String> = mapOf()) {
+        CookieManager.getInstance().apply {
+            cookies.forEach {
+                setCookie(url, "${it.key}=${it.value}")
+            }
+        }
+        binding.webView.loadUrl(url ?: "", extraHeaders)
     }
 
     fun setState(newState: WebViewLoadingState) {
@@ -124,16 +143,24 @@ open class BaseWebView @JvmOverloads constructor(
         binding.webView.onWebViewDisplayedContent = action
     }
 
+    /**
+     * loadWithOverviewMode loads the WebView completely zoomed out
+     * useWideViewPort sets page size to fit screen
+     * setInitialScale(1) prevents horizontal scrolling when
+     * page has horizontal paddings
+     */
     @SuppressLint("SetJavaScriptEnabled")
     open fun setWebViewPreferences() {
         binding.webView.apply {
             scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
-            setLayerType(View.LAYER_TYPE_SOFTWARE, null)
+            setLayerType(View.LAYER_TYPE_HARDWARE, null)
             with(settings) {
                 loadsImagesAutomatically = true
                 javaScriptEnabled = true
                 domStorageEnabled = true
                 loadWithOverviewMode = true
+                useWideViewPort = true
+                setInitialScale(1)
             }
         }
     }

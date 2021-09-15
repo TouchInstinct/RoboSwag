@@ -1,5 +1,6 @@
 package ru.touchin.roboswag.navigation_cicerone.flow
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -14,7 +15,7 @@ import ru.touchin.mvi_arch.core_nav.R
 import ru.touchin.roboswag.navigation_cicerone.CiceroneTuner
 import javax.inject.Inject
 
-abstract class FlowFragment : Fragment(R.layout.fragment_flow) {
+abstract class FlowFragment<TComponent> : Fragment(R.layout.fragment_flow) {
 
     @Inject
     @FlowNavigation
@@ -24,21 +25,19 @@ abstract class FlowFragment : Fragment(R.layout.fragment_flow) {
     @FlowNavigation
     lateinit var router: Router
 
+    override fun onAttach(context: Context) {
+        injectComponent()
+        super.onAttach(context)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        injectComponent()
         if (childFragmentManager.fragments.isEmpty()) {
             router.newRootScreen(getLaunchScreen())
         }
     }
 
     abstract fun injectComponent()
-
-    private val exitRouterOnBackPressed = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            router.exit()
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -57,6 +56,12 @@ abstract class FlowFragment : Fragment(R.layout.fragment_flow) {
 
     @IdRes
     protected fun getFragmentContainerId(): Int = R.id.flow_parent
+
+    private val exitRouterOnBackPressed = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            router.exit()
+        }
+    }
 
     abstract fun getLaunchScreen(): SupportAppScreen
 }
