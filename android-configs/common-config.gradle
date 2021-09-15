@@ -1,10 +1,10 @@
 apply plugin: 'kotlin-android'
 
 rootProject.ext {
-    compileSdk = 30
+    compileSdk = 29
 
     minSdk = 21
-    targetSdk = 30
+    targetSdk = 29
 }
 
 android {

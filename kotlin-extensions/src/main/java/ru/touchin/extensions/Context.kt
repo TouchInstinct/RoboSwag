@@ -1,19 +1,13 @@
 package ru.touchin.extensions
 
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import ru.touchin.roboswag.core.log.Lc
 import android.provider.Browser
 
-fun Context.safeStartActivity(intent: Intent, options: Bundle? = null) =
-        try {
-            startActivity(intent, options)
-        } catch (e: ActivityNotFoundException) {
-            Lc.e(e, "Couldn't find activity with this parameters")
-        }
+fun Context.safeStartActivity(intent: Intent, options: Bundle? = null, resolveFlags: Int = 0): Boolean =
+        packageManager.resolveActivity(intent, resolveFlags)?.let { startActivity(intent, options) } != null
 
 fun Context.openBrowser(url: String) = Intent(Intent.ACTION_VIEW)
         .setData(Uri.parse(url))
@@ -34,3 +28,4 @@ fun Context.openBrowserWithHeaders(url: String, headersMap: Map<String, String>)
 fun Context.callToPhoneNumber(phoneNumber: String) = Intent(Intent.ACTION_VIEW)
         .setData(Uri.parse("tel:$phoneNumber"))
         .let { intent -> safeStartActivity(intent) }
+
