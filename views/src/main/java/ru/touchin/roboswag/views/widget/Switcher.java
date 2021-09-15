@@ -67,6 +67,13 @@ public class Switcher extends FrameLayout {
         }
     }
 
+    public void hideAllChildren() {
+        for (int index = 0; index < getChildCount(); index++) {
+            final View child = getChildAt(index);
+            setVisibilityWithAnimation(child, View.GONE);
+        }
+    }
+
     private void setVisibilityWithAnimation(@NonNull final View view, final int targetVisibility) {
         final Animation animation = targetVisibility == View.VISIBLE ? inAnimation : outAnimation;
         if (view.getVisibility() != targetVisibility) {
