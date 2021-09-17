@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.IdRes
+import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import me.vponomarenko.injectionmanager.customlifecycle.StoredComponent
 import ru.terrakok.cicerone.Navigator
@@ -17,7 +18,9 @@ import ru.touchin.roboswag.navigation_base.scopes.FeatureScope
 import ru.touchin.roboswag.navigation_cicerone.CiceroneTuner
 import javax.inject.Inject
 
-abstract class FlowFragment<TComponent> : Fragment(R.layout.fragment_flow) {
+abstract class FlowFragment<TComponent>(
+        @LayoutRes layoutId: Int = R.layout.fragment_flow
+) : Fragment(layoutId) {
 
     @Inject
     @FlowNavigation
