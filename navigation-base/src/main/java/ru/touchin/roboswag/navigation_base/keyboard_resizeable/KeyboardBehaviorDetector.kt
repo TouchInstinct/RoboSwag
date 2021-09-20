@@ -12,14 +12,26 @@ import ru.touchin.roboswag.navigation_base.activities.BaseActivity
  *
  *     Your activity must have android:windowSoftInputMode="adjustResize" at least, otherwise listeners won't be called
  */
+
+typealias OnHideListener = () -> Unit
+typealias OnShowListener = (Int) -> Unit
+
 class KeyboardBehaviorDetector(
         activity: BaseActivity
 ) : LifecycleObserver {
 
     private val view = activity.window.decorView
 
-    var keyboardHideListener: (() -> Unit)? = null
-    var keyboardShowListener: ((Int) -> Unit)? = null
+    private val keyboardHideListeners: MutableList<OnHideListener> = mutableListOf()
+    private val keyboardShowListeners: MutableList<OnShowListener> = mutableListOf()
+
+    fun addOnHideListener(listener: OnHideListener) { keyboardHideListeners.add(listener) }
+
+    fun addOnShowListener(listener: OnShowListener) { keyboardShowListeners.add(listener) }
+
+    fun removeOnHideListener(listener: OnHideListener) { keyboardHideListeners.remove(listener) }
+
+    fun removeOnShowListener(listener: OnShowListener) { keyboardShowListeners.remove(listener) }
 
     // -1 when we never measure insets yet
     var startNavigationBarHeight = -1
@@ -27,11 +39,9 @@ class KeyboardBehaviorDetector(
 
     private val listener = { isKeyboardOpen: Boolean, windowInsets: WindowInsetsCompat ->
         if (isKeyboardOpen) {
-            keyboardShowListener?.invoke(
-                    windowInsets.systemWindowInsetBottom - startNavigationBarHeight
-            )
+            keyboardShowListeners.forEach { it.invoke(windowInsets.systemWindowInsetBottom - startNavigationBarHeight) }
         } else {
-            keyboardHideListener?.invoke()
+            keyboardHideListeners.forEach { it.invoke()}
         }
     }
 

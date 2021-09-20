@@ -1,31 +1,41 @@
 package ru.touchin.roboswag.navigation_base.keyboard_resizeable
 
-import android.os.Build
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.LifecycleObserver
 import ru.touchin.roboswag.components.utils.hideSoftInput
 import ru.touchin.roboswag.navigation_base.activities.BaseActivity
 import ru.touchin.roboswag.navigation_base.activities.OnBackPressedListener
-import ru.touchin.roboswag.navigation_base.fragments.StatefulFragment
+import ru.touchin.roboswag.navigation_base.fragments.BaseFragment
 
-abstract class KeyboardResizeableFragment<TActivity : BaseActivity, TState : Parcelable>(
+abstract class KeyboardResizeableFragment<TActivity : BaseActivity>(
         @LayoutRes layoutRes: Int
-) : StatefulFragment<TActivity, TState>(
+) : BaseFragment<TActivity>(
         layoutRes
 ) {
 
     private var isKeyboardVisible: Boolean = false
 
-    private val keyboardHideListener = OnBackPressedListener {
+    private val onBackPressedListener = OnBackPressedListener {
         if (isKeyboardVisible) {
             activity.hideSoftInput()
             true
         } else {
             false
         }
+    }
+
+    private val keyboardHideListener: OnHideListener = {
+        if (isKeyboardVisible) {
+            onKeyboardHide()
+        }
+        isKeyboardVisible = false
+    }
+
+    private val keyboardShowListener: OnShowListener = { diff ->
+        onKeyboardShow(diff)
+        isKeyboardVisible = true
     }
 
     private var isHideKeyboardOnBackEnabled = false
@@ -41,50 +51,35 @@ abstract class KeyboardResizeableFragment<TActivity : BaseActivity, TState : Par
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
-            view.requestApplyInsets()
-        }
+        view.requestApplyInsets()
         lifecycle.addObserver(activity.keyboardBehaviorDetector as LifecycleObserver)
     }
 
     override fun onResume() {
         super.onResume()
-        if (isHideKeyboardOnBackEnabled) activity.addOnBackPressedListener(keyboardHideListener)
+        if (isHideKeyboardOnBackEnabled) activity.addOnBackPressedListener(onBackPressedListener)
     }
 
     override fun onPause() {
         super.onPause()
-        notifyKeyboardHidden()
-        if (isHideKeyboardOnBackEnabled) activity.removeOnBackPressedListener(keyboardHideListener)
+        if (isKeyboardVisible) activity.hideSoftInput()
+        if (isHideKeyboardOnBackEnabled) activity.removeOnBackPressedListener(onBackPressedListener)
     }
 
     override fun onStart() {
         super.onStart()
         activity.keyboardBehaviorDetector?.apply {
-            keyboardHideListener = {
-                if (isKeyboardVisible) {
-                    onKeyboardHide()
-                }
-                isKeyboardVisible = false
-            }
-            keyboardShowListener = { diff ->
-                onKeyboardShow(diff)
-                isKeyboardVisible = true
-            }
+            addOnHideListener(keyboardHideListener)
+            addOnShowListener(keyboardShowListener)
         }
     }
 
     override fun onStop() {
         super.onStop()
         activity.keyboardBehaviorDetector?.apply {
-            keyboardHideListener = null
-            keyboardShowListener = null
+            removeOnHideListener(keyboardHideListener)
+            removeOnShowListener(keyboardShowListener)
         }
-    }
-
-    private fun notifyKeyboardHidden() {
-        if (isKeyboardVisible) onKeyboardHide()
-        isKeyboardVisible = false
     }
 
 }
