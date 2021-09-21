@@ -1,4 +1,4 @@
-package ru.touchin.roboswag.mvi_arch.core
+package ru.touchin.roboswag.navigation_base.keyboard_resizeable
 
 import android.os.Bundle
 import android.os.Parcelable
@@ -6,25 +6,21 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.lifecycle.LifecycleObserver
 import ru.touchin.roboswag.components.utils.hideSoftInput
-import ru.touchin.roboswag.mvi_arch.marker.ViewAction
-import ru.touchin.roboswag.mvi_arch.marker.ViewState
+import ru.touchin.roboswag.navigation_base.activities.BaseActivity
 import ru.touchin.roboswag.navigation_base.activities.OnBackPressedListener
-import ru.touchin.roboswag.navigation_base.keyboard_resizeable.OnHideListener
-import ru.touchin.roboswag.navigation_base.keyboard_resizeable.OnShowListener
+import ru.touchin.roboswag.navigation_base.fragments.StatefulFragment
 
 // CPD-OFF
 /**
- * Same code as in [ru.touchin.roboswag.navigation_base.keyboard_resizeable.StatefulKeyboardResizeableFragment] but inherited from MviFragment
+ * Same code as in [KeyboardResizeableFragment] but inherited from StatefulFragment
  * Used to detect IME events (show, hide)
  */
 
-abstract class MviKeyboardResizableFragment<NavArgs, State, Action, VM>(
-        @LayoutRes layout: Int
-) : MviFragment<NavArgs, State, Action, VM>(layout)
-        where NavArgs : Parcelable,
-              State : ViewState,
-              Action : ViewAction,
-              VM : MviViewModel<NavArgs, Action, State> {
+abstract class StatefulKeyboardResizeableFragment<TActivity : BaseActivity, TState : Parcelable>(
+        @LayoutRes layoutRes: Int
+) : StatefulFragment<TActivity, TState>(
+        layoutRes
+) {
 
     private var isKeyboardVisible: Boolean = false
 
