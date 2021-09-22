@@ -59,7 +59,11 @@ abstract class FlowFragment<TComponent> : Fragment(R.layout.fragment_flow) {
 
     private val exitRouterOnBackPressed = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            router.exit()
+            if (childFragmentManager.backStackEntryCount == 0 && parentFragmentManager.backStackEntryCount != 0) {
+                parentFragmentManager.popBackStack()
+            } else {
+                router.exit()
+            }
         }
     }
 
