@@ -25,6 +25,7 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
     override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
         isError = false
+        isTimeout = true
         callback.onStateChanged(WebViewLoadingState.LOADING)
 
         Looper.myLooper()?.let { looper ->
@@ -34,7 +35,6 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
                     isError = true
                     pageFinished()
                 }
-                isTimeout = true
             }
         }
     }
