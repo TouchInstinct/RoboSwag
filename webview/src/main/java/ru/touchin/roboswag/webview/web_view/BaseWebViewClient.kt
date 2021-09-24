@@ -20,6 +20,7 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
 
     private var isError = false
     private var isTimeout = true
+    private var handler: Handler? = null
 
     override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
@@ -27,8 +28,8 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
         callback.onStateChanged(WebViewLoadingState.LOADING)
 
         Looper.myLooper()?.let { looper ->
-            val handler = Handler(looper)
-            handler.postDelayed(WEB_VIEW_TIMEOUT_MS) {
+            handler = Handler(looper)
+            handler?.postDelayed(WEB_VIEW_TIMEOUT_MS) {
                 if (isTimeout) {
                     isError = true
                     pageFinished()
@@ -45,6 +46,7 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
     override fun onPageFinished(view: WebView, url: String) {
         super.onPageFinished(view, url)
         isTimeout = false
+        handler?.removeCallbacksAndMessages(null)
         if (url == "about:blank") {
             isError = true
         }
