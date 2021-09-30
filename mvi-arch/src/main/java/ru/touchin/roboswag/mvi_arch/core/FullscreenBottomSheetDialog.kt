@@ -39,6 +39,8 @@ abstract class FullscreenBottomSheetDialog<NavArgs, State, Action, VM>(
 
     protected lateinit var state: NavArgs
 
+    protected var bottomSheet: FrameLayout? = null
+
     protected abstract fun injectDependencies()
 
     @MainThread
@@ -87,7 +89,7 @@ abstract class FullscreenBottomSheetDialog<NavArgs, State, Action, VM>(
     override fun onStart() {
         super.onStart()
 
-        val bottomSheet = dialog?.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
+        bottomSheet = dialog?.findViewById(com.google.android.material.R.id.design_bottom_sheet)
         bottomSheet?.layoutParams?.height = ViewGroup.LayoutParams.MATCH_PARENT
     }
 
