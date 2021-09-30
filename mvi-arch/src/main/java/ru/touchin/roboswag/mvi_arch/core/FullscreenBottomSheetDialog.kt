@@ -20,7 +20,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import ru.touchin.mvi_arch.R
-import ru.touchin.roboswag.components.utils.px
 import ru.touchin.roboswag.mvi_arch.di.ViewModelAssistedFactory
 import ru.touchin.roboswag.mvi_arch.di.ViewModelFactory
 import ru.touchin.roboswag.mvi_arch.marker.ViewAction
@@ -28,8 +27,7 @@ import ru.touchin.roboswag.mvi_arch.marker.ViewState
 import javax.inject.Inject
 
 abstract class FullscreenBottomSheetDialog<NavArgs, State, Action, VM>(
-        @LayoutRes private val layoutId: Int,
-        private val topPadding: Int = 0
+        @LayoutRes private val layoutId: Int
 ) : BottomSheetDialogFragment(), IMvi<NavArgs, State, Action, VM>
         where NavArgs : Parcelable,
               Action : ViewAction,
@@ -40,6 +38,8 @@ abstract class FullscreenBottomSheetDialog<NavArgs, State, Action, VM>(
     lateinit var viewModelMap: MutableMap<Class<out ViewModel>, ViewModelAssistedFactory<out ViewModel>>
 
     protected lateinit var state: NavArgs
+
+    protected var bottomSheet: FrameLayout? = null
 
     protected abstract fun injectDependencies()
 
@@ -89,9 +89,8 @@ abstract class FullscreenBottomSheetDialog<NavArgs, State, Action, VM>(
     override fun onStart() {
         super.onStart()
 
-        val bottomSheet = dialog?.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
+        bottomSheet = dialog?.findViewById(com.google.android.material.R.id.design_bottom_sheet)
         bottomSheet?.layoutParams?.height = ViewGroup.LayoutParams.MATCH_PARENT
-        bottomSheet?.setPadding(0, topPadding.px, 0, 0)
     }
 
     override fun addOnBackPressedCallback(action: Action) {
