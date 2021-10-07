@@ -2,7 +2,6 @@ package ru.touchin.roboswag.mvi_arch.core
 
 import android.app.Dialog
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
@@ -16,10 +15,9 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import ru.touchin.mvi_arch.R
+import ru.touchin.roboswag.components.utils.getResizableShowListener
 import ru.touchin.roboswag.mvi_arch.di.ViewModelAssistedFactory
 import ru.touchin.roboswag.mvi_arch.di.ViewModelFactory
 import ru.touchin.roboswag.mvi_arch.marker.ViewAction
@@ -53,17 +51,6 @@ abstract class FullscreenBottomSheetDialog<NavArgs, State, Action, VM>(
                         ViewModelFactory(viewModelMap, this, fragmentArguments)
                 ).get(ViewModel::class.java)
             }
-
-    private val onShowListener by lazy {
-        DialogInterface.OnShowListener { dialog ->
-            (dialog as BottomSheetDialog).findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
-                    ?.let { BottomSheetBehavior.from(it) }
-                    ?.apply {
-                        state = BottomSheetBehavior.STATE_EXPANDED
-                        skipCollapsed = true
-                    }
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,7 +89,7 @@ abstract class FullscreenBottomSheetDialog<NavArgs, State, Action, VM>(
     }
 
     override fun setupDialog(dialog: Dialog, style: Int) {
-        dialog.setOnShowListener(onShowListener)
+        dialog.setOnShowListener(getResizableShowListener())
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

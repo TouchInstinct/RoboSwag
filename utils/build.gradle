@@ -4,6 +4,7 @@ dependencies {
     implementation project(':kotlin-extensions')
     implementation "androidx.core:core"
     implementation "androidx.annotation:annotation"
+    implementation "com.google.android.material:material"
 
     constraints {
         implementation("androidx.core:core") {
@@ -15,6 +16,12 @@ dependencies {
         implementation("androidx.annotation:annotation") {
             version {
                 require '1.1.0'
+            }
+        }
+
+        implementation("com.google.android.material:material") {
+            version {
+                require '1.2.0-rc01'
             }
         }
     }
