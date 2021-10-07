@@ -17,7 +17,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import ru.touchin.mvi_arch.R
-import ru.touchin.roboswag.components.utils.getResizableShowListener
+import ru.touchin.roboswag.components.utils.setResizableListener
 import ru.touchin.roboswag.mvi_arch.di.ViewModelAssistedFactory
 import ru.touchin.roboswag.mvi_arch.di.ViewModelFactory
 import ru.touchin.roboswag.mvi_arch.marker.ViewAction
@@ -89,7 +89,7 @@ abstract class FullscreenBottomSheetDialog<NavArgs, State, Action, VM>(
     }
 
     override fun setupDialog(dialog: Dialog, style: Int) {
-        dialog.setOnShowListener(getResizableShowListener())
+        dialog.setResizableListener()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

@@ -1,6 +1,7 @@
 package ru.touchin.roboswag.components.utils
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.res.Resources
@@ -55,12 +56,13 @@ fun View.showSoftInput() {
 /**
  * Returns listener for BottomSheetDialogFragment so that dialog is shifted when the keyboard is opened
  */
-
-fun BottomSheetDialogFragment.getResizableShowListener() = DialogInterface.OnShowListener { dialog ->
-    (dialog as BottomSheetDialog).findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
-            ?.let { BottomSheetBehavior.from(it) }
-            ?.apply {
-                state = BottomSheetBehavior.STATE_EXPANDED
-                skipCollapsed = true
-            }
+fun Dialog.setResizableListener() {
+    setOnShowListener { dialog ->
+        (dialog as BottomSheetDialog).findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
+                ?.let { BottomSheetBehavior.from(it) }
+                ?.apply {
+                    state = BottomSheetBehavior.STATE_EXPANDED
+                    skipCollapsed = true
+                }
+    }
 }
