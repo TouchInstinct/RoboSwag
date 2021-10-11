@@ -65,6 +65,10 @@ abstract class MviBottomSheet<NavArgs, State, Action, VM>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupRenderState()
+    }
+
+    private fun setupRenderState() {
         viewModel.state.observe(viewLifecycleOwner, Observer(this::renderState))
     }
 
