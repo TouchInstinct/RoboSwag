@@ -34,6 +34,10 @@ abstract class MviBottomSheet<NavArgs, State, Action, VM>(
         arguments = bundleOf(MviFragment.INIT_ARGS_KEY to EmptyState)
     }
 
+    protected val navArgs: NavArgs by lazy(mode = LazyThreadSafetyMode.NONE) {
+        arguments?.getParcelable<NavArgs>(MviFragment.INIT_ARGS_KEY) as NavArgs
+    }
+
     @Inject
     lateinit var viewModelMap: MutableMap<Class<out ViewModel>, ViewModelAssistedFactory<out ViewModel>>
 
