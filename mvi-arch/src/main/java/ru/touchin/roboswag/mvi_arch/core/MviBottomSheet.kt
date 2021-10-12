@@ -19,6 +19,7 @@ import ru.touchin.roboswag.mvi_arch.di.ViewModelAssistedFactory
 import ru.touchin.roboswag.mvi_arch.di.ViewModelFactory
 import ru.touchin.roboswag.mvi_arch.marker.ViewAction
 import ru.touchin.roboswag.mvi_arch.marker.ViewState
+import ru.touchin.roboswag.navigation_base.fragments.EmptyState
 import javax.inject.Inject
 
 abstract class MviBottomSheet<NavArgs, State, Action, VM>(
@@ -28,6 +29,10 @@ abstract class MviBottomSheet<NavArgs, State, Action, VM>(
               Action : ViewAction,
               State : ViewState,
               VM : MviViewModel<NavArgs, Action, State> {
+
+    init {
+        arguments = bundleOf(MviFragment.INIT_ARGS_KEY to EmptyState)
+    }
 
     @Inject
     lateinit var viewModelMap: MutableMap<Class<out ViewModel>, ViewModelAssistedFactory<out ViewModel>>
