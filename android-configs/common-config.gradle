@@ -4,7 +4,7 @@ rootProject.ext {
     compileSdk = 30
 
     minSdk = 21
-    targetSdk = 30
+    targetSdk = 31
 }
 
 android {
