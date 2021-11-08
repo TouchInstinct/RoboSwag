@@ -29,8 +29,6 @@ import android.util.Log;
  */
 public class ConsoleLogProcessor extends LogProcessor {
 
-    private static final int MAX_LOG_LENGTH = 4000;
-
     public ConsoleLogProcessor(@NonNull final LcLevel lclevel) {
         super(lclevel);
     }
@@ -46,18 +44,8 @@ public class ConsoleLogProcessor extends LogProcessor {
     public void processLogMessage(@NonNull final LcGroup group, @NonNull final LcLevel level,
                                   @NonNull final String tag, @NonNull final String message, @Nullable final Throwable throwable) {
         final String messageToLog = normalize(message + (throwable != null ? '\n' + Log.getStackTraceString(throwable) : ""));
-        final int length = messageToLog.length();
-        for (int i = 0; i < length; i++) {
-            int newline = messageToLog.indexOf('\n', i);
-            newline = newline != -1 ? newline : length;
-            do {
-                final int end = Math.min(newline, i + MAX_LOG_LENGTH);
-                Log.println(level.getPriority(), tag, messageToLog.substring(i, end));
-                i = end;
-            }
-            while (i < newline);
-        }
 
+        Log.println(level.getPriority(), tag, messageToLog);
     }
 
 }
