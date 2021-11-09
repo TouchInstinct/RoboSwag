@@ -22,6 +22,7 @@ package ru.touchin.templates.logansquare;
 import androidx.annotation.Nullable;
 
 import ru.touchin.roboswag.core.log.Lc;
+import ru.touchin.roboswag.core.log.LcGroup;
 import ru.touchin.templates.ApiModel;
 
 /**
@@ -38,7 +39,9 @@ public abstract class LoganSquareJsonModel extends ApiModel {
      */
     protected static void validateNotNull(@Nullable final Object object) throws ValidationException {
         if (object == null) {
-            throw new ValidationException("Not nullable object is null or missed at " + Lc.getCodePoint(null, 1));
+            ValidationException exception = new ValidationException("Not nullable object is null or missed at " + Lc.getCodePoint(null, 1));
+            LcGroup.API_VALIDATION.e(exception, "Invalid item");
+            throw exception;
         }
     }
 
