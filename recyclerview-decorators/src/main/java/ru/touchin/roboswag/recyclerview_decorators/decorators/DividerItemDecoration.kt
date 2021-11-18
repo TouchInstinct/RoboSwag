@@ -58,7 +58,7 @@ abstract class DividerItemDecoration(
                 divider.setBounds(
                         bounds.left + startMargin,
                         top,
-                        bounds.right - (endMargin.toFloat().px).toInt(),
+                        bounds.right - endMargin.toFloat().px.toInt(),
                         bottom
                 )
                 divider.draw(canvas)
