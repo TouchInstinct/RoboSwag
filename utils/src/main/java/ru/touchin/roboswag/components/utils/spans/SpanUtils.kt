@@ -10,6 +10,8 @@ import android.view.View
 import androidx.annotation.ColorInt
 import androidx.core.text.HtmlCompat
 import ru.touchin.extensions.indexesOf
+import ru.touchin.utils.ActionThrottler
+import ru.touchin.utils.ActionThrottler.DEFAULT_THROTTLE_DELAY_MS
 
 /**
  * Convert text with 'href' tags and raw links to spanned text with clickable URLSpan.
@@ -66,7 +68,9 @@ fun CharSequence.toClickableSubstringText(
             indexesOf(substring)?.let { (startSpan, endSpan) ->
                 setSpan(object : ClickableSpan() {
                     override fun onClick(widget: View) {
-                        clickAction.invoke()
+                        ActionThrottler.throttleAction(DEFAULT_THROTTLE_DELAY_MS) {
+                            clickAction.invoke()
+                        }
                     }
 
                     override fun updateDrawState(ds: TextPaint) {
