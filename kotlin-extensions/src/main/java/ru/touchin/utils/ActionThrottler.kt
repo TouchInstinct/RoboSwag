@@ -10,7 +10,7 @@ object ActionThrottler {
     private const val PREVENTION_OF_CLICK_AGAIN_COEFFICIENT = 2
     private const val DELAY_MS = PREVENTION_OF_CLICK_AGAIN_COEFFICIENT * RIPPLE_EFFECT_DELAY_MS
 
-    const val DEFAULT_THROTTLE_DELAY = 500L
+    const val DEFAULT_THROTTLE_DELAY_MS = 500L
     private var lastActionTime = 0L
 
     fun throttleAction(throttleDelay: Long = DELAY_MS, action: () -> Unit): Boolean {
