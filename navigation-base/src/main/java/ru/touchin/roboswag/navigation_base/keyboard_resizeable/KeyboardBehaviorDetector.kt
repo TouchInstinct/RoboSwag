@@ -2,10 +2,10 @@ package ru.touchin.roboswag.navigation_base.keyboard_resizeable
 
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
-import ru.touchin.roboswag.navigation_base.activities.BaseActivity
 
 /**
  *     This detector NOT detect landscape fullscreen keyboard
@@ -17,7 +17,7 @@ typealias OnHideListener = () -> Unit
 typealias OnShowListener = (Int) -> Unit
 
 class KeyboardBehaviorDetector(
-        activity: BaseActivity
+        activity: FragmentActivity
 ) : LifecycleObserver {
 
     private val view = activity.window.decorView
