@@ -18,6 +18,10 @@ import ru.touchin.roboswag.navigation_base.keyboard_resizeable.OnShowListener
  * Used to detect IME events (show, hide)
  */
 
+@Deprecated(
+        "You have to be inherited from this class to be able to implement keyboard detection",
+        replaceWith = ReplaceWith("fragment.addKeyboardListener")
+)
 abstract class MviKeyboardResizableFragment<NavArgs, State, Action, VM>(
         @LayoutRes layout: Int
 ) : MviFragment<NavArgs, State, Action, VM>(layout)
