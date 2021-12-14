@@ -9,6 +9,10 @@ import ru.touchin.roboswag.navigation_base.activities.BaseActivity
 import ru.touchin.roboswag.navigation_base.activities.OnBackPressedListener
 import ru.touchin.roboswag.navigation_base.fragments.BaseFragment
 
+@Deprecated(
+        "You have to be inherited from this class to be able to implement keyboard detection",
+        replaceWith = ReplaceWith("fragment.addKeyboardListener")
+)
 abstract class KeyboardResizeableFragment<TActivity : BaseActivity>(
         @LayoutRes layoutRes: Int
 ) : BaseFragment<TActivity>(

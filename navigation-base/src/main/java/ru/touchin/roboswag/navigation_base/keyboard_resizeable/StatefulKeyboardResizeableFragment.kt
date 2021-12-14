@@ -16,6 +16,10 @@ import ru.touchin.roboswag.navigation_base.fragments.StatefulFragment
  * Used to detect IME events (show, hide)
  */
 
+@Deprecated(
+        "You have to be inherited from this class to be able to implement keyboard detection",
+        replaceWith = ReplaceWith("fragment.addKeyboardListener")
+)
 abstract class StatefulKeyboardResizeableFragment<TActivity : BaseActivity, TState : Parcelable>(
         @LayoutRes layoutRes: Int
 ) : StatefulFragment<TActivity, TState>(
