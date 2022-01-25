@@ -5,6 +5,10 @@ import android.text.SpannableStringBuilder
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 
+/**
+ * A [android.widget.TextView] witch support text as SpannableString with ellipsize implementation
+ * @author Rinat Nurmukhametov
+ */
 open class EllipsizeSpannableTextView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,

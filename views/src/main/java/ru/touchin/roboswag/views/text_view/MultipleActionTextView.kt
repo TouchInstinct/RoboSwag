@@ -14,6 +14,10 @@ import ru.touchin.extensions.indexesOf
 import ru.touchin.roboswag.components.utils.movementmethods.ClickableMovementMethod
 import ru.touchin.roboswag.views.R
 
+/**
+ * A [android.widget.TextView] which support implementation of invoking actions on click of certain substrings
+ * @author Grigorii Leontev
+ */
 class MultipleActionTextView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
