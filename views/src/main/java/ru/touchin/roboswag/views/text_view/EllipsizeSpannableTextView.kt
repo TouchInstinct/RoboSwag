@@ -1,7 +1,6 @@
 package ru.touchin.roboswag.views.text_view
 
 import android.content.Context
-import android.text.Layout
 import android.text.SpannableStringBuilder
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView

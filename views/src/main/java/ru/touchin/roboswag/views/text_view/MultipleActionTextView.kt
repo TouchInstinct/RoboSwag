@@ -8,7 +8,6 @@ import android.text.style.ClickableSpan
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.withStyledAttributes
 import androidx.core.text.toSpannable
 import ru.touchin.extensions.indexesOf
@@ -19,7 +18,7 @@ class MultipleActionTextView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : AppCompatTextView(context, attrs, defStyleAttr) {
+) : EllipsizeSpannableTextView(context, attrs, defStyleAttr) {
 
     private val onClickActions = mutableListOf<SubstringClickAction>()
 
