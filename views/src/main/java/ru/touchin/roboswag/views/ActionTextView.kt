@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.withStyledAttributes
+import ru.touchin.extensions.getResourceIdOrNull
 import ru.touchin.roboswag.components.utils.movementmethods.ClickableMovementMethod
 import ru.touchin.roboswag.components.utils.spans.toClickableSubstringText
 
@@ -25,13 +26,13 @@ class ActionTextView @JvmOverloads constructor(
 
         context.withStyledAttributes(attrs, R.styleable.ActionTextView, defStyleAttr, 0) {
             val actionText = getString(R.styleable.ActionTextView_actionText).orEmpty()
-            val actionColor = getColor(R.styleable.ActionTextView_actionColor, currentTextColor)
+            val actionTextStyle = getResourceIdOrNull(R.styleable.ActionTextView_actionTextStyle)
             val isUnderlineText = getBoolean(R.styleable.ActionTextView_isUnderlineText, false)
 
             text = text.toClickableSubstringText(
                     substring = actionText,
                     clickAction = { onClickAction.invoke() },
-                    color = actionColor,
+                    styleId = actionTextStyle,
                     isUnderlineText = isUnderlineText
             )
         }

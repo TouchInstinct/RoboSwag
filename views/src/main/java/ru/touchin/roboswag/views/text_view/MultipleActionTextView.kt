@@ -5,11 +5,13 @@ import android.graphics.Color
 import android.text.Spanned
 import android.text.TextPaint
 import android.text.style.ClickableSpan
+import android.text.style.TextAppearanceSpan
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.core.content.withStyledAttributes
 import androidx.core.text.toSpannable
+import ru.touchin.extensions.getResourceIdOrNull
 import ru.touchin.extensions.indexesOf
 import ru.touchin.roboswag.components.utils.movementmethods.ClickableMovementMethod
 import ru.touchin.roboswag.views.R
@@ -27,7 +29,7 @@ class MultipleActionTextView @JvmOverloads constructor(
     private val onClickActions = mutableListOf<SubstringClickAction>()
 
     @ColorInt
-    private var actionColor = currentTextColor
+    private var textStyle: Int? = null
 
     private var isUnderlineText = false
 
@@ -38,7 +40,7 @@ class MultipleActionTextView @JvmOverloads constructor(
         movementMethod = ClickableMovementMethod
 
         context.withStyledAttributes(attrs, R.styleable.MultipleActionTextView, defStyleAttr, 0) {
-            actionColor = getColor(R.styleable.MultipleActionTextView_actionColor, currentTextColor)
+            textStyle = getResourceIdOrNull(R.styleable.MultipleActionTextView_actionTextStyle)
             isUnderlineText = getBoolean(R.styleable.MultipleActionTextView_isUnderlineText, false)
         }
     }
@@ -62,9 +64,10 @@ class MultipleActionTextView @JvmOverloads constructor(
                         override fun updateDrawState(ds: TextPaint) {
                             super.updateDrawState(ds)
                             ds.isUnderlineText = isUnderlineText
-                            ds.color = actionColor
                         }
                     }, startSpan, endSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+                    textStyle?.let { setSpan(TextAppearanceSpan(context, it), startSpan, endSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE) }
                 }
             }
         }
