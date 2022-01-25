@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 
 /**
- * A [android.widget.TextView] witch support text as SpannableString with ellipsize implementation
+ * A [android.widget.TextView] which support text as SpannableString with ellipsize implementation
  * @author Rinat Nurmukhametov
  */
 open class EllipsizeSpannableTextView @JvmOverloads constructor(
