@@ -61,17 +61,17 @@
 
     <!-- ActionTextView attributes -->
 
-    <attr name="actionColor" format="color"/>
+    <attr name="actionTextStyle" format="color"/>
     <attr name="isUnderlineText" format="boolean"/>
 
     <declare-styleable name="ActionTextView">
         <attr name="actionText" format="string"/>
-        <attr name="actionColor"/>
+        <attr name="actionTextStyle"/>
         <attr name="isUnderlineText"/>
     </declare-styleable>
 
     <declare-styleable name="MultipleActionTextView">
-        <attr name="actionColor"/>
+        <attr name="actionTextStyle"/>
         <attr name="isUnderlineText"/>
     </declare-styleable>
 
