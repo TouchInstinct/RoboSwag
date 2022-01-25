@@ -6,7 +6,7 @@ import android.text.SpannableStringBuilder
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 
-class EllipsizeSpannableTextView @JvmOverloads constructor(
+open class EllipsizeSpannableTextView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
@@ -20,8 +20,6 @@ class EllipsizeSpannableTextView @JvmOverloads constructor(
     private var spannableStringBuilder = SpannableStringBuilder()
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
-        val layout: Layout = layout
-
         if (layout.lineCount >= maxLines) {
             val charSequence = text
             val lastCharDown: Int = layout.getLineVisibleEnd(maxLines - 1)
