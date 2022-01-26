@@ -14,34 +14,31 @@ class StyleableSubTextView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-): EllipsizeSpannableTextView(context, attrs, defStyleAttr) {
+) : EllipsizeSpannableTextView(context, attrs, defStyleAttr) {
 
     private var styleId = typeface.style
+
     var substring: String? = null
         set(value) {
             field = value
 
-            value?.let(this::setSubstringText)
+            text = text // call setText after setting substring to reset substring
         }
 
     init {
         context.withStyledAttributes(attrs, R.styleable.StyleableSubTextView, defStyleAttr, 0) {
-            val substring = getString(R.styleable.StyleableSubTextView_subtext)
             getResourceIdOrNull(R.styleable.StyleableSubTextView_subtextStyle)?.let { styleId = it }
-
-            substring?.let(this@StyleableSubTextView::setSubstringText)
+            substring = getString(R.styleable.StyleableSubTextView_subtext)
         }
     }
 
     override fun setText(text: CharSequence?, type: BufferType?) {
-        substring
-                ?.let { super.setText(text?.toStyleableSubstringText(it, styleId, context), type) }
-                ?:super.setText(text, type)
+        val spannableText = when (substring == null) {
+            true -> text
+            false -> text?.toStyleableSubstringText(substring.orEmpty(), styleId, context)
+        }
 
-    }
-
-    private fun setSubstringText(substring: String) {
-        text = text.toStyleableSubstringText(substring, styleId, context)
+        super.setText(spannableText, type)
     }
 
 }
