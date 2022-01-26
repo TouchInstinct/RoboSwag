@@ -76,7 +76,6 @@ fun CharSequence.toClickableSubstringText(
             }
 
             override fun updateDrawState(ds: TextPaint) {
-                super.updateDrawState(ds)
                 ds.isUnderlineText = isUnderlineText
             }
         }
@@ -92,7 +91,9 @@ fun CharSequence.toStyleableSubstringText(
 private fun CharSequence.toSubstringSpannable(
         substring: String,
         span: Any?
-) = SpannableString(this)
+) = toSpannable()
         .apply {
             indexesOf(substring)?.let { (startSpan, endSpan) -> setSpan(span, startSpan, endSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE) }
         }
+
+private fun CharSequence.toSpannable() = if (this is SpannableString) this else SpannableString(this)
