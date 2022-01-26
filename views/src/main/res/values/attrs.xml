@@ -50,14 +50,29 @@
         <attr name="stubText" format="string" />
     </declare-styleable>
 
-    <declare-styleable name="ActionTextView">
-        <attr name="actionText" format="string"/>
-        <attr name="actionColor" format="color"/>
-        <attr name="isUnderlineText" format="boolean"/>
-    </declare-styleable>
-
     <declare-styleable name="CrossfadeView">
         <attr name="crossfadeDefaultChild" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="StyleableSubTextView">
+        <attr name="subtext" format="string"/>
+        <attr name="subtextStyle" format="reference"/>
+    </declare-styleable>
+
+    <!-- ActionTextView attributes -->
+
+    <attr name="actionTextStyle" format="color"/>
+    <attr name="isUnderlineText" format="boolean"/>
+
+    <declare-styleable name="ActionTextView">
+        <attr name="actionText" format="string"/>
+        <attr name="actionTextStyle"/>
+        <attr name="isUnderlineText"/>
+    </declare-styleable>
+
+    <declare-styleable name="MultipleActionTextView">
+        <attr name="actionTextStyle"/>
+        <attr name="isUnderlineText"/>
     </declare-styleable>
 
 </resources>

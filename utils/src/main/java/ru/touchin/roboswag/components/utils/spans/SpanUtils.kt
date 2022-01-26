@@ -1,13 +1,15 @@
 package ru.touchin.roboswag.components.utils.spans
 
+import android.content.Context
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextPaint
 import android.text.style.ClickableSpan
+import android.text.style.TextAppearanceSpan
 import android.text.style.URLSpan
 import android.text.util.Linkify
 import android.view.View
-import androidx.annotation.ColorInt
+import androidx.annotation.StyleRes
 import androidx.core.text.HtmlCompat
 import ru.touchin.extensions.indexesOf
 import ru.touchin.utils.ActionThrottler
@@ -61,23 +63,36 @@ private data class UrlSpanWithBorders(val span: URLSpan, val start: Int, val end
 fun CharSequence.toClickableSubstringText(
         substring: String,
         clickAction: () -> Unit,
-        @ColorInt color: Int? = null,
-        isUnderlineText: Boolean = false
+        isUnderlineText: Boolean = false,
+        @StyleRes styleId: Int? = null,
+        context: Context? = null
+) = toSubstringSpannable(
+        substring = substring,
+        span = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                ActionThrottler.throttleAction(DEFAULT_THROTTLE_DELAY_MS) {
+                    clickAction.invoke()
+                }
+            }
+
+            override fun updateDrawState(ds: TextPaint) {
+                super.updateDrawState(ds)
+                ds.isUnderlineText = isUnderlineText
+            }
+        }
+)
+        .apply { if (styleId != null && context != null) toStyleableSubstringText(substring, styleId, context) }
+
+fun CharSequence.toStyleableSubstringText(
+        substring: String,
+        @StyleRes styleId: Int,
+        context: Context
+) = toSubstringSpannable(substring = substring, span = TextAppearanceSpan(context, styleId))
+
+private fun CharSequence.toSubstringSpannable(
+        substring: String,
+        span: Any?
 ) = SpannableString(this)
         .apply {
-            indexesOf(substring)?.let { (startSpan, endSpan) ->
-                setSpan(object : ClickableSpan() {
-                    override fun onClick(widget: View) {
-                        ActionThrottler.throttleAction(DEFAULT_THROTTLE_DELAY_MS) {
-                            clickAction.invoke()
-                        }
-                    }
-
-                    override fun updateDrawState(ds: TextPaint) {
-                        super.updateDrawState(ds)
-                        ds.isUnderlineText = isUnderlineText
-                        if (color != null) ds.color = color
-                    }
-                }, startSpan, endSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            }
+            indexesOf(substring)?.let { (startSpan, endSpan) -> setSpan(span, startSpan, endSpan, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE) }
         }
