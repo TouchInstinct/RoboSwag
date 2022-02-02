@@ -10,13 +10,13 @@ import ru.touchin.roboswag.views.R
 /**
  * A [android.widget.TextView] which support styling substrings of text
  */
-class StyleableSubTextView @JvmOverloads constructor(
+open class StyleableSubTextView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
 ) : EllipsizeSpannableTextView(context, attrs, defStyleAttr) {
 
-    private var styleId = typeface.style
+    protected var substringStyleId = typeface.style
 
     var substring: String? = null
         set(value) {
@@ -27,7 +27,7 @@ class StyleableSubTextView @JvmOverloads constructor(
 
     init {
         context.withStyledAttributes(attrs, R.styleable.StyleableSubTextView, defStyleAttr, 0) {
-            getResourceIdOrNull(R.styleable.StyleableSubTextView_subtextStyle)?.let { styleId = it }
+            getResourceIdOrNull(R.styleable.StyleableSubTextView_subtextStyle)?.let { substringStyleId = it }
             substring = getString(R.styleable.StyleableSubTextView_subtext)
         }
     }
@@ -35,7 +35,7 @@ class StyleableSubTextView @JvmOverloads constructor(
     override fun setText(text: CharSequence?, type: BufferType?) {
         val spannableText = when (substring == null) {
             true -> text
-            false -> text?.toStyleableSubstringText(substring.orEmpty(), styleId, context)
+            false -> text?.toStyleableSubstringText(substring.orEmpty(), substringStyleId, context)
         }
 
         super.setText(spannableText, type)
