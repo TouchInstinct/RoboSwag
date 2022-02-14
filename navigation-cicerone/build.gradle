@@ -11,7 +11,7 @@ dependencies {
 
     implementation("com.github.valeryponomarenko.componentsmanager:androidx:2.1.0")
 
-    def daggerVersion = "2.27"
+    def daggerVersion = "2.34"
 
     constraints {
         implementation("ru.terrakok.cicerone:cicerone") {
