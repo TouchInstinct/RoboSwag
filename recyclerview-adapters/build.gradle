@@ -7,6 +7,8 @@ dependencies {
 
     implementation "androidx.core:core-ktx"
 
+    implementation "androidx.paging:paging-runtime"
+
     constraints {
         implementation("androidx.recyclerview:recyclerview") {
             version {
@@ -16,6 +18,11 @@ dependencies {
         implementation("androidx.core:core-ktx") {
             version {
                 require '1.0.0'
+            }
+        }
+        implementation("androidx.paging:paging-runtime") {
+            version {
+                require '3.0.0-alpha06'
             }
         }
     }
