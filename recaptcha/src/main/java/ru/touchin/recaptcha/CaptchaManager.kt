@@ -2,6 +2,11 @@ package ru.touchin.recaptcha
 
 import android.app.Activity
 
+/**
+ * onNewTokenReceived - callback на успешную проверку каптчи
+ * processThrowable - callback на ошибку проверки каптчи
+ */
+
 class CaptchaManager(
         onNewTokenReceived: (String) -> Unit,
         private val processThrowable: (Throwable) -> Unit
