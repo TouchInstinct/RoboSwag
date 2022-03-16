@@ -1,11 +1,10 @@
-package ru.touchin.recaptcha
+package ru.touchin.client_services
 
 import android.content.Context
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.huawei.hms.api.HuaweiApiAvailability
 
-//TODO: in the future move to a module with services
 class ServicesUtils {
 
     fun getCurrentService(context: Context): MobileService = when {
@@ -22,8 +21,4 @@ class ServicesUtils {
             GoogleApiAvailability.getInstance()
                     .isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS
 
-}
-
-enum class MobileService {
-    HUAWEI_SERVICE, GOOGLE_SERVICE
 }
