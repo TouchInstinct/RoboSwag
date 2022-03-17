@@ -1,0 +1,44 @@
+apply from: "../android-configs/lib-config.gradle"
+apply plugin: 'com.huawei.agconnect'
+
+dependencies {
+    implementation project(':client-services')
+
+    implementation "androidx.core:core"
+    implementation "androidx.annotation:annotation"
+    implementation "com.google.android.gms:play-services-safetynet"
+    implementation "com.google.android.gms:play-services-base"
+    implementation "com.huawei.hms:safetydetect"
+
+    constraints {
+        implementation("androidx.core:core") {
+            version {
+                require '1.0.0'
+            }
+        }
+
+        implementation("androidx.annotation:annotation") {
+            version {
+                require '1.1.0'
+            }
+        }
+
+        implementation("com.google.android.gms:play-services-safetynet") {
+            version {
+                require '18.0.1'
+            }
+        }
+
+        implementation("com.google.android.gms:play-services-base") {
+            version {
+                require '18.0.1'
+            }
+        }
+
+        implementation("com.huawei.hms:safetydetect") {
+            version {
+                require '4.0.3.300'
+            }
+        }
+    }
+}
