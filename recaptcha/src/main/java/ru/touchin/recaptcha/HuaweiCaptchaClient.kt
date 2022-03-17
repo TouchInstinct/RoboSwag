@@ -10,6 +10,7 @@ class HuaweiCaptchaClient(
 
     override fun showCaptcha(activity: Activity, captchaKey: String) {
         val huaweiSafetyDetectClient = SafetyDetect.getClient(activity)
+
         huaweiSafetyDetectClient.initUserDetect()
                 .addOnSuccessListener {
                     huaweiSafetyDetectClient.userDetection(captchaKey)

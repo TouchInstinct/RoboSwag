@@ -5,7 +5,7 @@ dependencies {
     implementation "androidx.core:core"
     implementation "androidx.annotation:annotation"
     implementation "com.google.android.gms:play-services-base"
-    implementation "com.huawei.hms:safetydetect"
+    implementation "com.huawei.hms:base"
 
     constraints {
         implementation("androidx.core:core") {
@@ -26,9 +26,9 @@ dependencies {
             }
         }
 
-        implementation("com.huawei.hms:safetydetect") {
+        implementation("com.huawei.hms:base") {
             version {
-                require '4.0.3.300'
+                require '6.3.0.303'
             }
         }
     }
