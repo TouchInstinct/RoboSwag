@@ -6,7 +6,7 @@ import com.google.android.gms.common.GoogleApiAvailability
 import com.huawei.hms.api.HuaweiApiAvailability
 
 /**
- * A class with utils for interacting with Google, Huawei, etc. services
+ * A class with utils for interacting with Google, Huawei services
  */
 
 class ServicesUtils {
