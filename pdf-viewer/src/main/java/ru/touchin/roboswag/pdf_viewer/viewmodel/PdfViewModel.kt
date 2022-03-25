@@ -13,12 +13,4 @@ class PdfViewModel(private val repository: PdfViewRepository) : BaseViewModel() 
         }
     }
 
-    fun downloadPdfFile(fileUri: String) {
-        mStateLiveData.postValue(PdfReaderViewState.Loading(true))
-        runAsync {
-            val file = repository.getPdfFromStorage(fileUri)
-            mStateLiveData.postValue(PdfReaderViewState.ReadingSuccess(file))
-        }
-    }
-
 }

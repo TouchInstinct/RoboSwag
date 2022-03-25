@@ -15,7 +15,6 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
 
     protected open fun renderData(state: PdfReaderViewState) {
         when (state) {
-            is PdfReaderViewState.ReadingSuccess -> downloadSuccess(state.data)
             is PdfReaderViewState.RenderingSuccess -> renderSuccess(state.data)
             is PdfReaderViewState.Error -> renderError(state.error)
             is PdfReaderViewState.Loading -> setLoading(true)
@@ -29,10 +28,6 @@ abstract class BaseFragment<VM : BaseViewModel> : Fragment() {
             renderData(state)
         }
 
-    }
-
-    protected open fun downloadSuccess(file: File) {
-        setLoading(false)
     }
 
     protected open fun renderSuccess(bitmap: Bitmap) {
