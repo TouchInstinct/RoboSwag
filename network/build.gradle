@@ -1,0 +1,22 @@
+apply from: "../android-configs/lib-config.gradle"
+
+dependencies {
+    def okhttpVersion = "3.14.1"
+    def retrofitVersion = "2.8.1"
+
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.retrofit2:retrofit")
+
+    constraints {
+        implementation("com.squareup.okhttp3:okhttp") {
+            version {
+                require(okhttpVersion)
+            }
+        }
+        implementation("com.squareup.retrofit2:retrofit") {
+            version {
+                require(retrofitVersion)
+            }
+        }
+    }
+}
