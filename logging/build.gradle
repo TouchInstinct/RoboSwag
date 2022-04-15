@@ -14,7 +14,7 @@ dependencies {
 
         implementation("com.google.firebase:firebase-crashlytics") {
             version {
-                require '17.1.0'
+                require '18.2.1'
             }
         }
     }
