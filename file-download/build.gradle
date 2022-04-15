@@ -1,0 +1,38 @@
+apply from: "../android-configs/lib-config.gradle"
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.7.0'
+
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android")
+
+    def coroutinesVersion = "1.3.7"
+
+    constraints {
+        implementation("androidx.core:core-ktx") {
+            version {
+                require("1.2.0")
+            }
+        }
+        implementation("androidx.appcompat:appcompat") {
+            version {
+                require("1.0.2")
+            }
+        }
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core") {
+            version {
+                require(coroutinesVersion)
+            }
+        }
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android") {
+            version {
+                require(coroutinesVersion)
+            }
+        }
+    }
+
+}
