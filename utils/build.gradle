@@ -5,6 +5,8 @@ dependencies {
     implementation "androidx.core:core"
     implementation "androidx.annotation:annotation"
     implementation "com.google.android.material:material"
+    implementation "net.danlew:android.joda"
+    implementation "junit:junit"
 
     constraints {
         implementation("androidx.core:core") {
@@ -22,6 +24,18 @@ dependencies {
         implementation("com.google.android.material:material") {
             version {
                 require '1.2.0-rc01'
+            }
+        }
+
+        implementation("net.danlew:android.joda") {
+            version {
+                require '2.10.2'
+            }
+        }
+
+        implementation("junit:junit") {
+            version {
+                require '4.13.2'
             }
         }
     }
