@@ -1,0 +1,35 @@
+apply from: "../android-configs/lib-config.gradle"
+apply plugin: 'com.huawei.agconnect'
+
+dependencies {
+    implementation "androidx.core:core"
+    implementation "androidx.annotation:annotation"
+    implementation "com.google.android.gms:play-services-base"
+    implementation "com.huawei.hms:base"
+
+    constraints {
+        implementation("androidx.core:core") {
+            version {
+                require '1.0.0'
+            }
+        }
+
+        implementation("androidx.annotation:annotation") {
+            version {
+                require '1.1.0'
+            }
+        }
+
+        implementation("com.google.android.gms:play-services-base") {
+            version {
+                require '18.0.1'
+            }
+        }
+
+        implementation("com.huawei.hms:base") {
+            version {
+                require '6.3.0.303'
+            }
+        }
+    }
+}

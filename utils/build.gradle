@@ -1,27 +1,54 @@
 apply from: "../android-configs/lib-config.gradle"
 
 dependencies {
+    def coreVersion = '1.0.0'
+    def annotationVersion = '1.1.0'
+    def materialVersion = '1.2.0-rc01'
+    def jodaVersion = '2.10.2'
+    def junitVersion = '4.13.2'
+
     implementation project(':kotlin-extensions')
     implementation "androidx.core:core"
     implementation "androidx.annotation:annotation"
     implementation "com.google.android.material:material"
+    implementation "net.danlew:android.joda"
+    implementation "junit:junit"
+    testImplementation "joda-time:joda-time"
 
     constraints {
         implementation("androidx.core:core") {
             version {
-                require '1.0.0'
+                require(coreVersion)
             }
         }
 
         implementation("androidx.annotation:annotation") {
             version {
-                require '1.1.0'
+                require(annotationVersion)
             }
         }
 
         implementation("com.google.android.material:material") {
             version {
-                require '1.2.0-rc01'
+                require(materialVersion)
+            }
+        }
+
+        implementation("net.danlew:android.joda") {
+            version {
+                require(jodaVersion)
+            }
+        }
+
+        testImplementation("joda-time:joda-time") {
+            version {
+                require(jodaVersion)
+            }
+        }
+
+        implementation("junit:junit") {
+            version {
+                require(junitVersion)
             }
         }
     }

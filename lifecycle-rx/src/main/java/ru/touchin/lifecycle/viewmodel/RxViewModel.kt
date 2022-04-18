@@ -8,7 +8,7 @@ import androidx.annotation.CallSuper
  */
 open class RxViewModel(
         private val destroyable: BaseDestroyable = BaseDestroyable(),
-        private val liveDataDispatcher: BaseLiveDataDispatcher = BaseLiveDataDispatcher(destroyable)
+        private val liveDataDispatcher: LiveDataDispatcher = BaseLiveDataDispatcher(destroyable)
 ) : ViewModel(), Destroyable by destroyable, LiveDataDispatcher by liveDataDispatcher {
 
     @CallSuper
