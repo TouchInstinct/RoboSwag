@@ -1,15 +1,9 @@
 import org.joda.time.DateTime
-import org.joda.time.DateTimeZone
-import org.joda.time.tz.UTCProvider
 import org.junit.Assert
 import org.junit.Test
 import ru.touchin.roboswag.core.utils.DateFormatUtils
 
 class DateFormatUtilsTest {
-
-    init {
-        DateTimeZone.setProvider(UTCProvider())
-    }
 
     @Test
     fun `Assert Date format parsing`() {
