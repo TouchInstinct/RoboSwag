@@ -1,7 +1,5 @@
 package ru.touchin.network.blocking
 
-import okhttp3.Request
-import okio.Timeout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -9,12 +7,7 @@ import ru.touchin.network.utils.getAnnotation
 
 class BlockingCall(
         private val callDelegate: Call<Any>
-) : Call<Any> {
-    override fun clone(): Call<Any> = callDelegate.clone()
-
-    override fun execute(): Response<Any> {
-        return callDelegate.execute()
-    }
+) : Call<Any> by callDelegate {
 
     override fun enqueue(callback: Callback<Any>) {
         if (PendingRequestsManager.isPending.get()) {
@@ -39,16 +32,6 @@ class BlockingCall(
             }
         })
     }
-
-    override fun isExecuted(): Boolean = callDelegate.isExecuted
-
-    override fun cancel() = callDelegate.cancel()
-
-    override fun isCanceled(): Boolean = callDelegate.isCanceled
-
-    override fun request(): Request = callDelegate.request()
-
-    override fun timeout(): Timeout = callDelegate.timeout()
 
     private fun Call<Any>.isBlocking() = request().getAnnotation(BlockingRequest::class.java) != null
 }
