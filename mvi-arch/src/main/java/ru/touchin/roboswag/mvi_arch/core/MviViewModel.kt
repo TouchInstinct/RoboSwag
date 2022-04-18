@@ -9,8 +9,10 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.touchin.mvi_arch.BuildConfig
 import ru.touchin.roboswag.mvi_arch.marker.ViewAction
 import ru.touchin.roboswag.mvi_arch.marker.ViewState
+import ru.touchin.roboswag.mvi_arch.mediator.LoggingMediator
 import ru.touchin.roboswag.mvi_arch.mediator.MediatorStore
 
 /**
@@ -40,9 +42,7 @@ abstract class MviViewModel<NavArgs : Parcelable, Action : ViewAction, State : V
 
     private val mediatorStore = MediatorStore(
             listOfNotNull(
-//                    Min api 24
-//                    https://github.com/TouchInstinct/RoboSwag/issues/180
-//                    LoggingMediator(this::class.simpleName!!).takeIf { BuildConfig.DEBUG }
+                    LoggingMediator(this::class.simpleName).takeIf { BuildConfig.DEBUG }
             )
     )
 

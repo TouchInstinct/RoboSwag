@@ -1,13 +1,12 @@
 package ru.touchin.roboswag.mvi_arch.mediator
 
-import com.tylerthrailkill.helpers.prettyprint.pp
 import ru.touchin.roboswag.core.log.Lc
 import ru.touchin.roboswag.mvi_arch.marker.SideEffect
 import ru.touchin.roboswag.mvi_arch.marker.StateChange
 import ru.touchin.roboswag.mvi_arch.marker.ViewAction
 import ru.touchin.roboswag.mvi_arch.marker.ViewState
 
-class LoggingMediator(private val objectName: String) : Mediator {
+class LoggingMediator(private val objectName: String?) : Mediator {
     override fun onEffect(effect: SideEffect) {
         logObject(
                 prefix = "New Effect:\n",
@@ -40,10 +39,6 @@ class LoggingMediator(private val objectName: String) : Mediator {
             prefix: String,
             obj: T
     ) {
-        val builder = StringBuilder()
-        pp(obj = obj, writeTo = builder)
-
-        val prettyOutput = builder.toString()
-        Lc.d("$objectName: $prefix$prettyOutput\n")
+        Lc.d("$objectName: $prefix$obj\n")
     }
 }
