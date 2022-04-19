@@ -8,11 +8,14 @@ import kotlin.concurrent.withLock
 
 object PendingRequestsManager {
 
-    val isPending = AtomicBoolean(false)
-
     private val pendingRequestsLock = ReentrantLock()
 
     private val pendingRequests = mutableListOf<Pair<Call<Any>, Callback<Any>>>()
+
+    private val internalAtomicPending = AtomicBoolean(false)
+    var isPending: Boolean
+        get() = internalAtomicPending.get()
+        set(value) { internalAtomicPending.set(value) }
 
     fun getPendingRequestsCount() = pendingRequests.count()
 
@@ -32,8 +35,6 @@ object PendingRequestsManager {
 
     private fun applyActionToPendingRequests(action: Pair<Call<Any>, Callback<Any>>.() -> Unit) {
         pendingRequestsLock.withLock {
-            isPending.set(false)
-
             pendingRequests.forEach { it.action() }
 
             pendingRequests.clear()

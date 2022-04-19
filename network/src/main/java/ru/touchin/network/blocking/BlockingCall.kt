@@ -10,23 +10,25 @@ class BlockingCall(
 ) : Call<Any> by callDelegate {
 
     override fun enqueue(callback: Callback<Any>) {
-        if (PendingRequestsManager.isPending.get()) {
+        if (PendingRequestsManager.isPending) {
             PendingRequestsManager.addPendingRequest(callDelegate, callback)
             return
         }
 
         val isBlocking = callDelegate.isBlocking()
-        if (isBlocking) PendingRequestsManager.isPending.set(true)
+        if (isBlocking) PendingRequestsManager.isPending = true
 
         callDelegate.enqueue(object: Callback<Any> {
             override fun onResponse(call: Call<Any>, response: Response<Any>) {
                 callback.onResponse(call, response)
+                PendingRequestsManager.isPending = false
 
                 if (isBlocking) PendingRequestsManager.executePendingRequests()
             }
 
             override fun onFailure(call: Call<Any>, t: Throwable) {
                 callback.onFailure(call, t)
+                PendingRequestsManager.isPending = false
 
                 if (isBlocking) PendingRequestsManager.dropPendingRequests()
             }
