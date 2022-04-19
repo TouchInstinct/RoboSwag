@@ -1,5 +1,5 @@
 import org.joda.time.DateTime
-import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import ru.touchin.roboswag.core.utils.DateFormatUtils
 
@@ -11,7 +11,7 @@ class DateFormatUtilsTest {
                 value = "2015-04-29",
                 format = DateFormatUtils.Format.DATE_FORMAT
         )
-        Assert.assertEquals(DateTime(2015, 4, 29, 0, 0, 0), dateTime)
+        assertEquals(DateTime(2015, 4, 29, 0, 0, 0), dateTime)
     }
 
     @Test
@@ -23,6 +23,6 @@ class DateFormatUtilsTest {
                 format = DateFormatUtils.Format.DATE_TIME_FORMAT,
                 defaultValue = currentDateTime
         )
-        Assert.assertEquals(currentDateTime, dateTime)
+        assertEquals(currentDateTime, dateTime)
     }
 }
