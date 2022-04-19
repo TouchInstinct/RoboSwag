@@ -5,6 +5,10 @@ import retrofit2.Callback
 import retrofit2.Response
 import ru.touchin.network.utils.getAnnotation
 
+/**
+ * Custom [Call] implementation for handling blocking and pending requests.
+ * @param callDelegate is delegate of default Call implementation
+ */
 class BlockingCall(
         private val callDelegate: Call<Any>
 ) : Call<Any> by callDelegate {

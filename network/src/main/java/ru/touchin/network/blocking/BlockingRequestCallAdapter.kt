@@ -7,6 +7,10 @@ import java.lang.IllegalStateException
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
+/**
+ * CallAdapter for Retrofit instance used for handling [BlockingRequest] methods
+ * Returns [BlockingCall] as a custom adaptation of [Call]
+ */
 class BlockingRequestCallAdapter private constructor(
         private val responseType: Type
 ) : CallAdapter<Any, Any> {
