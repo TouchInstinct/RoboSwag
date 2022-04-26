@@ -9,7 +9,8 @@ dependencies {
 
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.retrofit2:retrofit")
-    implementation("junit:junit")
+
+    testImplementation("junit:junit")
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
 
@@ -32,7 +33,7 @@ dependencies {
             }
         }
 
-        implementation("org.mockito:mockito-core") {
+        testImplementation("org.mockito:mockito-core") {
             version {
                 require(mockitoVersion)
             }

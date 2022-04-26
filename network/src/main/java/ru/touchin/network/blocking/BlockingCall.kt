@@ -14,31 +14,38 @@ class BlockingCall(
 ) : Call<Any> by callDelegate {
 
     override fun enqueue(callback: Callback<Any>) {
+        val isBlocking = callDelegate.blocking() != null
+
         if (PendingRequestsManager.isPending) {
-            PendingRequestsManager.addPendingRequest(callDelegate, callback)
+            PendingRequestsManager.addPendingRequest(
+                    call = this,
+                    callback = callback,
+                    isBlocking = isBlocking
+            )
             return
         }
-
-        val (isBlocking, cancelOnFail) = callDelegate.blocking()
-                .let { (it != null) to (it?.cancelRequestsOnFail == true) }
 
         if (isBlocking) PendingRequestsManager.isPending = true
 
         callDelegate.enqueue(object: Callback<Any> {
             override fun onResponse(call: Call<Any>, response: Response<Any>) {
-                PendingRequestsManager.isPending = false
                 callback.onResponse(call, response)
 
-                if (isBlocking) PendingRequestsManager.executePendingRequests()
+                if (call.blocking() != null) {
+                    PendingRequestsManager.isPending = false
+                    PendingRequestsManager.executePendingRequests()
+                }
             }
 
             override fun onFailure(call: Call<Any>, t: Throwable) {
                 PendingRequestsManager.isPending = false
                 callback.onFailure(call, t)
 
+                val (isBlockingInternal, cancelOnFail) = callDelegate.blocking()
+                        .let { (it != null) to (it?.cancelRequestsOnFail == true) }
                 when {
-                    isBlocking && cancelOnFail -> PendingRequestsManager.dropPendingRequests()
-                    isBlocking -> PendingRequestsManager.executePendingRequests()
+                    isBlockingInternal && cancelOnFail -> PendingRequestsManager.dropPendingRequests()
+                    isBlockingInternal -> PendingRequestsManager.executePendingRequests()
                 }
             }
         })

@@ -16,7 +16,7 @@ object PendingRequestsManager {
     //Using ReentrantLock to avoid concurrency pitfalls when interacting with pendingRequests
     private val pendingRequestsLock = ReentrantLock()
 
-    private val pendingRequests = mutableListOf<Pair<Call<Any>, Callback<Any>>>()
+    private val pendingRequests = mutableListOf<PendingRequestData>()
 
     private val internalAtomicPending = AtomicBoolean(false)
 
@@ -38,9 +38,9 @@ object PendingRequestsManager {
      * @param call is retrofit method
      * @param callback used to provide actions when requests finished with success or error
      */
-    fun addPendingRequest(call: Call<Any>, callback: Callback<Any>) {
+    fun addPendingRequest(call: Call<Any>, callback: Callback<Any>, isBlocking: Boolean) {
         pendingRequestsLock.withLock {
-            pendingRequests.add(call to callback)
+            pendingRequests.add(PendingRequestData(call, callback, isBlocking))
         }
     }
 
@@ -48,22 +48,40 @@ object PendingRequestsManager {
      * Used to execute and clear all stocked requests
      */
     fun executePendingRequests() {
-        applyActionToPendingRequests { first.enqueue(second) }
+        applyActionToPendingRequests { call.enqueue(callback) }
     }
 
     /**
      * Used to cancel and clear all stocked requests
      */
     fun dropPendingRequests() {
-        applyActionToPendingRequests { first.cancel() }
+        applyActionToPendingRequests { call.cancel() }
     }
 
-    private fun applyActionToPendingRequests(action: Pair<Call<Any>, Callback<Any>>.() -> Unit) {
+    private fun applyActionToPendingRequests(action: PendingRequestData.() -> Unit) {
         pendingRequestsLock.withLock {
-            pendingRequests.forEach { it.action() }
+            with (pendingRequests.iterator()) {
+                while (hasNext()) {
+                    val requestData = next()
+                    remove()
 
-            pendingRequests.clear()
+                    requestData.action()
+                    if (requestData.isBlocking) break
+                }
+            }
         }
     }
+
+    /**
+     * Contains data of stocked requests
+     * @param call is retrofit request we want to stock
+     * @param callback used to call methods onResponse and onFailure of method
+     * @param isBlocking shows if request we add to stock is blocking and all following requests must be pended
+     */
+    internal class PendingRequestData(
+            val call: Call<Any>,
+            val callback: Callback<Any>,
+            val isBlocking: Boolean = false
+    )
 
 }
