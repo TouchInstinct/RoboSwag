@@ -1,5 +1,6 @@
 package ru.touchin.roboswag.mvi_arch.core
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Parcelable
 import android.view.ViewGroup
@@ -26,6 +27,7 @@ abstract class FullscreenBottomSheetDialog<NavArgs, State, Action, VM>(
         bottomSheet?.layoutParams?.height = ViewGroup.LayoutParams.MATCH_PARENT
     }
 
+    @SuppressLint("RestrictedApi")
     override fun setupDialog(dialog: Dialog, style: Int) {
         dialog.setResizableListener()
     }
