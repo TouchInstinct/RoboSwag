@@ -53,6 +53,12 @@ class KeyboardBehaviorDetector(
 
             if (startNavigationBarHeight == -1) startNavigationBarHeight = bottomInset
 
+            if (startNavigationBarHeight > bottomInset) {
+                // update height if it was initialized incorrectly
+                startNavigationBarHeight = bottomInset
+                listener.invoke(false, windowInsets)
+            }
+
             ViewCompat.onApplyWindowInsets(view, windowInsets)
         }
         ViewCompat.requestApplyInsets(view)
