@@ -13,6 +13,9 @@ dependencies {
 
     implementation "androidx.appcompat:appcompat"
 
+    implementation "androidx.lifecycle:lifecycle-common-java8"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx"
+
     implementation("com.crashlytics.sdk.android:crashlytics")
 
     constraints {
@@ -37,6 +40,18 @@ dependencies {
         implementation("com.crashlytics.sdk.android:crashlytics") {
             version {
                 require '2.10.0'
+            }
+        }
+
+        implementation("androidx.lifecycle:lifecycle-common-java8") {
+            version {
+                require '2.2.0'
+            }
+        }
+
+        implementation("androidx.lifecycle:lifecycle-livedata-ktx") {
+            version {
+                require '2.2.0'
             }
         }
     }
