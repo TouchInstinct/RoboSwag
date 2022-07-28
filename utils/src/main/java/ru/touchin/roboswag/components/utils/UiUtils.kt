@@ -32,6 +32,7 @@ import android.view.View
 import android.view.ViewConfiguration
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.annotation.RequiresApi
 import ru.touchin.roboswag.components.utils.spans.getSpannedTextWithUrls
 
 /**
@@ -158,22 +159,35 @@ object UiUtils {
          * @return True if software keyboard is showing at navigation bar.
          */
         //http://stackoverflow.com/questions/14853039/how-to-tell-whether-an-android-device-has-hard-keys/14871974#14871974
-        fun hasSoftKeys(activity: Activity): Boolean {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                val display = activity.windowManager.defaultDisplay
-
-                val realDisplayMetrics = DisplayMetrics().also(display::getRealMetrics)
-
-                val displayMetrics = DisplayMetrics().also(display::getMetrics)
-
-
-                return realDisplayMetrics.widthPixels - displayMetrics.widthPixels > 0
-                        || realDisplayMetrics.heightPixels - displayMetrics.heightPixels > 0
+        fun hasSoftKeys(activity: Activity): Boolean = when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> hasSoftKeysM(activity)
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1 -> hasSoftKeysJellyBean(activity)
+            else -> {
+                val hasMenuKey = ViewConfiguration.get(activity).hasPermanentMenuKey()
+                val hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK)
+                !hasMenuKey && !hasBackKey
             }
+        }
 
-            val hasMenuKey = ViewConfiguration.get(activity).hasPermanentMenuKey()
-            val hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK)
-            return !hasMenuKey && !hasBackKey
+        private fun hasSoftKeysJellyBean(activity: Activity): Boolean {
+            val display = activity.windowManager.defaultDisplay
+            val realDisplayMetrics = DisplayMetrics().also(display::getRealMetrics)
+            val displayMetrics = DisplayMetrics().also(display::getMetrics)
+
+            return realDisplayMetrics.widthPixels - displayMetrics.widthPixels > 0
+                    || realDisplayMetrics.heightPixels - displayMetrics.heightPixels > 0
+        }
+
+        @RequiresApi(Build.VERSION_CODES.M)
+        private fun hasSoftKeysM(activity: Activity): Boolean {
+            val temporaryHidden = activity.window.decorView.visibility and View.SYSTEM_UI_FLAG_HIDE_NAVIGATION != 0
+            if (temporaryHidden) return false
+
+            val decorView = activity.window.decorView
+            decorView.rootWindowInsets?.let {
+                return it.stableInsetBottom != 0
+            }
+            return true
         }
 
         /**
