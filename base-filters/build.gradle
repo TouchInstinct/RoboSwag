@@ -1,11 +1,25 @@
 apply from: "../android-configs/lib-config.gradle"
+apply plugin: 'kotlin-parcelize'
+
+android {
+    buildFeatures {
+        viewBinding true
+    }
+}
 
 dependencies {
+    implementation project(":utils")
+    implementation project(":recyclerview-adapters")
+    implementation project(":navigation-base")
+    implementation project(":kotlin-extensions")
+
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
 
     implementation("androidx.core:core-ktx")
 
     implementation("androidx.appcompat:appcompat")
+    implementation("com.google.android.material:material")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.0-alpha03")
 
     constraints {
         implementation("androidx.appcompat:appcompat") {
