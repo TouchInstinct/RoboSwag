@@ -5,12 +5,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.touchin.roboswag.base_filters.databinding.SelectionItemBinding
+import ru.touchin.roboswag.base_filters.select_list_item.ListSelectionView
+import ru.touchin.roboswag.base_filters.select_list_item.ListSelectionView.SelectionType
 import ru.touchin.roboswag.base_filters.select_list_item.OnItemSelectedListener
 import ru.touchin.roboswag.base_filters.select_list_item.model.RowSelectionItem
 import ru.touchin.roboswag.recyclerview_adapters.adapters.ItemAdapterDelegate
 
 class SheetSelectionDelegate(
-        private val onItemSelectAction: OnItemSelectedListener
+        private val onItemSelectAction: OnItemSelectedListener,
+        private val selectionType: ListSelectionView.SelectionType
 ) : ItemAdapterDelegate<SheetSelectionDelegate.SelectionItemViewHolder, RowSelectionItem>() {
 
     override fun onCreateViewHolder(parent: ViewGroup): SelectionItemViewHolder = SelectionItemViewHolder(
@@ -31,7 +34,10 @@ class SheetSelectionDelegate(
             binding.run {
                 val checkListener = View.OnClickListener {
                     itemRadiobutton.isChecked = true
-                    onItemSelectAction.invoke(item.copy(isSelected = !item.isSelected))
+                    onItemSelectAction.invoke(item.copy(isSelected = when (selectionType) {
+                        SelectionType.SINGLE_SELECT -> true
+                        else -> !item.isSelected
+                    }))
                 }
 
                 itemTitle.text = item.title

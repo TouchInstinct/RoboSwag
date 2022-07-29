@@ -28,7 +28,10 @@ class ListSelectionView @JvmOverloads constructor(
     private val binding = SingleSelectionLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     private val adapter by lazy {
-        SheetSelectionAdapter(onItemSelectAction = onItemSelectedListener)
+        SheetSelectionAdapter(
+                onItemSelectAction = onItemSelectedListener,
+                selectionType = selectionType
+        )
     }
 
     private val onItemSelectedListener: OnItemSelectedListener = { item ->
@@ -53,9 +56,7 @@ class ListSelectionView @JvmOverloads constructor(
     }
 
     fun setItems(items: List<RowSelectionItem>) = apply {
-        binding.itemsRecycler.adapter = adapter
         mutableItems = items
-        updateList()
     }
 
     fun <T> setItems(
@@ -77,6 +78,11 @@ class ListSelectionView @JvmOverloads constructor(
 
     fun withSelectionType(type: SelectionType) = apply {
         selectionType = type
+    }
+
+    fun build() = apply {
+        binding.itemsRecycler.adapter = adapter
+        updateList()
     }
 
     enum class SelectionType { SINGLE_SELECT, MULTI_SELECT }
