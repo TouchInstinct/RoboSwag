@@ -1,53 +1,56 @@
 package ru.touchin.roboswag.base_filters.select_list_item.adapter
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import ru.touchin.roboswag.base_filters.databinding.SelectionItemBinding
-import ru.touchin.roboswag.base_filters.select_list_item.ListSelectionView
 import ru.touchin.roboswag.base_filters.select_list_item.ListSelectionView.SelectionType
-import ru.touchin.roboswag.base_filters.select_list_item.OnItemSelectedListener
-import ru.touchin.roboswag.base_filters.select_list_item.model.RowSelectionItem
+import ru.touchin.roboswag.base_filters.select_list_item.model.BaseSelectionItem
 import ru.touchin.roboswag.recyclerview_adapters.adapters.ItemAdapterDelegate
 
-class SheetSelectionDelegate(
-        private val onItemSelectAction: OnItemSelectedListener,
-        private val selectionType: ListSelectionView.SelectionType
-) : ItemAdapterDelegate<SheetSelectionDelegate.SelectionItemViewHolder, RowSelectionItem>() {
+typealias HolderFactoryType<ItemType> = (ViewGroup, (ItemType) -> Unit, SelectionType) -> BaseSelectionViewHolder<ItemType>
 
-    override fun onCreateViewHolder(parent: ViewGroup): SelectionItemViewHolder = SelectionItemViewHolder(
-            binding = SelectionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-    )
+class SheetSelectionDelegate<ItemType>(
+        private val onItemSelectAction: (ItemType) -> Unit,
+        private val selectionType: SelectionType,
+        private val factory: HolderFactoryType<ItemType>
+) : ItemAdapterDelegate<BaseSelectionViewHolder<ItemType>, ItemType>()
+        where ItemType : BaseSelectionItem {
+
+    override fun onCreateViewHolder(parent: ViewGroup): BaseSelectionViewHolder<ItemType> =
+            factory.invoke(parent, onItemSelectAction, selectionType)
 
     override fun onBindViewHolder(
-            holder: SelectionItemViewHolder,
-            item: RowSelectionItem,
+            holder: BaseSelectionViewHolder<ItemType>,
+            item: ItemType,
             adapterPosition: Int,
             collectionPosition: Int,
             payloads: MutableList<Any>
     ) = holder.bind(item)
 
-    inner class SelectionItemViewHolder(val binding: SelectionItemBinding) : RecyclerView.ViewHolder(binding.root) {
+}
 
-        fun bind(item: RowSelectionItem) {
-            binding.run {
-                val checkListener = View.OnClickListener {
-                    itemRadiobutton.isChecked = true
-                    onItemSelectAction.invoke(item.copy(isSelected = when (selectionType) {
-                        SelectionType.SINGLE_SELECT -> true
-                        else -> !item.isSelected
-                    }))
-                }
+class SelectionItemViewHolder<ItemType: BaseSelectionItem>(private val binding: SelectionItemBinding,
+                              private val onItemSelectAction: (ItemType) -> Unit,
+                              private val selectionType: SelectionType
+                              ) : BaseSelectionViewHolder<ItemType>(binding.root) {
 
-                itemTitle.text = item.title
-                root.setOnClickListener(checkListener)
-
-                itemRadiobutton.setOnClickListener(checkListener)
-                itemRadiobutton.isChecked = item.isSelected
+    override fun bind(item: ItemType) {
+        binding.run {
+            val checkListener = View.OnClickListener {
+                itemRadiobutton.isChecked = true
+                onItemSelectAction.invoke(item.copyWithSelection(isSelected = when (selectionType) {
+                    SelectionType.SINGLE_SELECT -> true
+                    else -> !item.isSelected
+                }))
             }
-        }
 
+            itemTitle.text = item.title
+            root.setOnClickListener(checkListener)
+
+            itemRadiobutton.setOnClickListener(checkListener)
+            itemRadiobutton.isChecked = item.isSelected
+        }
     }
 
 }
+

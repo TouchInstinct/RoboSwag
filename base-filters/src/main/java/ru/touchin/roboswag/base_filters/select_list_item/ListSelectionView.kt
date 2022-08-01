@@ -5,75 +5,106 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
+import ru.touchin.roboswag.base_filters.databinding.SelectionItemBinding
 import ru.touchin.roboswag.base_filters.databinding.SingleSelectionLayoutBinding
+import ru.touchin.roboswag.base_filters.select_list_item.adapter.BaseSelectionViewHolder
+import ru.touchin.roboswag.base_filters.select_list_item.adapter.HolderFactoryType
+import ru.touchin.roboswag.base_filters.select_list_item.adapter.SelectionItemViewHolder
 import ru.touchin.roboswag.base_filters.select_list_item.adapter.SheetSelectionAdapter
-import ru.touchin.roboswag.base_filters.select_list_item.model.RowSelectionItem
+import ru.touchin.roboswag.base_filters.select_list_item.model.BaseSelectionItem
 
-typealias OnItemSelectedListener = (item: RowSelectionItem) -> Unit
-typealias OnSelectionResultListener = (items: List<RowSelectionItem>) -> Unit
+typealias OnSelectedItemListener<ItemType> = (item: ItemType) -> Unit
+typealias OnSelectedItemsListener<ItemType> = (items: List<ItemType>) -> Unit
 
-class ListSelectionView @JvmOverloads constructor(
+/**
+ *  Base [ListSelectionView] to use in filters screen for choosing single or multi items in list.
+ *
+ *  @param ItemType Type of model's element in list.
+ *  It must implement [BaseSelectionItem] abstract class.
+ *
+ *  @param HolderType Type of viewHolder in recyclerView.
+ *  It must implement [BaseSelectionViewHolder] abstract class.
+ *
+**/
+
+class ListSelectionView<ItemType, HolderType> @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0,
         defStyleRes: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr, defStyleRes) {
+) : FrameLayout(context, attrs, defStyleAttr, defStyleRes)
+        where ItemType: BaseSelectionItem,
+              HolderType: BaseSelectionViewHolder<ItemType>{
 
-    private var mutableItems: List<RowSelectionItem> = emptyList()
+    private var mutableItems: List<ItemType> = emptyList()
     private var selectionType = SelectionType.SINGLE_SELECT
 
-    private var onItemsClickListener: OnSelectionResultListener? = null
-    private var onItemClickListener: OnItemSelectedListener? = null
+    private var onSelectedItemChanged: OnSelectedItemListener<ItemType>? = null
+    private var onSelectedItemsChanged: OnSelectedItemsListener<ItemType>? = null
+    private var factory: HolderFactoryType<ItemType> = getDefaultFactory()
+
+    private fun getDefaultFactory(): HolderFactoryType<ItemType> = { parent, clickListener, selectionType ->
+        SelectionItemViewHolder(
+                binding = SelectionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+                onItemSelectAction = clickListener,
+                selectionType = selectionType
+        )
+    }
 
     private val binding = SingleSelectionLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     private val adapter by lazy {
         SheetSelectionAdapter(
                 onItemSelectAction = onItemSelectedListener,
-                selectionType = selectionType
+                selectionType = selectionType,
+                factory = factory
         )
     }
 
-    private val onItemSelectedListener: OnItemSelectedListener = { item ->
-        onItemClickListener?.invoke(item)
+    private val onItemSelectedListener: (item: ItemType) -> Unit = { item ->
+        onSelectedItemChanged?.invoke(item)
         updateAfterSelection(item)
-        onItemsClickListener?.invoke(mutableItems)
+        onSelectedItemsChanged?.invoke(mutableItems)
     }
 
     private fun updateList() {
         adapter.submitList(mutableItems)
     }
 
-    private fun updateAfterSelection(selectedItem: RowSelectionItem) {
+    private fun updateAfterSelection(selectedItem: ItemType) {
         mutableItems = mutableItems.map { item ->
             when {
-                item.id == selectedItem.id -> selectedItem
-                selectionType == SelectionType.SINGLE_SELECT -> item.copy(isSelected = false)
+                item.isItemTheSame(selectedItem) -> selectedItem
+                selectionType == SelectionType.SINGLE_SELECT -> item.copyWithSelection(isSelected = false)
                 else -> item
             }
         }
         updateList()
     }
 
-    fun setItems(items: List<RowSelectionItem>) = apply {
+    fun setItems(items: List<ItemType>) = apply {
         mutableItems = items
     }
 
     fun <T> setItems(
             source: List<T>,
-            mapper: (T) -> RowSelectionItem
+            mapper: (T) -> ItemType
     ) = setItems(source.map { item -> mapper.invoke(item) })
+
+    fun showInHolder(holderFactory: HolderFactoryType<ItemType>) = apply {
+        factory = holderFactory
+    }
 
     fun addItemDecoration(itemDecoration: RecyclerView.ItemDecoration) = apply {
         binding.itemsRecycler.addItemDecoration(itemDecoration)
     }
 
-    fun onItemClickListener(listener: OnItemSelectedListener) = apply {
-        this@ListSelectionView.onItemClickListener = listener
+    fun onSelectedItemListener(listener: OnSelectedItemListener<ItemType>) = apply {
+        this@ListSelectionView.onSelectedItemChanged = listener
     }
 
-    fun onResultListener(listener: OnSelectionResultListener) = apply {
-        this@ListSelectionView.onItemsClickListener = listener
+    fun onSelectedItemsListener(listener: OnSelectedItemsListener<ItemType>) = apply {
+        this@ListSelectionView.onSelectedItemsChanged = listener
     }
 
     fun withSelectionType(type: SelectionType) = apply {

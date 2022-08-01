@@ -12,7 +12,7 @@
 
 ### Как использовать
 ``` kotlin
-val selectorView = ListSelectionView(context)
+val selectorView = ListSelectionView<DefaultSelectionItem, SelectionItemViewHolder<DefaultSelectionItem>>(context)
                 .setItems(navArgs.items)
                 .addItemDecoration((TopDividerItemDecoration(
                         context = requireContext(),
@@ -25,16 +25,31 @@ val selectorView = ListSelectionView(context)
                 .build()
 ```
 ### Конфигурации
-* в метод `setItems(List<RowSelectionItem>)` необходимо передать список объектов
-* метод `addItemDecoration()` можно использовать для передачи объекта `RecyclerView.ItemDecoration`
-* метод `withSelectionType()` используется для указания типа выбора:
+* при создании `ListSelectionView<ItemType, HolderType>` необходимо передлать `ItemType` - класс модели данных в списке, `HolderType` - класс viewHolder-а в recyclerView.
+Для использования дефолтной реализации необходимо использовать типы `<DefaultSelectionItem, SelectionItemViewHolder<DefaultSelectionItem>>`
+* в метод `setItems(List<ItemType>)` необходимо передать список объектов
+* метод `addItemDecoration(itemDecoration: RecyclerView.ItemDecoration)` можно использовать для передачи объекта `RecyclerView.ItemDecoration`
+* метод `withSelectionType(type: SelectionType)` используется для указания типа выбора:
   * `SINGLE_SELECT` - <em>по умолчанию</em> - позволяет выбрать один выариант, при этом будет выбран всегда как минимум один вариант
   * `MULTI_SELECT` - позволяет выбрать несколько вариантов из списка, при этом можно полностью выбрать все варианты и убрать выделение со всех вариантов
-* колбэк `onResultListener()` можно использовать для получения списка всех элементов `RowSelectionItem` после каждого выбора
-* колбэк `onItemClickListener()` можно использовать для получения элемента списка `RowSelectionItem`, по которому произошел клик
+* метод `showInHolder(HolderFactoryType<ItemType>)` используется для определения кастомного viewHolder для списка с недефолтной разметкой.
+``` kotlin
+val selectorView = ListSelectionView<TestSelectionItem, TestItemViewHolder>(context)
+                .showInHolder { parent, clickListener, selectionType ->
+                    TestItemViewHolder(
+                            binding = TestSelectionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+                            onItemSelectAction = clickListener,
+                            selectionType = selectionType
+                    )
+                }
+                ...
+                .build()
+```
+* колбэк `onSelectedItemsListener(listener: OnSelectedItemsListener<ItemType>)` можно использовать для получения списка всех элементов `ItemType` после каждого выбора
+* колбэк `onSelectedItemListener(listener: OnSelectedItemListener<ItemType>)` можно использовать для получения элемента списка `ItemType`, по которому произошел клик
 * после вызова конфигурационных методов обязательно необходимо вызать метод `build()`
 
-### Кастомизация стиля
+### Кастомизация стиля дефолтной реализации ViewHolder без необходимости создания кастомного layout и viewHolder
 
 #### 1. Определить кастомную тему и стили элементов
 1. Стиль для **текста элемента списка** должен быть наследником стиля `Widget.FilterSelection.Item`

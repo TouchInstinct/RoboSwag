@@ -2,25 +2,29 @@ package ru.touchin.roboswag.base_filters.select_list_item.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import ru.touchin.roboswag.base_filters.select_list_item.ListSelectionView
-import ru.touchin.roboswag.base_filters.select_list_item.OnItemSelectedListener
-import ru.touchin.roboswag.base_filters.select_list_item.model.RowSelectionItem
+import ru.touchin.roboswag.base_filters.select_list_item.model.BaseSelectionItem
 import ru.touchin.roboswag.recyclerview_adapters.adapters.DelegationListAdapter
 
-class SheetSelectionAdapter(
-        onItemSelectAction: OnItemSelectedListener,
-        selectionType: ListSelectionView.SelectionType
-): DelegationListAdapter<RowSelectionItem>(object : DiffUtil.ItemCallback<RowSelectionItem>() {
+class SheetSelectionAdapter<ItemType: BaseSelectionItem>(
+        onItemSelectAction: (ItemType) -> Unit,
+        selectionType: ListSelectionView.SelectionType,
+        factory: HolderFactoryType<ItemType>
+): DelegationListAdapter<BaseSelectionItem>(object : DiffUtil.ItemCallback<BaseSelectionItem>() {
 
-    override fun areItemsTheSame(oldItem: RowSelectionItem, newItem: RowSelectionItem): Boolean =
-            oldItem.id == newItem.id
+    override fun areItemsTheSame(oldItem: BaseSelectionItem, newItem: BaseSelectionItem): Boolean =
+            oldItem.isItemTheSame(newItem)
 
-    override fun areContentsTheSame(oldItem: RowSelectionItem, newItem: RowSelectionItem): Boolean =
-            oldItem == newItem
+    override fun areContentsTheSame(oldItem: BaseSelectionItem, newItem: BaseSelectionItem): Boolean =
+            oldItem.isContentTheSame(newItem)
 
 }) {
 
     init {
-        addDelegate(SheetSelectionDelegate(onItemSelectAction, selectionType))
+        addDelegate(SheetSelectionDelegate(
+                onItemSelectAction = onItemSelectAction,
+                selectionType = selectionType,
+                factory = factory
+        ))
     }
 
 }
