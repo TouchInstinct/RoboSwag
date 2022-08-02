@@ -4,6 +4,7 @@ import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.Context
 import android.location.Location
+import android.os.Looper
 import androidx.annotation.RequiresPermission
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -54,7 +55,7 @@ class HuaweiLocationLiveData(
         fusedLocationClient.requestLocationUpdates(
                 request,
                 locationCallback,
-                null
+                Looper.getMainLooper()
         )
     }
 
