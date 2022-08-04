@@ -2,8 +2,10 @@ apply from: "../android-configs/lib-config.gradle"
 
 dependencies {
     implementation "androidx.annotation:annotation"
-
     implementation "com.google.firebase:firebase-crashlytics"
+
+    implementation "androidx.recyclerview:recyclerview"
+    implementation "androidx.constraintlayout:constraintlayout"
 
     constraints {
         implementation("androidx.annotation:annotation") {
@@ -15,6 +17,18 @@ dependencies {
         implementation("com.google.firebase:firebase-crashlytics") {
             version {
                 require '17.1.0'
+            }
+        }
+
+        implementation("androidx.recyclerview:recyclerview") {
+            version {
+                require '1.1.0'
+            }
+        }
+
+        implementation("androidx.constraintlayout:constraintlayout"){
+            version {
+                require '2.2.0-alpha03'
             }
         }
     }

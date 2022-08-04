@@ -2,6 +2,7 @@ apply from: "../android-configs/lib-config.gradle"
 
 dependencies {
     implementation "androidx.recyclerview:recyclerview"
+    implementation "androidx.coordinatorlayout:coordinatorlayout"
     implementation "androidx.fragment:fragment-ktx"
     implementation project(path: ':logging')
 
@@ -9,6 +10,12 @@ dependencies {
         implementation("androidx.recyclerview:recyclerview") {
             version {
                 require '1.0.0'
+            }
+        }
+
+        implementation("androidx.coordinatorlayout:coordinatorlayout") {
+            version {
+                require '1.1.0'
             }
         }
 
