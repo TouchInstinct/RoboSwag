@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ru.touchin.roboswag.base_filters.tags.TagView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_chip_choice"
+    android:button="@null"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="6dp"
+    android:textColor="@color/color_chip_choice"
+    tools:text="String" />

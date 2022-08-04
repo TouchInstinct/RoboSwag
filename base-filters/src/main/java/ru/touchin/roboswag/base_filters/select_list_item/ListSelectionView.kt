@@ -12,6 +12,7 @@ import ru.touchin.roboswag.base_filters.select_list_item.adapter.HolderFactoryTy
 import ru.touchin.roboswag.base_filters.select_list_item.adapter.SelectionItemViewHolder
 import ru.touchin.roboswag.base_filters.select_list_item.adapter.SheetSelectionAdapter
 import ru.touchin.roboswag.base_filters.select_list_item.model.BaseSelectionItem
+import ru.touchin.roboswag.base_filters.SelectionType
 
 typealias OnSelectedItemListener<ItemType> = (item: ItemType) -> Unit
 typealias OnSelectedItemsListener<ItemType> = (items: List<ItemType>) -> Unit
@@ -115,6 +116,4 @@ class ListSelectionView<ItemType, HolderType> @JvmOverloads constructor(
         binding.itemsRecycler.adapter = adapter
         updateList()
     }
-
-    enum class SelectionType { SINGLE_SELECT, MULTI_SELECT }
 }
