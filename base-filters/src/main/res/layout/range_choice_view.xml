@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/center_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <ru.touchin.roboswag.base_filters.range.HintInputView
+        android:id="@+id/from_input"
+        style="?attr/filterRange_hintViewStyle"
+        android:layout_width="0dp"
+        android:layout_height="42dp"
+        app:layout_constraintEnd_toStartOf="@+id/center_guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ru.touchin.roboswag.base_filters.range.HintInputView
+        android:id="@+id/to_input"
+        style="?attr/filterRange_hintViewStyle"
+        android:layout_width="0dp"
+        android:layout_height="42dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/center_guideline"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ru.touchin.roboswag.base_filters.range.FilterRangeSlider
+        android:id="@+id/range_slider"
+        style="?attr/filterRange_sliderStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/range_slider_guideline"
+        app:layout_constraintBottom_toTopOf="@id/range_slider_guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <View
+        android:id="@+id/range_slider_guideline"
+        android:layout_height="0dp"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/from_input"/>
+
+</merge>

@@ -18,4 +18,55 @@
         <item name="android:layout_marginEnd">16dp</item>
     </style>
 
+    <style name="Widget.FilterRangeSlider.Default" parent="@style/Widget.MaterialComponents.Slider">
+        <item name="trackColorActive">@color/slider_track_active_part</item>
+        <item name="trackColorInactive">@color/slider_track_inactive_part</item>
+        <item name="trackHeight">3dp</item>
+        <item name="thumbElevation">0dp</item>
+        <item name="thumbColor">@color/slider_thumb</item>
+        <item name="labelBehavior">gone</item>
+        <item name="haloRadius">0dp</item>
+        <item name="filterRange_activeTickColor">@color/slider_point_active</item>
+        <item name="filterRange_inactiveTickColor">@color/slider_point_inactive</item>
+        <item name="filterRange_stepValueMarginTop">12dp</item>
+        <item name="filterRange_sliderPointSize">5dp</item>
+        <item name="filterRange_pointShape">circle</item>
+        <item name="android:layout_marginStart">11dp</item>
+        <item name="android:layout_marginEnd">11dp</item>
+    </style>
+
+    <style name="Theme.FilterRangeSlider" parent="@style/Theme.MaterialComponents.Light">
+        <item name="filterRange_sliderStyle">@style/Widget.FilterRangeSlider.Default</item>
+        <item name="filterRange_hintViewStyle">@style/Widget.HintInputView</item>
+        <item name="filterRange_hintTextStyle">@style/Widget.HintInputView.HintText</item>
+        <item name="filterRange_valueEditTextStyle">@style/Widget.HintInputView.EditText</item>
+    </style>
+
+    <style name="FilterRangeChoice">
+        <item name="filterRange_sliderMargin">23dp</item>
+        <item name="filterRange_startHint">@string/start_hint</item>
+        <item name="filterRange_endHint">@string/end_hint</item>
+        <item name="filterRange_theme">@style/Theme.FilterRangeSlider</item>
+    </style>
+
+    <style name="Widget.HintInputView" parent="@style/Widget.MaterialComponents.TextView">
+        <item name="android:layout_marginEnd">5dp</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:layout_marginStart">16dp</item>
+    </style>
+
+    <style name="Widget.HintInputView.HintText" parent="@style/Widget.MaterialComponents.TextView">
+        <item name="android:layout_marginStart">12dp</item>
+        <item name="android:elevation">1dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="Widget.HintInputView.EditText" parent="@style/Widget.AppCompat.EditText">
+        <item name="android:paddingStart">34dp</item>
+        <item name="android:inputType">number</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:background">@drawable/background_hint_input</item>
+        <item name="android:textCursorDrawable">@drawable/cursor_background_text_input_view</item>
+    </style>
+
 </resources>
