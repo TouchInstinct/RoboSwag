@@ -1,0 +1,40 @@
+apply from: "../android-configs/lib-config.gradle"
+
+ext {
+    composeVersion = '1.0.5'
+}
+
+android {
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation("androidx.core:core-ktx")
+    implementation("androidx.constraintlayout:constraintlayout")
+    implementation project(":kotlin-extensions")
+
+    implementation "androidx.compose.runtime:runtime:1.1.1"
+    implementation "androidx.compose.ui:ui:1.1.1"
+    implementation "androidx.compose.foundation:foundation:1.1.1"
+    implementation "androidx.compose.foundation:foundation-layout:1.1.1"
+    implementation "androidx.compose.material:material:1.1.1"
+    implementation "androidx.compose.runtime:runtime-livedata:1.1.1"
+    implementation "androidx.compose.ui:ui-tooling:1.1.1"
+    implementation "com.google.android.material:compose-theme-adapter:1.1.9"
+
+    constraints {
+        implementation("androidx.core:core-ktx") {
+            version {
+                require '1.0.0'
+            }
+        }
+
+        implementation("androidx.constraintlayout:constraintlayout") {
+            version {
+                require '2.2.0-alpha03'
+            }
+        }
+    }
+}

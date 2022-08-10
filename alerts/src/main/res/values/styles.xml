@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="DialogButton">
+        <item name="android:minWidth">56dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingTop">11dp</item>
+        <item name="android:paddingBottom">9dp</item>
+    </style>
+</resources>
