@@ -1,7 +1,7 @@
 apply from: "../android-configs/lib-config.gradle"
 
 ext {
-    composeVersion = '1.0.5'
+    composeVersion = '1.1.1'
 }
 
 android {
@@ -15,13 +15,13 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout")
     implementation project(":kotlin-extensions")
 
-    implementation "androidx.compose.runtime:runtime:1.1.1"
-    implementation "androidx.compose.ui:ui:1.1.1"
-    implementation "androidx.compose.foundation:foundation:1.1.1"
-    implementation "androidx.compose.foundation:foundation-layout:1.1.1"
-    implementation "androidx.compose.material:material:1.1.1"
-    implementation "androidx.compose.runtime:runtime-livedata:1.1.1"
-    implementation "androidx.compose.ui:ui-tooling:1.1.1"
+    implementation "androidx.compose.runtime:runtime:$composeVersion"
+    implementation "androidx.compose.ui:ui:$composeVersion"
+    implementation "androidx.compose.foundation:foundation:$composeVersion"
+    implementation "androidx.compose.foundation:foundation-layout:$composeVersion"
+    implementation "androidx.compose.material:material:$composeVersion"
+    implementation "androidx.compose.runtime:runtime-livedata:$composeVersion"
+    implementation "androidx.compose.ui:ui-tooling:$composeVersion"
     implementation "com.google.android.material:compose-theme-adapter:1.1.9"
 
     constraints {
