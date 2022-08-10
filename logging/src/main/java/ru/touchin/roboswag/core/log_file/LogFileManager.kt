@@ -42,7 +42,7 @@ class LogFileManager {
 
         private fun initLogDirectory(context: Context): File {
             val appDirectory = context.getExternalFilesDir(null)
-            if (!appDirectory!!.exists()) {
+            if (appDirectory != null && !appDirectory.exists()) {
                 appDirectory.mkdir()
             }
 

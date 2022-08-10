@@ -34,6 +34,7 @@ class DebugLogsDialogFragment : DialogFragment() {
 
         binding.logsRecycler.layoutManager = LinearLayoutManager(requireContext())
         binding.logsRecycler.adapter = LogItemAdapter(requireContext(), logItemsList)
+        updateRecycler()
 
         binding.shareBtn.setOnClickListener {
             val files = getLogDirectory(requireContext()).listFiles()
