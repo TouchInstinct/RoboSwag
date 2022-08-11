@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.touchin.roboswag.core.log.databinding.LogItemBinding
 
-class LogItemAdapter(private val context: Context, private val logItemList:MutableList<String>)
+class LogItemAdapter(private val context: Context, private val logItemList: MutableList<String>)
     : RecyclerView.Adapter<LogItemAdapter.LogItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LogItemViewHolder {
@@ -15,8 +15,8 @@ class LogItemAdapter(private val context: Context, private val logItemList:Mutab
     }
 
     override fun onBindViewHolder(holder: LogItemViewHolder, position: Int) {
-        val foodItem = logItemList[position]
-        holder.bind(foodItem)
+        val logItem = logItemList[position]
+        holder.bind(logItem)
     }
 
     override fun getItemCount(): Int {

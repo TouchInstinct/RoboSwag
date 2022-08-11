@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ru.touchin.roboswag.core.log.BuildConfig
 import ru.touchin.roboswag.core.log.R
 import ru.touchin.roboswag.core.log.databinding.DialogFragmentDebugLogsBinding
-import ru.touchin.roboswag.core.log_file.LogFileManager.Companion.getLogDirectory
+import ru.touchin.roboswag.core.log_file.LogFileManager
 import java.io.File
 
 class DebugLogsDialogFragment : DialogFragment() {
@@ -37,13 +37,13 @@ class DebugLogsDialogFragment : DialogFragment() {
         updateRecycler()
 
         binding.shareBtn.setOnClickListener {
-            val files = getLogDirectory(requireContext()).listFiles()
+            val files = LogFileManager(requireContext()).getLogDirectory().listFiles()
 
-            if (!files.isNullOrEmpty()) {
+            files?.firstOrNull()?.let { firstFile ->
                 val uri = FileProvider.getUriForFile(
                     requireContext(),
                     BuildConfig.LIBRARY_PACKAGE_NAME + LogFileManager.fileProviderName,
-                    files.first()
+                    firstFile
                 )
 
                 val intent = Intent(Intent.ACTION_SEND)
@@ -65,7 +65,7 @@ class DebugLogsDialogFragment : DialogFragment() {
         binding.priorityFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 val priority = LogFileManager.Priority.values()[position]
-                LogFileManager.saveLogcatToFile(requireContext(), priority.tag)
+                LogFileManager(requireContext()).saveLogcatToFile(priority.tag)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
@@ -75,9 +75,9 @@ class DebugLogsDialogFragment : DialogFragment() {
 
     private fun updateRecycler() {
         logItemsList.clear()
-        val files = getLogDirectory(requireContext()).listFiles()
-        if (!files.isNullOrEmpty()) {
-            File(files.firstOrNull()?.getAbsolutePath() ?: "")
+        val files = LogFileManager(requireContext()).getLogDirectory().listFiles()
+        files?.firstOrNull()?.let { firstFile ->
+            File(firstFile.getAbsolutePath())
                 .useLines { lines -> lines.forEach { logItemsList.add(it) } }
         }
         binding.logsRecycler.adapter?.notifyDataSetChanged()

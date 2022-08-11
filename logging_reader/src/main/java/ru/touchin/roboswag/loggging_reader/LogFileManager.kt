@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class LogFileManager {
+class LogFileManager(val context: Context) {
 
     enum class Priority(val title: String, val tag: String) {
         VERBOSE("VERBOSE", "*:V"),
@@ -22,12 +22,12 @@ class LogFileManager {
         private const val logDirecroryName = "log"
         const val fileProviderName = ".fileprovider"
 
-        fun getLogDirectory(context: Context) : File{
+        fun getLogDirectory() : File{
             val appDirectory = context.getExternalFilesDir(null)
             return File(appDirectory.toString() + "/$logDirecroryName")
         }
 
-        fun saveLogcatToFile(context: Context, priorityTag: String) {
+        fun saveLogcatToFile(priorityTag: String) {
             val logDirectory = initLogDirectory(context)
 
             val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH_mm_ss_SSS", Locale.getDefault())
