@@ -95,14 +95,14 @@ val selectorView = ListSelectionView(newContext)
 ### Как использовать
 ``` kotlin
 binding.tagItemLayout
-                    .setSpacing(16)
-                    .setSelectionType(SelectionType.MULTI_SELECT) // по умолчанию
-                    .isSingleLine(false)    // по умолчанию
-                    .onPropertySelectedAction { filterProperty: FilterProperty ->
-                        //Do something
-                    }
-                    .build(getFilterItem())
+        .Builder(getFilterItem())
+        .setSpacing(16)
+        .setSelectionType(SelectionType.MULTI_SELECT) // по умолчанию
+        .isSingleLine(false)    // по умолчанию
+        .onPropertySelectedAction { filterProperty: FilterProperty ->
+            //Do something
         }
+        .build()
 ```
 ### Конфигурации
 * метод `setSelectionType(SelectionType)` конфигурирует тип выбора:
@@ -112,6 +112,7 @@ binding.tagItemLayout
 * `setTagLayout(Int)` устанавливает разметку для тега. Если не задано - то используется дефолтная разметка `layout_default_tag.xml`
 * `setMaxTagCount(Int)` позволяет ограничить количество отображаемых тегов. По умолчанию ограничения нет.
 * `setMoreTagLayout(Int, String)` устанавливает разметку для тега, который отображается для дополнительного тега. Если не указана - то тег не будет создан
-* `setSpacing(Int)`, `setSpacingHorizontal(Int`) и мsetSpacingVertical(Int)` можно использовать для настройки расстояния между тегами. По умолчанию - 0
+* `setSpacing(Int)`, `setSpacingHorizontal(Int)` и `setSpacingVertical(Int)` можно использовать для настройки расстояния между тегами. По умолчанию - 0
 * `onMoreValuesAction(FilterMoreAction)` и `onPropertySelectedAction(PropertySelectedAction)` используются для передачи колбэков на клик по тегу типа "Еще" и обычного тега соответственно
-* после вызова конфигурационных методов обязательно необходимо вызать метод `build(FilterItem)`
+* после вызова конфигурационных методов обязательно необходимо вызать метод `build()`
+* в Builder необходимо передать объект `filterItem: FilterItem`
