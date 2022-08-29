@@ -19,7 +19,11 @@ dependencies {
 
     implementation("androidx.appcompat:appcompat")
     implementation("com.google.android.material:material")
-    implementation("androidx.constraintlayout:constraintlayout:2.2.0-alpha03")
+    implementation("androidx.constraintlayout:constraintlayout") {
+        version {
+            require '2.0.0'
+        }
+    }
 
     constraints {
         implementation("androidx.appcompat:appcompat") {

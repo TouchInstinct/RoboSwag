@@ -7,10 +7,7 @@
     </style>
 
     <style name="Widget.FilterSelection.Item" parent="@style/Widget.MaterialComponents.TextView">
-        <item name="android:layout_marginStart">16dp</item>
-        <item name="android:layout_marginEnd">16dp</item>
-        <item name="android:layout_marginTop">16dp</item>
-        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:layout_margin">16dp</item>
     </style>
 
     <style name="Widget.FilterSelection.Radio" parent="@style/Widget.MaterialComponents.CompoundButton.RadioButton">
