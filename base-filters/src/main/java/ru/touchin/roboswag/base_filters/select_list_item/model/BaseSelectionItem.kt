@@ -10,5 +10,5 @@ abstract class BaseSelectionItem(
 
     abstract fun isContentTheSame(compareItem: BaseSelectionItem): Boolean
 
-    abstract fun <ItemType>copyWithSelection(isSelected: Boolean): ItemType
+    abstract fun <ItemType> copyWithSelection(isSelected: Boolean): ItemType
 }
