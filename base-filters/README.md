@@ -13,16 +13,18 @@
 ### Как использовать
 ``` kotlin
 val selectorView = ListSelectionView<DefaultSelectionItem, SelectionItemViewHolder<DefaultSelectionItem>>(context)
-                .setItems(navArgs.items)
-                .addItemDecoration((TopDividerItemDecoration(
-                        context = requireContext(),
-                        drawableId = R.drawable.list_divider_1dp,
-                        startMargin = START_MARGIN_DIVIDER_DP.px
-                )))
-                .withSelectionType(ListSelectionView.SelectionType.SINGLE_SELECT)
-                .onResultListener { items ->
-                    viewModel.dispatchAction(SelectItemAction.SelectItem(items)) }
-                .build()
+        .Builder()
+        .setItems(navArgs.items)
+        .addItemDecoration((TopDividerItemDecoration(
+                context = requireContext(),
+                drawableId = R.drawable.list_divider_1dp,
+                startMargin = START_MARGIN_DIVIDER_DP.px
+        )))
+        .withSelectionType(ListSelectionView.SelectionType.SINGLE_SELECT)
+        .onResultListener { items ->
+            viewModel.dispatchAction(SelectItemAction.SelectItem(items)) 
+        }
+        .build()
 ```
 ### Конфигурации
 * при создании `ListSelectionView<ItemType, HolderType>` необходимо передлать `ItemType` - класс модели данных в списке, `HolderType` - класс viewHolder-а в recyclerView.
@@ -35,15 +37,16 @@ val selectorView = ListSelectionView<DefaultSelectionItem, SelectionItemViewHold
 * метод `showInHolder(HolderFactoryType<ItemType>)` используется для определения кастомного viewHolder для списка с недефолтной разметкой.
 ``` kotlin
 val selectorView = ListSelectionView<TestSelectionItem, TestItemViewHolder>(context)
-                .showInHolder { parent, clickListener, selectionType ->
-                    TestItemViewHolder(
-                            binding = TestSelectionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-                            onItemSelectAction = clickListener,
-                            selectionType = selectionType
-                    )
-                }
-                ...
-                .build()
+        .Builder()
+        .showInHolder { parent, clickListener, selectionType ->
+            TestItemViewHolder(
+                    binding = TestSelectionItemBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+                    onItemSelectAction = clickListener,
+                    selectionType = selectionType
+            )
+        }
+        ...
+        .build()
 ```
 * колбэк `onSelectedItemsListener(listener: OnSelectedItemsListener<ItemType>)` можно использовать для получения списка всех элементов `ItemType` после каждого выбора
 * колбэк `onSelectedItemListener(listener: OnSelectedItemListener<ItemType>)` можно использовать для получения элемента списка `ItemType`, по которому произошел клик
@@ -80,8 +83,9 @@ val selectorView = ListSelectionView<TestSelectionItem, TestItemViewHolder>(cont
 ``` kotlin
 val newContext = ContextThemeWrapper(requireContext(), R.style.Theme_Custom_FilterSelection)
 val selectorView = ListSelectionView(newContext)
-                  ...
-                  .build()
+        .Builder()
+        ...
+        .build()
 ```
 
 ## 2. Выбор одного/нескольких значений из перечня тегов
@@ -92,14 +96,14 @@ val selectorView = ListSelectionView(newContext)
 ### Как использовать
 ``` kotlin
 binding.tagItemLayout
-                    .setSpacing(16)
-                    .setSelectionType(SelectionType.MULTI_SELECT) // по умолчанию
-                    .isSingleLine(false)    // по умолчанию
-                    .onPropertySelectedAction { filterProperty: FilterProperty ->
-                        //Do something
-                    }
-                    .build(getFilterItem())
+        .Builder(getFilterItem())
+        .setSpacing(16)
+        .setSelectionType(SelectionType.MULTI_SELECT) // по умолчанию
+        .isSingleLine(false)    // по умолчанию
+        .onPropertySelectedAction { filterProperty: FilterProperty ->
+            //Do something
         }
+        .build()
 ```
 ### Конфигурации
 * метод `setSelectionType(SelectionType)` конфигурирует тип выбора:
@@ -109,9 +113,10 @@ binding.tagItemLayout
 * `setTagLayout(Int)` устанавливает разметку для тега. Если не задано - то используется дефолтная разметка `layout_default_tag.xml`
 * `setMaxTagCount(Int)` позволяет ограничить количество отображаемых тегов. По умолчанию ограничения нет.
 * `setMoreTagLayout(Int, String)` устанавливает разметку для тега, который отображается для дополнительного тега. Если не указана - то тег не будет создан
-* `setSpacing(Int)`, `setSpacingHorizontal(Int`) и мsetSpacingVertical(Int)` можно использовать для настройки расстояния между тегами. По умолчанию - 0
+* `setSpacing(Int)`, `setSpacingHorizontal(Int)` и `setSpacingVertical(Int)` можно использовать для настройки расстояния между тегами. По умолчанию - 0
 * `onMoreValuesAction(FilterMoreAction)` и `onPropertySelectedAction(PropertySelectedAction)` используются для передачи колбэков на клик по тегу типа "Еще" и обычного тега соответственно
-* после вызова конфигурационных методов обязательно необходимо вызать метод `build(FilterItem)`
+* после вызова конфигурационных методов обязательно необходимо вызать метод `build()`
+* в Builder необходимо передать объект `filterItem: FilterItem`
 
 
 ## 3. Выбор минимального и максимального значения из диапозона

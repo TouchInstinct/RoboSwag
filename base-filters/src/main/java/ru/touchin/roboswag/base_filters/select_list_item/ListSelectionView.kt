@@ -14,8 +14,8 @@ import ru.touchin.roboswag.base_filters.select_list_item.adapter.SheetSelectionA
 import ru.touchin.roboswag.base_filters.select_list_item.model.BaseSelectionItem
 import ru.touchin.roboswag.base_filters.SelectionType
 
-typealias OnSelectedItemListener<ItemType> = (item: ItemType) -> Unit
-typealias OnSelectedItemsListener<ItemType> = (items: List<ItemType>) -> Unit
+private typealias OnSelectedItemListener<ItemType> = (item: ItemType) -> Unit
+private typealias OnSelectedItemsListener<ItemType> = (items: List<ItemType>) -> Unit
 
 /**
  *  Base [ListSelectionView] to use in filters screen for choosing single or multi items in list.
@@ -26,7 +26,7 @@ typealias OnSelectedItemsListener<ItemType> = (items: List<ItemType>) -> Unit
  *  @param HolderType Type of viewHolder in recyclerView.
  *  It must implement [BaseSelectionViewHolder] abstract class.
  *
-**/
+ **/
 
 class ListSelectionView<ItemType, HolderType> @JvmOverloads constructor(
         context: Context,
@@ -34,8 +34,8 @@ class ListSelectionView<ItemType, HolderType> @JvmOverloads constructor(
         defStyleAttr: Int = 0,
         defStyleRes: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr, defStyleRes)
-        where ItemType: BaseSelectionItem,
-              HolderType: BaseSelectionViewHolder<ItemType>{
+        where ItemType : BaseSelectionItem,
+              HolderType : BaseSelectionViewHolder<ItemType> {
 
     private var mutableItems: List<ItemType> = emptyList()
     private var selectionType = SelectionType.SINGLE_SELECT
@@ -83,37 +83,40 @@ class ListSelectionView<ItemType, HolderType> @JvmOverloads constructor(
         updateList()
     }
 
-    fun setItems(items: List<ItemType>) = apply {
-        mutableItems = items
-    }
+    inner class Builder {
 
-    fun <T> setItems(
-            source: List<T>,
-            mapper: (T) -> ItemType
-    ) = setItems(source.map { item -> mapper.invoke(item) })
+        fun setItems(items: List<ItemType>) = apply {
+            mutableItems = items
+        }
 
-    fun showInHolder(holderFactory: HolderFactoryType<ItemType>) = apply {
-        factory = holderFactory
-    }
+        fun <T> setItems(
+                source: List<T>,
+                mapper: (T) -> ItemType
+        ) = setItems(source.map { item -> mapper.invoke(item) })
 
-    fun addItemDecoration(itemDecoration: RecyclerView.ItemDecoration) = apply {
-        binding.itemsRecycler.addItemDecoration(itemDecoration)
-    }
+        fun showInHolder(holderFactory: HolderFactoryType<ItemType>) = apply {
+            factory = holderFactory
+        }
 
-    fun onSelectedItemListener(listener: OnSelectedItemListener<ItemType>) = apply {
-        this@ListSelectionView.onSelectedItemChanged = listener
-    }
+        fun addItemDecoration(itemDecoration: RecyclerView.ItemDecoration) = apply {
+            binding.itemsRecycler.addItemDecoration(itemDecoration)
+        }
 
-    fun onSelectedItemsListener(listener: OnSelectedItemsListener<ItemType>) = apply {
-        this@ListSelectionView.onSelectedItemsChanged = listener
-    }
+        fun onSelectedItemListener(listener: OnSelectedItemListener<ItemType>) = apply {
+            this@ListSelectionView.onSelectedItemChanged = listener
+        }
 
-    fun withSelectionType(type: SelectionType) = apply {
-        selectionType = type
-    }
+        fun onSelectedItemsListener(listener: OnSelectedItemsListener<ItemType>) = apply {
+            this@ListSelectionView.onSelectedItemsChanged = listener
+        }
 
-    fun build() = apply {
-        binding.itemsRecycler.adapter = adapter
-        updateList()
+        fun withSelectionType(type: SelectionType) = apply {
+            selectionType = type
+        }
+
+        fun build() = this@ListSelectionView.also {
+            binding.itemsRecycler.adapter = adapter
+            updateList()
+        }
     }
 }
