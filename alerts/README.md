@@ -4,8 +4,10 @@ alerts
 ### Общее описание
 
 Модуль содержит: 
-`ViewableAlertDialog` - служит для демонстрации AlertDialog с использованием View, необходимо вызвать метод `showAlertDialog`, который 
+`AlertDialogManager` - служит для демонстрации AlertDialog с использованием View, необходимо вызвать метод `showAlertDialog`, который 
 в качестве агруметов может принимать:
+* context
+* style - стиль для элементов дефолтного диалога (по умолчанию R.style.AlertDialogDefault)
 * title - Заголовок диалога
 * message - дополнительное сообщение
 * positiveButtonText - текст правой кнопки (по умолчанию "ОК") 
@@ -29,9 +31,9 @@ alerts
 
 ### Примеры
 
-View версия (ViewableAlertDialog):
+View версия (ViewableAlertDialog) ok/cancel диалога:
 ```kotlin
-ViewableAlertDialog.showAlertDialog(
+alertDialogManager.showAlertDialog(
                 activity,
                 title = "Ой, что-то пошло не так",
                 message = "Попробуйте ещё раз",
@@ -40,6 +42,24 @@ ViewableAlertDialog.showAlertDialog(
                 negativeBtnTitle = "Отмена"
             )
 ```
+
+View версия (ViewableAlertDialog) ok диалога:
+```kotlin
+alertDialogManager.showOkDialog(
+        dialog?.window?.decorView?.context ?: throw Exception(),
+        title = "Необходимо изменить настройки",
+        okButtonText = "Ок",
+        onOkAction = {
+            viewModel.dispatchAction(ItemAction.ChangeSettings)
+        }
+)
+```
+
+Для катомизации стилей элементов в дефолтной разметке диалога необходимо создать стиль - наследника от `ThemeOverlay.MaterialComponents.MaterialAlertDialog` и переопределить стили:
+* materialAlertDialogTitleTextStyle - стиль для заголока (наследник от `MaterialAlertDialog.MaterialComponents.Title.Text`)
+* materialAlertDialogBodyTextStyle - стиль для подзаголовка (наследник от `MaterialAlertDialog.MaterialComponents.Body.Text`)
+* buttonBarPositiveButtonStyle - стиль для позитивной кнопки (наследник от `Widget.MaterialComponents.Button.TextButton.Dialog`)
+* buttonBarNegativeButtonStyle - стиль для негативной кнопки (наследник от `Widget.MaterialComponents.Button.TextButton.Dialog`)
 
 Compose версия (ComposableAlertDialog):
 ```kotlin

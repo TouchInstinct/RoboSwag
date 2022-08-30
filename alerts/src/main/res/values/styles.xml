@@ -1,11 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="DialogButton">
+    <style name="AlertDialogDefault" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorSurface">#FFFFFF</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Text.Default</item>
+        <item name="buttonBarPositiveButtonStyle">@style/MaterialAlertDialog.MaterialComponents.Button.Default</item>
+        <item name="buttonBarNegativeButtonStyle">@style/MaterialAlertDialog.MaterialComponents.Button.Default</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.MaterialComponents.Body.Text.Default</item>
+    </style>
+
+    <style name="MaterialAlertDialog.MaterialComponents.Title.Text.Default" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">#383838</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_marginLeft">24dp</item>
+        <item name="android:layout_marginRight">24dp</item>
+        <item name="android:paddingBottom">16dp</item>
+    </style>
+
+    <style name="MaterialAlertDialog.MaterialComponents.Body.Text.Default" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
+        <item name="android:textColor">#383838</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_marginLeft">24dp</item>
+        <item name="android:layout_marginRight">24dp</item>
+        <item name="android:paddingBottom">28dp</item>
+        <item name="android:lineSpacingExtra">8dp</item>
+    </style>
+
+    <style name="MaterialAlertDialog.MaterialComponents.Button.Default" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">#383838</item>
         <item name="android:minWidth">56dp</item>
         <item name="android:gravity">center</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textSize">14sp</item>
         <item name="android:paddingTop">11dp</item>
         <item name="android:paddingBottom">9dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginRight">8dp</item>
     </style>
 </resources>

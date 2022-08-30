@@ -13,6 +13,7 @@ android {
 dependencies {
     implementation("androidx.core:core-ktx")
     implementation("androidx.constraintlayout:constraintlayout")
+    implementation("com.google.android.material:material")
     implementation project(":kotlin-extensions")
 
     implementation "androidx.compose.runtime:runtime:$composeVersion"
@@ -34,6 +35,12 @@ dependencies {
         implementation("androidx.constraintlayout:constraintlayout") {
             version {
                 require '2.2.0-alpha03'
+            }
+        }
+
+        implementation("com.google.android.material:material") {
+            version {
+                require '1.1.0'
             }
         }
     }
