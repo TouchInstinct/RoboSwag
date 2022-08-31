@@ -12,19 +12,18 @@ import androidx.fragment.app.DialogFragment
 import ru.touchin.roboswag.logging_reader.BuildConfig
 import ru.touchin.roboswag.logging_reader.R
 import ru.touchin.roboswag.logging_reader.databinding.DialogFragmentDebugLogsBinding
+import ru.touchin.roboswag.navigation_base.fragments.viewBinding
 import java.io.File
 
 class DebugLogsDialogFragment : DialogFragment() {
 
     private val logItemsList: MutableList<String> = mutableListOf()
-    private lateinit var binding: DialogFragmentDebugLogsBinding
+    private val binding: DialogFragmentDebugLogsBinding by viewBinding(DialogFragmentDebugLogsBinding::bind)
 
     override fun getTheme(): Int = R.style.DialogFullscreenTheme
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = DialogFragmentDebugLogsBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+            inflater.inflate(R.layout.dialog_fragment_debug_logs, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
