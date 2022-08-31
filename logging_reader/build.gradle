@@ -3,6 +3,7 @@ apply from: "../android-configs/lib-config.gradle"
 dependencies {
     implementation "androidx.recyclerview:recyclerview"
     implementation "androidx.constraintlayout:constraintlayout"
+    implementation "androidx.fragment:fragment-ktx"
 
     constraints {
         implementation("androidx.recyclerview:recyclerview") {
@@ -14,6 +15,12 @@ dependencies {
         implementation("androidx.constraintlayout:constraintlayout"){
             version {
                 require '2.2.0-alpha03'
+            }
+        }
+
+        implementation("androidx.fragment:fragment-ktx") {
+            version {
+                require '1.2.1'
             }
         }
     }

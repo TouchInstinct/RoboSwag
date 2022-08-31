@@ -1,18 +1,17 @@
-package ru.touchin.roboswag.core.log_file
+package ru.touchin.roboswag.loggging_reader
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import ru.touchin.roboswag.core.log.databinding.LogItemBinding
+import ru.touchin.roboswag.logging_reader.databinding.LogItemBinding
 
 class LogItemAdapter(private val context: Context, private val logItemList: MutableList<String>)
     : RecyclerView.Adapter<LogItemAdapter.LogItemViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LogItemViewHolder {
-        val binding = LogItemBinding.inflate(LayoutInflater.from(context),parent,false)
-        return LogItemViewHolder(binding)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = LogItemViewHolder(
+            binding = LogItemBinding.inflate(LayoutInflater.from(context), parent, false)
+    )
 
     override fun onBindViewHolder(holder: LogItemViewHolder, position: Int) {
         val logItem = logItemList[position]
@@ -23,12 +22,9 @@ class LogItemAdapter(private val context: Context, private val logItemList: Muta
         return logItemList.size
     }
 
-    class LogItemViewHolder(logItemLayoutBinding: LogItemBinding)
-        : RecyclerView.ViewHolder(logItemLayoutBinding.root){
+    class LogItemViewHolder(private val binding: LogItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        private val binding = logItemLayoutBinding
-
-        fun bind(logItem: String){
+        fun bind(logItem: String) {
             binding.logDescription.text = logItem
         }
     }
