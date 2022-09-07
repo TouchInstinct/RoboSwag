@@ -18,6 +18,10 @@ abstract class AbstractMapManager<TMapView : View, TMap : Any, TLocation : Any>(
 
     abstract fun getCameraTilt(): Float
 
+    abstract fun getDefaultDuration(): Float
+
+    abstract fun getDefaultZoomStep(): Int
+
     abstract fun moveCamera(
             target: TLocation,
             zoom: Float = getCameraZoom(),
@@ -29,12 +33,17 @@ abstract class AbstractMapManager<TMapView : View, TMap : Any, TLocation : Any>(
             target: TLocation,
             zoom: Float = getCameraZoom(),
             azimuth: Float = getCameraAzimuth(),
-            tilt: Float = getCameraTilt()
+            tilt: Float = getCameraTilt(),
+            animationDuration: Float = getDefaultDuration()
     )
 
-    abstract fun smoothMoveCamera(targets: List<TLocation>, padding: Int = 0)
+    abstract fun smoothMoveCamera(targets: List<TLocation>, padding: Int = 0, animationDuration: Float = getDefaultDuration())
 
-    abstract fun smoothMoveCamera(targets: List<TLocation>, width: Int, height: Int, padding: Int)
+    abstract fun smoothMoveCamera(targets: List<TLocation>, width: Int, height: Int, padding: Int, animationDuration: Float = getDefaultDuration())
+
+    abstract fun increaseZoom(target: TLocation, zoomIncreaseValue: Int = getDefaultZoomStep())
+
+    abstract fun decreaseZoom(target: TLocation, zoomIncreaseValue: Int = getDefaultZoomStep())
 
     abstract fun setMapAllGesturesEnabled(enabled: Boolean)
 

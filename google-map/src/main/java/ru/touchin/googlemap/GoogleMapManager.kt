@@ -13,6 +13,11 @@ import ru.touchin.basemap.AbstractMapManager
 @Suppress("detekt.TooManyFunctions")
 class GoogleMapManager(mapView: MapView) : AbstractMapManager<MapView, GoogleMap, LatLng>(mapView) {
 
+    companion object {
+        private const val CAMERA_ANIMATION_DURATION = 1f
+        private const val CAMERA_DEFAULT_STEP = 2
+    }
+
     override fun initialize(mapListener: AbstractMapListener<MapView, GoogleMap, LatLng>?) {
         super.initialize(mapListener)
         mapView.getMapAsync(::initMap)
@@ -77,22 +82,52 @@ class GoogleMapManager(mapView: MapView) : AbstractMapManager<MapView, GoogleMap
 
     override fun getCameraTilt(): Float = map.cameraPosition.tilt
 
+    override fun getDefaultDuration(): Float = CAMERA_ANIMATION_DURATION
+
+    override fun getDefaultZoomStep(): Int = CAMERA_DEFAULT_STEP
+
     override fun moveCamera(target: LatLng, zoom: Float, azimuth: Float, tilt: Float) {
         map.moveCamera(CameraUpdateFactory.newCameraPosition(buildCameraPosition(target, zoom, azimuth, tilt)))
     }
 
-    override fun smoothMoveCamera(target: LatLng, zoom: Float, azimuth: Float, tilt: Float) {
-        map.animateCamera(CameraUpdateFactory.newCameraPosition(buildCameraPosition(target, zoom, azimuth, tilt)))
+    override fun smoothMoveCamera(target: LatLng, zoom: Float, azimuth: Float, tilt: Float, animationDuration: Float) {
+        map.animateCamera(
+                CameraUpdateFactory.newCameraPosition(buildCameraPosition(target, zoom, azimuth, tilt)),
+                animationDuration.toInt(),
+                null
+        )
     }
 
-    override fun smoothMoveCamera(targets: List<LatLng>, padding: Int) {
+    override fun smoothMoveCamera(targets: List<LatLng>, padding: Int, animationDuration: Float) {
         val boundingBox = getBoundingBox(targets)
-        map.animateCamera(CameraUpdateFactory.newLatLngBounds(boundingBox, padding))
+        map.animateCamera(
+                CameraUpdateFactory.newLatLngBounds(boundingBox, padding),
+                animationDuration.toInt(),
+                null
+        )
     }
 
-    override fun smoothMoveCamera(targets: List<LatLng>, width: Int, height: Int, padding: Int) {
+    override fun smoothMoveCamera(targets: List<LatLng>, width: Int, height: Int, padding: Int, animationDuration: Float) {
         val boundingBox = getBoundingBox(targets)
-        map.animateCamera(CameraUpdateFactory.newLatLngBounds(boundingBox, width, height, padding))
+        map.animateCamera(
+                CameraUpdateFactory.newLatLngBounds(boundingBox, width, height, padding),
+                animationDuration.toInt(),
+                null
+        )
+    }
+
+    override fun increaseZoom(target: LatLng, zoomIncreaseValue: Int) {
+        smoothMoveCamera(
+                target = target,
+                zoom = getCameraZoom() + zoomIncreaseValue
+        )
+    }
+
+    override fun decreaseZoom(target: LatLng, zoomDecreaseValue: Int) {
+        smoothMoveCamera(
+                target = target,
+                zoom = getCameraZoom() - zoomDecreaseValue
+        )
     }
 
     override fun setMapAllGesturesEnabled(enabled: Boolean) = map.uiSettings.setAllGesturesEnabled(enabled)
