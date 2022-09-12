@@ -1,0 +1,7 @@
+apply from: "../android-configs/lib-config.gradle"
+
+dependencies {
+    constraints {
+
+    }
+}
