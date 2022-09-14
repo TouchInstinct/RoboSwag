@@ -136,7 +136,7 @@ class GooglePlacemarkManager<TClusterItem : ClusterItem>(
                         clusteringItems.filter { visibleRegion?.latLngBounds?.contains(it.position) == true }
                     }
                     .sample(CLUSTERING_NEW_LIST_CONSUMING_THROTTLE_MILLIS)
-                    .catch { e -> emit(lastVisibleItems) }
+                    .catch { emit(lastVisibleItems) }
                     .flowOn(Dispatchers.Main)
                     .collect { markersToShow ->
                         lastVisibleItems = markersToShow
