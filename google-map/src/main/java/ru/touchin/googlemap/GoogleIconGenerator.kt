@@ -40,11 +40,9 @@ open class GoogleIconGenerator<T : ClusterItem>(
                 BitmapDescriptorFactory.fromBitmap(it.toBitmap())
             }
 
-    override fun getClusterItemView(clusterItem: T) = clusterItemIconsCache.getOrPutIfNotNull(clusterItem) {
-        getClusterItemIcon(clusterItem)
-    }
+    override fun getClusterItemView(clusterItem: T): BitmapDescriptor? =
+            clusterItemIconsCache.getOrPutIfNotNull(clusterItem) { getClusterItemIcon(clusterItem) }
 
-    override fun getClusterView(cluster: Cluster<T>) = clusterIconsCache.getOrPutIfNotNull(cluster.size) {
-        getClusterIcon(cluster)
-    }
+    override fun getClusterView(cluster: Cluster<T>): BitmapDescriptor? =
+            clusterIconsCache.getOrPutIfNotNull(cluster.size) { getClusterIcon(cluster) }
 }

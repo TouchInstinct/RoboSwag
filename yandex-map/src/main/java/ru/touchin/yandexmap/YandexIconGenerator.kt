@@ -10,13 +10,11 @@ abstract class YandexIconGenerator<TPoint : PointModel>
     private val placemarksCache = mutableMapOf<TPoint, ViewProvider>()
     private val clustersCache = mutableMapOf<List<TPoint>, ViewProvider>()
 
-    override fun getClusterItemView(clusterItem: TPoint) = placemarksCache.getOrPutIfNotNull(clusterItem) {
-        getClusterItemIcon(clusterItem)
-    }
+    override fun getClusterItemView(clusterItem: TPoint): ViewProvider? =
+            placemarksCache.getOrPutIfNotNull(clusterItem) { getClusterItemIcon(clusterItem) }
 
-    override fun getClusterView(cluster: List<TPoint>) = clustersCache.getOrPutIfNotNull(cluster) {
-        getClusterIcon(cluster)
-    }
+    override fun getClusterView(cluster: List<TPoint>): ViewProvider? =
+            clustersCache.getOrPutIfNotNull(cluster) { getClusterIcon(cluster) }
 
     abstract override fun getClusterIcon(cluster: List<TPoint>): ViewProvider?
 

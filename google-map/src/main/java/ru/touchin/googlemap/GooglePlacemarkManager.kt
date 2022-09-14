@@ -158,7 +158,7 @@ class GooglePlacemarkManager<TClusterItem : ClusterItem>(
         onCameraIdleListener = listener
     }
 
-    companion object {
+    private companion object {
         const val CAMERA_DEBOUNCE_MILLI = 50L
 
         const val CLUSTERING_START_DEBOUNCE_MILLI = 50L

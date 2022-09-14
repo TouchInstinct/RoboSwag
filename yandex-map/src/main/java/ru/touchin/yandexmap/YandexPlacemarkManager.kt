@@ -28,6 +28,8 @@ class YandexPlacemarkManager<TPoint : PointModel>(
             clusterRadius: Double = 42.0,
             minZoom: Int = 35
     ) {
+        removeMarkers()
+
         val clusterizedCollection = mapView.map.mapObjects.addClusterizedPlacemarkCollection(this)
         val addedPlacemarks = clusterizedCollection.addEmptyPlacemarks(markers.map { it.point })
 
