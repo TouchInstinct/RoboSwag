@@ -22,42 +22,33 @@ object ComposableAlertDialog {
             negativeBtnTitle: String? = null,
             onNegativeAction: (() -> Unit)? = null
     ) {
-        if (isDialogOpen.value) {
-            AlertDialog(
-                    onDismissRequest = { isDialogOpen.value = false },
+        if (!isDialogOpen.value) return
 
-                    title = customTitle ?: { Text(title.orEmpty()) },
-                    text = customMessage ?: { Text(message.orEmpty()) },
-
-                    confirmButton = customConfirmBtn ?: {
-                        TextButton(
-                                onClick = {
-                                    onPositiveAction?.invoke()
-                                    isDialogOpen.value = false
-                                }
-                        ) {
-                            Text(positiveButtonText.orEmpty())
-                        }
-                    },
-
-                    dismissButton = when {
-                        customNegativeBtn != null -> customNegativeBtn
-                        else -> {
-                            negativeBtnTitle?.let { positiveText ->
-                                {
-                                    TextButton(
-                                            onClick = {
-                                                onNegativeAction?.invoke()
-                                                isDialogOpen.value = false
-                                            }
-                                    ) {
-                                        Text(positiveText)
-                                    }
-                                }
-                            }
-                        }
+        AlertDialog(
+                onDismissRequest = { isDialogOpen.value = false },
+                title = customTitle ?: { Text(title.orEmpty()) },
+                text = customMessage ?: { Text(message.orEmpty()) },
+                confirmButton = customConfirmBtn ?: createButton(positiveButtonText.orEmpty()) {
+                    onPositiveAction?.invoke()
+                    isDialogOpen.value = false
+                },
+                dismissButton = when {
+                    customNegativeBtn != null -> customNegativeBtn
+                    negativeBtnTitle != null -> createButton(negativeBtnTitle) {
+                        onNegativeAction?.invoke()
+                        isDialogOpen.value = false
                     }
-            )
-        }
+                    else -> null
+                }
+        )
     }
+
+    @Composable
+    private fun createButton(text: String, onClickAction: () -> Unit): @Composable (() -> Unit) =
+            {
+                TextButton(onClick = onClickAction) {
+                    Text(text)
+                }
+            }
+
 }

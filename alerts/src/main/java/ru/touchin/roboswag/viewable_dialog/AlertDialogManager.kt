@@ -3,6 +3,7 @@ package ru.touchin.roboswag.viewable_dialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.ContextThemeWrapper
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import ru.touchin.roboswag.alerts.R
@@ -26,19 +27,17 @@ class AlertDialogManager {
         MaterialAlertDialogBuilder(styledContext)
                 .setView(LayoutInflater.from(styledContext).inflate(dialogLayout, null))
                 .show()
-                .apply {
-                    setupAlertDialog(
-                            dialog = this,
-                            title = title,
-                            message = message,
-                            positiveButtonText = positiveButtonText,
-                            onPositiveClick = onPositiveAction,
-                            negativeButtonText = negativeBtnTitle,
-                            onNegativeClick = onNegativeAction,
-                            cancelable = cancelable,
-                            onCancelAction = onCancelAction
-                    )
-                }
+                .setupAlertDialog(
+                        title = title,
+                        message = message,
+                        positiveButtonText = positiveButtonText,
+                        onPositiveClick = onPositiveAction,
+                        negativeButtonText = negativeBtnTitle,
+                        onNegativeClick = onNegativeAction,
+                        cancelable = cancelable,
+                        onCancelAction = onCancelAction
+                )
+
     }
 
     fun showOkDialog(
@@ -61,9 +60,7 @@ class AlertDialogManager {
             onCancelAction = onCancelAction
     )
 
-
-    private fun setupAlertDialog(
-            dialog: androidx.appcompat.app.AlertDialog,
+    private fun AlertDialog.setupAlertDialog(
             title: String? = null,
             message: String? = null,
             positiveButtonText: String,
@@ -73,15 +70,15 @@ class AlertDialogManager {
             cancelable: Boolean = true,
             onCancelAction: () -> Unit = {}
     ) {
-        dialog.setCancelable(cancelable)
-        dialog.setOnDismissListener { onCancelAction() }
-        dialog.findViewById<TextView>(R.id.alert_title)?.setTextOrGone(title)
-        dialog.findViewById<TextView>(R.id.alert_message)?.setTextOrGone(message)
-        dialog.findViewById<TextView>(R.id.alert_positive_button)?.let { buttonView ->
-            setupButton(dialog, buttonView, positiveButtonText, onPositiveClick)
+        setCancelable(cancelable)
+        setOnDismissListener { onCancelAction() }
+        findViewById<TextView>(R.id.alert_title)?.setTextOrGone(title)
+        findViewById<TextView>(R.id.alert_message)?.setTextOrGone(message)
+        findViewById<TextView>(R.id.alert_positive_button)?.let { buttonView ->
+            setupButton(this, buttonView, positiveButtonText, onPositiveClick)
         }
-        dialog.findViewById<TextView>(R.id.alert_negative_button)?.let { buttonView ->
-            setupButton(dialog, buttonView, negativeButtonText, onNegativeClick)
+        findViewById<TextView>(R.id.alert_negative_button)?.let { buttonView ->
+            setupButton(this, buttonView, negativeButtonText, onNegativeClick)
         }
     }
 }
