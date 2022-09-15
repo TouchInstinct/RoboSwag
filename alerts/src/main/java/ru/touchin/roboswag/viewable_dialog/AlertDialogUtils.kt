@@ -13,11 +13,6 @@ fun setupButton(alertDialog: androidx.appcompat.app.AlertDialog, buttonView: Tex
 }
 
 fun TextView.setTextOrGone(text: CharSequence?) {
-    if (!text.isNullOrEmpty()) {
-        isVisible = true
-        setText(text)
-    } else {
-        isVisible = false
-        setText(null)
-    }
+    isVisible = !text.isNullOrEmpty()
+    setText(text)
 }
