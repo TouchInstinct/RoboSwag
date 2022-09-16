@@ -10,6 +10,7 @@ import ru.touchin.roboswag.alerts.R
 
 class AlertDialogManager {
 
+    @SuppressWarnings("detekt.LongParameterList")
     fun showAlertDialog(
             context: Context,
             style: Int = R.style.AlertDialogDefault,
