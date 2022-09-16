@@ -25,7 +25,7 @@ class AlertDialogManager {
             onCancelAction: () -> Unit = {}
     ) {
         val styledContext = ContextThemeWrapper(context, style)
-        
+
         MaterialAlertDialogBuilder(styledContext)
                 .setView(LayoutInflater.from(styledContext).inflate(dialogLayout, null))
                 .show()
