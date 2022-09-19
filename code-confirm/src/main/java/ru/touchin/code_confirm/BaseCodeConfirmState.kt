@@ -10,5 +10,8 @@ abstract class BaseCodeConfirmState(
         open var isRefreshCodeLoading: Boolean = false
 ) : ViewState {
 
+    val canRequestNewCode: Boolean
+        get() = isExpired && !isRefreshCodeLoading
+
     abstract fun <T : BaseCodeConfirmState> copyWith(updateBlock: T.() -> Unit): T
 }

@@ -1,6 +1,9 @@
 package ru.touchin.code_confirm
 
 import android.os.CountDownTimer
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.Date
 
 /** [LifeTimer] is extends [CountDownTimer] for countdown in seconds and lifetime text formatting
  * @param seconds Lifetime of timer in seconds
@@ -21,11 +24,12 @@ class LifeTimer(
     }
 
     companion object {
-        fun getFormattedCodeLifetimeString(secondsUntilFinished: Long): String {
-            val seconds = (secondsUntilFinished % 60).let { if (it < 10) "0$it" else "$it" }
-            val minutes = (secondsUntilFinished / 60).let { if (it < 10) "0$it" else "$it" }
-            return "$minutes:$seconds"
-        }
+
+        private val formatter = SimpleDateFormat("mm:ss", Locale.ROOT)
+
+        fun getFormattedCodeLifetimeString(secondsUntilFinished: Long): String =
+                formatter.format(Date(secondsUntilFinished * 1000L))
+
     }
 
 }
