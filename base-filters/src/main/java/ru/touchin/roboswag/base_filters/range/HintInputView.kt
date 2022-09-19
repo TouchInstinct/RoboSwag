@@ -3,13 +3,8 @@ package ru.touchin.roboswag.base_filters.range
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.withStyledAttributes
-import androidx.core.view.updateLayoutParams
-import ru.touchin.roboswag.base_filters.R
 import ru.touchin.roboswag.base_filters.databinding.ViewHintInputBinding
-import ru.touchin.roboswag.components.utils.px
 
 class HintInputView @JvmOverloads constructor(
         context: Context,
