@@ -24,7 +24,7 @@ private typealias OnSelectedItemsListener<ItemType> = (items: List<ItemType>) ->
  *  It must implement [BaseSelectionItem] abstract class.
  *
  *  @param HolderType Type of viewHolder in recyclerView.
- *  It must implement [BaseSelectionViewHolder] abstract class.
+ *  It must extend [BaseSelectionViewHolder] abstract class.
  *
  **/
 
