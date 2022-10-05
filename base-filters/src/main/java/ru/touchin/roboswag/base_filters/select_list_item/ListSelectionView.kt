@@ -2,11 +2,15 @@ package ru.touchin.roboswag.base_filters.select_list_item
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
-import android.widget.FrameLayout
+import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import androidx.annotation.StyleRes
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.touchin.roboswag.base_filters.databinding.SelectionItemBinding
-import ru.touchin.roboswag.base_filters.databinding.SingleSelectionLayoutBinding
 import ru.touchin.roboswag.base_filters.select_list_item.adapter.BaseSelectionViewHolder
 import ru.touchin.roboswag.base_filters.select_list_item.adapter.HolderFactoryType
 import ru.touchin.roboswag.base_filters.select_list_item.adapter.SelectionItemViewHolder
@@ -31,11 +35,14 @@ private typealias OnSelectedItemsListener<ItemType> = (items: List<ItemType>) ->
 class ListSelectionView<ItemType, HolderType> @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0,
-        defStyleRes: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr, defStyleRes)
+        defStyleAttr: Int = 0
+) : RecyclerView(context, attrs, defStyleAttr)
         where ItemType : BaseSelectionItem,
               HolderType : BaseSelectionViewHolder<ItemType> {
+
+    enum class SelectionType { SINGLE_SELECT, MULTI_SELECT }
+
+    constructor(context: Context, @StyleRes themeResId: Int) : this(ContextThemeWrapper(context, themeResId))
 
     private var mutableItems: List<ItemType> = emptyList()
     private var selectionType = SelectionType.SINGLE_SELECT
@@ -43,6 +50,11 @@ class ListSelectionView<ItemType, HolderType> @JvmOverloads constructor(
     private var onSelectedItemChanged: OnSelectedItemListener<ItemType>? = null
     private var onSelectedItemsChanged: OnSelectedItemsListener<ItemType>? = null
     private var factory: HolderFactoryType<ItemType> = getDefaultFactory()
+
+    init {
+        layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+        layoutManager = LinearLayoutManager(context)
+    }
 
     private fun getDefaultFactory(): HolderFactoryType<ItemType> = { parent, clickListener, selectionType ->
         SelectionItemViewHolder(
@@ -52,9 +64,7 @@ class ListSelectionView<ItemType, HolderType> @JvmOverloads constructor(
         )
     }
 
-    private val binding = SingleSelectionLayoutBinding.inflate(LayoutInflater.from(context), this, true)
-
-    private val adapter by lazy {
+    private val selectionAdapter by lazy {
         SheetSelectionAdapter(
                 onItemSelectAction = onItemSelectedListener,
                 selectionType = selectionType,
@@ -68,8 +78,13 @@ class ListSelectionView<ItemType, HolderType> @JvmOverloads constructor(
         onSelectedItemsChanged?.invoke(mutableItems)
     }
 
+    fun updateItems(items: List<ItemType>) {
+        mutableItems = items
+        updateList()
+    }
+
     private fun updateList() {
-        adapter.submitList(mutableItems)
+        selectionAdapter.submitList(mutableItems)
     }
 
     private fun updateAfterSelection(selectedItem: ItemType) {
@@ -99,7 +114,7 @@ class ListSelectionView<ItemType, HolderType> @JvmOverloads constructor(
         }
 
         fun addItemDecoration(itemDecoration: RecyclerView.ItemDecoration) = apply {
-            binding.itemsRecycler.addItemDecoration(itemDecoration)
+            this@ListSelectionView.addItemDecoration(itemDecoration)
         }
 
         fun onSelectedItemListener(listener: OnSelectedItemListener<ItemType>) = apply {
@@ -115,7 +130,7 @@ class ListSelectionView<ItemType, HolderType> @JvmOverloads constructor(
         }
 
         fun build() = this@ListSelectionView.also {
-            binding.itemsRecycler.adapter = adapter
+            it.adapter = selectionAdapter
             updateList()
         }
     }

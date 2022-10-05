@@ -2,13 +2,17 @@ package ru.touchin.roboswag.base_filters.tags
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.LayoutRes
+import androidx.core.view.children
 import com.google.android.material.chip.ChipGroup
 import ru.touchin.roboswag.base_filters.R
 import ru.touchin.roboswag.base_filters.SelectionType
+import ru.touchin.roboswag.base_filters.databinding.LayoutMultiLineTagGroupBinding
+import ru.touchin.roboswag.base_filters.databinding.LayoutSingleLineTagGroupBinding
 import ru.touchin.roboswag.base_filters.tags.model.FilterItem
 import ru.touchin.roboswag.base_filters.tags.model.FilterProperty
 import ru.touchin.roboswag.components.utils.UiUtils
@@ -45,40 +49,45 @@ class TagLayoutView @JvmOverloads constructor(
     @LayoutRes
     private var moreTagLayout: Int = tagLayout
 
-    private fun inflateAndGetChipGroup(isSingleLine: Boolean): ChipGroup {
-        val layoutId = if (isSingleLine) R.layout.layout_single_line_tag_group else R.layout.layout_multi_line_tag_group
-        return UiUtils.inflate(layoutId, this)
-                .also { addView(it) }
-                .findViewById(R.id.tag_group)
+    private fun inflateAndGetChipGroup(isSingleLine: Boolean): ChipGroup = when (isSingleLine) {
+        true -> LayoutSingleLineTagGroupBinding.inflate(LayoutInflater.from(context), this, true).tagGroup
+        false -> LayoutMultiLineTagGroupBinding.inflate(LayoutInflater.from(context), this, true).tagGroup
     }
 
-    private fun createTag(property: FilterProperty): TagView =
-            (UiUtils.inflate(tagLayout, this) as? TagView)?.apply {
-                text = property.title
-                isChecked = property.isSelected
-                tagId = property.id
+    private fun createTag(property: FilterProperty): TagView {
+        val tagView = UiUtils.inflate(tagLayout, this)
+        require(tagView is TagView) { "Layout for tag must contain TagView as root view" }
 
-                setOnCheckAction { view, isChecked ->
-                    when {
-                        selectionType == SelectionType.SINGLE_SELECT && isChecked -> clearCheck(property.id)
-                        selectionType == SelectionType.MULTI_SELECT && isChecked -> clearExcludedCheck(property)
-                    }
-                    view.isChecked = isChecked
-                    propertySelectedAction?.invoke(property.copyWithSelected(isSelected = isChecked))
+        return tagView.apply {
+            text = property.title
+            isChecked = property.isSelected
+            tagId = property.id
+
+            setOnCheckAction { view, isChecked ->
+                when {
+                    selectionType == SelectionType.SINGLE_SELECT && isChecked -> clearCheck(property.id)
+                    selectionType == SelectionType.MULTI_SELECT && isChecked -> clearExcludedCheck(property)
                 }
-            } ?: throw IllegalArgumentException("Layout for tag must be extended from TagView")
-
-    private fun createMoreChip(filter: FilterItem): View? =
-            (UiUtils.inflate(moreTagLayout, this) as? TextView)?.apply {
-                text = moreTagText
-                setOnClickListener { moreValuesAction?.invoke(filter) }
+                view.isChecked = isChecked
+                propertySelectedAction?.invoke(property.copyWithSelected(isSelected = isChecked))
             }
+        }
+    }
+
+    private fun createMoreTag(filter: FilterItem): View {
+        val moreTag = UiUtils.inflate(moreTagLayout, this)
+        require(moreTag is TextView) { "Layout for more tag must contain TextView as root view" }
+
+        return moreTag.apply {
+            text = moreTagText
+            setOnClickListener { moreValuesAction?.invoke(filter) }
+        }
+    }
 
     private fun clearCheck(selectedId: Int) {
-        for (i in 0 until tagsContainer.childCount) {
-            val child = tagsContainer.getChildAt(i)
-            if (child is TagView && child.tagId != selectedId) {
-                child.isChecked = false
+        tagsContainer.children.forEach { tagView ->
+            if (tagView is TagView && tagView.tagId != selectedId) {
+                tagView.isChecked = false
             }
         }
     }
@@ -86,10 +95,9 @@ class TagLayoutView @JvmOverloads constructor(
     private fun clearExcludedCheck(property: FilterProperty) {
         val excludingIds = property.excludes.map { it.id }
 
-        for (i in 0 until tagsContainer.childCount) {
-            val child = tagsContainer.getChildAt(i)
-            if (child is TagView && child.tagId in excludingIds) {
-                child.isChecked = false
+        tagsContainer.children.forEach { tagView ->
+            if (tagView is TagView && tagView.tagId in excludingIds) {
+                tagView.isChecked = false
             }
         }
     }
@@ -155,7 +163,7 @@ class TagLayoutView @JvmOverloads constructor(
                 }
 
                 if (filterItem.properties.size > maxTagCount) {
-                    createMoreChip(filterItem)?.let { addView(it) }
+                    addView(createMoreTag(filterItem))
                 }
             }
         }
