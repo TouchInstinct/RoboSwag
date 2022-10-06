@@ -5,9 +5,10 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Paint.Cap
 import android.util.AttributeSet
-import android.widget.TextView
 import androidx.annotation.StyleRes
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.withStyledAttributes
+import androidx.core.widget.TextViewCompat
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
@@ -33,7 +34,9 @@ class FilterRangeSlider @JvmOverloads constructor(
     private var inactiveTickColor: Int = context.getColorSimple(R.color.slider_point_inactive)
     private var activeTickColor: Int = context.getColorSimple(R.color.slider_point_active)
     private var sliderPointSize: Float = 5f
-    @StyleRes private var stepTextAppearance: Int = -1
+
+    @StyleRes
+    private var stepTextAppearance: Int = -1
     private var shape: Shape = Shape.CIRCLE
 
     private var trackCenterY: Float = -1F
@@ -76,17 +79,17 @@ class FilterRangeSlider @JvmOverloads constructor(
     }
 
     // Using TextView as a bridge to get text params
-    private val stepValuePaint: Paint = TextView(context)
-            .apply { stepTextAppearance.takeIf { it != -1 }?.let { setTextAppearance(it) } }
-            .let { textView ->
-                Paint().apply {
-                    isAntiAlias = true
-                    color = textView.currentTextColor
-                    textSize = textView.textSize
-                    typeface = textView.typeface
-                    textAlign = Paint.Align.CENTER
-                }
-            }
+    private val stepValuePaint: Paint = AppCompatTextView(context).apply {
+        stepTextAppearance.takeIf { it != -1 }?.let { TextViewCompat.setTextAppearance(this, it) }
+    }.let { textView ->
+        Paint().apply {
+            isAntiAlias = true
+            color = textView.currentTextColor
+            textSize = textView.textSize
+            typeface = textView.typeface
+            textAlign = Paint.Align.CENTER
+        }
+    }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)

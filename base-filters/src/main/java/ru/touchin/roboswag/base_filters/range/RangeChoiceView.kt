@@ -1,5 +1,6 @@
 package ru.touchin.roboswag.base_filters.range
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.ContextThemeWrapper
@@ -96,13 +97,13 @@ class RangeChoiceView @JvmOverloads constructor(
             }
 
             rangeSlider.addOnSliderTouchListener(object : RangeSlider.OnSliderTouchListener {
-                @SuppressWarnings("detekt.EmptyFunctionBlock")
-                override fun onStartTrackingTouch(slider: RangeSlider) {
-                }
+                @SuppressLint("RestrictedApi")
+                override fun onStartTrackingTouch(slider: RangeSlider) = Unit
 
+                @SuppressLint("RestrictedApi")
                 override fun onStopTrackingTouch(slider: RangeSlider) {
                     binding.rangeSlider.apply {
-                        when(focusedThumbIndex) {
+                        when (focusedThumbIndex) {
                             0 -> {
                                 rangeItem = rangeItem?.setValue(selectedMinValue = from().toInt())
                                 rangeItem?.let { valueChangedAction?.invoke(it) }
@@ -119,7 +120,7 @@ class RangeChoiceView @JvmOverloads constructor(
     }
 
     private fun HintInputView.addChangeValueListener(updateValue: (String) -> FilterRangeItem?) {
-        getEditText().setOnEditorActionListener { view, actionId, _ ->
+        setOnEditorActionListener { view, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 rangeItem = updateValue(view.text.toString().filterNot { it.isWhitespace() })
                 rangeItem?.let { valueChangedAction?.invoke(it) }
@@ -140,8 +141,8 @@ class RangeChoiceView @JvmOverloads constructor(
         val isMaxValueUpdated = selectedMaxValue != selectedValues?.max
         val isMinValueUpdated = selectedMinValue != selectedValues?.min
 
-        val isMinValueOutOfRange = selectedMinValue != null && isMinValueUpdated && selectedMinValue > selectedMaxValue ?: end
-        val isMaxValueOutOfRange = selectedMaxValue != null && isMaxValueUpdated && selectedMaxValue < selectedMinValue ?: start
+        val isMinValueOutOfRange = selectedMinValue != null && isMinValueUpdated && selectedMinValue > (selectedMaxValue ?: end)
+        val isMaxValueOutOfRange = selectedMaxValue != null && isMaxValueUpdated && selectedMaxValue < (selectedMinValue ?: start)
 
         val updatedValues = when {
             selectedMaxValue == end && selectedMinValue == start -> null
