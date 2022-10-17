@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="slider_point_inactive">#B9B9B9</color>
+    <color name="slider_point_active">#E35100</color>
+    <color name="slider_track_active_part">#EE9766</color>
+    <color name="slider_track_inactive_part">#E7E7E7</color>
+    <color name="slider_thumb">#E35100</color>
+</resources>

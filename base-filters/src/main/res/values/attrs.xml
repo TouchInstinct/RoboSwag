@@ -6,4 +6,31 @@
         <attr name="sheetSelection_radioStyle" format="reference" />
     </declare-styleable>
 
+    <declare-styleable name="FilterRangeSlider">
+        <attr name="filterRange_activeTickColor" format="color"/>
+        <attr name="filterRange_inactiveTickColor" format="color"/>
+        <attr name="filterRange_stepValueMarginTop" format="dimension"/>
+        <attr name="filterRange_sliderPointSize" format="dimension"/>
+        <attr name="filterRange_stepTextAppearance" format="reference"/>
+        <attr name="filterRange_pointShape" format="enum">
+            <enum name="circle" value="0" />
+            <enum name="cut" value="1" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="FilterRangeChoice">
+        <attr name="filterRange_sliderStyle" format="reference" />
+        <attr name="filterRange_hintViewStyle" format="reference" />
+        <attr name="filterRange_editTextStyle" format="reference" />
+        <attr name="filterRange_sliderMargin" format="dimension" />
+        <attr name="filterRange_startHint" format="reference" />
+        <attr name="filterRange_endHint" format="reference" />
+        <attr name="filterRange_theme" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="FilterEditTextWithHint">
+        <attr name="filterRange_hintTextStyle" format="reference" />
+        <attr name="filterRange_valueEditTextStyle" format="reference" />
+    </declare-styleable>
+
 </resources>

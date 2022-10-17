@@ -4,6 +4,7 @@
 
 1. Выбор одного/нескольких из доступных значений списка
 2. Выбор одного/нескольких значений из перечня тегов
+3. Выбор минимального и максимального значения из диапозона
 
 # Использование
 
@@ -89,8 +90,8 @@ val selectorView = ListSelectionView(newContext)
 
 ## 2. Выбор одного/нескольких значений из перечня тегов
 
-`TagLayoutView` - view-контейнер для тегов
-`TagView` - view для тега. <em>Кастомная разметка для тега должна содержать в корне `TagView`</em>
+* `TagLayoutView` - view-контейнер для тегов
+* `TagView` - view для тега. <em>Кастомная разметка для тега должна содержать в корне `TagView`</em>
 
 ### Как использовать
 ``` kotlin
@@ -116,3 +117,62 @@ binding.tagItemLayout
 * `onMoreValuesAction(FilterMoreAction)` и `onPropertySelectedAction(PropertySelectedAction)` используются для передачи колбэков на клик по тегу типа "Еще" и обычного тега соответственно
 * после вызова конфигурационных методов обязательно необходимо вызать метод `build()`
 * в Builder необходимо передать объект `filterItem: FilterItem`
+
+
+## 3. Выбор минимального и максимального значения из диапозона
+
+* `RangeChoiceView` - контейнер для слайдера и редактируемых полей
+* `FilterRangeSlider` - слайдер - <em>Можно использовать как отдельный элемент</em>
+* `HintInputView` - view для редактируемого поля начала и окончания диапозона
+
+### Как использовать
+
+В разметке
+``` xml
+<ru.touchin.roboswag.base_filters.range.RangeChoiceView
+        android:id="@+id/range_values_test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/FilterRangeChoice" //не забудьте указать стиль
+        app:layout_constraintTop_toTopOf="parent" />
+```
+
+Настройка в коде
+``` kotlin
+fun setupValues(item: FilterRangeItem) {
+            binding.rangeValuesTest.setupRangeValues(
+                    rangeFilterItem = item,
+                    onChangeCallback = callback
+            )
+        }
+
+        fun resetValues() {
+            binding.rangeValuesTest.resetRangeValue()
+        }
+```
+### Конфигурации
+Вся конфигурация вьюх осуществляется через стили:
+* Для `RangeChoiceView`:
+  * `filterRange_sliderMargin` - расстояние от слайдера до редактируемых полей
+  * `filterRange_startHint` - ссылка на строку с текстом подсказки в редактируемом поле для начального значения
+  * `filterRange_endHint` - ссылка на строку с текстом подсказки в редактируемом поле для конечного значения
+  * `filterRange_theme` - ссылка на тему
+* В теме:
+  * атрибут `filterRange_sliderStyle` - ссылка на стиль слайдера
+  * атрибут `filterRange_hintViewStyle` - ссылка на стиль `HintInputView`
+  * атрибут `filterRange_hintTextStyle` - ссылка на стиль `TextView` внутри `HintInputView`
+  * атрибут `filterRange_valueEditTextStyle` - ссылка на стиль `EditText` внутри `HintInputView`
+* Для `FilterRangeSlider`:
+  * `trackColorActive` 
+  * `trackColorInactive`
+  * `trackHeight`
+  * `thumbElevation`
+  * `thumbColor`
+  * `labelBehavior`
+  * `haloRadius`
+  * `filterRange_stepTextAppearance`
+  * `filterRange_activeTickColor`
+  * `filterRange_inactiveTickColor`
+  * `filterRange_stepValueMarginTop`
+  * `filterRange_sliderPointSize`
+  * `filterRange_pointShape`
