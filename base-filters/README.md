@@ -2,13 +2,12 @@
 
 Модуль содержит реализацию следующих типов фильтров:
 
-1. Выбор одного из доступных значений списка
-2. Выбор нескольких доступных значений из списка
-3. <em>добавить остальные по ходу реализаации</em>
+1. Выбор одного/нескольких из доступных значений списка
+2. Выбор одного/нескольких значений из перечня тегов
 
 # Использование
 
-## Выбор одного/нескольких из доступных значений списка
+## 1. Выбор одного/нескольких из доступных значений списка
 
 ### Как использовать
 ``` kotlin
@@ -54,7 +53,7 @@ val selectorView = ListSelectionView<TestSelectionItem, TestItemViewHolder>(cont
 
 ### Кастомизация стиля дефолтной реализации ViewHolder без необходимости создания кастомного layout и viewHolder
 
-#### 1. Определить кастомную тему и стили элементов
+#### 1) Определить кастомную тему и стили элементов
 1. Стиль для **текста элемента списка** должен быть наследником стиля `Widget.FilterSelection.Item`
 ``` xml
 <style name="Widget.Custom.FilterSelection.Item" parent="@style/Widget.FilterSelection.Item">
@@ -78,7 +77,7 @@ val selectorView = ListSelectionView<TestSelectionItem, TestItemViewHolder>(cont
         <item name="sheetSelection_radioStyle">@style/Widget.Custom.FilterSelection.Radio</item>
 </style>
 ```
-#### 2. Применить тему при создании view
+#### 2) Применить тему при создании view
 При создании вью в коде можно указать тему, используя `ContextThemeWrapper`
 ``` kotlin
 val newContext = ContextThemeWrapper(requireContext(), R.style.Theme_Custom_FilterSelection)
@@ -87,3 +86,33 @@ val selectorView = ListSelectionView(newContext)
         ...
         .build()
 ```
+
+## 2. Выбор одного/нескольких значений из перечня тегов
+
+`TagLayoutView` - view-контейнер для тегов
+`TagView` - view для тега. <em>Кастомная разметка для тега должна содержать в корне `TagView`</em>
+
+### Как использовать
+``` kotlin
+binding.tagItemLayout
+        .Builder(getFilterItem())
+        .setSpacing(16)
+        .setSelectionType(SelectionType.MULTI_SELECT) // по умолчанию
+        .isSingleLine(false)    // по умолчанию
+        .onPropertySelectedAction { filterProperty: FilterProperty ->
+            //Do something
+        }
+        .build()
+```
+### Конфигурации
+* метод `setSelectionType(SelectionType)` конфигурирует тип выбора:
+  * `SINGLE_SELECT`  - выбор одного варианта сбрасывает select у всех остальных
+  * `MULTI_SELECT` - <em>по умолчанию</em> - мультивыбор тегов с учетом исключающих фильтров
+* метод `isSingleLine(Boolean)` конфигурирует вид контейнера с тегами: `true` соответствует горизонтальному контейнеру со скроллом
+* `setTagLayout(Int)` устанавливает разметку для тега. Если не задано - то используется дефолтная разметка `layout_default_tag.xml`
+* `setMaxTagCount(Int)` позволяет ограничить количество отображаемых тегов. По умолчанию ограничения нет.
+* `setMoreTagLayout(Int, String)` устанавливает разметку для тега, который отображается для дополнительного тега. Если не указана - то тег не будет создан
+* `setSpacing(Int)`, `setSpacingHorizontal(Int)` и `setSpacingVertical(Int)` можно использовать для настройки расстояния между тегами. По умолчанию - 0
+* `onMoreValuesAction(FilterMoreAction)` и `onPropertySelectedAction(PropertySelectedAction)` используются для передачи колбэков на клик по тегу типа "Еще" и обычного тега соответственно
+* после вызова конфигурационных методов обязательно необходимо вызать метод `build()`
+* в Builder необходимо передать объект `filterItem: FilterItem`

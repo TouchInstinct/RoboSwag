@@ -1,8 +1,8 @@
 package ru.touchin.roboswag.base_filters.select_list_item.adapter
 
 import android.view.ViewGroup
-import ru.touchin.roboswag.base_filters.select_list_item.ListSelectionView.SelectionType
 import ru.touchin.roboswag.base_filters.select_list_item.model.BaseSelectionItem
+import ru.touchin.roboswag.base_filters.SelectionType
 import ru.touchin.roboswag.recyclerview_adapters.adapters.ItemAdapterDelegate
 
 typealias HolderFactoryType<ItemType> = (ViewGroup, (ItemType) -> Unit, SelectionType) -> BaseSelectionViewHolder<ItemType>

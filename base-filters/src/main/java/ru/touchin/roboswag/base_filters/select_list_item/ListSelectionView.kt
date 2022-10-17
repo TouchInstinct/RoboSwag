@@ -16,6 +16,7 @@ import ru.touchin.roboswag.base_filters.select_list_item.adapter.HolderFactoryTy
 import ru.touchin.roboswag.base_filters.select_list_item.adapter.SelectionItemViewHolder
 import ru.touchin.roboswag.base_filters.select_list_item.adapter.SheetSelectionAdapter
 import ru.touchin.roboswag.base_filters.select_list_item.model.BaseSelectionItem
+import ru.touchin.roboswag.base_filters.SelectionType
 
 private typealias OnSelectedItemListener<ItemType> = (item: ItemType) -> Unit
 private typealias OnSelectedItemsListener<ItemType> = (items: List<ItemType>) -> Unit

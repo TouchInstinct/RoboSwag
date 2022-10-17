@@ -1,13 +1,13 @@
 package ru.touchin.roboswag.base_filters.select_list_item.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import ru.touchin.roboswag.base_filters.select_list_item.ListSelectionView
 import ru.touchin.roboswag.base_filters.select_list_item.model.BaseSelectionItem
+import ru.touchin.roboswag.base_filters.SelectionType
 import ru.touchin.roboswag.recyclerview_adapters.adapters.DelegationListAdapter
 
 class SheetSelectionAdapter<ItemType : BaseSelectionItem>(
         onItemSelectAction: (ItemType) -> Unit,
-        selectionType: ListSelectionView.SelectionType,
+        selectionType: SelectionType,
         factory: HolderFactoryType<ItemType>
 ) : DelegationListAdapter<BaseSelectionItem>(object : DiffUtil.ItemCallback<BaseSelectionItem>() {
 
