@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="FilterSelection">
+        <attr name="sheetSelection_itemStyle" format="reference" />
+        <attr name="sheetSelection_radioStyle" format="reference" />
+    </declare-styleable>
+
+</resources>
