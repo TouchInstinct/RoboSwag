@@ -43,7 +43,7 @@ abstract class AbstractMapManager<TMapView : View, TMap : Any, TLocation : Any>(
 
     abstract fun increaseZoom(target: TLocation, zoomIncreaseValue: Int = getDefaultZoomStep())
 
-    abstract fun decreaseZoom(target: TLocation, zoomIncreaseValue: Int = getDefaultZoomStep())
+    abstract fun decreaseZoom(target: TLocation, zoomDecreaseValue: Int = getDefaultZoomStep())
 
     abstract fun setMapAllGesturesEnabled(enabled: Boolean)
 

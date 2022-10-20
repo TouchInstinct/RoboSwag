@@ -20,7 +20,7 @@ class GoogleMapManager(mapView: MapView) : AbstractMapManager<MapView, GoogleMap
 
     override fun initialize(mapListener: AbstractMapListener<MapView, GoogleMap, LatLng>?) {
         super.initialize(mapListener)
-        mapView.getMapAsync(::initMap)
+        mapView.getMapAsync(this::initMap)
     }
 
     override fun initMap(map: GoogleMap) {

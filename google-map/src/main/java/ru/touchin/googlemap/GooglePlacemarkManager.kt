@@ -12,17 +12,19 @@ import com.google.maps.android.clustering.algo.Algorithm
 import com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm
 import com.google.maps.android.clustering.algo.PreCachingAlgorithmDecorator
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.sample
+
+@OptIn(FlowPreview::class)
 
 class GooglePlacemarkManager<TClusterItem : ClusterItem>(
         context: Context,
@@ -47,15 +49,14 @@ class GooglePlacemarkManager<TClusterItem : ClusterItem>(
 
     private val markers = mutableListOf<TClusterItem>()
     private var lastVisibleItems = emptyList<TClusterItem>()
-    private var onCameraIdleListener: (() -> Unit)? = null
+
+    var onCameraIdleListener: (() -> Unit)? = null
 
     var clusterRenderer: GoogleMapItemRenderer<TClusterItem>? = null
         set(value) {
             field = value
             setRenderer(value)
         }
-
-    private val lock = Any()
 
     init {
         googleMap.setOnCameraIdleListener(this)
@@ -65,40 +66,28 @@ class GooglePlacemarkManager<TClusterItem : ClusterItem>(
         setOnClusterItemClickListener(clusterItemTapAction)
     }
 
-    fun setItems(items: Collection<TClusterItem>) {
-        synchronized(lock) {
-            markers.clear()
-            markers.addAll(items)
-            onDataChanged()
-        }
-    }
-
+    @Synchronized
     override fun addItems(items: Collection<TClusterItem>) {
-        synchronized(lock) {
-            markers.addAll(items)
-            onDataChanged()
-        }
+        markers.addAll(items)
+        onDataChanged()
     }
 
+    @Synchronized
     override fun addItem(clusterItem: TClusterItem) {
-        synchronized(lock) {
-            markers.add(clusterItem)
-            onDataChanged()
-        }
+        markers.add(clusterItem)
+        onDataChanged()
     }
 
+    @Synchronized
     override fun removeItem(atmClusterItem: TClusterItem) {
-        synchronized(lock) {
-            markers.remove(atmClusterItem)
-            onDataChanged()
-        }
+        markers.remove(atmClusterItem)
+        onDataChanged()
     }
 
+    @Synchronized
     override fun clearItems() {
-        synchronized(lock) {
-            markers.clear()
-            onDataChanged()
-        }
+        markers.clear()
+        onDataChanged()
     }
 
     override fun onCameraIdle() {
@@ -106,22 +95,11 @@ class GooglePlacemarkManager<TClusterItem : ClusterItem>(
         onCameraIdleEvent.tryEmit(true)
     }
 
-    private fun onDataChanged() {
-        onVisibilityChangedEvent.tryEmit(getData())
-    }
-
-    private fun getData(): Pair<VisibleRegion?, List<TClusterItem>> =
-            googleMap.projection.visibleRegion to markers
-
-    private fun listenToCameraIdleEvents() {
-        cameraIdleJob = lifecycleOwner.lifecycleScope.launchWhenStarted {
-            onCameraIdleEvent
-                    .debounce(CAMERA_DEBOUNCE_MILLI)
-                    .flowOn(Dispatchers.Main)
-                    .collect {
-                        onCameraIdleListener?.invoke()
-                    }
-        }
+    @Synchronized
+    fun setItems(items: Collection<TClusterItem>) {
+        markers.clear()
+        markers.addAll(items)
+        onDataChanged()
     }
 
     fun startClustering() {
@@ -131,10 +109,7 @@ class GooglePlacemarkManager<TClusterItem : ClusterItem>(
                     .debounce(CLUSTERING_START_DEBOUNCE_MILLI)
                     .flowOn(Dispatchers.Default)
                     .onStart { emit(getData()) }
-                    .filter { (visibleRegion, _) -> visibleRegion != null }
-                    .map { (visibleRegion, clusteringItems) ->
-                        clusteringItems.filter { visibleRegion?.latLngBounds?.contains(it.position) == true }
-                    }
+                    .mapNotNull { (region, items) -> findItemsInRegion(region, items) }
                     .sample(CLUSTERING_NEW_LIST_CONSUMING_THROTTLE_MILLIS)
                     .catch { emit(lastVisibleItems) }
                     .flowOn(Dispatchers.Main)
@@ -148,15 +123,31 @@ class GooglePlacemarkManager<TClusterItem : ClusterItem>(
         listenToCameraIdleEvents()
     }
 
+    private fun listenToCameraIdleEvents() {
+        cameraIdleJob = lifecycleOwner.lifecycleScope.launchWhenStarted {
+            onCameraIdleEvent
+                    .debounce(CAMERA_DEBOUNCE_MILLI)
+                    .flowOn(Dispatchers.Main)
+                    .collect {
+                        onCameraIdleListener?.invoke()
+                    }
+        }
+    }
+
     fun stopClustering() {
         clusteringJob?.cancel()
         cameraIdleJob?.cancel()
     }
 
-    fun setOnCameraIdleListener(listener: () -> Unit) {
-        if (onCameraIdleListener != null) return
-        onCameraIdleListener = listener
+    private fun onDataChanged() {
+        onVisibilityChangedEvent.tryEmit(getData())
     }
+
+    private fun getData(): Pair<VisibleRegion?, List<TClusterItem>> =
+            googleMap.projection.visibleRegion to markers
+
+    private fun findItemsInRegion(region: VisibleRegion?, items: List<TClusterItem>): List<TClusterItem>? =
+            region?.let { items.filter { item -> item.position in region.latLngBounds } }
 
     private companion object {
         const val CAMERA_DEBOUNCE_MILLI = 50L

@@ -135,10 +135,12 @@ class YandexMapManager(
     }
 
     override fun setMapAllGesturesEnabled(enabled: Boolean) {
-        map.isRotateGesturesEnabled = enabled
-        map.isScrollGesturesEnabled = enabled
-        map.isTiltGesturesEnabled = enabled
-        map.isZoomGesturesEnabled = enabled
+        with(map) {
+            isRotateGesturesEnabled = enabled
+            isScrollGesturesEnabled = enabled
+            isTiltGesturesEnabled = enabled
+            isZoomGesturesEnabled = enabled
+        }
     }
 
     override fun setMyLocationEnabled(enabled: Boolean) {

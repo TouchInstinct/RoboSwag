@@ -15,6 +15,11 @@ class YandexPlacemarkManager<TPoint : PointModel>(
         private val markerTapAction: (MapObject, Point) -> Boolean,
 ) : ClusterListener, ClusterTapListener, MapObjectTapListener {
 
+    private companion object {
+        const val DEFAULT_CLUSTER_RADIUS = 42.0
+        const val DEFAULT_MIN_ZOOM = 35
+    }
+
     private val markers = mutableListOf<TPoint>()
     private var placemarkCollection: ClusterizedPlacemarkCollection? = null
 
@@ -25,8 +30,8 @@ class YandexPlacemarkManager<TPoint : PointModel>(
 
     fun addMarkersOnMap(
             mapView: MapView,
-            clusterRadius: Double = 42.0,
-            minZoom: Int = 35
+            clusterRadius: Double = DEFAULT_CLUSTER_RADIUS,
+            minZoom: Int = DEFAULT_MIN_ZOOM
     ) {
         removeMarkers()
 
@@ -52,9 +57,8 @@ class YandexPlacemarkManager<TPoint : PointModel>(
     }
 
     override fun onClusterAdded(cluster: Cluster) {
-        mapItemRenderer.getClusterIcon(cluster.toPlacemarkList())?.let {
-            cluster.appearance.setView(it)
-        }
+        val clusterIcon = mapItemRenderer.getClusterIcon(cluster.toPlacemarkList())
+        clusterIcon?.let(cluster.appearance::setView)
         cluster.addClusterTapListener(this)
     }
 

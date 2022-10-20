@@ -1,7 +1,6 @@
 package ru.touchin.googlemap
 
 import android.content.Context
-import android.view.LayoutInflater
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.MarkerOptions
@@ -19,10 +18,7 @@ open class GoogleMapItemRenderer<TClusterItem : ClusterItem>(
 ) : DefaultClusterRenderer<TClusterItem>(context, googleMap, clusterManager) {
 
     var iconGenerator: BaseIconGenerator<TClusterItem, Cluster<TClusterItem>, BitmapDescriptor> =
-            GoogleIconGenerator<TClusterItem>(context).apply {
-                setBackground(context.getDrawable(R.drawable.default_cluster_background))
-                setContentView(LayoutInflater.from(context).inflate(R.layout.view_google_map_cluster_item, null))
-            }
+            GoogleIconGenerator<TClusterItem>(context).apply { setDefaultViewAndBackground() }
 
     override fun shouldRenderAsCluster(cluster: Cluster<TClusterItem>): Boolean =
             cluster.size > minClusterItemSize

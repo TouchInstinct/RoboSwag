@@ -17,28 +17,24 @@ open class GoogleIconGenerator<T : ClusterItem>(
         private val context: Context
 ) : IconGenerator(context), BaseIconGenerator<T, Cluster<T>, BitmapDescriptor> {
 
-    init {
-        setBackground(ContextCompat.getDrawable(context, R.drawable.default_cluster_background))
-        LayoutInflater
-                .from(context)
-                .inflate(R.layout.view_google_map_cluster_item, null)
-                .apply {
-                    setContentView(this)
-                }
-    }
-
     private val clusterIconsCache = SparseArray<BitmapDescriptor>()
     private val clusterItemIconsCache = mutableMapOf<T, BitmapDescriptor>()
+
+    fun setDefaultViewAndBackground() {
+        val defaultLayout = LayoutInflater.from(context).inflate(R.layout.view_google_map_cluster_item, null)
+        setBackground(ContextCompat.getDrawable(context, R.drawable.default_cluster_background))
+        setContentView(defaultLayout)
+    }
 
     override fun getClusterIcon(cluster: Cluster<T>): BitmapDescriptor? {
         val clusterSize = cluster.size
         return BitmapDescriptorFactory.fromBitmap(makeIcon(clusterSize.toString()))
     }
 
-    override fun getClusterItemIcon(clusterItem: T): BitmapDescriptor? =
-            context.getDrawable(ru.touchin.basemap.R.drawable.marker_default_icon)?.let {
-                BitmapDescriptorFactory.fromBitmap(it.toBitmap())
-            }
+    override fun getClusterItemIcon(clusterItem: T): BitmapDescriptor? {
+        val defaultIcon = context.getDrawable(ru.touchin.basemap.R.drawable.marker_default_icon)
+        return BitmapDescriptorFactory.fromBitmap(defaultIcon?.toBitmap())
+    }
 
     override fun getClusterItemView(clusterItem: T): BitmapDescriptor? =
             clusterItemIconsCache.getOrPutIfNotNull(clusterItem) { getClusterItemIcon(clusterItem) }

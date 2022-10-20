@@ -8,11 +8,11 @@ import com.yandex.runtime.ui_view.ViewProvider
 class DefaultIconGenerator<T : PointModel>(private val context: Context) : YandexIconGenerator<T>() {
 
     override fun getClusterIcon(cluster: List<T>): ViewProvider {
-        val view: TextView = LayoutInflater.from(context).inflate(R.layout.default_cluster_view, null) as TextView
-        view.setText(cluster.size.toString())
-        view.setBackgroundResource(ru.touchin.basemap.R.drawable.marker_default_icon)
-
-        return ViewProvider(view)
+        val textView = LayoutInflater.from(context).inflate(R.layout.default_cluster_view, null).apply {
+            (this as? TextView)?.text = cluster.size.toString()
+            setBackgroundResource(ru.touchin.basemap.R.drawable.marker_default_icon)
+        }
+        return ViewProvider(textView)
     }
 
     override fun getClusterItemIcon(clusterItem: T) = ViewProvider(
