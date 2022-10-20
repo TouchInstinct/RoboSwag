@@ -29,6 +29,7 @@ class YandexMapManager(
 
     companion object {
         private const val CAMERA_ANIMATION_DURATION = 1f
+        private const val CAMERA_DEFAULT_STEP = 2
         private const val CAMERA_OFFSET_ZOOM = 3f
 
         // Call in Application.onCreate()
@@ -99,29 +100,47 @@ class YandexMapManager(
 
     override fun getCameraTilt(): Float = map.cameraPosition.tilt
 
+    override fun getDefaultDuration(): Float = CAMERA_ANIMATION_DURATION
+
+    override fun getDefaultZoomStep(): Int = CAMERA_DEFAULT_STEP
+
     override fun moveCamera(target: Point, zoom: Float, azimuth: Float, tilt: Float) {
         map.move(CameraPosition(target, zoom, azimuth, tilt), Animation(Animation.Type.LINEAR, CAMERA_ANIMATION_DURATION), null)
     }
 
-    override fun smoothMoveCamera(target: Point, zoom: Float, azimuth: Float, tilt: Float) {
-        map.move(CameraPosition(target, zoom, azimuth, tilt), Animation(Animation.Type.SMOOTH, CAMERA_ANIMATION_DURATION), null)
+    override fun smoothMoveCamera(target: Point, zoom: Float, azimuth: Float, tilt: Float, animationDuration: Float) {
+        map.move(CameraPosition(target, zoom, azimuth, tilt), Animation(Animation.Type.SMOOTH, animationDuration), null)
     }
 
-    override fun smoothMoveCamera(targets: List<Point>, padding: Int) {
+    override fun smoothMoveCamera(targets: List<Point>, padding: Int, animationDuration: Float) {
         val boundingBox = BoundingBoxHelper.getBounds(LinearRing(targets))
         val cameraPosition = map.cameraPosition(boundingBox)
-        smoothMoveCamera(cameraPosition.target, cameraPosition.zoom - CAMERA_OFFSET_ZOOM)
+        smoothMoveCamera(
+                target = cameraPosition.target,
+                zoom = cameraPosition.zoom - CAMERA_OFFSET_ZOOM,
+                animationDuration = animationDuration
+        )
     }
 
-    override fun smoothMoveCamera(targets: List<Point>, width: Int, height: Int, padding: Int) {
-        smoothMoveCamera(targets)
+    override fun smoothMoveCamera(targets: List<Point>, width: Int, height: Int, padding: Int, animationDuration: Float) {
+        smoothMoveCamera(targets = targets, animationDuration = animationDuration)
+    }
+
+    override fun increaseZoom(target: Point, zoomIncreaseValue: Int) {
+        smoothMoveCamera(target = target, zoom = getCameraZoom() + zoomIncreaseValue)
+    }
+
+    override fun decreaseZoom(target: Point, zoomDecreaseValue: Int) {
+        smoothMoveCamera(target = target, zoom = getCameraZoom() - zoomDecreaseValue)
     }
 
     override fun setMapAllGesturesEnabled(enabled: Boolean) {
-        map.isRotateGesturesEnabled = enabled
-        map.isScrollGesturesEnabled = enabled
-        map.isTiltGesturesEnabled = enabled
-        map.isZoomGesturesEnabled = enabled
+        with(map) {
+            isRotateGesturesEnabled = enabled
+            isScrollGesturesEnabled = enabled
+            isTiltGesturesEnabled = enabled
+            isZoomGesturesEnabled = enabled
+        }
     }
 
     override fun setMyLocationEnabled(enabled: Boolean) {

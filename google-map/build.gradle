@@ -4,11 +4,39 @@ dependencies {
     api project(":base-map")
 
     implementation "com.google.android.gms:play-services-maps"
+    implementation "com.google.maps.android:android-maps-utils"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx"
+    implementation "androidx.core:core-ktx"
 
     constraints {
         implementation("com.google.android.gms:play-services-maps") {
             version {
                 require '17.0.0'
+            }
+        }
+
+        implementation("com.google.maps.android:android-maps-utils") {
+            version {
+                require '0.4'
+            }
+        }
+
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core") {
+            version {
+                require '1.4.0'
+            }
+        }
+
+        implementation("androidx.lifecycle:lifecycle-runtime-ktx") {
+            version {
+                require '2.4.1'
+            }
+        }
+
+        implementation("androidx.core:core-ktx") {
+            version {
+                require '1.6.0'
             }
         }
     }
