@@ -27,7 +27,7 @@ abstract class KeyboardResizeableViewController<TActivity : BaseActivity, TState
 
     private var isKeyboardVisible: Boolean = false
 
-    private val keyboardHideListener = OnBackPressedListener {
+    private var keyboardHideListener: OnBackPressedListener? = OnBackPressedListener {
         if (isKeyboardVisible) {
             UiUtils.OfViews.hideSoftInput(activity)
             true
@@ -48,28 +48,24 @@ abstract class KeyboardResizeableViewController<TActivity : BaseActivity, TState
 
     override fun onResume() {
         super.onResume()
-        if (isHideKeyboardOnBackEnabled) activity.addOnBackPressedListener(keyboardHideListener)
+        if (isHideKeyboardOnBackEnabled) keyboardHideListener?.also { activity.addOnBackPressedListener(it) }
     }
 
     override fun onPause() {
         super.onPause()
         notifyKeyboardHidden()
-        if (isHideKeyboardOnBackEnabled) activity.removeOnBackPressedListener(keyboardHideListener)
+        if (isHideKeyboardOnBackEnabled) keyboardHideListener?.also { activity.removeOnBackPressedListener(it) }
     }
 
     @CallSuper
     override fun onStart() {
         super.onStart()
         activity.keyboardBehaviorDetector?.apply {
-            keyboardHideListener = {
+            keyboardHideListener = OnBackPressedListener {
                 if (isKeyboardVisible) {
                     onKeyboardHide()
                 }
-                isKeyboardVisible = false
-            }
-            keyboardShowListener = { diff ->
-                onKeyboardShow(diff)
-                isKeyboardVisible = true
+                true
             }
         }
     }
@@ -78,7 +74,6 @@ abstract class KeyboardResizeableViewController<TActivity : BaseActivity, TState
         super.onStop()
         activity.keyboardBehaviorDetector?.apply {
             keyboardHideListener = null
-            keyboardShowListener = null
         }
     }
 
