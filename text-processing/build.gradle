@@ -1,0 +1,5 @@
+apply from: "../android-configs/lib-config.gradle"
+
+dependencies {
+    testImplementation 'junit:junit:4.13.2'
+}
