@@ -9,6 +9,12 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker
 
 class TextProcessingBuilder(regex: String, inputText: String) {
 
+    private companion object {
+        const val digits = "1234567890"
+        const val charsRu = "АБВГДЕЖЗИЙКЛМНОПРСТУФЧЦЧЭЮЯ"
+        const val charsEng = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    }
+
     private var currentGroupIndex = 1
     private var _regexReplaceString = ""
     private var _formatString = ""
@@ -21,10 +27,41 @@ class TextProcessingBuilder(regex: String, inputText: String) {
     init {
         regexToRegexReplace(regex)
         format(inputText, regex)
+        placeHolder(inputText, regex)
     }
 
     private fun format(inputText: String, regex: String) {
         _formatString = inputText.replace(Regex(regex), _regexReplaceString)
+    }
+
+    private fun placeHolder(inputText: String, regex: String) {
+        var indexRuChar = 0
+        var indexEngChar = 0
+        var indexDigit = 0
+        var replacementStr = ""
+        for (s in inputText) {
+            when {
+                digits.contains(s) -> {
+                    if (digits.length <= indexDigit) indexDigit = 0
+                    replacementStr += digits[indexDigit]
+                    indexDigit++
+                }
+                charsEng.contains(s) -> {
+                    if (charsEng.length <= indexEngChar) indexEngChar = 0
+                    replacementStr += charsEng[indexEngChar]
+                    indexEngChar++
+                }
+                charsRu.contains(s) -> {
+                    if (charsRu.length <= indexRuChar) indexRuChar = 0
+                    replacementStr += charsRu[indexRuChar]
+                    indexRuChar++
+                }
+                else -> {
+                    replacementStr += s
+                }
+            }
+        }
+        _placeholder = replacementStr.replace(Regex(regex), _regexReplaceString)
     }
 
     private fun regexToRegexReplace(regex: String) {

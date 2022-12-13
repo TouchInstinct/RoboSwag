@@ -15,7 +15,7 @@ class TextProcessingBuilderTest {
         )
         Assert.assertEquals("$1\\/$2",item.regexReplaceString)
         Assert.assertEquals("06/22",item.formatString)
-//        Assert.assertEquals("12/34",item.placeholder)
+        Assert.assertEquals("12/34",item.placeholder)
     }
 
     @Test
@@ -28,7 +28,7 @@ class TextProcessingBuilderTest {
         )
         Assert.assertEquals("\$1 \$2 \$3 \$4",item.regexReplaceString)
         Assert.assertEquals("1234 3456 1235 3534",item.formatString)
-//        Assert.assertEquals("1234 5678 9012 3456",item.placeholder)
+        Assert.assertEquals("1234 5678 9012 3456",item.placeholder)
     }
 
     @Test
@@ -41,7 +41,7 @@ class TextProcessingBuilderTest {
         )
         Assert.assertEquals("\\+7 \\($1\\) $2 $3 $4",item.regexReplaceString)
         Assert.assertEquals("+7 (909) 134 44 22",item.formatString)
-//        Assert.assertEquals("+7 (123) 456 78 90",item.placeholder)
+        Assert.assertEquals("+7 (123) 456 78 90",item.placeholder)
     }
 
     @Test
@@ -54,6 +54,6 @@ class TextProcessingBuilderTest {
         )
         Assert.assertEquals("\$1-\$2 № \$3",item.regexReplaceString)
         Assert.assertEquals("IV-БЮ № 349823",item.formatString)
-//        Assert.assertEquals("AB-АБ № 123456",item.placeholder)
+        Assert.assertEquals("AB-АБ № 123456",item.placeholder)
     }
 }
