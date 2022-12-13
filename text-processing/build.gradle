@@ -1,7 +1,7 @@
 apply from: "../android-configs/lib-config.gradle"
 
 dependencies {
-    implementation files("$rootDir/libs/antlr4.jar")
-    implementation files("$rootDir/libs/antlr4-runtime.jar")
+    implementation 'org.antlr:antlr4:4.9.2'
+    implementation 'org.antlr:antlr4-runtime:4.9.2'
     testImplementation 'junit:junit:4.13.2'
 }
