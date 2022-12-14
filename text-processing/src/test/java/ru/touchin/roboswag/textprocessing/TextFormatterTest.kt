@@ -12,6 +12,7 @@ class TextFormatterTest {
         val item = TextFormatter(regex)
         Assert.assertEquals("$1\\/$2", item.getRegexReplace())
         Assert.assertEquals("06/22", item.getFormatText(inputText))
+        Assert.assertEquals("12/34", item.getPlaceHolder())
     }
 
     @Test
@@ -21,6 +22,7 @@ class TextFormatterTest {
         val item = TextFormatter(regex)
         Assert.assertEquals("\$1 \$2 \$3 \$4", item.getRegexReplace())
         Assert.assertEquals("1234 3456 1235 3534", item.getFormatText(inputText))
+        Assert.assertEquals("1234 5678 9012 3456", item.getPlaceHolder())
     }
 
     @Test
@@ -30,6 +32,7 @@ class TextFormatterTest {
         val item = TextFormatter(regex)
         Assert.assertEquals("\\+7 \\($1\\) $2 $3 $4", item.getRegexReplace())
         Assert.assertEquals("+7 (909) 134 44 22", item.getFormatText(inputText))
+        Assert.assertEquals("+7 (123) 456 78 90", item.getPlaceHolder())
     }
 
     @Test
@@ -39,6 +42,7 @@ class TextFormatterTest {
         val item = TextFormatter(regex)
         Assert.assertEquals("\$1-\$2 № \$3", item.getRegexReplace())
         Assert.assertEquals("IV-БЮ № 349823", item.getFormatText(inputText))
+        Assert.assertEquals("AB-АБ № 123456", item.getPlaceHolder())
     }
 
     @Test
@@ -48,5 +52,6 @@ class TextFormatterTest {
         val item = TextFormatter(regex)
         Assert.assertEquals("\$1\$2 ₽", item.getRegexReplace())
         Assert.assertEquals("5332.4 ₽", item.getFormatText(inputText))
+        Assert.assertEquals("1.2 ₽", item.getPlaceHolder())
     }
 }

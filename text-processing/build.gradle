@@ -3,5 +3,7 @@ apply from: "../android-configs/lib-config.gradle"
 dependencies {
     implementation 'org.antlr:antlr4:4.9.2'
     implementation 'org.antlr:antlr4-runtime:4.9.2'
+    implementation "com.github.mifmif:generex:1.0.2"
+    implementation 'ru.tinkoff.decoro:decoro:1.5.1'
     testImplementation 'junit:junit:4.13.2'
 }
