@@ -7,7 +7,8 @@ abstract class BaseCodeConfirmState(
         open var isLoadingState: Boolean,
         open var isWrongCode: Boolean,
         open var isExpired: Boolean,
-        open var isRefreshCodeLoading: Boolean = false
+        open var isRefreshCodeLoading: Boolean = false,
+        open var needSendCode: Boolean = true
 ) : ViewState {
 
     val canRequestNewCode: Boolean

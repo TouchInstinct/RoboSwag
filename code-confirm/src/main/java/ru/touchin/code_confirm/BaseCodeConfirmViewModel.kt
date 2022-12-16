@@ -20,10 +20,6 @@ abstract class BaseCodeConfirmViewModel<NavArgs : Parcelable, Action : ViewActio
     /** [requireCodeId] uses for auto-filling */
     protected open var requireCodeId: String? = null
 
-    /** [needSendCode] is flag for preventing sending confirmation code everytime
-     * when view is recreated and codeInput is filled */
-    private var needSendCode: Boolean = true
-
     private var timer: CountDownTimer? = null
 
     private var currentConfirmationCode: String? = null
@@ -51,7 +47,7 @@ abstract class BaseCodeConfirmViewModel<NavArgs : Parcelable, Action : ViewActio
         super.dispatchAction(action)
         when (action) {
             is CodeConfirmAction -> {
-                if (needSendCode) confirmCode()
+                if (currentState.needSendCode) confirmCode()
             }
             is GetRefreshCodeAction -> {
                 getRefreshCode()
@@ -61,8 +57,8 @@ abstract class BaseCodeConfirmViewModel<NavArgs : Parcelable, Action : ViewActio
 
                 _state.value = currentState.copyWith {
                     isWrongCode = isWrongCode && !confirmationCodeChanged
+                    needSendCode = confirmationCodeChanged
                 }
-                needSendCode = confirmationCodeChanged
                 currentConfirmationCode = action.code
             }
         }
@@ -99,7 +95,7 @@ abstract class BaseCodeConfirmViewModel<NavArgs : Parcelable, Action : ViewActio
 
                 startTimer(seconds = confirmationData.codeLifetime)
             } catch (throwable: Throwable) {
-                needSendCode = false
+                _state.value = currentState.copyWith { needSendCode = false }
                 onRefreshCodeRequestError(throwable)
             } finally {
                 _state.value = currentState.copyWith { isRefreshCodeLoading = false }
@@ -115,7 +111,7 @@ abstract class BaseCodeConfirmViewModel<NavArgs : Parcelable, Action : ViewActio
                     requestCodeConfirmation(code)
                     onSuccessCodeConfirmation(code)
                 } catch (throwable: Throwable) {
-                    needSendCode = false
+                    _state.value = currentState.copyWith { needSendCode = false }
                     onCodeConfirmationError(throwable)
                 } finally {
                     _state.value = currentState.copyWith { isLoadingState = false }
