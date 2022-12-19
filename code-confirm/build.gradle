@@ -1,0 +1,24 @@
+apply from: "../android-configs/lib-config.gradle"
+
+dependencies {
+    implementation project(":mvi-arch")
+    implementation project(":lifecycle")
+
+    implementation "androidx.lifecycle:lifecycle-extensions"
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx")
+
+    def lifecycleVersion = "2.2.0"
+
+    constraints {
+        implementation("androidx.lifecycle:lifecycle-extensions") {
+            version {
+                require '2.1.0'
+            }
+        }
+        implementation("androidx.lifecycle:lifecycle-viewmodel-ktx") {
+            version {
+                require(lifecycleVersion)
+            }
+        }
+    }
+}
