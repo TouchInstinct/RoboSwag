@@ -9,16 +9,16 @@ import ru.touchin.roboswag.textprocessing.validators.CustomValidator
 class DecoroMaskGenerator {
 
     /** Генерация маски и слотов на основе возможных символов для placeholder,
-     * если возможные символы не более одного, то символ хардкодится в слот
+     * если возможный символ всего один, то символ хардкодится в слот
      * **/
-    fun mask(placeholder: String, listForPlaceholder: List<List<Char>>): MaskFormatWatcher {
+    fun mask(placeholder: String, matrixOfSymbols: Matrix<Char>): MaskFormatWatcher {
         val slots = mutableListOf<Slot>()
         for (i in placeholder.indices) {
             slots.add(
-                if (listForPlaceholder[i].size == 1) {
+                if (matrixOfSymbols[i].size == 1) {
                     PredefinedSlots.hardcodedSlot(placeholder[i])
                 } else {
-                    CustomValidator.customSlot(listForPlaceholder[i])
+                    CustomValidator.customSlot(matrixOfSymbols[i])
                 }
             )
         }

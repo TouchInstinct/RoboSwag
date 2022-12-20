@@ -1,6 +1,8 @@
 package ru.touchin.roboswag.textprocessing.generators.regexgenerator
 
+import ru.touchin.roboswag.textprocessing.generators.Matrix
+
 class PCREGeneratorItem(
     val regexReplaceString: String,
-    val list: List<List<Char>>
+    val matrixOfSymbols: Matrix<Char>
 )

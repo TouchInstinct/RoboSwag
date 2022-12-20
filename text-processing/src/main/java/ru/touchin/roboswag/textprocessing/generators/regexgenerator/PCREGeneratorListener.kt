@@ -8,7 +8,7 @@ class PCREGeneratorListener : PCREBaseListener() {
      *  Лист для placeholder, где индекс - номер буквы для placeholder
      *  значение - возможные символы для placeholder
      *  **/
-    private var mutableListOfListChar = mutableListOf<List<Char>>()
+    private val matrixOfSymbols = mutableListOf<List<Char>>()
     private var currentGroupIndex = 1
     private var regexReplaceString = ""
 
@@ -18,7 +18,7 @@ class PCREGeneratorListener : PCREBaseListener() {
      * [1-2], \\d, [A-B], а так же элементы не относящиеся к регулярным выражениям
      * или экранизированые
      * **/
-    private var charsList = mutableListOf<Char>()
+    private var listOfSymbols = mutableListOf<Char>()
 
     override fun enterCapture(ctx: PCREParser.CaptureContext) {
         super.enterCapture(ctx)
@@ -29,8 +29,8 @@ class PCREGeneratorListener : PCREBaseListener() {
     override fun enterShared_atom(ctx: PCREParser.Shared_atomContext) {
         super.enterShared_atom(ctx)
         /** Найдено соответствие цифр \\d **/
-        charsList = '1'.rangeTo('9').toMutableList().apply { add('0') }
-        mutableListOfListChar.add(charsList)
+        listOfSymbols = '1'.rangeTo('9').toMutableList().apply { add('0') }
+        matrixOfSymbols.add(listOfSymbols)
     }
 
     override fun enterCharacter_class(ctx: PCREParser.Character_classContext) {
@@ -40,50 +40,49 @@ class PCREGeneratorListener : PCREBaseListener() {
          * false - если, например [А-д]
          * **/
         if (ctx.cc_atom().size > 1) {
-            charsList = mutableListOf<Char>()
+            listOfSymbols = mutableListOf<Char>()
             val firstChar = ctx.CharacterClassStart().text
             val endChar = ctx.CharacterClassEnd()[0].text
             for (i in 0 until ctx.cc_atom().size) {
-                charsList += checkRules(firstChar + ctx.cc_atom()[i].text + endChar)
+                listOfSymbols += availableSymbolsToList(firstChar + ctx.cc_atom()[i].text + endChar)
             }
         } else {
-            charsList = checkRules(ctx.text)
+            listOfSymbols = availableSymbolsToList(ctx.text)
         }
-        mutableListOfListChar.add(charsList)
+        matrixOfSymbols.add(listOfSymbols)
     }
 
     /** Дублирование повторений для placeholder при их наличии, например [A-B]{6}, где 6 - повторения **/
     override fun enterDigits(ctx: PCREParser.DigitsContext) {
         super.enterDigits(ctx)
         repeat(ctx.text.toInt() - 1) {
-            mutableListOfListChar.add(charsList)
+            matrixOfSymbols.add(listOfSymbols)
         }
     }
 
     override fun enterLiteral(ctx: PCREParser.LiteralContext) {
         super.enterLiteral(ctx)
         regexReplaceString += ctx.shared_literal().text
-        charsList = mutableListOf<Char>()
+        listOfSymbols = mutableListOf<Char>()
         for (s in ctx.text) {
-            charsList.add(s)
+            listOfSymbols.add(s)
         }
-        mutableListOfListChar.add(charsList)
+        matrixOfSymbols.add(listOfSymbols)
     }
 
     fun toPCREGeneratorItem() = PCREGeneratorItem(
         regexReplaceString,
-        mutableListOfListChar.map { it ->
+        matrixOfSymbols.map { it ->
             it.filter {
                 it != '\\'
             }
         }
     )
 
-    private fun checkRules(ctxText: String): MutableList<Char> {
-        /** endAtomStr index of atomStr.length - 2 вычисляется потому что с поиском, например,
-         * в [A-B] должен проверяться последний допуск для строки в данном случае это В
-         * startAtomStr = atomStr[1] - потому что должен проверяться первый допуск для строки
-         * в [A-B] это будет А
+    private fun availableSymbolsToList(ctxText: String): MutableList<Char> {
+        /** startAtomStr = atomStr[1] - потому что должен проверяться первый допуск для строки
+         * endAtomStr index of atomStr.length - 2 вычисляется потому что с поиском,
+         * например, [A-B], endAtomStr = "B", startAtomStr = "A"
          * **/
         val endAtomStr = ctxText[ctxText.length - 2]
         val startAtomStr = ctxText[1]
