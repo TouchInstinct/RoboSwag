@@ -11,11 +11,11 @@ class DecoroMaskGenerator {
     /** Генерация маски и слотов на основе возможных символов для placeholder,
      * если возможные символы не более одного, то символ хардкодится в слот
      * **/
-    fun mask(placeholder: String, listForPlaceholder: List<String>): MaskFormatWatcher {
+    fun mask(placeholder: String, listForPlaceholder: List<List<Char>>): MaskFormatWatcher {
         val slots = mutableListOf<Slot>()
         for (i in placeholder.indices) {
             slots.add(
-                if (listForPlaceholder[i].length == 1) {
+                if (listForPlaceholder[i].size == 1) {
                     PredefinedSlots.hardcodedSlot(placeholder[i])
                 } else {
                     CustomValidator.customSlot(listForPlaceholder[i])

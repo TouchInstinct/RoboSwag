@@ -11,7 +11,7 @@ class TextFormatter(private val regex: String) {
     private val decoroMaskGenerator = DecoroMaskGenerator()
     private val pcreGeneratorItem = regexReplaceGenerator.regexToRegexReplace(regex)
     private val regexReplaceString = pcreGeneratorItem.regexReplaceString
-    private val listForPlaceholder = pcreGeneratorItem.listForPlaceholder
+    private val listForPlaceholder = pcreGeneratorItem.list
     private val placeholderGenerator = PlaceholderGenerator(listForPlaceholder)
 
     fun getFormatText(inputText: String) = inputText.replace(Regex(regex), regexReplaceString)
