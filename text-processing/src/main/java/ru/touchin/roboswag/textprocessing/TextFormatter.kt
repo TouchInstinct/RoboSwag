@@ -1,47 +1,30 @@
 package ru.touchin.roboswag.textprocessing
 
-import org.antlr.v4.runtime.CharStreams
-import org.antlr.v4.runtime.CommonTokenStream
-import org.antlr.v4.runtime.tree.ParseTreeWalker
-import ru.touchin.roboswag.textprocessing.pcre.parser.PCREBaseListener
-import ru.touchin.roboswag.textprocessing.pcre.parser.PCRELexer
-import ru.touchin.roboswag.textprocessing.pcre.parser.PCREParser
+import android.widget.TextView
+import ru.touchin.roboswag.textprocessing.generators.DecoroMaskGenerator
+import ru.touchin.roboswag.textprocessing.generators.PlaceholderGenerator
+import ru.touchin.roboswag.textprocessing.generators.regexgenerator.RegexReplaceGenerator
 
 class TextFormatter(private val regex: String) {
 
-    private var currentGroupIndex = 1
-    private var regexReplaceString = ""
+    private val regexReplaceGenerator = RegexReplaceGenerator()
+    private val decoroMaskGenerator = DecoroMaskGenerator()
+    private val pcreGeneratorItem = regexReplaceGenerator.regexToRegexReplace(regex)
+    private val regexReplaceString = pcreGeneratorItem.regexReplaceString
+    private val matrixOfSymbols = pcreGeneratorItem.matrixOfSymbols
+    private val placeholderGenerator = PlaceholderGenerator(matrixOfSymbols)
 
-    init {
-        regexToRegexReplace(regex)
-    }
+    fun getFormatText(inputText: String) = inputText.replace(Regex(regex), regexReplaceString)
 
-    fun getFormatText(inputText: String): String {
-        return inputText.replace(Regex(regex), regexReplaceString)
-    }
+    fun getPlaceholder() = placeholderGenerator.getPlaceholder()
 
     fun getRegexReplace() = regexReplaceString
 
-    private fun regexToRegexReplace(regex: String) {
-        val stringStream = CharStreams.fromString(regex)
-        val lexer = PCRELexer(stringStream)
-        val parser = PCREParser(CommonTokenStream(lexer))
-        val parseContext = parser.parse()
-        val walker = ParseTreeWalker()
-        walker.walk(
-            object : PCREBaseListener() {
-                override fun enterCapture(ctx: PCREParser.CaptureContext) {
-                    super.enterCapture(ctx)
-                    regexReplaceString += "\$$currentGroupIndex"
-                    currentGroupIndex++
-                }
-
-                override fun enterLiteral(ctx: PCREParser.LiteralContext) {
-                    super.enterLiteral(ctx)
-                    regexReplaceString += ctx.shared_literal().text
-                }
-            },
-            parseContext
+    fun mask(textView: TextView) {
+        val formatWatcher = decoroMaskGenerator.mask(
+            placeholderGenerator.getPlaceholder(),
+            matrixOfSymbols
         )
+        formatWatcher.installOn(textView)
     }
 }
