@@ -12,15 +12,12 @@ class DecoroMaskGenerator {
      * если возможный символ всего один, то символ хардкодится в слот
      * **/
     fun mask(placeholder: String, matrixOfSymbols: Matrix<Char>): MaskFormatWatcher {
-        val slots = mutableListOf<Slot>()
-        for (i in placeholder.indices) {
-            slots.add(
-                if (matrixOfSymbols[i].size == 1) {
-                    PredefinedSlots.hardcodedSlot(placeholder[i])
-                } else {
-                    CustomValidator.customSlot(matrixOfSymbols[i])
-                }
-            )
+        val slots = placeholder.mapIndexed { index, char ->
+            if (matrixOfSymbols[index].size == 1) {
+                PredefinedSlots.hardcodedSlot(char)
+            } else {
+                CustomValidator.customSlot(matrixOfSymbols[index])
+            }
         }
         return MaskFormatWatcher(MaskImpl.createTerminated(slots.toTypedArray()))
     }

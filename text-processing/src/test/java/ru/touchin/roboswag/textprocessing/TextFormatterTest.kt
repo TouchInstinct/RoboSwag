@@ -11,7 +11,7 @@ class TextFormatterTest {
         val inputText = "0622"
         val item = TextFormatter(regex)
         Assert.assertEquals("$1\\/$2", item.getRegexReplace())
-        Assert.assertEquals("06/22", item.getFormatText(inputText))
+        Assert.assertEquals("06/22", item.getFormattedText(inputText))
         Assert.assertEquals("12/34", item.getPlaceholder())
     }
 
@@ -21,7 +21,7 @@ class TextFormatterTest {
         val inputText = "1234345612353534"
         val item = TextFormatter(regex)
         Assert.assertEquals("\$1 \$2 \$3 \$4", item.getRegexReplace())
-        Assert.assertEquals("1234 3456 1235 3534", item.getFormatText(inputText))
+        Assert.assertEquals("1234 3456 1235 3534", item.getFormattedText(inputText))
         Assert.assertEquals("1234 5678 9012 3456", item.getPlaceholder())
     }
 
@@ -31,7 +31,7 @@ class TextFormatterTest {
         val inputText = "9091344422"
         val item = TextFormatter(regex)
         Assert.assertEquals("\\+7 \\($1\\) $2 $3 $4", item.getRegexReplace())
-        Assert.assertEquals("+7 (909) 134 44 22", item.getFormatText(inputText))
+        Assert.assertEquals("+7 (909) 134 44 22", item.getFormattedText(inputText))
         Assert.assertEquals("+7 (123) 456 78 90", item.getPlaceholder())
     }
 
@@ -41,7 +41,7 @@ class TextFormatterTest {
         val inputText = "IVБЮ349823"
         val item = TextFormatter(regex)
         Assert.assertEquals("\$1-\$2 № \$3", item.getRegexReplace())
-        Assert.assertEquals("IV-БЮ № 349823", item.getFormatText(inputText))
+        Assert.assertEquals("IV-БЮ № 349823", item.getFormattedText(inputText))
         Assert.assertEquals("AB-АБ № 123456", item.getPlaceholder())
     }
 
@@ -51,7 +51,7 @@ class TextFormatterTest {
         val inputText = "5332.4"
         val item = TextFormatter(regex)
         Assert.assertEquals("\$1\$2 ₽", item.getRegexReplace())
-        Assert.assertEquals("5332.4 ₽", item.getFormatText(inputText))
+        Assert.assertEquals("5332.4 ₽", item.getFormattedText(inputText))
         Assert.assertEquals("1.2 ₽", item.getPlaceholder())
     }
 }

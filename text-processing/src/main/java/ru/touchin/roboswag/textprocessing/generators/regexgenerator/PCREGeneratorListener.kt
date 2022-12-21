@@ -4,12 +4,15 @@ import ru.touchin.roboswag.textprocessing.pcre.parser.PCREBaseListener
 import ru.touchin.roboswag.textprocessing.pcre.parser.PCREParser
 
 class PCREGeneratorListener : PCREBaseListener() {
+
     /**
      *  Лист для placeholder, где индекс - номер буквы для placeholder
      *  значение - возможные символы для placeholder
      *  **/
     private val matrixOfSymbols = mutableListOf<List<Char>>()
+
     private var currentGroupIndex = 1
+
     private var regexReplaceString = ""
 
     /** Элемент поиска с регулярного выражения
@@ -72,8 +75,8 @@ class PCREGeneratorListener : PCREBaseListener() {
 
     fun toPCREGeneratorItem() = PCREGeneratorItem(
         regexReplaceString,
-        matrixOfSymbols.map { it ->
-            it.filter {
+        matrixOfSymbols.map { chars ->
+            chars.filter {
                 it != '\\'
             }
         }

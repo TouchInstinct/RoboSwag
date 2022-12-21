@@ -1,6 +1,6 @@
 package ru.touchin.roboswag.textprocessing
 
-import android.widget.TextView
+import android.widget.EditText
 import ru.touchin.roboswag.textprocessing.generators.DecoroMaskGenerator
 import ru.touchin.roboswag.textprocessing.generators.PlaceholderGenerator
 import ru.touchin.roboswag.textprocessing.generators.regexgenerator.RegexReplaceGenerator
@@ -8,23 +8,28 @@ import ru.touchin.roboswag.textprocessing.generators.regexgenerator.RegexReplace
 class TextFormatter(private val regex: String) {
 
     private val regexReplaceGenerator = RegexReplaceGenerator()
+
     private val decoroMaskGenerator = DecoroMaskGenerator()
+
     private val pcreGeneratorItem = regexReplaceGenerator.regexToRegexReplace(regex)
+
     private val regexReplaceString = pcreGeneratorItem.regexReplaceString
+
     private val matrixOfSymbols = pcreGeneratorItem.matrixOfSymbols
+
     private val placeholderGenerator = PlaceholderGenerator(matrixOfSymbols)
 
-    fun getFormatText(inputText: String) = inputText.replace(Regex(regex), regexReplaceString)
+    fun getFormattedText(inputText: String) = inputText.replace(Regex(regex), regexReplaceString)
 
-    fun getPlaceholder() = placeholderGenerator.getPlaceholder()
+    fun getPlaceholder() = placeholderGenerator.placeholder
 
     fun getRegexReplace() = regexReplaceString
 
-    fun mask(textView: TextView) {
+    fun mask(editText: EditText) {
         val formatWatcher = decoroMaskGenerator.mask(
-            placeholderGenerator.getPlaceholder(),
+            placeholderGenerator.placeholder,
             matrixOfSymbols
         )
-        formatWatcher.installOn(textView)
+        formatWatcher.installOn(editText)
     }
 }

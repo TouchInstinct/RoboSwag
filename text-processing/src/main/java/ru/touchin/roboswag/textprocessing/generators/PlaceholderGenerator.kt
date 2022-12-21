@@ -2,9 +2,10 @@ package ru.touchin.roboswag.textprocessing.generators
 
 class PlaceholderGenerator(matrixOfSymbols: Matrix<Char>) {
 
-    private var placeholder: String = ""
+    val placeholder = generatePlaceholder(matrixOfSymbols)
 
-    init {
+    private fun generatePlaceholder(matrixOfSymbols: Matrix<Char>): String {
+        val placeholderStringBuilder = StringBuilder()
         val indexes = hashMapOf<List<Char>, Int>()
         for (listOfSymbols in matrixOfSymbols) {
             indexes[listOfSymbols] = 0
@@ -13,18 +14,17 @@ class PlaceholderGenerator(matrixOfSymbols: Matrix<Char>) {
             if (listOfSymbols.isEmpty()) continue
             /** Если элемент без повторений **/
             if (listOfSymbols.size == 1) {
-                placeholder += listOfSymbols[0]
+                placeholderStringBuilder.append(listOfSymbols[0])
                 continue
             }
             indexes[listOfSymbols]?.let {
                 var index = it
                 if (listOfSymbols.size <= index) index = 0
-                placeholder += listOfSymbols[index]
+                placeholderStringBuilder.append(listOfSymbols[index])
                 index++
                 indexes[listOfSymbols] = index
             }
         }
+        return placeholderStringBuilder.toString()
     }
-
-    fun getPlaceholder() = placeholder
 }
