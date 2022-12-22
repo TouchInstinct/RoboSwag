@@ -1,0 +1,48 @@
+apply from: "../android-configs/lib-config.gradle"
+
+dependencies {
+    def okhttpVersion = "3.14.1"
+    def retrofitVersion = "2.8.1"
+    def junitVersion = '4.13.2'
+    def mockitoVersion = "4.4.0"
+    def coroutineVersion = "1.4.0"
+
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.retrofit2:retrofit")
+
+    testImplementation("junit:junit")
+    testImplementation("org.mockito:mockito-core")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+
+    constraints {
+        implementation("com.squareup.okhttp3:okhttp") {
+            version {
+                require(okhttpVersion)
+            }
+        }
+
+        implementation("com.squareup.retrofit2:retrofit") {
+            version {
+                require(retrofitVersion)
+            }
+        }
+
+        implementation("junit:junit") {
+            version {
+                require(junitVersion)
+            }
+        }
+
+        testImplementation("org.mockito:mockito-core") {
+            version {
+                require(mockitoVersion)
+            }
+        }
+
+        testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core") {
+            version {
+                require(coroutineVersion)
+            }
+        }
+    }
+}
