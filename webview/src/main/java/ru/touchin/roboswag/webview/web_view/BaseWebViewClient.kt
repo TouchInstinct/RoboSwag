@@ -12,7 +12,10 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.core.os.postDelayed
 
-open class BaseWebViewClient(private val callback: WebViewCallback, private val isSslPinningEnable: Boolean) : WebViewClient() {
+open class BaseWebViewClient(
+        private val callback: WebViewCallback,
+        private val isSslPinningEnable: Boolean = true
+) : WebViewClient() {
 
     companion object {
         private const val WEB_VIEW_TIMEOUT_MS = 30 * 1000L // 30 sec
@@ -54,7 +57,8 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
         pageFinished()
     }
 
-    override fun shouldOverrideUrlLoading(view: WebView, url: String?): Boolean {
+    override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
+        val url = request.url.toString()
         return if (!callback.onOverrideUrlLoading(url) && view.originalUrl != null) {
             callback.actionOnRedirectInsideWebView(webView = view, url = url)
             true

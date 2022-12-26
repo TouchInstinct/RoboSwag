@@ -16,6 +16,7 @@ import ru.touchin.extensions.setOnRippleClickListener
 import ru.touchin.roboswag.views.widget.Switcher
 import ru.touchin.roboswag.webview.R
 import ru.touchin.roboswag.webview.databinding.BaseWebViewBinding
+import ru.touchin.roboswag.webview.web_view.redirection.RedirectionController
 
 open class BaseWebView @JvmOverloads constructor(
         context: Context,
@@ -42,7 +43,7 @@ open class BaseWebView @JvmOverloads constructor(
             field = value
         }
 
-    var isRedirectEnable = false
+    var redirectionController = RedirectionController()
 
     /**
      * If you need to do some action on url click inside WebView, just assign this parameter and disable isRedirectEnable
@@ -105,7 +106,8 @@ open class BaseWebView @JvmOverloads constructor(
         }
     }
 
-    override fun onOverrideUrlLoading(url: String?): Boolean = isRedirectEnable
+    override fun onOverrideUrlLoading(url: String?): Boolean =
+            redirectionController.shouldRedirectToUrl(url)
 
     override fun onPageCookiesLoaded(cookies: Map<String, String>?) {
         onCookieLoaded?.invoke(cookies)
@@ -115,7 +117,7 @@ open class BaseWebView @JvmOverloads constructor(
         actionOnRedirect?.invoke(url, webView)
     }
 
-    fun setBaseWebViewClient(isSSlPinningEnable: Boolean = false) {
+    fun setBaseWebViewClient(isSSlPinningEnable: Boolean = true) {
         binding.webView.webViewClient = BaseWebViewClient(this, isSSlPinningEnable)
         binding.webView.webChromeClient = BaseChromeWebViewClient(onJsConfirm, onJsAlert, onJsPrompt, onJsError)
     }
