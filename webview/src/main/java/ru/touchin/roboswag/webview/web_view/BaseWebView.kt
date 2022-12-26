@@ -137,6 +137,37 @@ open class BaseWebView @JvmOverloads constructor(
         binding.webView.loadUrl(url ?: "", extraHeaders)
     }
 
+    /**
+     * @param htmlString raw html string to be loaded into WebView
+     * @param cssString raw css string to add styles
+     * @param cssFileName name for .css file which can be placed in assets folder
+     * @param styleDeps dependencies for styles which must be included into html,
+     * e.g. </link rel="preconnect" href="https://fonts.googleapis.com"/>
+     */
+    fun loadHtmlContent(
+            htmlString: String,
+            cssString: String = "",
+            cssFileName: String = "",
+            styleDeps: String = ""
+    ) {
+        val indexOfHead = htmlString
+                .indexOf("</head>", ignoreCase = true)
+                .takeIf { it != -1 } ?: 0
+
+        val styledHtml = StringBuilder(htmlString)
+                .insert(indexOfHead, styleDeps)
+                .insert(indexOfHead, "<style>$cssString</style>")
+                .insert(indexOfHead, "<link href=\"$cssFileName\" type=\"text/css\" rel=\"stylesheet\"/>")
+
+        getWebView().loadDataWithBaseURL(
+                "file:///android_asset/".takeIf { cssFileName.isNotEmpty() },
+                styledHtml.toString(),
+                "text/html",
+                "utf-8",
+                null
+        )
+    }
+
     fun setState(newState: WebViewLoadingState) {
         onStateChanged(newState)
     }
@@ -157,6 +188,8 @@ open class BaseWebView @JvmOverloads constructor(
             scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
             setLayerType(View.LAYER_TYPE_HARDWARE, null)
             with(settings) {
+                allowContentAccess = true
+                allowFileAccess = true
                 loadsImagesAutomatically = true
                 javaScriptEnabled = true
                 domStorageEnabled = true
