@@ -11,9 +11,11 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.core.os.postDelayed
+import ru.touchin.roboswag.webview.web_view.redirection.IgnoredUrlsHolder
 
 open class BaseWebViewClient(
         private val callback: WebViewCallback,
+        private val ignoredUrlsHolder: IgnoredUrlsHolder = IgnoredUrlsHolder(),
         private val isSslPinningEnable: Boolean = true
 ) : WebViewClient() {
 
@@ -81,6 +83,7 @@ open class BaseWebViewClient(
      * onReceivedError isn't called when url is "about:blank" (url string isBlank)
      */
     override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
+        if (ignoredUrlsHolder.shouldIgnoreError(request.url.toString())) return
         isError = true
     }
 
