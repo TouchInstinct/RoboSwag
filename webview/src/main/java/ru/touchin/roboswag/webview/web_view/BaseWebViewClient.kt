@@ -62,7 +62,7 @@ open class BaseWebViewClient(
     override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
         val url = request.url.toString()
         return if (!callback.onOverrideUrlLoading(url) && view.originalUrl != null) {
-            callback.actionOnRedirectInsideWebView(webView = view, url = url)
+            callback.onRedirectInsideWebView(webView = view, url = url)
             true
         } else {
             false
@@ -101,10 +101,4 @@ open class BaseWebViewClient(
         return cookiesMap
     }
 
-}
-
-enum class WebViewLoadingState {
-    LOADING,
-    ERROR,
-    LOADED
 }

@@ -9,6 +9,8 @@
         <attr name="repeatButtonTextAppearance" format="reference"/>
         <attr name="errorTextAppearance" format="reference"/>
         <attr name="progressBarTintColor" format="color"/>
+        <attr name="isCircleProgressBar" format="boolean"/>
+        <attr name="isPullToRefreshEnabled" format="boolean"/>
     </declare-styleable>
 
 </resources>

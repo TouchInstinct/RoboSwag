@@ -1,5 +1,6 @@
 package ru.touchin.roboswag.webview.web_view
 
+import android.webkit.ConsoleMessage
 import android.webkit.WebView
 
 interface WebViewCallback {
@@ -8,8 +9,27 @@ interface WebViewCallback {
 
     fun onOverrideUrlLoading(url: String?): Boolean
 
-    fun onPageCookiesLoaded(cookies: Map<String, String>?)
+    fun onRepeatButtonClicked()
 
-    fun actionOnRedirectInsideWebView(webView: WebView, url: String?)
+    fun onPageCookiesLoaded(cookies: Map<String, String>?) = Unit
 
+    fun onRedirectInsideWebView(webView: WebView, url: String?) = Unit
+
+    fun onWebViewScrolled(scrollX: Int, scrollY: Int) = Unit
+
+    fun onJsConfirm(message: String?) = Unit
+
+    fun onJsAlert(message: String?) = Unit
+
+    fun onJsPrompt(defaultValue: String?) = Unit
+
+    fun onJsError(error: ConsoleMessage) = Unit
+
+    fun onProgressChanged(progress: Int) = Unit
+}
+
+enum class WebViewLoadingState {
+    LOADING,
+    ERROR,
+    LOADED
 }
