@@ -6,36 +6,59 @@ import java.net.URL
 /**
  * Set [RedirectionController] to [BaseWebView] to handle url redirections
  *
- * By default all redirections are dismissed. For example:
+ * By default all redirections are dismissed. Any matched condition will perform redirect.
+ * If you need multiple conditions -> use [RedirectionCondition.CompositeCondition]
  *
- *        baseWebView.redirectionController = RedirectionController(
- *                hosts = listOf("www.petshop.ru"),
- *                paths = listOf("catalog")
+ *        webView.redirectionController = RedirectionController(
+ *                CompositeCondition(ByHost("www.petshop.ru") + ByPath("catalog")),
+ *                ByPredicate { url -> checkUrl(url) }
  *        )
  */
-class RedirectionController(
-        private val regex: List<Regex>? = null,
-        private val hosts: List<String>? = null,
-        private val paths: List<String>? = null,
-        private val queries: List<String>? = null,
-        private val checkCondition: ((url: String) -> Boolean)? = null
-) {
+class RedirectionController(private val conditions: List<RedirectionCondition> = emptyList()) {
+
+    constructor(vararg redirectionConditions: RedirectionCondition)
+            : this(redirectionConditions.toList())
 
     fun shouldRedirectToUrl(rawUrl: String?): Boolean {
-        if (rawUrl == null) return false
-
-        if (checkCondition != null) return checkCondition.invoke(rawUrl)
-
         val url = URL(rawUrl)
 
-        if (!regex.isNullOrEmpty()) return regex.any { rawUrl.matches(it) }
+        return conditions.any { it.shouldRedirect(url) }
+    }
+}
 
-        if (!queries.isNullOrEmpty()) return queries.any { it in url.query }
+/**
+ * Class with base redirection conditions
+ */
+sealed class RedirectionCondition {
 
-        if (!paths.isNullOrEmpty()) return paths.any { it in url.path }
+    operator fun plus(other: RedirectionCondition) = listOf(this, other)
 
-        if (!hosts.isNullOrEmpty()) return hosts.any { it == url.host }
+    abstract fun shouldRedirect(url: URL): Boolean
 
-        return false
+    class ByRegex(private val regex: Regex) : RedirectionCondition() {
+        override fun shouldRedirect(url: URL) = url.toString().matches(regex)
+    }
+
+    class ByHost(private val host: String) : RedirectionCondition() {
+        override fun shouldRedirect(url: URL) = url.host == host
+    }
+
+    class ByPath(private val path: String) : RedirectionCondition() {
+        override fun shouldRedirect(url: URL) = path in url.path
+    }
+
+    class ByQuery(private val query: String) : RedirectionCondition() {
+        override fun shouldRedirect(url: URL) = query in url.query
+    }
+
+    class ByPredicate(private val predicate: (URL) -> Boolean) : RedirectionCondition() {
+        override fun shouldRedirect(url: URL) = predicate.invoke(url)
+    }
+
+    /**
+     * All of the conditions should be matched to perform redirect
+     */
+    class CompositeCondition(private val conditions: List<RedirectionCondition>) : RedirectionCondition() {
+        override fun shouldRedirect(url: URL): Boolean = conditions.all { it.shouldRedirect(url) }
     }
 }
