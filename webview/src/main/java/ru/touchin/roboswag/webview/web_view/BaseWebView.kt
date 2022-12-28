@@ -15,6 +15,7 @@ import ru.touchin.extensions.setOnRippleClickListener
 import ru.touchin.roboswag.views.widget.Switcher
 import ru.touchin.roboswag.webview.R
 import ru.touchin.roboswag.webview.databinding.BaseWebViewBinding
+import ru.touchin.roboswag.webview.web_view.redirection.IgnoredErrorsHolder
 import ru.touchin.roboswag.webview.web_view.redirection.RedirectionController
 
 open class BaseWebView @JvmOverloads constructor(
@@ -80,8 +81,11 @@ open class BaseWebView @JvmOverloads constructor(
         binding.linearProgressBar.progress = progress
     }
 
-    fun setBaseWebViewClient(callback: WebViewCallback = this) {
-        binding.webView.webViewClient = BaseWebViewClient(callback)
+    fun setBaseWebViewClient(
+            callback: WebViewCallback = this,
+            ignoredErrorsHolder: IgnoredErrorsHolder = IgnoredErrorsHolder()
+    ) {
+        binding.webView.webViewClient = BaseWebViewClient(callback, ignoredErrorsHolder)
         binding.webView.webChromeClient = BaseChromeWebViewClient(callback)
     }
 
@@ -119,7 +123,7 @@ open class BaseWebView @JvmOverloads constructor(
     ) {
         val indexOfHead = htmlString
                 .indexOf("</head>", ignoreCase = true)
-                .takeIf { it != -1 } ?: 0
+                .takeIf { it >= 0 } ?: 0
 
         val styledHtml = StringBuilder(htmlString)
                 .insert(indexOfHead, styleDeps)
@@ -147,8 +151,6 @@ open class BaseWebView @JvmOverloads constructor(
             scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
             setLayerType(View.LAYER_TYPE_HARDWARE, null)
             with(settings) {
-                allowContentAccess = true
-                allowFileAccess = true
                 loadsImagesAutomatically = true
                 javaScriptEnabled = true
                 domStorageEnabled = true
