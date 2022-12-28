@@ -5,7 +5,7 @@ import android.webkit.WebView
 
 interface WebViewCallback {
 
-    fun onStateChanged(newState: WebViewLoadingState)
+    fun onStateChanged(newState: WebViewState)
 
     fun onOverrideUrlLoading(url: String?): Boolean
 
@@ -26,10 +26,4 @@ interface WebViewCallback {
     fun onJsError(error: ConsoleMessage) = Unit
 
     fun onProgressChanged(progress: Int) = Unit
-}
-
-enum class WebViewLoadingState {
-    LOADING,
-    ERROR,
-    LOADED
 }

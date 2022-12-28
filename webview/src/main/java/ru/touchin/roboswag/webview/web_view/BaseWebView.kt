@@ -55,16 +55,16 @@ open class BaseWebView @JvmOverloads constructor(
         }
     }
 
-    override fun onStateChanged(newState: WebViewLoadingState) {
+    override fun onStateChanged(newState: WebViewState) {
         when {
-            newState == WebViewLoadingState.LOADED -> {
+            newState == WebViewState.SUCCESS -> {
                 binding.pullToRefresh.isRefreshing = false
                 showChild(R.id.pull_to_refresh)
             }
-            newState == WebViewLoadingState.LOADING && !binding.pullToRefresh.isRefreshing -> {
+            newState == WebViewState.LOADING && !binding.pullToRefresh.isRefreshing -> {
                 showChild(if (isCircleProgressBar) R.id.progress_bar else R.id.linear_progress_bar)
             }
-            newState == WebViewLoadingState.ERROR -> {
+            newState == WebViewState.ERROR -> {
                 showChild(R.id.error_layout)
             }
         }
@@ -186,7 +186,7 @@ open class BaseWebView @JvmOverloads constructor(
             isCircleProgressBar = getBoolean(R.styleable.BaseWebView_isCircleProgressBar, true)
             isPullToRefreshEnabled = getBoolean(R.styleable.BaseWebView_isPullToRefreshEnabled, false)
 
-            onStateChanged(WebViewLoadingState.LOADING)
+            onStateChanged(WebViewState.LOADING)
         }
     }
 

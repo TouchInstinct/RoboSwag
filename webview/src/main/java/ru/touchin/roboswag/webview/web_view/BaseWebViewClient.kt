@@ -29,7 +29,7 @@ open class BaseWebViewClient(
     override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
         isError = false
-        callback.onStateChanged(WebViewLoadingState.LOADING)
+        callback.onStateChanged(WebViewState.LOADING)
 
         Looper.myLooper()?.let { looper ->
             val handler = Handler(looper)
@@ -73,7 +73,7 @@ open class BaseWebViewClient(
         if (isSslPinningEnable) {
             super.onReceivedSslError(view, handler, error)
             isError = true
-            callback.onStateChanged(WebViewLoadingState.ERROR)
+            callback.onStateChanged(WebViewState.ERROR)
         } else {
             handler.proceed()
         }
@@ -88,7 +88,7 @@ open class BaseWebViewClient(
     }
 
     private fun pageFinished() {
-        callback.onStateChanged(if (isError) WebViewLoadingState.ERROR else WebViewLoadingState.LOADED)
+        callback.onStateChanged(if (isError) WebViewState.ERROR else WebViewState.SUCCESS)
     }
 
     private fun String?.processCookies(): Map<String, String> {

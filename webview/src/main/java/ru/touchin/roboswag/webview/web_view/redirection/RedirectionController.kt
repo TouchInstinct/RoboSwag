@@ -11,7 +11,7 @@ import java.net.URL
  *
  *        webView.redirectionController = RedirectionController(
  *                CompositeCondition(ByHost("www.petshop.ru") + ByPath("catalog")),
- *                ByPredicate { url -> checkUrl(url) }
+ *                RedirectionCondition { url -> checkUrl(url) }
  *        )
  */
 class RedirectionController(private val conditions: List<RedirectionCondition> = emptyList()) {
@@ -29,36 +29,32 @@ class RedirectionController(private val conditions: List<RedirectionCondition> =
 /**
  * Class with base redirection conditions
  */
-sealed class RedirectionCondition {
+fun interface RedirectionCondition {
+
+    fun shouldRedirect(url: URL): Boolean
 
     operator fun plus(other: RedirectionCondition) = listOf(this, other)
 
-    abstract fun shouldRedirect(url: URL): Boolean
-
-    class ByRegex(private val regex: Regex) : RedirectionCondition() {
+    class ByRegex(private val regex: Regex) : RedirectionCondition {
         override fun shouldRedirect(url: URL) = url.toString().matches(regex)
     }
 
-    class ByHost(private val host: String) : RedirectionCondition() {
+    class ByHost(private val host: String) : RedirectionCondition {
         override fun shouldRedirect(url: URL) = url.host == host
     }
 
-    class ByPath(private val path: String) : RedirectionCondition() {
+    class ByPath(private val path: String) : RedirectionCondition {
         override fun shouldRedirect(url: URL) = path in url.path
     }
 
-    class ByQuery(private val query: String) : RedirectionCondition() {
+    class ByQuery(private val query: String) : RedirectionCondition {
         override fun shouldRedirect(url: URL) = query in url.query
-    }
-
-    class ByPredicate(private val predicate: (URL) -> Boolean) : RedirectionCondition() {
-        override fun shouldRedirect(url: URL) = predicate.invoke(url)
     }
 
     /**
      * All of the conditions should be matched to perform redirect
      */
-    class CompositeCondition(private val conditions: List<RedirectionCondition>) : RedirectionCondition() {
+    class CompositeCondition(private val conditions: List<RedirectionCondition>) : RedirectionCondition {
         override fun shouldRedirect(url: URL): Boolean = conditions.all { it.shouldRedirect(url) }
     }
 }
