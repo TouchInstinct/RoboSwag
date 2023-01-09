@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import ru.touchin.roboswag.cart_utils.models.CartModel
 import ru.touchin.roboswag.cart_utils.models.ProductModel
+import ru.touchin.roboswag.cart_utils.models.PromocodeModel
 
 /**
  * Class that contains StateFlow of current [CartModel] which can be subscribed in ViewModels
@@ -28,8 +29,7 @@ class LocalCartRepository<TCart : CartModel<TProduct>, TProduct : ProductModel>(
 
     fun removeProduct(id: Int) {
         updateCartProducts {
-            val product = find { it.id == id }
-            remove(product)
+            remove(find { it.id == id })
         }
     }
 
@@ -51,9 +51,23 @@ class LocalCartRepository<TCart : CartModel<TProduct>, TProduct : ProductModel>(
         }
     }
 
+    fun applyPromocode(promocode: PromocodeModel) {
+        updatePromocodeList { add(promocode) }
+    }
+
+    fun removePromocode(code: String) {
+        updatePromocodeList { removeAt(indexOfFirst { it.code == code }) }
+    }
+
     private fun updateCartProducts(updateAction: MutableList<TProduct>.() -> Unit) {
         _currentCart.update { cart ->
             cart.copyWith(products = cart.products.toMutableList().apply(updateAction))
+        }
+    }
+
+    private fun updatePromocodeList(updateAction: MutableList<PromocodeModel>.() -> Unit) {
+        _currentCart.update { cart ->
+            cart.copyWith(promocodeList = cart.promocodeList.toMutableList().apply(updateAction))
         }
     }
 

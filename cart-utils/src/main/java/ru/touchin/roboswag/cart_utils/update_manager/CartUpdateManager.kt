@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import ru.touchin.roboswag.cart_utils.models.CartModel
 import ru.touchin.roboswag.cart_utils.models.ProductModel
+import ru.touchin.roboswag.cart_utils.models.PromocodeModel
 import ru.touchin.roboswag.cart_utils.repositories.IRemoteCartRepository
 import ru.touchin.roboswag.cart_utils.repositories.LocalCartRepository
 import ru.touchin.roboswag.cart_utils.requests_qeue.Request
@@ -75,6 +76,14 @@ open class CartUpdateManager<TCart : CartModel<TProduct>, TProduct : ProductMode
 
     open fun completelyDeleteProduct(id: Int) {
         localCartRepository.removeProduct(id)
+    }
+
+    open fun applyPromocode(promocode: PromocodeModel) {
+        localCartRepository.applyPromocode(promocode)
+    }
+
+    open fun removePromocode(code: String) {
+        localCartRepository.removePromocode(code)
     }
 
     private suspend fun tryToGetRemoteCartAgain() {
