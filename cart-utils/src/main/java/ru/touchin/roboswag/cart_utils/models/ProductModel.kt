@@ -7,6 +7,7 @@ abstract class ProductModel {
     abstract val isAvailable: Boolean
     abstract val isDeleted: Boolean
 
+    open val bonuses: Int? = null
     open val variants: List<ProductModel> = emptyList()
 
     abstract fun <TProduct> copyWith(

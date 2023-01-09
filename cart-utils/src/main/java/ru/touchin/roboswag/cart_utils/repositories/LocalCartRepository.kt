@@ -59,6 +59,11 @@ class LocalCartRepository<TCart : CartModel<TProduct>, TProduct : ProductModel>(
         updatePromocodeList { removeAt(indexOfFirst { it.code == code }) }
     }
 
+    fun useBonuses(bonuses: Int) {
+        require(currentCart.value.availableBonuses >= bonuses) { "Can't use bonuses more than available" }
+        _currentCart.update { it.copyWith(usedBonuses = bonuses) }
+    }
+
     private fun updateCartProducts(updateAction: MutableList<TProduct>.() -> Unit) {
         _currentCart.update { cart ->
             cart.copyWith(products = cart.products.toMutableList().apply(updateAction))
