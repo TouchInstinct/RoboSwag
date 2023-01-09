@@ -14,6 +14,6 @@ abstract class PromocodeDiscount {
     }
 
     class ByPercent(private val percent: Int) : PromocodeDiscount() {
-        override fun applyTo(totalPrice: Int): Int = totalPrice - (totalPrice * percent / 100)
+        override fun applyTo(totalPrice: Int): Int = totalPrice - totalPrice * percent / 100
     }
 }
