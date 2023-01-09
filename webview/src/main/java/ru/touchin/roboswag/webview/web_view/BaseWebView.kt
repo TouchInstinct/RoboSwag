@@ -3,19 +3,20 @@ package ru.touchin.roboswag.webview.web_view
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.webkit.ConsoleMessage
 import android.webkit.CookieManager
-import android.webkit.WebView
 import androidx.core.content.withStyledAttributes
 import androidx.core.widget.TextViewCompat
+import ru.touchin.extensions.getColorOrNull
+import ru.touchin.extensions.getResourceIdOrNull
 import ru.touchin.extensions.setOnRippleClickListener
 import ru.touchin.roboswag.views.widget.Switcher
 import ru.touchin.roboswag.webview.R
 import ru.touchin.roboswag.webview.databinding.BaseWebViewBinding
+import ru.touchin.roboswag.webview.web_view.redirection.IgnoredErrorsHolder
+import ru.touchin.roboswag.webview.web_view.redirection.RedirectionController
 
 open class BaseWebView @JvmOverloads constructor(
         context: Context,
@@ -25,99 +26,71 @@ open class BaseWebView @JvmOverloads constructor(
 
     private val binding = BaseWebViewBinding.inflate(LayoutInflater.from(context), this)
 
-    var onWebViewLoaded: (() -> Unit)? = null
-    var onWebViewRepeatButtonClicked: (() -> Unit)? = null
-    var onWebViewScrolled: ((WebView, Int, Int) -> Unit)? = null
-    var onCookieLoaded: ((cookies: Map<String, String>?) -> Unit)? = null
+    private var isCircleProgressBar = true
 
-    var onJsConfirm: (() -> Unit)? = null
-    var onJsAlert: (() -> Unit)? = null
-    var onJsPrompt: ((defaultValue: String?) -> Unit)? = null
-    var onJsError: ((error: ConsoleMessage) -> Unit)? = null
-
-    var isPullToRefreshEnable = false
+    private var isPullToRefreshEnabled = false
         set(value) {
             binding.pullToRefresh.isEnabled = value
             binding.pullToRefresh.isRefreshing = false
             field = value
         }
 
-    var isRedirectEnable = false
-
-    /**
-     * If you need to do some action on url click inside WebView, just assign this parameter and disable isRedirectEnable
-     **/
-    var actionOnRedirect: ((String?, WebView) -> Unit)? = null
+    var redirectionController = RedirectionController()
 
     init {
-        binding.pullToRefresh.isEnabled = isPullToRefreshEnable
+        initAttributes(attrs, defStyleAttr)
+        binding.pullToRefresh.isEnabled = isPullToRefreshEnabled
+
         binding.apply {
-            context.withStyledAttributes(attrs, R.styleable.BaseWebView, defStyleAttr, 0) {
-                if (hasValue(R.styleable.BaseWebView_errorTextAppearance)) {
-                    TextViewCompat.setTextAppearance(errorText, getResourceId(R.styleable.BaseWebView_errorTextAppearance, 0))
-                }
-                if (hasValue(R.styleable.BaseWebView_repeatButtonTextAppearance)) {
-                    TextViewCompat.setTextAppearance(errorRepeatButton, getResourceId(R.styleable.BaseWebView_repeatButtonTextAppearance, 0))
-                }
-                if (hasValue(R.styleable.BaseWebView_progressBarTintColor)) {
-                    progressBar.indeterminateTintList = ColorStateList.valueOf(getColor(R.styleable.BaseWebView_progressBarTintColor, Color.BLACK))
-                }
-                if (hasValue(R.styleable.BaseWebView_repeatButtonBackground)) {
-                    errorRepeatButton.setBackgroundResource(getResourceId(R.styleable.BaseWebView_repeatButtonBackground, 0))
-                }
-                if (hasValue(R.styleable.BaseWebView_screenBackground)) {
-                    setBackgroundResource(getResourceId(R.styleable.BaseWebView_screenBackground, 0))
-                }
-                if (hasValue(R.styleable.BaseWebView_errorText)) {
-                    errorText.text = getString(R.styleable.BaseWebView_errorText)
-                }
-                if (hasValue(R.styleable.BaseWebView_repeatButtonText)) {
-                    errorRepeatButton.text = getString(R.styleable.BaseWebView_repeatButtonText)
-                }
-            }
             pullToRefresh.setOnRefreshListener {
                 webView.reload()
             }
             errorRepeatButton.setOnRippleClickListener {
-                onWebViewRepeatButtonClicked?.invoke()
+                onRepeatButtonClicked()
             }
             webView.onScrollChanged = { scrollX, scrollY, _, _ ->
-                onWebViewScrolled?.invoke(binding.webView, scrollX, scrollY)
+                onWebViewScrolled(scrollX, scrollY)
             }
             setWebViewPreferences()
         }
     }
 
-    override fun onStateChanged(newState: WebViewLoadingState) {
+    override fun onStateChanged(newState: WebViewState) {
         when {
-            newState == WebViewLoadingState.LOADED -> {
-                onWebViewLoaded?.invoke()
+            newState == WebViewState.SUCCESS -> {
                 binding.pullToRefresh.isRefreshing = false
                 showChild(R.id.pull_to_refresh)
             }
-            newState == WebViewLoadingState.LOADING
-                    && !binding.pullToRefresh.isRefreshing -> {
-                showChild(R.id.progress_bar)
+            newState == WebViewState.LOADING && !binding.pullToRefresh.isRefreshing -> {
+                showChild(if (isCircleProgressBar) R.id.progress_bar else R.id.linear_progress_bar)
             }
-            newState == WebViewLoadingState.ERROR -> {
+            newState == WebViewState.ERROR -> {
                 showChild(R.id.error_layout)
             }
         }
     }
 
-    override fun onOverrideUrlLoading(url: String?): Boolean = isRedirectEnable
+    override fun onOverrideUrlLoading(url: String?): Boolean =
+            redirectionController.shouldRedirectToUrl(url)
 
-    override fun onPageCookiesLoaded(cookies: Map<String, String>?) {
-        onCookieLoaded?.invoke(cookies)
+    override fun onRepeatButtonClicked() {
+        loadUrl(getWebView().url)
     }
 
-    override fun actionOnRedirectInsideWebView(webView: WebView, url: String?) {
-        actionOnRedirect?.invoke(url, webView)
+    override fun onProgressChanged(progress: Int) {
+        binding.linearProgressBar.progress = progress
     }
 
-    fun setBaseWebViewClient(isSSlPinningEnable: Boolean = false) {
-        binding.webView.webViewClient = BaseWebViewClient(this, isSSlPinningEnable)
-        binding.webView.webChromeClient = BaseChromeWebViewClient(onJsConfirm, onJsAlert, onJsPrompt, onJsError)
+    fun setBaseWebViewClient(
+            callback: WebViewCallback = this,
+            ignoredErrorsHolder: IgnoredErrorsHolder = IgnoredErrorsHolder()
+    ) {
+        binding.webView.webViewClient = BaseWebViewClient(callback, ignoredErrorsHolder)
+        binding.webView.webChromeClient = BaseChromeWebViewClient(callback)
+    }
+
+    fun handleBackPressed(closeScreenAction: () -> Unit) {
+        with(getWebView()) { if (canGoBack()) goBack() else closeScreenAction.invoke() }
     }
 
     fun getWebView() = binding.webView
@@ -135,12 +108,35 @@ open class BaseWebView @JvmOverloads constructor(
         binding.webView.loadUrl(url ?: "", extraHeaders)
     }
 
-    fun setState(newState: WebViewLoadingState) {
-        onStateChanged(newState)
-    }
+    /**
+     * @param htmlString raw html string to be loaded into WebView
+     * @param cssString raw css string to add styles
+     * @param cssFileName name for .css file which can be placed in assets folder
+     * @param styleDeps dependencies for styles which must be included into html,
+     * e.g. </link rel="preconnect" href="https://fonts.googleapis.com"/>
+     */
+    fun loadHtmlContent(
+            htmlString: String,
+            cssString: String = "",
+            cssFileName: String = "",
+            styleDeps: String = ""
+    ) {
+        val indexOfHead = htmlString
+                .indexOf("</head>", ignoreCase = true)
+                .takeIf { it >= 0 } ?: 0
 
-    fun setOnWebViewDisplayedContentAction(action: () -> Unit) {
-        binding.webView.onWebViewDisplayedContent = action
+        val styledHtml = StringBuilder(htmlString)
+                .insert(indexOfHead, styleDeps)
+                .insert(indexOfHead, "<style>$cssString</style>")
+                .insert(indexOfHead, "<link href=\"$cssFileName\" type=\"text/css\" rel=\"stylesheet\"/>")
+
+        getWebView().loadDataWithBaseURL(
+                "file:///android_asset/".takeIf { cssFileName.isNotEmpty() },
+                styledHtml.toString(),
+                "text/html",
+                "utf-8",
+                null
+        )
     }
 
     /**
@@ -162,6 +158,35 @@ open class BaseWebView @JvmOverloads constructor(
                 useWideViewPort = true
                 setInitialScale(1)
             }
+        }
+    }
+
+    private fun initAttributes(attrs: AttributeSet?, defStyleAttr: Int) = with(binding) {
+        context.withStyledAttributes(attrs, R.styleable.BaseWebView, defStyleAttr, 0) {
+            getResourceIdOrNull(R.styleable.BaseWebView_errorTextAppearance)?.let {
+                TextViewCompat.setTextAppearance(errorText, it)
+            }
+            getResourceIdOrNull(R.styleable.BaseWebView_repeatButtonTextAppearance)?.let {
+                TextViewCompat.setTextAppearance(errorRepeatButton, it)
+            }
+            getResourceIdOrNull(R.styleable.BaseWebView_repeatButtonBackground)?.let {
+                errorRepeatButton.setBackgroundResource(it)
+            }
+            getColorOrNull(R.styleable.BaseWebView_progressBarTintColor)?.let {
+                progressBar.indeterminateTintList = ColorStateList.valueOf(it)
+                linearProgressBar.indeterminateTintList = ColorStateList.valueOf(it)
+            }
+            getResourceIdOrNull(R.styleable.BaseWebView_repeatButtonBackground)?.let {
+                setBackgroundResource(getResourceId(R.styleable.BaseWebView_screenBackground, 0))
+            }
+
+            getString(R.styleable.BaseWebView_errorText)?.let { errorText.text = it }
+            getString(R.styleable.BaseWebView_repeatButtonText)?.let { errorRepeatButton.text = it }
+
+            isCircleProgressBar = getBoolean(R.styleable.BaseWebView_isCircleProgressBar, true)
+            isPullToRefreshEnabled = getBoolean(R.styleable.BaseWebView_isPullToRefreshEnabled, false)
+
+            onStateChanged(WebViewState.LOADING)
         }
     }
 

@@ -11,8 +11,13 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.core.os.postDelayed
+import ru.touchin.roboswag.webview.web_view.redirection.IgnoredErrorsHolder
 
-open class BaseWebViewClient(private val callback: WebViewCallback, private val isSslPinningEnable: Boolean) : WebViewClient() {
+open class BaseWebViewClient(
+        private val callback: WebViewCallback,
+        private val ignoredErrorsHolder: IgnoredErrorsHolder = IgnoredErrorsHolder(),
+        private val isSslPinningEnable: Boolean = true
+) : WebViewClient() {
 
     companion object {
         private const val WEB_VIEW_TIMEOUT_MS = 30 * 1000L // 30 sec
@@ -24,7 +29,7 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
     override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
         super.onPageStarted(view, url, favicon)
         isError = false
-        callback.onStateChanged(WebViewLoadingState.LOADING)
+        callback.onStateChanged(WebViewState.LOADING)
 
         Looper.myLooper()?.let { looper ->
             val handler = Handler(looper)
@@ -54,9 +59,10 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
         pageFinished()
     }
 
-    override fun shouldOverrideUrlLoading(view: WebView, url: String?): Boolean {
+    override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
+        val url = request.url.toString()
         return if (!callback.onOverrideUrlLoading(url) && view.originalUrl != null) {
-            callback.actionOnRedirectInsideWebView(webView = view, url = url)
+            callback.onRedirectInsideWebView(webView = view, url = url)
             true
         } else {
             false
@@ -67,7 +73,7 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
         if (isSslPinningEnable) {
             super.onReceivedSslError(view, handler, error)
             isError = true
-            callback.onStateChanged(WebViewLoadingState.ERROR)
+            callback.onStateChanged(WebViewState.ERROR)
         } else {
             handler.proceed()
         }
@@ -77,11 +83,12 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
      * onReceivedError isn't called when url is "about:blank" (url string isBlank)
      */
     override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
+        if (ignoredErrorsHolder.shouldIgnoreError(request, error)) return
         isError = true
     }
 
     private fun pageFinished() {
-        callback.onStateChanged(if (isError) WebViewLoadingState.ERROR else WebViewLoadingState.LOADED)
+        callback.onStateChanged(if (isError) WebViewState.ERROR else WebViewState.SUCCESS)
     }
 
     private fun String?.processCookies(): Map<String, String> {
@@ -94,10 +101,4 @@ open class BaseWebViewClient(private val callback: WebViewCallback, private val 
         return cookiesMap
     }
 
-}
-
-enum class WebViewLoadingState {
-    LOADING,
-    ERROR,
-    LOADED
 }
