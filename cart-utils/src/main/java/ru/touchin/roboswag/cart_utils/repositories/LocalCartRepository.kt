@@ -64,6 +64,19 @@ class LocalCartRepository<TCart : CartModel<TProduct>, TProduct : ProductModel>(
         _currentCart.update { it.copyWith(usedBonuses = bonuses) }
     }
 
+    fun chooseVariant(productId: Int, variantId: Int?) {
+        updateCartProducts {
+            updateProduct(productId) {
+                if (variantId != null) {
+                    check(variants.any { it.id == variantId }) {
+                        "Product with id=$productId doesn't have variant with id=$variantId"
+                    }
+                }
+                copyWith(selectedVariantId = variantId)
+            }
+        }
+    }
+
     private fun updateCartProducts(updateAction: MutableList<TProduct>.() -> Unit) {
         _currentCart.update { cart ->
             cart.copyWith(products = cart.products.toMutableList().apply(updateAction))

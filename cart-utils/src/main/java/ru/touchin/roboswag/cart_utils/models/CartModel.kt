@@ -20,7 +20,9 @@ abstract class CartModel<TProductModel : ProductModel> {
 
     fun getPriceWithPromocode(): Int = promocodeList
             .sortedByDescending { it.discount is PromocodeDiscount.ByPercent }
-            .fold(initial = totalPrice) { price, promo -> promo.discount.applyTo(price) }
+            .fold(initial = totalPrice) { price, promo ->
+                promo.discount.applyTo(price)
+            }
 
     abstract fun <TCart> copyWith(
             products: List<TProductModel> = this.products,

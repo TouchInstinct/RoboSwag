@@ -8,11 +8,16 @@ abstract class ProductModel {
     abstract val isDeleted: Boolean
 
     open val bonuses: Int? = null
+
     open val variants: List<ProductModel> = emptyList()
+    open val selectedVariantId: Int? = null
+
+    val selectedVariant get() = variants.find { it.id == selectedVariantId }
 
     abstract fun <TProduct> copyWith(
             countInCart: Int = this.countInCart,
             isDeleted: Boolean = this.isDeleted,
+            selectedVariantId: Int? = this.selectedVariantId
     ): TProduct
 
     @Suppress("UNCHECKED_CAST")
