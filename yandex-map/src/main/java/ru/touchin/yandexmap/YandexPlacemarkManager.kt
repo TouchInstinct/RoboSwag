@@ -48,8 +48,14 @@ class YandexPlacemarkManager<TPoint : PointModel>(
 
         clusterizedCollection.clusterPlacemarks(clusterRadius, minZoom)
         placemarkCollection = clusterizedCollection
+    }
 
+    fun addTapListener(mapView: MapView) {
         mapView.map.mapObjects.addTapListener(this)
+    }
+
+    fun removeTapListener(mapView: MapView) {
+        mapView.map.mapObjects.removeTapListener(this)
     }
 
     fun removeMarkers() {
