@@ -8,7 +8,7 @@ dependencies {
     constraints {
         implementation("com.yandex.android:maps.mobile") {
             version {
-                require '4.2.2-full'
+                require '4.2.2-lite'
             }
         }
     }
