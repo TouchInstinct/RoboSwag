@@ -10,7 +10,7 @@ import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.layers.ObjectEvent
 import com.yandex.mapkit.map.CameraListener
 import com.yandex.mapkit.map.CameraPosition
-import com.yandex.mapkit.map.CameraUpdateSource
+import com.yandex.mapkit.map.CameraUpdateReason
 import com.yandex.mapkit.map.InputListener
 import com.yandex.mapkit.map.Map
 import com.yandex.mapkit.map.MapLoadStatistics
@@ -23,8 +23,7 @@ import ru.touchin.basemap.AbstractMapManager
 
 @Suppress("detekt.TooManyFunctions")
 class YandexMapManager(
-        mapView: MapView,
-        private val isDebug: Boolean = false
+        mapView: MapView
 ) : AbstractMapManager<MapView, Map, Point>(mapView), MapLoadedListener, CameraListener, InputListener, UserLocationObjectListener {
 
     companion object {
@@ -58,7 +57,6 @@ class YandexMapManager(
 
     override fun initMap(map: Map) {
         super.initMap(map)
-        map.isDebugInfoEnabled = isDebug
         map.setMapLoadedListener(this)
         map.addCameraListener(this)
         map.addInputListener(this)
@@ -80,7 +78,7 @@ class YandexMapManager(
         mapListener?.onMapLoaded()
     }
 
-    override fun onCameraPositionChanged(map: Map, cameraPosition: CameraPosition, cameraUpdateSource: CameraUpdateSource, finished: Boolean) {
+    override fun onCameraPositionChanged(map: Map, cameraPosition: CameraPosition, cameraUpdateSource: CameraUpdateReason, finished: Boolean) {
         mapListener?.onCameraMoved(finished)
     }
 
