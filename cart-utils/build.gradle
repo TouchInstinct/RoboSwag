@@ -1,0 +1,22 @@
+apply from: "../android-configs/lib-config.gradle"
+
+dependencies {
+    def coroutinesVersion = '1.6.4'
+    def junitVersion = '4.13.2'
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    testImplementation("junit:junit")
+
+    constraints {
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core") {
+            version {
+                require(coroutinesVersion)
+            }
+        }
+        testImplementation("junit:junit") {
+            version {
+                require(junitVersion)
+            }
+        }
+    }
+}
